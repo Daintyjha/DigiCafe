@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<audio id="ambience" loop></audio>
+
+<script>
+window.addEventListener("message", (event) => {
+  const audio = document.getElementById("ambience");
+
+  const data = event.data;
+
+  if (data.type === "play") {
+    audio.src = data.src;
+    audio.play();
+  }
+
+  if (data.type === "stop") {
+    audio.pause();
+    audio.src = "";
+  }
+});
+</script>
+
+</body>
+</html>

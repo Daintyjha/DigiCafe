@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>DigiCafe Music | DaintyJha</title>
+
+<!-- SEO META -->
+    <meta name="description" content="Welcome to DigiCafe, a cozy digital café created by DaintyJha. Explore original music, relaxing soundscapes, audiobooks, stories, and creative experiences designed for quiet moments and imagination.">
+
+    <meta name="author" content="DaintyJha">
+
+    <meta name="robots" content="index, follow">
+
+
+    <!-- SOCIAL MEDIA PREVIEW -->
+    <meta property="og:title" content="DigiCafe | A Cozy Digital Café">
+
+    <meta property="og:description" content="A peaceful online café for music, stories, and creative escapes created by DaintyJha.">
+
+    <meta property="og:type" content="website">
+
+    <meta property="og:image" content="images/digicafe-preview.jpg">
+
+
+    <!-- MOBILE BROWSER COLOR -->
+    <meta name="theme-color" content="#f5efe6">
+
+
+    <!-- GOOGLE FONT -->
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="music.css">
+
+</head>
+<body>
+<div id="navbar"></div>
+
+
+
+
+
+<div class="music-app">
+
+
+
+<!-- ================= SIDEBAR ================= -->
+<aside class="sidebar">
+    <!-- QUICK ACTIONS CARD -->
+    <div class="sidebar-card">
+    <!-- RELEASES CARD -->
+    <div class="sidebar-card">
+
+
+        <h4>
+            🌎 DaintyJha Releases
+        </h4>
+
+
+
+        <div class="release-links">
+
+
+            <a href="https://www.youtube.com/playlist?list=OLAK5uy_lXMDUsRuV4bHn-7S8FY-OXROkoJfC53h8"
+            target="_blank"
+            rel="noopener">
+
+                ▶ Between Waking Frequencies
+
+            </a>
+
+
+
+            <a href="https://www.youtube.com/playlist?list=OLAK5uy_lYMM8sMZmUhvZaaSxsQ-rFE5yGpDsyX00"
+            target="_blank"
+            rel="noopener">
+
+                ▶ Elemental Psy
+
+            </a>
+
+
+
+            <a href="https://www.youtube.com/playlist?list=OLAK5uy_mpOb7Qern4Vxy0qzn3KJkyjgdxYhRsl1I"
+            target="_blank"
+            rel="noopener">
+
+                ▶ Hypnora
+
+            </a>
+
+
+
+            <a href="https://www.youtube.com/playlist?list=OLAK5uy_mK5zGcP-jY0YvGe2CMlN_pnpLde0bmduo"
+            target="_blank"
+            rel="noopener">
+
+                ▶ Psytrance Forest Festival
+
+            </a>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+    <!-- STREAMING CARD -->
+    <div class="sidebar-card">
+
+
+        <h4>
+            🎧 Listen Everywhere
+        </h4>
+
+
+
+        <div class="stream-links">
+
+
+            <a href="https://open.spotify.com/artist/4riqVVVQ17GQ7fJkf2jOAk"
+            target="_blank"
+            rel="noopener">
+
+                🎵 Spotify
+
+            </a>
+
+
+
+            <a href="https://music.apple.com/us/artist/daintyjha/1860074349"
+            target="_blank"
+            rel="noopener">
+
+                🍎 Apple Music
+
+            </a>
+
+
+
+            <a href="https://music.youtube.com/channel/UCu5N7MSog77Mubuzc3B192A"
+            target="_blank"
+            rel="noopener">
+
+                🎧 YouTube Music
+
+            </a>
+
+
+
+            <a href="https://www.youtube.com/channel/UCu5N7MSog77Mubuzc3B192A"
+            target="_blank"
+            rel="noopener">
+
+                ▶ YouTube
+
+            </a>
+
+    </div>
+
+</aside>
+<!-- ================= MAIN CONTENT ================= -->
+
+
+<main class="music-content">
+<section class="hero">
+<h1>
+🎵 DigiCafe Music
+</h1>
+<p>
+Discover original music by DaintyJha —
+ambient worlds, piano melodies,
+experimental sounds and emotional journeys.
+</p>
+
+</section>
+<section id="favorites"
+class="library-panel">
+<h2>
+❤️ Favorites
+</h2>
+<ul id="favoriteList">
+</ul>
+<button id="clearFavoritesBtn">
+
+🗑 Clear Favorites
+</button>
+</section>
+<section id="queue"
+class="library-panel">
+<h2>
+☰ Queue
+</h2>
+<ul id="queueList">
+</ul>
+<button id="clearQueueBtn">
+🗑 Clear Queue
+</button>
+</section>
+<section class="released">
+<h2>
+<section>
+<h2>
+✨ Recently Added
+</h2>
+
+<div id="recentSongs"
+class="song-grid">
+</div>
+</section>
+<section>
+<h4>
+Browse Collections
+</h4>
+<div class="category-buttons">
+<button onclick="loadCategory('Ambience')">
+🌧 Ambience
+</button>
+<button onclick="loadCategory('Night Atmosphere')">
+🌙 Night Atmosphere
+</button>
+<button onclick="loadCategory('Piano')">
+🎹 Piano
+</button>
+<button onclick="loadCategory('Heal')">
+      💚 Heal
+    </button>
+</div>
+</section>
+
+<section>
+<h2 id="categoryTitle">
+All Music
+</h2>
+<div id="musicLibrary"
+class="song-grid">
+</div>
+</section>
+
+
+<section class="support">
+<h2>
+💜 Support My Music
+</h2>
+<p>
+If you enjoy these sounds,
+follow DaintyJha on your favorite
+streaming platform.
+Every listen helps independent music grow.
+</p>
+</section>
+<div id="beshy-container"></div>
+</main>
+
+<!-- ================= FIXED PLAYER ================= -->
+
+<footer class="player">
+
+<div class="now-playing">
+
+  <div class="now-playing-info">
+
+    <h3 id="trackTitle">
+      Nothing playing
+    </h3>
+
+
+
+    <small id="playbackSource">
+      Select a song to begin
+    </small>
+
+  </div>
+
+</div>
+<div class="controls">
+
+    <div class="player-actions">
+<button id="favoriteBtn">
+♡
+</button>
+<button id="queueBtn">
++
+</button>
+</div>
+<button id="prevBtn">
+⏮
+</button>
+<button id="playBtn">
+▶
+</button>
+<button id="nextBtn">
+⏭
+</button>
+<button id="shuffleBtn">
+🔀
+</button>
+</div>
+<div class="progress">
+<span id="currentTime">
+0:00
+</span>
+<input
+type="range"
+id="progressBar"
+min="0"
+max="100"
+value="0">
+<span id="duration">
+0:00
+</span>
+</div>
+<div class="volume">
+🔊
+<input
+type="range"
+id="volumeSlider"
+min="0"
+max="1"
+step="0.01"
+value="1">
+</div>
+<audio
+  id="audioPlayer"
+  preload="metadata">
+</audio>
+</footer>
+<script src="music.js" ></script>
+<script src="script.js"></script>
+<script src="Beshy/beshy.js"></script>
+</body>
+</html>

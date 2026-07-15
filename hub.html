@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>DaintyHub</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- ================= NAV ================= -->
+  <nav class="nav">
+    <button onclick="loadPage('home.html')">Home</button>
+    <button onclick="loadPage('music.html')">Music</button>
+    <button onclick="loadPage('library.html')">Reading</button>
+    <button onclick="loadPage('drift.html')">Relax</button>
+  </nav>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <iframe
+    id="contentFrame"
+    src="home.html"
+    style="width:100%; height:100vh; border:none;">
+  </iframe>
+
+  <!-- ================= AUDIO SYSTEM ================= -->
+  <iframe
+    id="audioFrame"
+    src="audio/audio-player.html"
+    style="display:none;">
+  </iframe>
+
+  <!-- ================= 🎧 FLOATING CONTROL PANEL ================= -->
+  <div id="control-panel">
+
+    <button class="toggle">🎧</button>
+
+    <div class="ambience-menu">
+      <div class="sound-row">
+        <button>🌧️</button>
+        <button>🔥</button>
+        <button>🌿</button>
+        <button>🐦</button>
+      </div>
+
+      <div class="volume-row">
+        <span>Vol</span>
+        <input type="range" class="volume-slider">
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script src="script.js"></script>
+  <script src="control-panel.js"></script>
+
+</body>
+</html>
