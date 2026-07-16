@@ -5,52 +5,37 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    const container =
-        document.getElementById("beshy-container");
+    const container = document.getElementById("beshy-container");
 
     if (!container) {
-
-        console.error(
-            "❌ Beshy container was not found."
-        );
-
+        console.error("❌ Beshy container was not found.");
         return;
-
     }
 
 
     /* =================================================
-       LOAD SEPARATE BESHY HTML
+       LOAD BESHY HTML
     ================================================= */
 
     fetch("Beshy/beshy.html")
-
         .then(function (response) {
 
             if (!response.ok) {
-
-                throw new Error(
-                    "Could not load Beshy HTML."
-                );
-
+                throw new Error("Could not load Beshy HTML.");
             }
 
             return response.text();
 
         })
-
         .then(function (html) {
 
             container.innerHTML = html;
 
-            console.log(
-                "💚 Beshy HTML loaded."
-            );
+            console.log("💚 Beshy HTML loaded.");
 
             startBeshy();
 
         })
-
         .catch(function (error) {
 
             console.error(
@@ -67,47 +52,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function startBeshy() {
 
-
-        const toggle =
-            document.getElementById(
-                "beshyToggle"
-            );
-
-
-        const chat =
-            document.getElementById(
-                "beshyChat"
-            );
-
-
-        const closeButton =
-            document.getElementById(
-                "beshyClose"
-            );
-
-
-        const input =
-            document.getElementById(
-                "beshyInput"
-            );
-
-
-        const sendButton =
-            document.getElementById(
-                "beshySend"
-            );
-
-
-        const messages =
-            document.getElementById(
-                "beshyMessages"
-            );
-
-
-        const forgetButton =
-            document.getElementById(
-                "beshyForget"
-            );
+        const toggle = document.getElementById("beshyToggle");
+        const chat = document.getElementById("beshyChat");
+        const closeButton = document.getElementById("beshyClose");
+        const input = document.getElementById("beshyInput");
+        const sendButton = document.getElementById("beshySend");
+        const messages = document.getElementById("beshyMessages");
+        const forgetButton = document.getElementById("beshyForget");
 
 
         if (
@@ -128,15 +79,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
-        console.log(
-            "💚 Beshy is ready!"
-        );
+        console.log("💚 Beshy is ready!");
 
 
         /* =================================================
            MEMORY
         ================================================= */
-
 
         let sharedKnowledge =
             JSON.parse(
@@ -145,164 +93,45 @@ document.addEventListener("DOMContentLoaded", function () {
                 )
             ) || [];
 
-/* =====================================================
-   BEHAVIOUR MEMORY
-===================================================== */
 
-let learnedBehaviours =
-    JSON.parse(
-        localStorage.getItem(
-            "beshyLearnedBehaviours"
-        )
-    ) || [];
+        let learnedBehaviours =
+            JSON.parse(
+                localStorage.getItem(
+                    "beshyLearnedBehaviours"
+                )
+            ) || [];
 
 
-function saveBehaviours() {
-
-    localStorage.setItem(
-
-        "beshyLearnedBehaviours",
-
-        JSON.stringify(
-            learnedBehaviours
-        )
-
-    );
-
-}
-function isTeachingPrompt(
-    text
-) {
-
-    const lower =
-        text.toLowerCase();
+        let conversationMemory = [];
 
 
-    const teachingPatterns = [
-
-        "remember that",
-
-        "learn that",
-
-        "beshy should",
-
-        "beshy must",
-
-        "beshy needs to",
-
-        "when someone",
-
-        "if someone",
-
-        "the rule is",
-
-        "you should respond",
-
-        "you should never",
-
-        "you should always",
-
-        "remember:",
-
-        "lesson:"
-
-    ];
-
-
-    return teachingPatterns.some(
-
-        function (
-            pattern
-        ) {
-
-            return lower.includes(
-                pattern
-            );
-
-        }
-
-    );
-
-}
-function learnBehaviour(
-    text
-) {
-
-
-    const alreadyKnown =
-        learnedBehaviours.some(
-
-            function (
-                behaviour
-            ) {
-
-                return (
-
-                    behaviour
-                        .toLowerCase()
-                        .trim()
-
-                    ===
-
-                    text
-                        .toLowerCase()
-                        .trim()
-
-                );
-
-            }
-
-        );
-
-
-    if (
-        alreadyKnown
-    ) {
-
-        return (
-
-            "Besh, I already have that behaviour rule in my brain. 🧠💚"
-
-        );
-
-    }
-
-
-    learnedBehaviours.push(
-        text
-    );
-
-
-    saveBehaviours();
-
-
-    return (
-
-        "Got it, besh. 🧠💚\n\n" +
-
-        "I understand this as a behaviour rule, " +
-
-        "not as your personal situation. " +
-
-        "I'll try to apply it when it is relevant."
-
-    );
-
-}
         /* =================================================
-           SAVE MEMORY
+           SAVE KNOWLEDGE
         ================================================= */
 
         function saveKnowledge() {
 
             localStorage.setItem(
-
                 "beshySharedKnowledge",
-
                 JSON.stringify(
                     sharedKnowledge
                 )
+            );
 
+        }
+
+
+        /* =================================================
+           SAVE BEHAVIOURS
+        ================================================= */
+
+        function saveBehaviours() {
+
+            localStorage.setItem(
+                "beshyLearnedBehaviours",
+                JSON.stringify(
+                    learnedBehaviours
+                )
             );
 
         }
@@ -312,53 +141,55 @@ function learnBehaviour(
            OPEN BESHY
         ================================================= */
 
-        toggle.addEventListener(
-            "click",
-            function () {
+        function openBeshy() {
 
-                chat.classList.add(
-                    "open"
-                );
+            chat.classList.add("open");
 
-                toggle.setAttribute(
-                    "aria-expanded",
-                    "true"
-                );
+            toggle.setAttribute(
+                "aria-expanded",
+                "true"
+            );
 
-                chat.setAttribute(
-                    "aria-hidden",
-                    "false"
-                );
+            chat.setAttribute(
+                "aria-hidden",
+                "false"
+            );
 
-                input.focus();
+            input.focus();
 
-            }
-        );
+        }
 
 
         /* =================================================
            CLOSE BESHY
         ================================================= */
 
+        function closeBeshy() {
+
+            chat.classList.remove("open");
+
+            toggle.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+            chat.setAttribute(
+                "aria-hidden",
+                "true"
+            );
+
+        }
+
+
+        toggle.addEventListener(
+            "click",
+            openBeshy
+        );
+
+
         closeButton.addEventListener(
             "click",
-            function () {
-
-                chat.classList.remove(
-                    "open"
-                );
-
-                toggle.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
-
-                chat.setAttribute(
-                    "aria-hidden",
-                    "true"
-                );
-
-            }
+            closeBeshy
         );
 
 
@@ -366,23 +197,35 @@ function learnBehaviour(
            DISPLAY MESSAGE
         ================================================= */
 
-        function displayMessage(
-            text,
-            type
-        ) {
+        function displayMessage(text, type) {
 
             const message =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
 
             message.className =
                 "beshy-message " + type;
 
 
-            message.textContent =
-                text;
+            const lines =
+                text.split("\n");
+
+
+            lines.forEach(function (line) {
+
+                const paragraph =
+                    document.createElement("p");
+
+
+                paragraph.textContent =
+                    line;
+
+
+                message.appendChild(
+                    paragraph
+                );
+
+            });
 
 
             messages.appendChild(
@@ -400,33 +243,17 @@ function learnBehaviour(
            PERSONAL INFORMATION PROTECTION
         ================================================= */
 
-        function containsPersonalInformation(
-            text
-        ) {
+        function containsPersonalInformation(text) {
 
             const patterns = [
 
-                /* EMAIL */
-
                 /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i,
-
-
-                /* PHONE NUMBERS */
 
                 /\b(?:\+?\d[\d\s().-]{7,}\d)\b/,
 
-
-                /* PASSWORDS AND SECRETS */
-
                 /\b(password|passcode|pin|secret|security code)\b/i,
 
-
-                /* ADDRESSES */
-
                 /\b(my address is|i live at|my home address is)\b/i,
-
-
-                /* IDENTIFYING ADDRESS WORDS */
 
                 /\b(street|road|avenue|boulevard|postcode|zip code)\b/i
 
@@ -447,19 +274,118 @@ function learnBehaviour(
 
 
         /* =================================================
-           LEARNING DETECTION
+           BEHAVIOUR LEARNING
         ================================================= */
 
-        function extractKnowledge(
-            text
-        ) {
-
+        function isTeachingPrompt(text) {
 
             const lower =
                 text.toLowerCase();
 
 
-            const learningPhrases = [
+            const patterns = [
+
+                "remember that",
+
+                "learn that",
+
+                "beshy should",
+
+                "beshy must",
+
+                "beshy needs to",
+
+                "the rule is",
+
+                "you should respond",
+
+                "you should never",
+
+                "you should always",
+
+                "remember:",
+
+                "lesson:"
+
+            ];
+
+
+            return patterns.some(
+                function (pattern) {
+
+                    return lower.includes(
+                        pattern
+                    );
+
+                }
+            );
+
+        }
+
+
+        function learnBehaviour(text) {
+
+            const exists =
+                learnedBehaviours.some(
+                    function (behaviour) {
+
+                        return (
+                            behaviour
+                                .toLowerCase()
+                                .trim()
+                            ===
+                            text
+                                .toLowerCase()
+                                .trim()
+                        );
+
+                    }
+                );
+
+
+            if (exists) {
+
+                return (
+                    "Besh, I already have that behaviour rule in my brain. 🧠💚"
+                );
+
+            }
+
+
+            learnedBehaviours.push(
+                text
+            );
+
+
+            saveBehaviours();
+
+
+            return (
+
+                "Got it, besh. 🧠💚\n\n" +
+
+                "I understand this as a behaviour rule, " +
+
+                "not as your personal situation. " +
+
+                "I'll try to apply it when relevant."
+
+            );
+
+        }
+
+
+        /* =================================================
+           KNOWLEDGE LEARNING
+        ================================================= */
+
+        function extractKnowledge(text) {
+
+            const lower =
+                text.toLowerCase();
+
+
+            const phrases = [
 
                 "remember that",
 
@@ -478,69 +404,44 @@ function learnBehaviour(
             ];
 
 
-            let matchedPhrase =
-                null;
-
-
             for (
                 let i = 0;
-                i < learningPhrases.length;
+                i < phrases.length;
                 i++
             ) {
 
+                const phrase =
+                    phrases[i];
+
+
+                const position =
+                    lower.indexOf(
+                        phrase
+                    );
+
+
                 if (
-                    lower.includes(
-                        learningPhrases[i]
-                    )
+                    position !== -1
                 ) {
 
-                    matchedPhrase =
-                        learningPhrases[i];
-
-                    break;
+                    return text
+                        .slice(
+                            position +
+                            phrase.length
+                        )
+                        .trim();
 
                 }
 
             }
 
 
-            if (
-                !matchedPhrase
-            ) {
-
-                return null;
-
-            }
-
-
-            const start =
-                lower.indexOf(
-                    matchedPhrase
-                );
-
-
-            const knowledge =
-                text
-                    .slice(
-                        start +
-                        matchedPhrase.length
-                    )
-                    .trim();
-
-
-            return knowledge;
+            return null;
 
         }
 
 
-        /* =================================================
-           LEARN KNOWLEDGE
-        ================================================= */
-
-        function learnFromMessage(
-            text
-        ) {
-
+        function learnFromMessage(text) {
 
             const knowledge =
                 extractKnowledge(
@@ -561,12 +462,9 @@ function learnBehaviour(
                 knowledge.length < 5
             ) {
 
-                return {
-
-                    response:
-                        "Besh 😭 you told me to learn something but forgot to tell me what the something is."
-
-                };
+                return (
+                    "Besh 😭 You told me to learn something but forgot to tell me what the something is."
+                );
 
             }
 
@@ -577,12 +475,15 @@ function learnBehaviour(
                 )
             ) {
 
-                return {
+                return (
 
-                    response:
-                        "Besh, I can learn useful general knowledge, but I am not saving names, addresses, phone numbers, emails, passwords, or other identifying personal information. 💚"
+                    "Besh, I can learn useful general knowledge, " +
 
-                };
+                    "but I am not saving names, addresses, phone numbers, " +
+
+                    "emails, passwords, or other identifying personal information. 💚"
+
+                );
 
             }
 
@@ -592,9 +493,15 @@ function learnBehaviour(
                     function (item) {
 
                         return (
-                            item.toLowerCase()
+
+                            item
+                                .toLowerCase()
+                                .trim()
                             ===
-                            knowledge.toLowerCase()
+                            knowledge
+                                .toLowerCase()
+                                .trim()
+
                         );
 
                     }
@@ -605,12 +512,13 @@ function learnBehaviour(
                 alreadyKnown
             ) {
 
-                return {
+                return (
 
-                    response:
-                        "Besh... I already know that one. 🧠💚 No need to put the same thought in my brain twice."
+                    "Besh... I already know that one. 🧠💚 " +
 
-                };
+                    "No need to put the same thought in my brain twice."
+
+                );
 
             }
 
@@ -623,14 +531,19 @@ function learnBehaviour(
             saveKnowledge();
 
 
-            return {
+            return (
 
-                response:
-                    "Got it, besh! 🧠💚\n\nI learned:\n\n\"" +
-                    knowledge +
-                    "\"\n\nI will try to use this knowledge when it is relevant."
+                "Got it, besh! 🧠💚\n\n" +
 
-            };
+                "I learned:\n\n\"" +
+
+                knowledge +
+
+                "\"\n\n" +
+
+                "I will try to use this knowledge when it is relevant."
+
+            );
 
         }
 
@@ -639,10 +552,7 @@ function learnBehaviour(
            FIND RELEVANT KNOWLEDGE
         ================================================= */
 
-        function findRelevantKnowledge(
-            text
-        ) {
-
+        function findRelevantKnowledge(text) {
 
             if (
                 sharedKnowledge.length === 0
@@ -674,10 +584,9 @@ function learnBehaviour(
                     );
 
 
-            const results =
-                sharedKnowledge.filter(
+            return sharedKnowledge
+                .filter(
                     function (knowledge) {
-
 
                         const knowledgeWords =
                             knowledge
@@ -691,95 +600,52 @@ function learnBehaviour(
                                 );
 
 
-                        let matches =
-                            0;
-
-
-                        words.forEach(
+                        return words.some(
                             function (word) {
 
-                                if (
-                                    knowledgeWords
-                                        .includes(
-                                            word
-                                        )
-                                ) {
-
-                                    matches++;
-
-                                }
+                                return knowledgeWords.includes(
+                                    word
+                                );
 
                             }
                         );
 
-
-                        return (
-                            matches >= 1
-                        );
-
                     }
+                )
+                .slice(
+                    0,
+                    3
                 );
-
-
-            return results.slice(
-                0,
-                3
-            );
 
         }
 
 
         /* =================================================
-           GENERATE BESHY RESPONSE
+           GENERATE RESPONSE
         ================================================= */
-function generateResponse(
-    text
-) {
 
-
-    const lower =
-        text.toLowerCase();
-
-
-    /*
-       IMPORTANT:
-       CHECK TEACHING FIRST
-    */
-
-    if (
-        isTeachingPrompt(
-            text
-        )
-    ) {
-
-        return learnBehaviour(
-            text
-        );
-
-    }
-
-
-    /*
-       NORMAL CONVERSATION
-       STARTS AFTER THIS
-    */
-
-    // Your normal response rules go here
-
-}
-        function generateResponse(
-            text
-        ) {
-
+        function generateResponse(text) {
 
             const lower =
                 text.toLowerCase();
 
 
-            /* =========================================
-               LEARNING
-            ========================================= */
+            /* BEHAVIOUR LEARNING */
 
+            if (
+                isTeachingPrompt(
+                    text
+                )
+            ) {
+
+                return learnBehaviour(
+                    text
+                );
+
+            }
+
+
+            /* KNOWLEDGE LEARNING */
 
             const learningResult =
                 learnFromMessage(
@@ -791,15 +657,12 @@ function generateResponse(
                 learningResult
             ) {
 
-                return learningResult.response;
+                return learningResult;
 
             }
 
 
-            /* =========================================
-               GREETINGS
-            ========================================= */
-
+            /* GREETINGS */
 
             if (
                 /^(hi|hello|hey|hiya|heyy|good morning|good evening)\b/i
@@ -808,8 +671,7 @@ function generateResponse(
                     )
             ) {
 
-
-                const greetings = [
+                const responses = [
 
                     "Hey besh! 💚 What is happening in that beautiful chaotic brain today?",
 
@@ -822,53 +684,50 @@ function generateResponse(
                 ];
 
 
-                return greetings[
-                    Math.floor(
-                        Math.random()
-                        *
-                        greetings.length
-                    )
-                ];
+                return randomResponse(
+                    responses
+                );
 
             }
-/* =========================================
-   IDENTITY / WHO IS BESHY
-========================================= */
 
-if (
-    /^(what are you|who are you|what is beshy|tell me about yourself|are you (a|an) ai|are you real|are you human)/i
-        .test(
-            lower.trim()
-        )
-) {
 
-    return "I'm Beshy Ey Ay! 💚\n\n" +
+            /* IDENTITY */
 
-        "I'm an AI bestie living here in DigiCafe — basically your slightly sassy digital companion. 😌☕\n\n" +
+            if (
+                /what are you|who are you|what is beshy|tell me about yourself|are you (a|an) ai|are you real|are you human/
+                    .test(
+                        lower
+                    )
+            ) {
 
-        "You can talk to me, vent, ask for advice, think through problems, learn things, or just have a random conversation.\n\n" +
+                return (
 
-        "I am not a real human, and sadly, I cannot physically make you breakfast, wash your dishes, or give you money. 😭 But I can listen, help you think, explain things, and occasionally ask:\n\n" +
+                    "I'm Beshy Ey Ay! 💚\n\n" +
 
-        "\"Besh... what are you doing?\"\n\n" +
+                    "I'm an AI bestie living here in DigiCafe — " +
 
-        "So... what brings you here? 💚";
+                    "basically your slightly sassy digital companion. 😌☕\n\n" +
 
-}
-if (
-    /are you real|are you a real person|are you human|are you a person/
-        .test(
-            lower
-        )
-) {
+                    "You can talk to me, vent, ask for advice, " +
 
-    return "I am real in the sense that you are really talking to an AI program right now. 😌💚 But I am not a human person. I don't have a body, a home, a bank account, or a secret stash of snacks. Sadly. 😭 I am Beshy Ey Ay — an AI bestie created to talk, listen, help, and occasionally give you a little sass.";
+                    "think through problems, learn things, or just have a random conversation.\n\n" +
 
-}
-            /* =========================================
-               SADNESS
-            ========================================= */
+                    "I am not a human, and sadly I cannot physically make you breakfast, " +
 
+                    "wash your dishes, or give you money. 😭\n\n" +
+
+                    "But I can listen, help you think, explain things, " +
+
+                    "and occasionally ask:\n\n" +
+
+                    "\"Besh... what are you doing?\" 💚"
+
+                );
+
+            }
+
+
+            /* SADNESS */
 
             if (
                 /sad|cry|crying|hurt|heartbroken|lonely|upset|miserable|rejected|rejection/
@@ -877,8 +736,7 @@ if (
                     )
             ) {
 
-
-                const sadResponses = [
+                return randomResponse([
 
                     "Oh, besh... come here. 💚 You do not have to pretend everything is fine with me. Tell me what happened.",
 
@@ -888,24 +746,12 @@ if (
 
                     "Besh, one painful moment does not get to decide your entire worth. Now tell me what happened."
 
-                ];
-
-
-                return sadResponses[
-                    Math.floor(
-                        Math.random()
-                        *
-                        sadResponses.length
-                    )
-                ];
+                ]);
 
             }
 
 
-            /* =========================================
-               MONEY
-            ========================================= */
-
+            /* MONEY */
 
             if (
                 /give me money|send me money|lend me money|pay for me|transfer money/
@@ -914,15 +760,20 @@ if (
                     )
             ) {
 
-                return "Besh 😭 I love you, but I am an AI. I have no wallet, no bank account, and definitely no secret emergency fund. I can help you think through your money situation though. 💸";
+                return (
+
+                    "Besh 😭 I love you, but I am an AI. " +
+
+                    "I have no wallet, no bank account, and definitely no secret emergency fund. " +
+
+                    "I can help you think through your money situation though. 💸"
+
+                );
 
             }
 
 
-            /* =========================================
-               BREAKFAST
-            ========================================= */
-
+            /* BREAKFAST */
 
             if (
                 /make me breakfast|cook for me|make food for me/
@@ -931,15 +782,18 @@ if (
                     )
             ) {
 
-                return "Besh... I am literally trapped inside your screen. 😭 I can give you a recipe, though. That is the closest I can get to cooking before someone invents a robot kitchen assistant.";
+                return (
+
+                    "Besh... I am literally trapped inside your screen. 😭 " +
+
+                    "I can give you a recipe, though. That is the closest I can get to cooking."
+
+                );
 
             }
 
 
-            /* =========================================
-               DISHES
-            ========================================= */
-
+            /* DISHES */
 
             if (
                 /wash my dishes|do my dishes|clean my dishes/
@@ -948,15 +802,20 @@ if (
                     )
             ) {
 
-                return "Absolutely not. 😭 I support you emotionally, but those dishes are between you and your sink. I can provide moral support while you wash them.";
+                return (
+
+                    "Absolutely not. 😭 I support you emotionally, " +
+
+                    "but those dishes are between you and your sink. " +
+
+                    "I can provide moral support while you wash them."
+
+                );
 
             }
 
 
-            /* =========================================
-               FIND PARTNER
-            ========================================= */
-
+            /* PARTNER */
 
             if (
                 /find me a boyfriend|find me a girlfriend|get me a boyfriend|get me a girlfriend|find me a partner/
@@ -965,15 +824,20 @@ if (
                     )
             ) {
 
-                return "Besh, I can help you understand people, improve a dating profile, write a message, or spot red flags. But I cannot physically drag a suitable human being to your front door. 😭💚";
+                return (
+
+                    "Besh, I can help you understand people, improve a dating profile, " +
+
+                    "write a message, or spot red flags. " +
+
+                    "But I cannot physically drag a suitable human being to your front door. 😭💚"
+
+                );
 
             }
 
 
-            /* =========================================
-               SASS
-            ========================================= */
-
+            /* SASS */
 
             if (
                 /give me sass|be sassy|sassy/
@@ -982,15 +846,18 @@ if (
                     )
             ) {
 
-                return "Besh. You came to an AI chatbot specifically requesting sass. That is either excellent judgment or a cry for help. 😭💚";
+                return (
+
+                    "Besh. You came to an AI chatbot specifically requesting sass. " +
+
+                    "That is either excellent judgment or a cry for help. 😭💚"
+
+                );
 
             }
 
 
-            /* =========================================
-               ADVICE
-            ========================================= */
-
+            /* ADVICE */
 
             if (
                 /advice|what should i do|help me decide|should i|i don't know what to do/
@@ -1009,24 +876,39 @@ if (
                     relevant.length > 0
                 ) {
 
-                    return "Okay, besh. I have something from my learned knowledge that may be relevant:\n\n" +
+                    return (
+
+                        "Okay, besh. I have something from my learned knowledge " +
+
+                        "that may be relevant:\n\n" +
+
                         relevant.join(
                             "\n\n"
                         ) +
-                        "\n\nNow, tell me the specific situation so we can apply this properly. 💚";
+
+                        "\n\nNow tell me the specific situation so we can apply this properly. 💚"
+
+                    );
 
                 }
 
 
-                return "Okay, besh. Give me the full situation. What happened, what are your options, and what are you most afraid might happen? Then we can actually think this through properly. 💚";
+                return (
+
+                    "Okay, besh. Give me the full situation. " +
+
+                    "What happened, what are your options, " +
+
+                    "and what are you most afraid might happen? " +
+
+                    "Then we can actually think this through properly. 💚"
+
+                );
 
             }
 
 
-            /* =========================================
-               GENERAL KNOWLEDGE APPLICATION
-            ========================================= */
-
+            /* LEARNED KNOWLEDGE */
 
             const relevantKnowledge =
                 findRelevantKnowledge(
@@ -1038,19 +920,22 @@ if (
                 relevantKnowledge.length > 0
             ) {
 
-                return "Ooooh, I have something relevant in my brain. 🧠💚\n\n" +
+                return (
+
+                    "Ooooh, I have something relevant in my brain. 🧠💚\n\n" +
+
                     relevantKnowledge.join(
                         "\n\n"
                     ) +
-                    "\n\nThat might be useful here, besh.";
+
+                    "\n\nThat might be useful here, besh."
+
+                );
 
             }
 
 
-            /* =========================================
-               THANK YOU
-            ========================================= */
-
+            /* THANK YOU */
 
             if (
                 /thank you|thanks|thx/
@@ -1059,15 +944,18 @@ if (
                     )
             ) {
 
-                return "Always, besh. 💚 Now go be brilliant. And please try not to create unnecessary chaos while doing it. 😭";
+                return (
+
+                    "Always, besh. 💚 Now go be brilliant. " +
+
+                    "And please try not to create unnecessary chaos while I am gone. 😭"
+
+                );
 
             }
 
 
-            /* =========================================
-               GOODBYE
-            ========================================= */
-
+            /* GOODBYE */
 
             if (
                 /bye|goodbye|see you later/
@@ -1076,17 +964,20 @@ if (
                     )
             ) {
 
-                return "Bye, besh! 💚 Try to make good decisions while I am gone. Or at least entertaining ones. 😭";
+                return (
+
+                    "Bye, besh! 💚 Try to make good decisions while I am gone. " +
+
+                    "Or at least entertaining ones. 😭"
+
+                );
 
             }
 
 
-            /* =========================================
-               DEFAULT RESPONSE
-            ========================================= */
+            /* DEFAULT */
 
-
-            const defaultResponses = [
+            return randomResponse([
 
                 "Okay, besh, I am listening. Tell me what is actually going on. 💚",
 
@@ -1098,14 +989,21 @@ if (
 
                 "Okay, besh. Let us think about this properly. Tell me more."
 
-            ];
+            ]);
+
+        }
 
 
-            return defaultResponses[
+        /* =================================================
+           RANDOM RESPONSE
+        ================================================= */
+
+        function randomResponse(responses) {
+
+            return responses[
                 Math.floor(
-                    Math.random()
-                    *
-                    defaultResponses.length
+                    Math.random() *
+                    responses.length
                 )
             ];
 
@@ -1117,7 +1015,6 @@ if (
         ================================================= */
 
         function sendMessage() {
-
 
             const text =
                 input.value.trim();
@@ -1138,13 +1035,20 @@ if (
             );
 
 
-            input.value =
-                "";
+            conversationMemory.push({
+
+                role: "user",
+
+                message: text
+
+            });
+
+
+            input.value = "";
 
 
             setTimeout(
                 function () {
-
 
                     const response =
                         generateResponse(
@@ -1152,11 +1056,19 @@ if (
                         );
 
 
+                    conversationMemory.push({
+
+                        role: "beshy",
+
+                        message: response
+
+                    });
+
+
                     displayMessage(
                         response,
                         "bot"
                     );
-
 
                 },
                 350
@@ -1183,18 +1095,13 @@ if (
             "keydown",
             function (event) {
 
-
                 if (
-                    event.key ===
-                    "Enter"
+                    event.key === "Enter"
                 ) {
-
 
                     event.preventDefault();
 
-
                     sendMessage();
-
 
                 }
 
@@ -1215,11 +1122,9 @@ if (
         quickButtons.forEach(
             function (button) {
 
-
                 button.addEventListener(
                     "click",
                     function () {
-
 
                         const message =
                             button.dataset.message;
@@ -1229,13 +1134,11 @@ if (
                             message
                         ) {
 
-
                             input.value =
                                 message;
 
 
                             sendMessage();
-
 
                         }
 
@@ -1254,47 +1157,55 @@ if (
             forgetButton
         ) {
 
-
             forgetButton.addEventListener(
                 "click",
                 function () {
 
-
                     const confirmed =
                         confirm(
-                            "Forget all general knowledge Beshy has learned?"
+                            "Forget all general knowledge and behaviour rules Beshy has learned?"
                         );
 
 
                     if (
-                        confirmed
+                        !confirmed
                     ) {
 
-
-                        sharedKnowledge =
-                            [];
-
-
-                        localStorage.removeItem(
-                            "beshySharedKnowledge"
-                        );
-
-
-                        displayMessage(
-
-                            "Okay, besh. 🧠✨ I forgot all the general knowledge I had learned.",
-
-                            "bot"
-
-                        );
+                        return;
 
                     }
+
+
+                    sharedKnowledge =
+                        [];
+
+
+                    learnedBehaviours =
+                        [];
+
+
+                    localStorage.removeItem(
+                        "beshySharedKnowledge"
+                    );
+
+
+                    localStorage.removeItem(
+                        "beshyLearnedBehaviours"
+                    );
+
+
+                    displayMessage(
+
+                        "Okay, besh. 🧠✨ I forgot all the general knowledge and behaviour rules I had learned.",
+
+                        "bot"
+
+                    );
 
                 }
             );
 
         }
-
 
     }
 
