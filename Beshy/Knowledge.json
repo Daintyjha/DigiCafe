@@ -1,5 +1,14 @@
 [
-    "DigiCafe is a digital cafe where visitors can listen to music, read novels, or chat with Beshy.",
-    "Beshy is a friendly AI bestie who keeps visitors company.",
-    "Visitors can relax, explore stories, or simply have conversations in DigiCafe."
+    {
+        "topic": "DigiCafe",
+        "information": "DigiCafe is a digital cafe where visitors can listen to music, read novels, or chat with Beshy."
+    },
+    {
+        "topic": "Beshy",
+        "information": "Beshy Ey Ay is DigiCafe's AI bestie and digital companion."
+    },
+    {
+        "topic": "Chat",
+        "information": "Visitors can talk with Beshy when they want company, advice, or casual conversation."
+    }
 ]
