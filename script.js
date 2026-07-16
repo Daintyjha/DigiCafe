@@ -1,92 +1,36 @@
-// =============================
-// COMPONENT LOADER (NAV + FOOTER)
-// =============================
-
-document.addEventListener("DOMContentLoaded", async () => {
-
-  async function loadComponent(id, file) {
-    const res = await fetch(file);
-    const html = await res.text();
-    document.getElementById(id).innerHTML = html;
-  }
-
-  // Load components first
-  await loadComponent("navbar", "navbar.html");
-  await loadComponent("footer", "footer.html");
-
-  // Initialize after injection
-  initNavbar();
-  highlightActiveLink();
+document.addEventListener("DOMContentLoaded",async()=>{
+async function loadComponent(id,file){
+const element=document.getElementById(id);
+if(!element)return;
+const response=await fetch(file);
+element.innerHTML=await response.text();
+}
+await loadComponent("navbar","navbar.html");
+await loadComponent("footer","footer.html");
+initNavbar();
+highlightActiveLink();
 });
 
-
-// =============================
-// NAVBAR FUNCTIONALITY
-// =============================
-document.addEventListener("DOMContentLoaded", async () => {
-
-  const navHTML = await fetch("navbar.html").then(r => r.text());
-  document.getElementById("navbar").innerHTML = navHTML;
-
-  const footerHTML = await fetch("footer.html").then(r => r.text());
-  document.getElementById("footer").innerHTML = footerHTML;
-
-  initNavbar(); // MUST run AFTER injection
+function initNavbar(){
+const mobileMenu=document.getElementById("mobile-menu");
+const navMenu=document.querySelector(".navbar__menu");
+if(!mobileMenu||!navMenu)return;
+mobileMenu.addEventListener("click",()=>{
+navMenu.classList.toggle("active");
+mobileMenu.classList.toggle("is-active");
 });
-function initNavbar() {
-
-  const mobileMenu = document.getElementById("mobile-menu");
-  const navMenu = document.querySelector(".navbar__menu");
-
-  if (!mobileMenu || !navMenu) {
-    console.log("Navbar elements not found");
-    return;
-  }
-
-  console.log("Navbar initialized");
-
-  mobileMenu.addEventListener("click", () => {
-    navMenu.classList.toggle("active");
-    mobileMenu.classList.toggle("is-active");
-  });
-
-  document.querySelectorAll(".navbar__menu a").forEach(link => {
-    link.addEventListener("click", () => {
-      navMenu.classList.remove("active");
-      mobileMenu.classList.remove("is-active");
-    });
-  });
+document.querySelectorAll(".navbar__menu a").forEach(link=>{
+link.addEventListener("click",()=>{
+navMenu.classList.remove("active");
+mobileMenu.classList.remove("is-active");
+});
+});
 }
 
-// =============================
-// ACTIVE LINK HIGHLIGHT
-// =============================
-function highlightActiveLink() {
-
-  const currentPage = window.location.pathname.split("/").pop();
-
-  document.querySelectorAll(".navbar__links").forEach(link => {
-    const href = link.getAttribute("href");
-
-    if (href === currentPage) {
-      link.classList.add("active");
-    }
-  });
-}
-document.addEventListener("DOMContentLoaded", async () => {
-
-  try {
-    const nav = await fetch("navbar.html");
-    document.getElementById("navbar").innerHTML = await nav.text();
-
-    const foot = await fetch("footer.html");
-    document.getElementById("footer").innerHTML = await foot.text();
-
-    initNavbar();
-    highlightActiveLink();
-
-  } catch (err) {
-    console.error("Navbar/Footer failed to load:", err);
-  }
-
+function highlightActiveLink(){
+const currentPage=window.location.pathname.split("/").pop()||"index.html";
+document.querySelectorAll(".navbar__links").forEach(link=>{
+const href=link.getAttribute("href");
+if(href===currentPage)link.classList.add("active");
 });
+}
