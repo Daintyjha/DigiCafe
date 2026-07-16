@@ -85,13 +85,42 @@ document.addEventListener("DOMContentLoaded", function () {
         /* =================================================
            MEMORY
         ================================================= */
+let sharedKnowledge = [];
 
-        let sharedKnowledge =
-            JSON.parse(
-                localStorage.getItem(
-                    "beshySharedKnowledge"
-                )
-            ) || [];
+
+async function loadSharedKnowledge(){
+
+    try {
+
+        const response =
+            await fetch(
+                "Beshy/Knowledge.json"
+            );
+
+
+        sharedKnowledge =
+            await response.json();
+
+
+        console.log(
+            "🧠 Beshy's shared brain loaded:",
+            sharedKnowledge
+        );
+
+
+    } catch(error){
+
+        console.error(
+            "❌ Could not load Beshy's knowledge:",
+            error
+        );
+
+    }
+
+}
+
+
+loadSharedKnowledge();
 
 
         let learnedBehaviours =
