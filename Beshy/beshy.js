@@ -4,7 +4,7 @@
 ===================================================== */
 
 document.addEventListener("DOMContentLoaded", function () {
-
+fetch("Beshy/beshy.html")
     const container = document.getElementById("beshy-container");
 
     if (!container) {
