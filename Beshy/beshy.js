@@ -1239,3 +1239,6 @@ loadSharedKnowledge();
     }
 
 });
+import { db } from "./firebase.js";
+
+console.log("☕ Beshy Firebase connected!", db);
