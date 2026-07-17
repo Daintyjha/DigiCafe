@@ -499,19 +499,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   /* =====================================================
      CATEGORY FILTER
   ===================================================== */
-
-  window.loadCategory =
+window.loadCategory =
     function (
       category
     ) {
 
-
       const result =
-        musicLibrary.filter(
-          song =>
-            song.category ===
-            category
-        );
+        category === "All"
+          ? musicLibrary
+          : musicLibrary.filter(
+              song =>
+                song.category ===
+                category
+            );
 
 
       const title =
@@ -523,7 +523,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (title) {
 
         title.textContent =
-          category;
+          category === "All"
+            ? "All Music"
+            : category;
 
       }
 
@@ -533,8 +535,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
 
     };
-
-
   /* =====================================================
      PLAY SONG
   ===================================================== */
