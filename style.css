@@ -858,9 +858,10 @@ strong{
 
 }
  /* =====================================================
-    BESHY EY AY
-    AI BESTIE CHATBOT
- ===================================================== */
+   BESHY EY AY
+   AI BESTIE CHATBOT
+===================================================== */
+
 
 /* FLOATING BUTTON */
 
@@ -896,32 +897,31 @@ strong{
    CHAT WINDOW
 ===================================================== */
 
-
 .beshy-chat {
 
     position: fixed;
 
-    right: 20px;
+    right:20px;
 
-    bottom: 90px;
-
-
-    width: 340px;
-
-    max-height: 520px;
+    bottom:90px;
 
 
-    display: none;
+    width:340px;
 
-    flex-direction: column;
-
-
-    background: white;
-
-    border-radius: 18px;
+    height:480px;
 
 
-    overflow: hidden;
+    display:none;
+
+    flex-direction:column;
+
+
+    background:white;
+
+    border-radius:18px;
+
+
+    overflow:hidden;
 
 
     box-shadow:
@@ -930,8 +930,8 @@ strong{
 
     z-index:999998;
 
-
 }
+
 
 
 .beshy-chat.open {
@@ -942,6 +942,7 @@ strong{
 
 
 
+
 /* =====================================================
    HEADER
 ===================================================== */
@@ -949,6 +950,7 @@ strong{
 
 .beshy-header {
 
+    flex-shrink:0;
 
     display:flex;
 
@@ -962,13 +964,11 @@ strong{
 
     background:#dff7e8;
 
-
 }
 
 
 
 .beshy-identity {
-
 
     display:flex;
 
@@ -1010,7 +1010,6 @@ strong{
 
 .beshy-close {
 
-
     border:none;
 
     background:none;
@@ -1018,7 +1017,6 @@ strong{
     font-size:25px;
 
     cursor:pointer;
-
 
 }
 
@@ -1033,24 +1031,21 @@ strong{
 
 .beshy-messages {
 
-
     flex:1;
-
 
     padding:10px;
 
-
     overflow-y:auto;
-
-
-    max-height:260px;
-
 
 }
 
 
 
 .beshy-message {
+
+    width:max-content;
+
+    max-width:80%;
 
 
     margin-bottom:8px;
@@ -1063,7 +1058,6 @@ strong{
 
     font-size:14px;
 
-
 }
 
 
@@ -1072,17 +1066,17 @@ strong{
 
     background:#f1f1f1;
 
+    align-self:flex-start;
+
 }
 
 
 
 .beshy-message.user {
 
-
     background:#dff7e8;
 
-    text-align:right;
-
+    margin-left:auto;
 
 }
 
@@ -1097,18 +1091,16 @@ strong{
 
 .beshy-options {
 
+    flex-shrink:0;
 
     display:flex;
 
-
     gap:5px;
-
 
     padding:6px;
 
 
     overflow-x:auto;
-
 
 }
 
@@ -1116,9 +1108,7 @@ strong{
 
 .beshy-options button {
 
-
     border:none;
-
 
     background:#f5f5f5;
 
@@ -1137,7 +1127,6 @@ strong{
 
     font-size:12px;
 
-
 }
 
 
@@ -1150,6 +1139,11 @@ strong{
 
 
 .beshy-input-area {
+
+    position:relative;
+
+
+    flex-shrink:0;
 
 
     display:flex;
@@ -1167,12 +1161,13 @@ strong{
     border-top:1px solid #ddd;
 
 
+    background:white;
+
 }
 
 
 
 .beshy-input-area input {
-
 
     flex:1;
 
@@ -1188,14 +1183,12 @@ strong{
 
     outline:none;
 
-
 }
 
 
 
 
 .beshy-input-area button {
-
 
     border:none;
 
@@ -1207,7 +1200,6 @@ strong{
 
 
     font-size:20px;
-
 
 }
 
@@ -1235,6 +1227,9 @@ strong{
     left:10px;
 
 
+    right:10px;
+
+
     background:white;
 
 
@@ -1244,7 +1239,8 @@ strong{
     border-radius:12px;
 
 
-    box-shadow:0 5px 20px rgba(0,0,0,.2);
+    box-shadow:
+    0 5px 20px rgba(0,0,0,.2);
 
 
     grid-template-columns:repeat(6,1fr);
@@ -1253,15 +1249,15 @@ strong{
     gap:5px;
 
 
+    z-index:10;
+
 }
 
 
 
 .beshy-emoji-panel.open {
 
-
     display:grid;
-
 
 }
 
@@ -1269,22 +1265,31 @@ strong{
 
 .beshy-emoji-panel button {
 
-
     border:none;
+
 
     background:none;
 
+
     font-size:20px;
+
 
     cursor:pointer;
 
-
 }
+
+
+
+
 
 /* =====================================================
    MEMORY
 ===================================================== */
+
+
 .beshy-memory-controls {
+
+    flex-shrink:0;
 
     text-align:center;
 
@@ -1296,17 +1301,18 @@ strong{
 
 .beshy-memory-controls button {
 
-
     border:none;
+
 
     background:none;
 
+
     color:#777;
+
 
     cursor:pointer;
 
+
     font-size:12px;
 
-
-}
 }
