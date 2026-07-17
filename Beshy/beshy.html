@@ -1,13 +1,9 @@
-<!-- =====================================================
-     BESHY EY AY
-     AI BESTIE CHATBOT
-===================================================== -->
 
 <button
     id="beshyToggle"
     class="beshy-toggle"
     type="button"
-    aria-label="Open Beshy Ey Ay"
+    aria-label="Open Beshy"
     aria-controls="beshyChat"
     aria-expanded="false">
 
@@ -16,184 +12,69 @@
 </button>
 
 
+
+
+
+<!-- CHAT WINDOW -->
+
 <div
     id="beshyChat"
     class="beshy-chat"
     role="dialog"
-    aria-label="Beshy Ey Ay AI Bestie"
+    aria-label="Beshy Digital Cafe Friend"
     aria-hidden="true">
 
 
-    <!-- =================================================
-         HEADER
-    ================================================== -->
-
-    <header class="beshy-header">
 
 
-        <div class="beshy-identity">
+
+<!-- HEADER -->
+
+<header class="beshy-header">
 
 
-            <div
-                class="beshy-avatar"
-                aria-hidden="true">
-
-                💚
-
-            </div>
+    <div class="beshy-identity">
 
 
-            <div>
+        <div
+            class="beshy-avatar">
 
-                <h3>
-
-                    Beshy Ey Ay
-
-                </h3>
-
-
-            </div>
-
+            💚
 
         </div>
 
 
-        <button
-            id="beshyClose"
-            class="beshy-close"
-            type="button"
-            aria-label="Close Beshy">
+        <div class="beshy-title">
 
-            ×
-
-        </button>
+            <h3>
+                Beshy Ey Ay
+            </h3>
 
 
-    </header>
-
-
-    <!-- =================================================
-         CHAT AREA
-    ================================================== -->
-
-    <main
-        id="beshyMessages"
-        class="beshy-messages"
-        aria-live="polite">
-
-
-        <!-- INITIAL MESSAGE -->
-
-        <div class="beshy-message bot">
-
-
-                <strong>
-
-                    "Besh...?" 
-
-                </strong>
-
+            <p>
+                ☕ Your DigiCafe Friend
             </p>
 
-
-
         </div>
-
-
-        <!-- =================================================
-             QUICK PROMPTS
-        ================================================== -->
-
-        <div class="beshy-options">
-
-
-            <button
-                type="button"
-                data-message="I just want someone to listen.">
-
-                💬 Just listen
-
-            </button>
-
-
-            <button
-                type="button"
-                data-message="I need honest advice.">
-
-                💡 Give me advice
-
-            </button>
-
-
-            <button
-                type="button"
-                data-message="Help me think through something.">
-
-                🤔 Help me think
-
-            </button>
-
-
-            <button
-                type="button"
-                data-message="I need a little sass today.">
-
-                😏 Give me sass
-
-            </button>
-
-
-        </div>
-
-
-    </main>
-
-
-    <!-- =================================================
-         INPUT AREA
-    ================================================== -->
-
-    <footer class="beshy-input-area">
-
-
-        <input
-            type="text"
-            id="beshyInput"
-            placeholder="Tell me what's on your mind..."
-            autocomplete="off"
-            aria-label="Message Beshy">
-
-
-        <button
-            id="beshySend"
-            type="button"
-            aria-label="Send message">
-
-            ➤
-
-        </button>
-
-
-    </footer>
-
-
-    <!-- =================================================
-         MEMORY CONTROLS
-    ================================================== -->
-
-    <div class="beshy-memory-controls">
-
-
-        <button
-            id="beshyForget"
-            type="button">
-
-            🧠 Forget what you remember
-
-        </button>
 
 
     </div>
 
 
-</div>
+
+    <button
+        id="beshyClose"
+        class="beshy-close"
+        type="button">
+
+        ×
+
+    </button>
+
+
+</header>
+
+
+
+
+
