@@ -44,8 +44,6 @@ Automatic Device-Adaptive Light/Dark Mode
     --beshy-user:#2b4937;
     --beshy-user-text:#eaf8ed;
 }
-```
-
 }
 
 /* =====================================================
@@ -614,8 +612,7 @@ Automatic Device-Adaptive Light/Dark Mode
 /* =====================================================
 RESET
 ===================================================== */
-
-*{
+{
 margin:0;
 padding:0;
 box-sizing:border-box;
