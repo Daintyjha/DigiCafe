@@ -10,7 +10,7 @@ from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 const firebaseConfig = {
 
-  apiKey: "YOUR_API_KEY",
+  apiKey: "AQ.Ab8RN6I3x3lYZ3MknKymhuOPPY50cRrLrYW2pD3hoAYngbn6Ug",
 
   authDomain: "digicafe-beshy.firebaseapp.com",
 
