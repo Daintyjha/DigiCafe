@@ -1316,3 +1316,209 @@ strong{
     font-size:12px;
 
 }
+/* =====================================================
+   BESHY MOBILE RESPONSIVE
+===================================================== */
+
+@media (max-width: 600px) {
+
+
+    /* Floating button */
+
+    .beshy-toggle {
+
+        width:52px;
+        height:52px;
+
+        right:15px;
+        bottom:15px;
+
+        font-size:24px;
+
+    }
+
+
+
+    /* Chat window */
+
+    .beshy-chat {
+
+        width:calc(100vw - 20px);
+
+        height:75vh;
+
+        right:10px;
+
+        bottom:80px;
+
+        border-radius:16px;
+
+    }
+
+
+
+    /* Header */
+
+    .beshy-header {
+
+        padding:10px;
+
+    }
+
+
+    .beshy-avatar {
+
+        font-size:24px;
+
+    }
+
+
+    .beshy-title h3 {
+
+        font-size:15px;
+
+    }
+
+
+    .beshy-title p {
+
+        font-size:11px;
+
+    }
+
+
+    .beshy-close {
+
+        font-size:24px;
+
+        padding:5px;
+
+    }
+
+
+
+    /* Messages */
+
+    .beshy-messages {
+
+        padding:8px;
+
+    }
+
+
+    .beshy-message {
+
+        max-width:85%;
+
+        font-size:13px;
+
+    }
+
+
+
+    /* Quick buttons */
+
+    .beshy-options {
+
+        padding:5px;
+
+        gap:4px;
+
+    }
+
+
+    .beshy-options button {
+
+        font-size:11px;
+
+        padding:5px 8px;
+
+    }
+
+
+
+    /* Input */
+
+    .beshy-input-area {
+
+        padding:6px;
+
+    }
+
+
+    .beshy-input-area input {
+
+        font-size:14px;
+
+        padding:8px;
+
+    }
+
+
+    .beshy-input-area button {
+
+        font-size:18px;
+
+    }
+    /* Emoji panel */
+
+    .beshy-emoji-panel {
+
+        bottom:55px;
+
+        left:5px;
+
+        right:5px;
+
+        grid-template-columns:repeat(5,1fr);
+
+    }
+
+
+    .beshy-emoji-panel button {
+
+        font-size:18px;
+
+    }
+
+    /* Memory button */
+
+    .beshy-memory-controls button {
+
+        font-size:11px;
+
+    }
+
+}
+
+/* =====================================================
+   VERY SMALL PHONES
+===================================================== */
+
+@media (max-width:380px) {
+
+
+    .beshy-chat {
+
+        height:80vh;
+
+        bottom:70px;
+
+    }
+
+
+    .beshy-options button {
+
+        font-size:10px;
+
+    }
+
+
+    .beshy-emoji-panel {
+
+        grid-template-columns:repeat(4,1fr);
+
+    }
+
+
+}
