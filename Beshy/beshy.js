@@ -447,7 +447,7 @@ try{
 
 const response =
 await fetch(
-    "Beshy/Knowledge.json"
+    "Knowledge.json"
 );
 
 
