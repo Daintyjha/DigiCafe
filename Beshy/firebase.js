@@ -23,7 +23,15 @@ const firebaseConfig = {
 
 };
 
+const app = initializeApp(firebaseConfig);
 
+
+// This allows Beshy to use Firestore
+export const db = getFirestore(app);
+
+
+// This allows Beshy to use Firebase Functions
+export { app };
 const app = initializeApp(firebaseConfig);
 
 
