@@ -123,8 +123,9 @@ color:var(--accent);
 }
 
 /* =====================================================
-NAVBAR
+   NAVBAR
 ===================================================== */
+
 .navbar{
     position:fixed;
     top:0;
@@ -132,20 +133,24 @@ NAVBAR
     width:100%;
     min-height:80px;
     z-index:9999;
+
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:20px;
+
     padding:16px clamp(16px,4vw,40px);
+
     background:var(--surface);
     border-bottom:1px solid var(--border);
     box-shadow:var(--soft-shadow);
     backdrop-filter:blur(12px);
 }
 
+/* LOGO */
+
 .logo{
     flex-shrink:0;
-    white-space:nowrap;
+
     font-family:Georgia,serif;
     font-size:clamp(1.15rem,2vw,1.4rem);
     font-weight:700;
@@ -153,38 +158,51 @@ NAVBAR
     color:var(--accent);
 }
 
+/* DESKTOP NAVIGATION */
+
 .navbar__menu{
     display:flex;
     align-items:center;
-    gap:clamp(15px,3vw,25px);
+    gap:clamp(15px,2.5vw,30px);
+
     list-style:none;
-    flex-shrink:0;
+    margin:0;
+    padding:0;
 }
 
 .navbar__menu li{
     list-style:none;
-    flex-shrink:0;
+    margin:0;
+    padding:0;
 }
 
 .navbar__links{
     position:relative;
     display:inline-block;
-    padding:6px 0;
+
+    padding:8px 0;
+
     color:var(--text);
     font-size:clamp(.85rem,1.2vw,1rem);
     font-weight:500;
+
     white-space:nowrap;
+
     transition:var(--transition);
 }
 
 .navbar__links::after{
     content:"";
+
     position:absolute;
     left:0;
     bottom:0;
+
     width:0;
     height:2px;
+
     background:var(--accent);
+
     transition:var(--transition);
 }
 
@@ -203,80 +221,128 @@ NAVBAR
 }
 
 /* =====================================================
-HAMBURGER MENU
+   HAMBURGER
 ===================================================== */
 
 #mobile-menu{
-display:none;
-flex-direction:column;
-justify-content:center;
-gap:5px;
-width:34px;
-height:30px;
-border:none;
-background:transparent;
-cursor:pointer;
-z-index:10000;
+    display:none;
+
+    flex-direction:column;
+    justify-content:center;
+    gap:5px;
+
+    width:34px;
+    height:30px;
+
+    padding:0;
+    border:none;
+    background:transparent;
+
+    cursor:pointer;
+    z-index:10000;
 }
 
 #mobile-menu .bar{
-width:100%;
-height:3px;
-border-radius:5px;
-background:var(--text);
-transition:var(--transition);
+    width:100%;
+    height:3px;
+
+    border-radius:5px;
+    background:var(--text);
+
+    transition:var(--transition);
 }
 
 /* =====================================================
-MOBILE NAVIGATION
+   TABLET / MOBILE NAVIGATION
 ===================================================== */
 
 @media(max-width:768px){
-body{
-    padding-top:70px;
+
+    body{
+        padding-top:70px;
+    }
+
+    .navbar{
+        min-height:70px;
+        padding:14px 16px;
+    }
+
+    #mobile-menu{
+        display:flex;
+        flex-shrink:0;
+    }
+
+    .navbar__menu{
+        display:none;
+
+        position:absolute;
+        top:100%;
+        left:10px;
+        right:10px;
+
+        width:auto;
+        max-height:calc(100vh - 85px);
+        overflow-y:auto;
+
+        padding:10px;
+
+        flex-direction:column;
+        align-items:stretch;
+        gap:4px;
+
+        background:var(--surface);
+        border:1px solid var(--border);
+        border-radius:0 0 14px 14px;
+        box-shadow:var(--shadow);
+    }
+
+    .navbar__menu.active{
+        display:flex;
+    }
+
+    .navbar__menu li{
+        width:100%;
+    }
+
+    .navbar__links{
+        display:block;
+        width:100%;
+
+        padding:11px 12px;
+
+        border-radius:8px;
+        white-space:normal;
+    }
+
+    .navbar__links:hover{
+        background:var(--card);
+    }
 }
 
-#mobile-menu{
-    display:flex;
-}
+/* =====================================================
+   SMALL PHONES
+===================================================== */
 
-.navbar{
-    min-height:70px;
-    padding:14px 16px;
-}
+@media(max-width:480px){
 
-.navbar__menu{
-    display:none;
-    position:absolute;
-    top:100%;
-    right:10px;
-    width:min(230px,calc(100vw - 20px));
-    padding:15px;
-    flex-direction:column;
-    align-items:stretch;
-    gap:8px;
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:0 0 14px 14px;
-    box-shadow:var(--shadow);
-}
+    .navbar{
+        padding:12px 14px;
+    }
 
-.navbar__menu.active{
-    display:flex;
-}
+    .logo{
+        font-size:1.1rem;
+    }
 
-.navbar__links{
-    display:block;
-    padding:10px 12px;
-    border-radius:8px;
-}
+    #mobile-menu{
+        width:30px;
+        height:28px;
+    }
 
-.navbar__links:hover{
-    background:var(--card);
+    .navbar__menu{
+        left:8px;
+        right:8px;
+    }
 }
-
-}
-
 /* =====================================================
 FOOTER
 ===================================================== */
