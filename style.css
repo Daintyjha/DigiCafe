@@ -864,78 +864,42 @@ strong{
 /* FLOATING BUTTON */
 
 .beshy-toggle {
-
     position: fixed;
-
     right: 20px;
     bottom: 20px;
-
     width: 58px;
     height: 58px;
-
     border-radius: 50%;
-
     border: none;
-
     cursor: pointer;
-
     font-size: 28px;
-
     background: white;
-
     box-shadow: 0 5px 20px rgba(0,0,0,.25);
-
-    z-index: 999999;
+     z-index: 9999;
 
 }
-
-
 
 /* =====================================================
    CHAT WINDOW
 ===================================================== */
 
 .beshy-chat {
-
     position: fixed;
-
     right:20px;
-
     bottom:90px;
-
-
     width:340px;
-
     height:480px;
-
-
     display:none;
-
     flex-direction:column;
-
-
     background:white;
-
     border-radius:18px;
-
-
     overflow:hidden;
-
-
-    box-shadow:
+   box-shadow:
     0 10px 35px rgba(0,0,0,.25);
-
-
-    z-index:999998;
-
+  z-index: 9999;
 }
-
-
-
 .beshy-chat.open {
-
     display:flex;
-
 }
 
 
@@ -944,22 +908,12 @@ strong{
 /* =====================================================
    HEADER
 ===================================================== */
-
-
 .beshy-header {
-
     flex-shrink:0;
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
-
     padding:10px 14px;
-
-
     background:#dff7e8;
 
 }
@@ -1212,54 +1166,25 @@ strong{
 
 .beshy-emoji-panel {
 
-
     display:none;
-
-
     position:absolute;
-
-
     bottom:55px;
-
-
     left:10px;
-
-
     right:10px;
-
-
     background:white;
-
-
     padding:8px;
-
-
     border-radius:12px;
-
-
     box-shadow:
     0 5px 20px rgba(0,0,0,.2);
-
-
     grid-template-columns:repeat(6,1fr);
-
-
     gap:5px;
-
-
     z-index:10;
 
 }
-
-
-
 .beshy-emoji-panel.open {
-
     display:grid;
 
 }
-
-
 
 .beshy-emoji-panel button {
 
@@ -1324,15 +1249,11 @@ strong{
     /* Floating button */
 
     .beshy-toggle {
-
         width:52px;
         height:52px;
-
         right:15px;
         bottom:15px;
-
         font-size:24px;
-
     }
 
 
@@ -1340,15 +1261,10 @@ strong{
     /* Chat window */
 
     .beshy-chat {
-
         width:calc(100vw - 20px);
-
         height:75vh;
-
         right:10px;
-
         bottom:80px;
-
         border-radius:16px;
 
     }
