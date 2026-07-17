@@ -1275,151 +1275,301 @@ strong{
 
 
 /* =====================================================
-   COLLECTIONS
+   MUSIC CATEGORY BUTTONS
 ===================================================== */
 
-.collections{
-    margin-top:35px;
+.category-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0 25px;
 }
 
+.category-buttons button {
+    padding: 9px 15px;
 
-.collection{
-    margin-bottom:18px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
 
-    overflow:hidden;
+    background: var(--card);
+    color: var(--text);
 
-    background:var(--card);
+    font-size: 14px;
+    cursor: pointer;
 
-    border:1px solid var(--border);
-
-    border-radius:var(--radius);
-
-    box-shadow:var(--soft-shadow);
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
 }
 
+.category-buttons button:hover {
+    background: var(--accent);
+    color: white;
 
-.collection-header{
-    display:flex;
-
-    align-items:center;
-    justify-content:space-between;
-
-    padding:
-        clamp(13px,2vw,20px)
-        clamp(15px,2.5vw,24px);
-
-    cursor:pointer;
-
-    font-size:clamp(1rem,1.2vw,1.2rem);
-
-    font-weight:600;
-
-    transition:var(--transition);
-}
-
-
-.collection-header:hover{
-    background:var(--surface);
-}
-
-
-.collection-header span:last-child{
-    font-size:clamp(1.1rem,1.6vw,1.5rem);
-
-    transition:var(--transition);
-}
-
-
-.collection.open
-.collection-header
-span:last-child{
-    transform:rotate(90deg);
-}
-
-
-.collection-body{
-    display:none;
-
-    border-top:1px solid var(--border);
-}
-
-
-.collection.open .collection-body{
-    display:block;
+    transform: translateY(-2px);
 }
 
 
 /* =====================================================
-   SONG ROW
+   MUSIC GRID
 ===================================================== */
 
-.song-row{
-    display:flex;
+.song-grid {
+    display: grid;
 
-    align-items:center;
-    justify-content:space-between;
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(
+                220px,
+                1fr
+            )
+        );
 
-    gap:15px;
-
-    padding:
-        12px
-        clamp(12px,2vw,22px);
-
-    border-bottom:1px solid var(--border);
+    gap: 15px;
 }
 
 
-.song-row:last-child{
-    border-bottom:none;
+/* =====================================================
+   SONG CARD
+===================================================== */
+
+.song-card {
+    padding: 18px;
+
+    border: 1px solid var(--border);
+    border-radius: 16px;
+
+    background: var(--card);
+
+    box-shadow:
+        0 5px 18px
+        rgba(0, 0, 0, 0.08);
+}
+
+.song-card h3 {
+    margin: 0 0 6px;
+
+    color: var(--text);
+
+    font-size: 16px;
+}
+
+.song-card p {
+    margin: 0 0 15px;
+
+    color: var(--text-light);
+
+    font-size: 13px;
 }
 
 
-.song-title{
-    flex:1;
+/* =====================================================
+   SONG BUTTONS
+===================================================== */
 
-    min-width:0;
+.song-buttons {
+    display: flex;
+    gap: 8px;
+}
 
-    overflow:hidden;
+.song-buttons button {
+    width: 34px;
+    height: 34px;
 
-    color:var(--text);
+    border: 1px solid var(--border);
+    border-radius: 50%;
 
-    font-size:clamp(.9rem,1.2vw,1rem);
+    background: var(--surface);
+    color: var(--text);
 
-    white-space:nowrap;
+    cursor: pointer;
 
-    text-overflow:ellipsis;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease;
+}
+
+.song-buttons button:hover {
+    background: var(--accent);
+    color: white;
 }
 
 
-.song-actions{
-    display:flex;
+/* =====================================================
+   FAVORITES
+===================================================== */
 
-    flex-shrink:0;
-
-    gap:8px;
+.active-favorite {
+    color: var(--accent) !important;
 }
 
 
-.song-actions button{
-    width:38px;
-    height:38px;
+/* =====================================================
+   QUEUE
+===================================================== */
 
-    background:var(--surface);
-
-    color:var(--text);
-
-    border:1px solid var(--border);
-
-    border-radius:50%;
-
-    transition:var(--transition);
+.active-queue {
+    color: var(--accent) !important;
 }
 
 
-.song-actions button:hover{
-    background:var(--accent);
+/* =====================================================
+   COLLECTIONS
+===================================================== */
 
-    color:var(--bg);
+.collection {
+    margin-bottom: 12px;
+
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    background: var(--card);
+}
+
+.collection-header {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 14px 16px;
+
+    cursor: pointer;
+
+    color: var(--text);
+
+    font-weight: 600;
+}
+
+.collection-header:hover {
+    background: var(--surface);
+}
+
+.collection-body {
+    display: none;
+
+    border-top: 1px solid var(--border);
+}
+
+.collection.open
+.collection-body {
+    display: block;
+}
+
+
+/* =====================================================
+   COLLECTION SONG ROW
+===================================================== */
+
+.song-row {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 10px 14px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.song-row:last-child {
+    border-bottom: none;
+}
+
+.song-title {
+    flex: 1;
+
+    color: var(--text);
+
+    font-size: 14px;
+}
+
+.song-actions {
+    display: flex;
+
+    gap: 6px;
+}
+
+.song-actions button {
+    width: 30px;
+    height: 30px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: var(--surface);
+    color: var(--text);
+
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .category-buttons {
+        gap: 6px;
+    }
+
+    .category-buttons button {
+        padding: 7px 11px;
+
+        font-size: 12px;
+    }
+
+    .song-grid {
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(
+                    0,
+                    1fr
+                )
+            );
+
+        gap: 10px;
+    }
+
+    .song-card {
+        padding: 12px;
+    }
+
+    .song-card h3 {
+        font-size: 14px;
+    }
+
+    .song-card p {
+        font-size: 11px;
+    }
+
+    .song-buttons {
+        gap: 5px;
+    }
+
+    .song-buttons button {
+        width: 30px;
+        height: 30px;
+
+        font-size: 12px;
+    }
+
+    .song-row {
+        padding: 9px 10px;
+    }
+
+    .song-title {
+        font-size: 12px;
+    }
+
 }
 /* =====================================================
    MUSIC PLAYER
