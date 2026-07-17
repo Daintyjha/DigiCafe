@@ -125,76 +125,81 @@ color:var(--accent);
 /* =====================================================
 NAVBAR
 ===================================================== */
-
 .navbar{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-min-height:80px;
-z-index:9999;
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:16px clamp(16px,4vw,40px);
-background:var(--surface);
-border-bottom:1px solid var(--border);
-box-shadow:var(--soft-shadow);
-backdrop-filter:blur(12px);
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    min-height:80px;
+    z-index:9999;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    padding:16px clamp(16px,4vw,40px);
+    background:var(--surface);
+    border-bottom:1px solid var(--border);
+    box-shadow:var(--soft-shadow);
+    backdrop-filter:blur(12px);
 }
 
 .logo{
-font-family:Georgia,serif;
-font-size:clamp(1.15rem,2vw,1.4rem);
-font-weight:700;
-letter-spacing:1px;
-color:var(--accent);
+    flex-shrink:0;
+    white-space:nowrap;
+    font-family:Georgia,serif;
+    font-size:clamp(1.15rem,2vw,1.4rem);
+    font-weight:700;
+    letter-spacing:1px;
+    color:var(--accent);
 }
 
 .navbar__menu{
-display:flex;
-align-items:center;
-gap:clamp(15px,3vw,25px);
-list-style:none;
+    display:flex;
+    align-items:center;
+    gap:clamp(15px,3vw,25px);
+    list-style:none;
+    flex-shrink:0;
 }
 
 .navbar__menu li{
-list-style:none;
+    list-style:none;
+    flex-shrink:0;
 }
 
 .navbar__links{
-position:relative;
-display:inline-block;
-padding:6px 0;
-color:var(--text);
-font-size:clamp(.85rem,1.2vw,1rem);
-font-weight:500;
-transition:var(--transition);
+    position:relative;
+    display:inline-block;
+    padding:6px 0;
+    color:var(--text);
+    font-size:clamp(.85rem,1.2vw,1rem);
+    font-weight:500;
+    white-space:nowrap;
+    transition:var(--transition);
 }
 
 .navbar__links::after{
-content:"";
-position:absolute;
-left:0;
-bottom:0;
-width:0;
-height:2px;
-background:var(--accent);
-transition:var(--transition);
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:0;
+    width:0;
+    height:2px;
+    background:var(--accent);
+    transition:var(--transition);
 }
 
 .navbar__links:hover::after,
 .navbar__links.active::after{
-width:100%;
+    width:100%;
 }
 
 .navbar__links:hover,
 .navbar__links.active{
-color:var(--accent);
+    color:var(--accent);
 }
 
 .navbar__links.active{
-font-weight:700;
+    font-weight:700;
 }
 
 /* =====================================================
