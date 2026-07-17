@@ -1,13 +1,16 @@
-// Beshy Firebase Connection
+// =====================================================
+// BESHY FIREBASE CONNECTION
+// =====================================================
 
-import { initializeApp } 
+import { initializeApp }
 from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
 
 import { getFirestore }
 from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
 const firebaseConfig = {
 
-  apiKey: "AIzaSyBLI3WImMtnSWD5KtaHAu3s3iFnZNkkL74",
+  apiKey: "YOUR_API_KEY",
 
   authDomain: "digicafe-beshy.firebaseapp.com",
 
@@ -23,15 +26,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 
-
-// This allows Beshy to use Firestore
 export const db = getFirestore(app);
 
-
-// This allows Beshy to use Firebase Functions
 export { app };
-const app = initializeApp(firebaseConfig);
-
-
-// This allows Beshy to use Firestore
-export const db = getFirestore(app);
