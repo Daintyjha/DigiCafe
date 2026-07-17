@@ -1,3 +1,4 @@
+<!-- FLOATING BUTTON -->
 
 <button
     id="beshyToggle"
@@ -13,8 +14,6 @@
 
 
 
-
-
 <!-- CHAT WINDOW -->
 
 <div
@@ -25,56 +24,145 @@
     aria-hidden="true">
 
 
+    <!-- HEADER -->
 
+    <header class="beshy-header">
 
+        <div class="beshy-identity">
 
-<!-- HEADER -->
+            <div class="beshy-avatar">
+                💚
+            </div>
 
-<header class="beshy-header">
+            <div class="beshy-title">
 
+                <h3>
+                    Beshy Ey Ay
+                </h3>
 
-    <div class="beshy-identity">
+                <p>
+                    ☕ Your DigiCafe Friend
+                </p>
 
-
-        <div
-            class="beshy-avatar">
-
-            💚
-
-        </div>
-
-
-        <div class="beshy-title">
-
-            <h3>
-                Beshy Ey Ay
-            </h3>
-
-
-            <p>
-                ☕ Your DigiCafe Friend
-            </p>
+            </div>
 
         </div>
 
+
+        <button
+            id="beshyClose"
+            class="beshy-close"
+            type="button">
+
+            ×
+
+        </button>
+
+
+    </header>
+
+
+
+    <!-- CHAT MESSAGES -->
+
+    <section
+        id="beshyMessages"
+        class="beshy-messages"
+        aria-live="polite">
+
+    </section>
+
+
+
+    <!-- QUICK OPTIONS -->
+
+    <div class="beshy-options">
+
+        <button data-message="I need advice.">
+            💡 Advice
+        </button>
+
+        <button data-message="Tell me something funny.">
+            😂 Funny
+        </button>
+
+        <button data-message="Be sassy with me.">
+            😏 Sass
+        </button>
 
     </div>
 
 
 
-    <button
-        id="beshyClose"
-        class="beshy-close"
-        type="button">
+    <!-- INPUT -->
 
-        ×
+    <footer class="beshy-input-area">
 
-    </button>
+        <button
+            id="beshyEmoji"
+            class="beshy-emoji-button"
+            type="button">
+
+            😊
+
+        </button>
 
 
-</header>
+        <input
+            id="beshyInput"
+            type="text"
+            placeholder="Chat with Beshy..."
+            autocomplete="off">
 
 
+        <button
+            id="beshySend"
+            type="button">
+
+            ➤
+
+        </button>
+
+
+    </footer>
+
+
+
+    <!-- EMOJI PANEL -->
+
+    <div
+        id="beshyEmojiPanel"
+        class="beshy-emoji-panel">
+
+        <button type="button">😊</button>
+        <button type="button">😂</button>
+        <button type="button">🥰</button>
+        <button type="button">😭</button>
+        <button type="button">☕</button>
+        <button type="button">🎵</button>
+        <button type="button">📚</button>
+        <button type="button">💚</button>
+        <button type="button">✨</button>
+
+    </div>
+
+
+
+    <!-- MEMORY -->
+
+    <div class="beshy-memory-controls">
+
+        <button
+            id="beshyForget">
+
+            🧠 Clear Beshy memory
+
+        </button>
+
+    </div>
+
+
+</div>
 
 
 
