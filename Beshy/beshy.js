@@ -1,4 +1,4 @@
-import { db, app } from "./firebase.js";
+import { db, app } from "../firebase.js";
 
 import {
     getFunctions,
