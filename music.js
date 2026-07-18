@@ -1110,9 +1110,7 @@ if (shuffleBtn) {
        AUTO NEXT
     ===================================================== */
 
-    audio.onended =
-      nextSong;
-
+   audio.onended = nextSong;
 
     /* =====================================================
        PLAYING STATE
@@ -2058,12 +2056,11 @@ if (shuffleBtn) {
         console.warn(
           "Media Session error:",
           error
-        );
+               );
 
       }
 
     }
 
-  }
 
-);
+  })
