@@ -923,29 +923,34 @@ document.addEventListener(
     }
 
 
-    /* =====================================================
-       NEXT SONG
-    ===================================================== */
+   /* =====================================================
+   NEXT SONG
+===================================================== */
 
-    if (nextBtn) {
+if (nextBtn) {
 
-      nextBtn.onclick =
+    nextBtn.onclick =
         nextSong;
 
-    }
+}
 
 
-  function nextSong() {
+function nextSong() {
 
     if (!playbackList.length) {
+
         return;
+
     }
 
 
-    // Shuffle mode
+    // SHUFFLE MODE
+
     if (isShuffle) {
 
+
         let newIndex;
+
 
         do {
 
@@ -955,22 +960,33 @@ document.addEventListener(
                     playbackList.length
                 );
 
+
         } while (
-            newIndex === currentIndex &&
+
+            newIndex === currentIndex
+            &&
             playbackList.length > 1
+
         );
 
 
-        currentIndex = newIndex;
+        currentIndex =
+            newIndex;
 
 
-    } else {
+    } 
+    
+    else {
+
 
         currentIndex++;
 
 
         if (
-            currentIndex >= playbackList.length
+
+            currentIndex >=
+            playbackList.length
+
         ) {
 
             currentIndex = 0;
@@ -980,42 +996,53 @@ document.addEventListener(
     }
 
 
-    // Queue removes songs after moving forward
-    if (
-        activePlaylist === "queue" &&
-        queue.length > 0
-    ) {
-
-        queue.shift();
-
-        saveQueue();
-
-        renderQueue();
-
-    }
-
 
     playSong(
+
         playbackList[currentIndex],
+
         playbackList,
+
         activePlaylist
+
     );
 
 }
 
 
-    function previousSong() {
+
+/* =====================================================
+   PREVIOUS SONG
+===================================================== */
+
+if (prevBtn) {
+
+    prevBtn.onclick =
+        previousSong;
+
+}
+
+
+
+function previousSong() {
+
 
     if (!playbackList.length) {
+
         return;
+
     }
+
 
 
     currentIndex--;
 
 
+
     if (
+
         currentIndex < 0
+
     ) {
 
         currentIndex =
@@ -1024,30 +1051,60 @@ document.addEventListener(
     }
 
 
+
     playSong(
+
         playbackList[currentIndex],
+
         playbackList,
+
         activePlaylist
+
     );
+
 
 }
-   shuffleBtn.onclick = () => {
-
-    isShuffle = !isShuffle;
 
 
-    shuffleBtn.textContent =
-        isShuffle
-        ? "🔀 ON"
-        : "🔀";
+
+/* =====================================================
+   SHUFFLE
+===================================================== */
+
+if (shuffleBtn) {
 
 
-    shuffleBtn.classList.toggle(
-        "active-playlist",
-        isShuffle
-    );
+    shuffleBtn.onclick =
+        () => {
 
-};
+
+            isShuffle =
+                !isShuffle;
+
+
+
+            shuffleBtn.textContent =
+                isShuffle
+
+                ? "🔀 ON"
+
+                : "🔀";
+
+
+
+            shuffleBtn.classList.toggle(
+
+                "active-playlist",
+
+                isShuffle
+
+            );
+
+
+        };
+
+
+}
 
     /* =====================================================
        AUTO NEXT
