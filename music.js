@@ -935,132 +935,119 @@ document.addEventListener(
     }
 
 
-    function nextSong() {
+  function nextSong() {
 
-      if (
-        !playbackList.length
-      ) {
-
+    if (!playbackList.length) {
         return;
+    }
 
-      }
+
+    // Shuffle mode
+    if (isShuffle) {
+
+        let newIndex;
+
+        do {
+
+            newIndex =
+                Math.floor(
+                    Math.random() *
+                    playbackList.length
+                );
+
+        } while (
+            newIndex === currentIndex &&
+            playbackList.length > 1
+        );
 
 
-      if (
-        isShuffle
-      ) {
+        currentIndex = newIndex;
 
-        currentIndex =
-          Math.floor(
-            Math.random()
-            *
-            playbackList.length
-          );
 
-      } else {
+    } else {
 
         currentIndex++;
 
 
         if (
-          currentIndex >=
-          playbackList.length
+            currentIndex >= playbackList.length
         ) {
 
-          currentIndex =
-            0;
+            currentIndex = 0;
 
         }
 
-      }
+    }
 
 
-      playSong(
-        playbackList[
-          currentIndex
-        ],
+    // Queue removes songs after moving forward
+    if (
+        activePlaylist === "queue" &&
+        queue.length > 0
+    ) {
+
+        queue.shift();
+
+        saveQueue();
+
+        renderQueue();
+
+    }
+
+
+    playSong(
+        playbackList[currentIndex],
         playbackList,
         activePlaylist
-      );
+    );
 
-    }
-
-
-    /* =====================================================
-       PREVIOUS SONG
-    ===================================================== */
-
-    if (prevBtn) {
-
-      prevBtn.onclick =
-        previousSong;
-
-    }
+}
 
 
     function previousSong() {
 
-      if (
-        !playbackList.length
-      ) {
-
+    if (!playbackList.length) {
         return;
-
-      }
-
-
-      currentIndex--;
+    }
 
 
-      if (
-        currentIndex <
-        0
-      ) {
+    currentIndex--;
+
+
+    if (
+        currentIndex < 0
+    ) {
 
         currentIndex =
-          playbackList.length
-          -
-          1;
-
-      }
-
-
-      playSong(
-        playbackList[
-          currentIndex
-        ],
-        playbackList,
-        activePlaylist
-      );
+            playbackList.length - 1;
 
     }
 
 
-    /* =====================================================
-       SHUFFLE
-    ===================================================== */
+    playSong(
+        playbackList[currentIndex],
+        playbackList,
+        activePlaylist
+    );
 
-    if (shuffleBtn) {
+}
+   shuffleBtn.onclick = () => {
 
-      shuffleBtn.onclick =
-        () => {
-
-          isShuffle =
-            !isShuffle;
-
-
-          shuffleBtn.textContent =
-            isShuffle
-              ? "🔀 ON"
-              : "🔀";
+    isShuffle = !isShuffle;
 
 
-          shuffleBtn.classList.toggle(
-            "active-playlist",
-            isShuffle
-          );
+    shuffleBtn.textContent =
+        isShuffle
+        ? "🔀 ON"
+        : "🔀";
 
-        };
+
+    shuffleBtn.classList.toggle(
+        "active-playlist",
+        isShuffle
+    );
+
+};
 
     }
 
