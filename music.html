@@ -179,10 +179,7 @@ class="song-grid">
 
     <div class="category-buttons">
 
-        <button onclick="loadCategory('All')">
-            🎵 All Music
-        </button>
-
+       
         <button onclick="loadCategory('Ambience')">
             🌧 Ambience
         </button>
@@ -200,6 +197,15 @@ class="song-grid">
         </button>
 
     </div>
+</section>
+    <section class="library-section">
+         <button onclick="loadCategory('All')">
+            🎵 All Music
+        </button>
+
+    <div id="musicLibrary" class="song-grid">
+    </div>
+
 </section>
 <section class="support">
 <h2>
@@ -287,7 +293,7 @@ value="1">
 </footer><script src="script.js"></script>
     
 <script src="music.js" ></script>
+<div id="beshy-container"></div>
 <script type="module" src="Beshy/beshy.js"></script>
-    <div id="beshy-container"></div>
 </body>
 </html>
