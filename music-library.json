@@ -59,60 +59,14 @@
     "id": 7,
     "title": "ASMR 1",
     "artist": "DaintyJha",
-    "album": "Night Atmosphere",
-    "category": "Night Atmosphere",
+    "album": "Ambient Collection",
+    "category": "Ambience",
     "file": "Asset/MusicFiles/Ambience/ASMR.mp3",
     "dateAdded": "2026-07-02"
   },
   {
+  {
     "id": 8,
-    "title": "ASMR 2",
-    "artist": "DaintyJha",
-    "album": "Night Atmosphere",
-    "category": "Night Atmosphere",
-    "file": "Asset/MusicFiles/Ambience/ASMR2.mp3",
-    "dateAdded": "2026-07-02"
-  },
-  {
-    "id": 9,
-    "title": "ASMR 3",
-    "artist": "DaintyJha",
-    "album": "Night Atmosphere",
-    "category": "Night Atmosphere",
-    "file": "Asset/MusicFiles/Ambience/ASMR3.mp3",
-    "dateAdded": "2026-07-02"
-  },
-  {
-    "id": 10,
-    "title": "ASMR 4",
-    "artist": "DaintyJha",
-    "album": "Night Atmosphere",
-    "category": "Night Atmosphere",
-    "file": "Asset/MusicFiles/Ambience/ASMR4.mp3",
-    "dateAdded": "2026-07-02"
-  },
-  {
-    "id": 11,
-    "title": "ASMR 5",
-    "artist": "DaintyJha",
-    "album": "Night Atmosphere",
-    "category": "Night Atmosphere",
-    "file": "Asset/MusicFiles/Ambience/ASMR5.mp3",
-    "dateAdded": "2026-07-02"
-  },
-  {
-    "id": 12,
-    "title": "ASMR 6",
-    "artist": "DaintyJha",
-    "album": "Night Atmosphere",
-    "category": "Night Atmosphere",
-    "file": "Asset/MusicFiles/Ambience/ASMR6.mp3",
-    "dateAdded": "2026-07-02"
-  },
-
-
-  {
-    "id": 13,
     "title": "Whispers of Light",
     "artist": "DaintyJha",
     "album": "Piano Collection",
@@ -121,7 +75,7 @@
     "dateAdded": "2026-07-03"
   },
   {
-    "id": 14,
+    "id": 9,
     "title": "Tides of Memory",
     "artist": "DaintyJha",
     "album": "Piano Collection",
@@ -130,7 +84,7 @@
     "dateAdded": "2026-07-03"
   },
   {
-    "id": 15,
+    "id": 10,
     "title": "Almost Yours",
     "artist": "DaintyJha",
     "album": "Piano Collection",
@@ -139,7 +93,7 @@
     "dateAdded": "2026-07-03"
   },
   {
-    "id": 16,
+    "id": 11,
     "title": "Quiet Evening",
     "artist": "DaintyJha",
     "album": "Piano Collection",
@@ -148,7 +102,7 @@
     "dateAdded": "2026-07-03"
   },
   {
-    "id": 17,
+    "id": 12,
     "title": "Moonlight Forest",
     "artist": "DaintyJha",
     "album": "Piano Collection",
@@ -157,7 +111,7 @@
     "dateAdded": "2026-07-03"
   },
   {
-    "id": 18,
+    "id": 13,
     "title": "Luminous Shadows",
     "artist": "DaintyJha",
     "album": "Piano Collection",
@@ -166,7 +120,7 @@
     "dateAdded": "2026-07-03"
   },
   {
-    "id": 19,
+    "id": 14,
     "title": "Alone in The Snow",
     "artist": "DaintyJha",
     "album": "Piano Collection",
@@ -175,7 +129,7 @@
     "dateAdded": "2026-07-03"
   },
   {
-    "id": 20,
+    "id": 15,
     "title": "Imperial Dawn",
     "artist": "DaintyJha",
     "album": "Piano Collection",
@@ -184,7 +138,7 @@
     "dateAdded": "2026-07-03"
   },
 {
-  "id": 21,
+  "id": 16,
   "title": "Coming Home to Me",
   "artist": "Beshy Ey Ay",
   "album": "Heal Collection",
@@ -193,7 +147,7 @@
   "dateAdded": "2026-07-15"
 },
 {
-  "id": 22,
+  "id": 17,
   "title": "Healing Begins with Me",
   "artist": "Beshy Ey Ay",
   "album": "Heal Collection",
@@ -202,7 +156,7 @@
   "dateAdded": "2026-07-15"
 },
 {
-  "id": 23,
+  "id": 18,
   "title": "Mirror Check",
   "artist": "Beshy Ey Ay",
   "album": "Heal Collection",
@@ -211,7 +165,7 @@
   "dateAdded": "2026-07-15"
 },
 {
-  "id": 24,
+  "id": 19,
   "title": "Soft Kind of Happy",
   "artist": "Beshy Ey Ay",
   "album": "Heal Collection",
@@ -220,7 +174,7 @@
   "dateAdded": "2026-07-15"
 },
     {
-  "id": 25,
+  "id": 20,
   "title": "ASMR",
   "artist": "DaintyJha",
   "album": "ASMR Collection",
@@ -229,7 +183,7 @@
   "dateAdded": "2026-07-17"
 },
 {
-  "id": 26,
+  "id": 21,
   "title": "ASMR 2",
   "artist": "DaintyJha",
   "album": "ASMR Collection",
@@ -238,7 +192,7 @@
   "dateAdded": "2026-07-17"
 },
 {
-  "id": 27,
+  "id": 22,
   "title": "ASMR 3",
   "artist": "DaintyJha",
   "album": "ASMR Collection",
@@ -247,7 +201,7 @@
   "dateAdded": "2026-07-17"
 },
 {
-  "id": 28,
+  "id": 23,
   "title": "ASMR 4",
   "artist": "DaintyJha",
   "album": "ASMR Collection",
@@ -256,7 +210,7 @@
   "dateAdded": "2026-07-17"
 },
 {
-  "id": 29,
+  "id": 24,
   "title": "ASMR 5",
   "artist": "DaintyJha",
   "album": "ASMR Collection",
@@ -265,7 +219,7 @@
   "dateAdded": "2026-07-17"
 },
 {
-  "id": 30,
+  "id": 25,
   "title": "ASMR 6",
   "artist": "DaintyJha",
   "album": "ASMR Collection",
@@ -274,30 +228,30 @@
   "dateAdded": "2026-07-17"
 },
 {
-  "id": 31,
+  "id": 26,
   "title": "Almost Silent",
   "artist": "DaintyJha",
   "album": "Ambient Collection",
   "category": "Ambience",
-  "file": "Asset/MusicFiles/Ambience/Almost%20Silent.wav",
+  "file": "Asset/MusicFiles/Ambience/Almost Silent.wav",
   "dateAdded": "2026-07-17"
 },
 {
-  "id": 32,
+  "id": 27,
   "title": "Almost Yours",
   "artist": "DaintyJha",
   "album": "Music Collection",
   "category": "Music",
-  "file": "Asset/MusicFiles/Almost%20Yours.mp3",
+  "file": "Asset/MusicFiles/Almost Yours.mp3",
   "dateAdded": "2026-07-17"
 },
 {
-  "id": 33,
+  "id": 28,
   "title": "Alone in the Snow",
   "artist": "DaintyJha",
   "album": "Ambient Collection",
   "category": "Ambience",
-  "file": "Asset/MusicFiles/Ambience/Alone%20in%20The%20Snow.mp3",
+  "file": "Asset/MusicFiles/Ambience/Alone in The Snow.mp3",
   "dateAdded": "2026-07-17"
 }
 ]
