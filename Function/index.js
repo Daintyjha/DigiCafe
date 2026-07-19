@@ -34,7 +34,7 @@ exports.chatWithBeshy = onCall(
       return {
         reply: result.text,
       };
-   } catch (error) {
+    } catch (error) {
   console.error("Gemini request failed", {
     name: error?.name,
     message: error?.message,
@@ -45,8 +45,8 @@ exports.chatWithBeshy = onCall(
   throw new HttpsError(
     "internal",
     error?.message || "Beshy could not generate a response."
-
-      );
-    }
+  );
+}
   }
 );
+
