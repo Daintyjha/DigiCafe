@@ -34,12 +34,18 @@ exports.chatWithBeshy = onCall(
       return {
         reply: result.text,
       };
-    } catch (error) {
-      console.error("Gemini error:", error);
+   } catch (error) {
+  console.error("Gemini request failed", {
+    name: error?.name,
+    message: error?.message,
+    status: error?.status,
+    stack: error?.stack,
+  });
 
-      throw new HttpsError(
-        "internal",
-        "Beshy could not generate a response."
+  throw new HttpsError(
+    "internal",
+    error?.message || "Beshy could not generate a response."
+
       );
     }
   }
