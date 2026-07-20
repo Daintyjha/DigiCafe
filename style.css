@@ -2329,3 +2329,69 @@ VERY SMALL PHONES
     }
 
 }
+.social__icons{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.social__icons a{
+    width:42px;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border:1px solid var(--border);
+    border-radius:50%;
+
+    background:var(--card);
+
+    box-shadow:var(--soft-shadow);
+
+    transition:var(--transition);
+}
+
+.social__icons a:hover{
+    transform:translateY(-3px) scale(1.05);
+    background:var(--accent);
+}
+
+.social__custom-icon{
+    width:65%;
+    height:65%;
+
+    object-fit:contain;
+    border-radius:50%;
+}
+.footer__container{
+    width:100%;
+    max-width:1100px;
+    margin:auto;
+
+    padding:35px 20px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    gap:30px;
+    flex-wrap:wrap;
+}
+
+.footer__logo{
+    margin-bottom:6px;
+
+    font-family:Georgia,serif;
+    font-size:1.6rem;
+    color:var(--accent);
+}
+
+.small{
+    max-width:320px;
+    color:var(--text-light);
+    font-size:.95rem;
+}
