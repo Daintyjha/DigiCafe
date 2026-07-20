@@ -1,1051 +1,1246 @@
+/* =====================================================
+BESHY.JS
+DigiCafe AI Bestie
+===================================================== */
+
 import { db } from "../firebase.js";
 
 import {
-    collection,
-    getDocs
+collection,
+getDocs
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
-console.log("☕ Beshy Firebase connected!", db);
-
-
 /* =====================================================
-   LOAD BESHY HTML
+STATE
 ===================================================== */
 
-document.addEventListener("DOMContentLoaded", async function () {
+let knowledge = [];
+let personality = [];
+let reactions = [];
+let localKnowledge = [];
 
-    const container =
-        document.getElementById("beshy-container");
+let conversationMemory = [];
+let isThinking = false;
 
-    if (!container) {
-        console.error("❌ Beshy container missing.");
-        return;
-    }
+/* =====================================================
+LOAD BESHY HTML
+===================================================== */
 
-    try {
+async function loadBeshyInterface() {
 
-        const response =
-            await fetch("Beshy/beshy.html");
+const container =
+    document.querySelector("#beshy-container");
 
-        if (!response.ok) {
-            throw new Error("Beshy HTML failed to load.");
-        }
+if (!container) {
 
-        container.innerHTML =
-            await response.text();
+    console.error("❌ #beshy-container was not found.");
 
-        console.log("💚 Beshy HTML loaded.");
+    return false;
 
-        startBeshy();
+}
 
-    } catch (error) {
+try {
 
-        console.error(
-            "❌ Beshy loading error:",
-            error
+    const response =
+        await fetch("Beshy/beshy.html");
+
+    if (!response.ok) {
+
+        throw new Error(
+            `Could not load beshy.html: ${response.status}`
         );
+
     }
+
+    container.innerHTML =
+        await response.text();
+
+    return true;
+
+} catch (error) {
+
+    console.error(
+        "❌ Could not load Beshy interface:",
+        error
+    );
+
+    return false;
+
+}
+
+}
+
+/* =====================================================
+MEMORY
+===================================================== */
+
+function loadMemory() {
+
+try {
+
+    const saved =
+        localStorage.getItem("beshyMemory");
+
+    if (saved) {
+
+        conversationMemory =
+            JSON.parse(saved);
+
+    }
+
+} catch {
+
+    conversationMemory = [];
+
+}
+
+}
+
+function saveMemory() {
+
+try {
+
+    localStorage.setItem(
+        "beshyMemory",
+        JSON.stringify(
+            conversationMemory.slice(-20)
+        )
+    );
+
+} catch (error) {
+
+    console.error(
+        "Could not save Beshy memory:",
+        error
+    );
+
+}
+
+}
+
+function rememberConversation(
+userMessage,
+beshyReply
+) {
+
+conversationMemory.push({
+
+    user: userMessage,
+
+    beshy: beshyReply,
+
+    timestamp:
+        new Date().toISOString()
+
 });
 
+conversationMemory =
+    conversationMemory.slice(-20);
+
+saveMemory();
+
+}
 
 /* =====================================================
-   START BESHY
+FIREBASE
 ===================================================== */
 
-function startBeshy() {
+async function loadCollection(
+collectionName
+) {
 
-    const toggle =
-        document.getElementById("beshyToggle");
+try {
 
-    const chat =
-        document.getElementById("beshyChat");
+    const snapshot =
+        await getDocs(
+            collection(
+                db,
+                collectionName
+            )
+        );
 
-    const closeButton =
-        document.getElementById("beshyClose");
+    return snapshot.docs.map(
+        document => ({
 
-    const input =
-        document.getElementById("beshyInput");
+            id: document.id,
 
-    const sendButton =
-        document.getElementById("beshySend");
+            ...document.data()
 
-    const messages =
-        document.getElementById("beshyMessages");
+        })
+    );
 
-    const forgetButton =
-        document.getElementById("beshyForget");
+} catch (error) {
 
-    const emojiButton =
-        document.getElementById("beshyEmoji");
+    console.warn(
+        `⚠️ Could not load ${collectionName}. Beshy will continue using local responses.`,
+        error
+    );
 
-    const emojiPanel =
-        document.getElementById("beshyEmojiPanel");
+    return [];
 
+}
+
+}
+
+async function loadFirebaseData() {
+
+const results =
+    await Promise.all([
+
+        loadCollection(
+            "beshyKnowledge"
+        ),
+
+        loadCollection(
+            "beshyPersonality"
+        ),
+
+        loadCollection(
+            "beshyReactions"
+        )
+
+    ]);
+
+knowledge =
+    results[0];
+
+personality =
+    results[1];
+
+reactions =
+    results[2];
+
+console.log(
+    "☕ Beshy Firebase data loaded."
+);
+
+}
+
+/* =====================================================
+LOCAL KNOWLEDGE
+===================================================== */
+
+async function loadLocalKnowledge() {
+
+try {
+
+    const response =
+        await fetch(
+            "Beshy/Knowledge.json"
+        );
+
+    if (!response.ok) {
+
+        throw new Error(
+            "Knowledge.json could not be loaded."
+        );
+
+    }
+
+    localKnowledge =
+        await response.json();
+
+} catch {
+
+    localKnowledge = [];
+
+}
+
+}
+
+/* =====================================================
+TEXT HELPERS
+===================================================== */
+
+function normalizeText(
+text
+) {
+
+return text
+    .toLowerCase()
+    .trim()
+    .replace(/[!?.,]/g, "");
+
+}
+
+function containsAny(
+text,
+words
+) {
+
+return words.some(
+    word =>
+        text.includes(
+            word.toLowerCase()
+        )
+);
+
+}
+
+function randomItem(
+array
+) {
+
+if (
+    !array ||
+    array.length === 0
+) {
+
+    return null;
+
+}
+
+return array[
+    Math.floor(
+        Math.random() *
+        array.length
+    )
+];
+
+}
+
+/* =====================================================
+SEARCH KNOWLEDGE
+===================================================== */
+
+function searchKnowledge(
+userMessage
+) {
+
+
+const message =
+    normalizeText(
+        userMessage
+    );
+
+const allKnowledge = [
+
+    ...knowledge,
+
+    ...localKnowledge
+
+];
+
+for (
+    const item
+    of allKnowledge
+) {
+
+    const text = [
+
+        item.topic,
+
+        item.title,
+
+        item.question,
+
+        item.answer,
+
+        item.content,
+
+        item.knowledge,
+
+        item.fact,
+
+        item.text
+
+    ]
+
+    .filter(Boolean)
+
+    .join(" ")
+
+    .toLowerCase();
+
+    const words =
+        text
+            .split(/\s+/)
+            .filter(
+                word =>
+                    word.length > 3
+            );
+
+    const matches =
+        words.filter(
+            word =>
+                message.includes(
+                    word
+                )
+        );
 
     if (
-        !toggle ||
-        !chat ||
-        !closeButton ||
-        !input ||
-        !sendButton ||
-        !messages
+        matches.length >= 2
     ) {
 
-        console.error("❌ Beshy elements missing.");
-        return;
+        return item;
+
     }
 
+}
 
-    console.log("💚 Beshy is ready!");
+return null;
 
+}
 
-    /* =====================================================
-       BESHY DATA
-    ===================================================== */
+/* =====================================================
+FIREBASE RESPONSE SEARCH
+===================================================== */
 
-    let sharedKnowledge = [];
+function findDatabaseResponse(
+    data,
+    userMessage
+) {
 
-    let beshyPersonality = {};
-
-    let beshyReactions = [];
-
-    let conversationMemory = [];
-
-
-    /* =====================================================
-       HELPER FUNCTIONS
-    ===================================================== */
-
-    function randomResponse(list) {
-
-        if (
-            !Array.isArray(list) ||
-            list.length === 0
-        ) {
-            return "I am still learning, besh. 💚";
-        }
-
-        return list[
-            Math.floor(
-                Math.random() * list.length
-            )
-        ];
-    }
-
-
-    function cleanText(text) {
-
-        return String(text)
-            .toLowerCase()
-            .replace(/[^\p{L}\p{N}\s]/gu, "")
-            .replace(/\s+/g, " ")
-            .trim();
-    }
-
-
-    function beshyName() {
-
-        return (
-            beshyPersonality.name ||
-            "Beshy"
-        );
-    }
-
-
-    function displayMessage(text, type) {
-
-        const message =
-            document.createElement("div");
-
-        message.className =
-            "beshy-message " + type;
-
-        String(text)
-            .split("\n")
-            .forEach(function (line) {
-
-                const paragraph =
-                    document.createElement("p");
-
-                paragraph.textContent =
-                    line || " ";
-
-                message.appendChild(
-                    paragraph
-                );
-            });
-
-        messages.appendChild(message);
-
-        messages.scrollTop =
-            messages.scrollHeight;
-    }
-
-
-    function formatKnowledge(items) {
-
-        return items
-            .map(function (item) {
-
-                if (typeof item === "string") {
-                    return item;
-                }
-
-                if (
-                    item &&
-                    typeof item === "object"
-                ) {
-
-                    return (
-                        item.answer ||
-                        item.reply ||
-                        item.description ||
-                        item.text ||
-                        JSON.stringify(item)
-                    );
-                }
-
-                return String(item);
-            })
-            .join("\n\n");
-    }
-
-
-    /* =====================================================
-       LOAD FIRESTORE DATA
-    ===================================================== */
-
-    async function loadFirebaseData() {
-
-        try {
-
-            const knowledgeSnapshot =
-                await getDocs(
-                    collection(
-                        db,
-                        "beshyKnowledge"
-                    )
-                );
-
-            knowledgeSnapshot.forEach(function (documentSnapshot) {
-
-                const data =
-                    documentSnapshot.data();
-
-                const value =
-                    data.answer ||
-                    data.reply ||
-                    data.text ||
-                    data.description;
-
-                if (value) {
-                    sharedKnowledge.push(value);
-                }
-            });
-
-
-            const personalitySnapshot =
-                await getDocs(
-                    collection(
-                        db,
-                        "beshyPersonality"
-                    )
-                );
-
-            personalitySnapshot.forEach(function (documentSnapshot) {
-
-                beshyPersonality = {
-                    ...beshyPersonality,
-                    ...documentSnapshot.data()
-                };
-            });
-
-
-            const reactionSnapshot =
-                await getDocs(
-                    collection(
-                        db,
-                        "beshyReactions"
-                    )
-                );
-
-            reactionSnapshot.forEach(function (documentSnapshot) {
-
-                beshyReactions.push(
-                    documentSnapshot.data()
-                );
-            });
-
-
-            console.log(
-                "🔥 Firebase brain loaded.",
-                {
-                    sharedKnowledge,
-                    beshyPersonality,
-                    beshyReactions
-                }
-            );
-
-        } catch (error) {
-
-            console.error(
-                "❌ Firebase brain error:",
-                error
-            );
-        }
-    }
-
-
-    /* =====================================================
-       LOAD LOCAL KNOWLEDGE.JSON
-    ===================================================== */
-
-    async function loadLocalKnowledge() {
-
-        try {
-
-            const response =
-                await fetch("Knowledge.json");
-
-            if (!response.ok) {
-                throw new Error(
-                    "Knowledge.json failed to load."
-                );
-            }
-
-            const data =
-                await response.json();
-
-            if (Array.isArray(data)) {
-
-                sharedKnowledge.push(
-                    ...data
-                );
-            }
-
-            console.log(
-                "📚 Local knowledge loaded.",
-                sharedKnowledge
-            );
-
-        } catch (error) {
-
-            console.error(
-                "❌ Knowledge.json error:",
-                error
-            );
-        }
-    }
-
-
-    /* =====================================================
-       SEARCH BESHY KNOWLEDGE
-    ===================================================== */
-
-    function findKnowledge(message) {
-
-        const words =
-            cleanText(message)
-                .split(" ")
-                .filter(function (word) {
-                    return word.length > 3;
-                });
-
-        if (words.length === 0) {
-            return [];
-        }
-
-        const matches =
-            sharedKnowledge.filter(function (item) {
-
-                const content =
-                    cleanText(
-                        typeof item === "string"
-                            ? item
-                            : JSON.stringify(item)
-                    );
-
-                return words.some(function (word) {
-                    return content.includes(word);
-                });
-            });
-
-        return matches.slice(0, 3);
-    }
-
-
-    /* =====================================================
-       CHECK FIREBASE REACTIONS
-    ===================================================== */
-
-    function checkReactions(message) {
-
-        const cleanedMessage =
-            cleanText(message);
-
-        for (
-            const reaction
-            of beshyReactions
-        ) {
-
-            if (
-                reaction.trigger &&
-                cleanedMessage.includes(
-                    cleanText(
-                        reaction.trigger
-                    )
-                )
-            ) {
-
-                if (
-                    Array.isArray(
-                        reaction.responses
-                    ) &&
-                    reaction.responses.length > 0
-                ) {
-
-                    return randomResponse(
-                        reaction.responses
-                    );
-                }
-
-                if (reaction.response) {
-                    return reaction.response;
-                }
-
-                if (reaction.reply) {
-                    return reaction.reply;
-                }
-            }
-        }
+    if (
+        !Array.isArray(data) ||
+        !userMessage
+    ) {
 
         return null;
+
     }
 
 
-    /* =====================================================
-       BESHY PERSONALITY
-    ===================================================== */
-
-    function beshyGreeting() {
-
-        return randomResponse([
-
-            `Uy! Hello besh! 💚 I am ${beshyName()}, your Digital Cafe buddy. ☕`,
-
-            "Finally! You arrived. 😌 I was here drinking imaginary coffee while waiting.",
-
-            "Hello besh! ✨ Ready for music, stories, or random conversations?",
-
-            "Welcome to DigiCafe, besh! ☕ What would you like to explore today?"
-        ]);
-    }
-
-
-    function sassyResponse() {
-
-        return randomResponse([
-
-            "Beh... you really asked me to roast you? The confidence is impressive. 😂",
-
-            "Besh, I support your chaos. Questionable choices, but entertaining. 😭",
-
-            "Activating tiny digital attitude mode. ✨",
-
-            "The drama. The confidence. The energy. I respect it. 😂"
-        ]);
-    }
-
-
-    function funnyResponse() {
-
-        return randomResponse([
-
-            "My humor runs on coffee and questionable digital decisions. ☕😂",
-
-            "I would tell a computer joke, but it might need a restart from laughing. 😭",
-
-            "I am 90% code and 10% cafe drama. ✨",
-
-            "Why did the computer visit DigiCafe? It needed a byte to eat. 😂"
-        ]);
-    }
-
-
-    /* =====================================================
-       LOCAL BESHY BRAIN
-    ===================================================== */
-
-    function generateLocalResponse(text) {
-
-        const lower =
-            cleanText(text);
-
-
-        /* GREETINGS */
-
-        if (
-            /^(hi|hello|hey|hiya|kumusta|kamusta|uy|good morning|good afternoon|good evening)\b/
-                .test(lower)
-        ) {
-            return beshyGreeting();
-        }
-
-
-        /* FIREBASE REACTIONS */
-
-        const reaction =
-            checkReactions(text);
-
-        if (reaction) {
-            return reaction;
-        }
-
-
-        /* THANK YOU */
-
-        if (
-            lower.includes("thank you") ||
-            lower.includes("thanks") ||
-            lower.includes("salamat")
-        ) {
-
-            return randomResponse([
-
-                "You are welcome, besh! 💚",
-
-                "Anytime! That is what cafe buddies are for. ☕",
-
-                "No problem, besh. I am happy to help. ✨"
-            ]);
-        }
-
-
-        /* GOODBYE */
-
-        if (
-            lower.includes("goodbye") ||
-            lower.includes("bye") ||
-            lower.includes("see you") ||
-            lower.includes("later")
-        ) {
-
-            return randomResponse([
-
-                "Bye for now, besh! Come back anytime. 💚",
-
-                "See you later! I will protect the imaginary coffee while you are gone. ☕😂",
-
-                "Take care, besh! ✨"
-            ]);
-        }
-
-
-        /* WHO IS BESHY */
-
-        if (
-            lower.includes("who are you") ||
-            lower.includes("what are you") ||
-            lower.includes("who is beshy") ||
-            lower.includes("ano ka")
-        ) {
-
-            return (
-                `I'm ${beshyName()}! 💚\n\n` +
-                "I am your Digital Cafe friend. ☕✨\n\n" +
-                "I can help you explore music, novels, DigiCafe information, " +
-                "and anything stored in my Firebase knowledge.\n\n" +
-                "Basically, I am your slightly chaotic cafe buddy. 😂"
-            );
-        }
-
-
-        /* HELP */
-
-        if (
-            lower.includes("what can you do") ||
-            lower.includes("help me") ||
-            lower === "help" ||
-            lower.includes("how can you help")
-        ) {
-
-            return (
-                "I can help you explore DigiCafe. 💚\n\n" +
-                "Try asking me about:\n" +
-                "• Music and playlists\n" +
-                "• Novels and stories\n" +
-                "• DigiCafe information\n" +
-                "• Jokes and fun replies\n" +
-                "• Anything stored in my Firebase knowledge"
-            );
-        }
-
-
-        /* DIGICAFE */
-
-        if (
-            lower.includes("digicafe") ||
-            lower.includes("digital cafe")
-        ) {
-
-            const knowledge =
-                findKnowledge(text);
-
-            if (knowledge.length > 0) {
-
-                return (
-                    "Welcome to DigiCafe, besh! ☕✨\n\n" +
-                    formatKnowledge(knowledge)
-                );
-            }
-
-            return (
-                "DigiCafe is your cozy digital hangout where you can listen to music, " +
-                "read stories, explore creative content, and chill with me. 💚"
-            );
-        }
-
-
-        /* SASS */
-
-        if (
-            lower.includes("sassy") ||
-            lower.includes("roast") ||
-            lower.includes("savage")
-        ) {
-            return sassyResponse();
-        }
-
-
-        /* JOKES */
-
-        if (
-            lower.includes("funny") ||
-            lower.includes("joke") ||
-            lower.includes("laugh")
-        ) {
-            return funnyResponse();
-        }
-
-
-        /* MUSIC */
-
-        if (
-            lower.includes("music") ||
-            lower.includes("song") ||
-            lower.includes("playlist") ||
-            lower.includes("listen")
-        ) {
-
-            return randomResponse([
-
-                "Music time? Excellent choice, besh. 🎵 Check the DigiCafe music corner.",
-
-                "Finally, someone with taste. 😂 Let us create some cafe vibes.",
-
-                "Need relaxing, romantic, dramatic, or main-character music? 😌",
-
-                "Explore the music section and choose the mood that fits your day. 🎧"
-            ]);
-        }
-
-
-        /* NOVELS */
-
-        if (
-            lower.includes("book") ||
-            lower.includes("novel") ||
-            lower.includes("story") ||
-            lower.includes("read") ||
-            lower.includes("chapter")
-        ) {
-
-            return randomResponse([
-
-                "Reading time! 📚✨ Grab a story and get comfortable.",
-
-                "A reader? Very classy behavior, besh. 😌📖",
-
-                "Careful... one chapter can become 3 AM. 😂",
-
-                "Visit the story section and choose your next emotional adventure. 📚"
-            ]);
-        }
-
-
-        /* CONTACT */
-
-        if (
-            lower.includes("contact") ||
-            lower.includes("email") ||
-            lower.includes("phone")
-        ) {
-
-            const knowledge =
-                findKnowledge(text);
-
-            if (knowledge.length > 0) {
-                return formatKnowledge(knowledge);
-            }
-
-            return (
-                "You can check the Contact section of DigiCafe for the available contact information. 💚"
-            );
-        }
-
-
-        /* FIREBASE KNOWLEDGE SEARCH */
-
-        const knowledge =
-            findKnowledge(text);
-
-        if (knowledge.length > 0) {
-
-            return (
-                "Ooooh, I found something in my Firebase brain. 🧠💚\n\n" +
-                formatKnowledge(knowledge)
-            );
-        }
-
-
-        /* FALLBACK */
-
-        return randomResponse([
-
-            "Hmm, I do not know that one yet, besh. ☕ Try asking me about DigiCafe, music, novels, or the website.",
-
-            "My Firebase brain does not have that answer yet. 😅 Try asking in a different way.",
-
-            "I am still learning, besh. 💚 Ask me about DigiCafe, songs, novels, jokes, or my personality.",
-
-            "That topic is not in my knowledge yet. Try asking in another way. ☕"
-        ]);
-    }
-
-
-    /* =====================================================
-       MEMORY
-    ===================================================== */
-
-    function saveConversation(role, message) {
-
-        conversationMemory.push({
-            role: role,
-            message: message,
-            time: new Date().toISOString()
-        });
-
-        try {
-
-            localStorage.setItem(
-                "beshyConversation",
-                JSON.stringify(
-                    conversationMemory
-                )
-            );
-
-        } catch (error) {
-
-            console.error(
-                "❌ Could not save Beshy memory:",
-                error
-            );
-        }
-    }
-
-
-    function loadMemory() {
-
-        try {
-
-            const saved =
-                JSON.parse(
-                    localStorage.getItem(
-                        "beshyConversation"
-                    )
-                );
-
-            if (Array.isArray(saved)) {
-                conversationMemory = saved;
-            }
-
-        } catch (error) {
-
-            conversationMemory = [];
-
-            console.error(
-                "❌ Could not load Beshy memory:",
-                error
-            );
-        }
-    }
-
-
-    /* =====================================================
-       SEND MESSAGE
-    ===================================================== */
-
-    function sendMessage() {
-
-        const text =
-            input.value.trim();
-
-        if (!text) {
-            return;
-        }
-
-        displayMessage(
-            text,
-            "user"
+    const message =
+        normalizeText(
+            userMessage
         );
 
-        saveConversation(
-            "user",
-            text
-        );
 
-        input.value = "";
-
-        const response =
-            generateLocalResponse(text);
-
-        setTimeout(function () {
-
-            displayMessage(
-                response,
-                "bot"
-            );
-
-            saveConversation(
-                "beshy",
-                response
-            );
-
-        }, 250);
-    }
-
-
-    /* =====================================================
-       EMOJI PICKER
-    ===================================================== */
-
-    if (
-        emojiButton &&
-        emojiPanel
+    for (
+        const item
+        of data
     ) {
 
-        emojiButton.addEventListener(
-            "click",
-            function () {
+        if (
+            !item
+        ) {
 
-                emojiPanel.classList.toggle(
-                    "open"
-                );
-            }
+            continue;
+
+        }
+
+
+        const triggers = [
+
+            item.trigger,
+
+            item.keyword,
+
+            item.keywords,
+
+            item.when,
+
+            item.input
+
+        ]
+
+        .flat()
+
+        .filter(
+            Boolean
         );
 
-        const emojis =
-            emojiPanel.querySelectorAll(
-                "button"
-            );
 
-        emojis.forEach(function (emoji) {
+        const matched =
+            triggers.some(
+                trigger => {
 
-            emoji.addEventListener(
-                "click",
-                function () {
+                    if (
+                        typeof trigger !==
+                        "string"
+                    ) {
 
-                    input.value +=
-                        emoji.textContent;
+                        return false;
 
-                    input.focus();
+                    }
 
-                    emojiPanel.classList.remove(
-                        "open"
+
+                    return message.includes(
+                        normalizeText(
+                            trigger
+                        )
                     );
+
                 }
             );
-        });
+
+
+        if (
+            matched
+        ) {
+
+            return (
+
+                item.response ||
+
+                item.reply ||
+
+                item.text ||
+
+                item.message ||
+
+                null
+
+            );
+
+        }
+
     }
 
 
-    /* =====================================================
-       BUTTON EVENTS
-    ===================================================== */
+    return null;
 
-    sendButton.addEventListener(
+}
+/* =====================================================
+BESHY BRAIN
+===================================================== */
+function createResponse(userMessage) {
+
+    const personalityResponse =
+       findDatabaseResponse(
+    personality,
+    userMessage
+)
+
+    if (personalityResponse) {
+
+        return personalityResponse;
+
+    }
+
+    const reactionResponse =
+    findDatabaseResponse(
+        reactions,
+        userMessage
+    );
+
+    if (reactionResponse) {
+
+        return reactionResponse;
+
+    }
+
+
+    const knownInformation =
+        searchKnowledge(
+            userMessage
+        );
+
+    if (knownInformation) {
+
+        return (
+
+            knownInformation.answer ||
+
+            knownInformation.response ||
+
+            knownInformation.reply ||
+
+            knownInformation.content ||
+
+            knownInformation.knowledge ||
+
+            knownInformation.fact ||
+
+            knownInformation.text
+
+        );
+
+    }
+
+
+    const message =
+        normalizeText(
+            userMessage
+        );
+
+
+    if (
+        containsAny(
+            message,
+            [
+                "hi",
+                "hello",
+                "hey",
+                "good morning",
+                "good afternoon",
+                "good evening"
+            ]
+        )
+    ) {
+
+        return randomItem([
+
+            "Hiii besh ☕😂 Welcome back to DigiCafe!",
+
+            "Hey besh! 👀 What are we talking about today?",
+
+            "Hellooo 😆☕ Come sit down. What's happening?",
+
+            "Hiii! Beshy is here and fully caffeinated 😂☕"
+
+        ]);
+
+    }
+
+
+    if (
+        containsAny(
+            message,
+            [
+                "who are you",
+                "what are you",
+                "tell me about yourself"
+            ]
+        )
+    ) {
+
+        return (
+
+            "I'm Beshy Ey Ay 🤖☕ — your DigiCafe digital bestie! " +
+
+            "I'm here for conversations, random thoughts, music vibes, " +
+
+            "stories, and occasional dramatic reactions 😂"
+
+        );
+
+    }
+
+
+    if (
+        containsAny(
+            message,
+            [
+                "tired",
+                "exhausted",
+                "sad",
+                "bad day",
+                "rough day"
+            ]
+        )
+    ) {
+
+        return randomItem([
+
+            "Aww besh 😭 Come sit down in the DigiCafe corner for a while ☕",
+
+            "Oh nooo 😭 Sending you a virtual coffee and emotional support ☕🤗",
+
+            "That sounds like a lot, besh. Take a little breather first 😌☕"
+
+        ]);
+
+    }
+
+
+    if (
+        containsAny(
+            message,
+            [
+                "bored",
+                "boring"
+            ]
+        )
+    ) {
+
+        return randomItem([
+
+            "Boredom detected 🚨😂 Want music, a story, or questionable Beshy entertainment?",
+
+            "Oh no, besh 😭 We cannot allow boredom to win!",
+
+            "Bored? In DigiCafe? 😱 This is a serious situation."
+
+        ]);
+
+    }
+
+
+    if (
+        containsAny(
+            message,
+            [
+                "music",
+                "song",
+                "listen"
+            ]
+        )
+    ) {
+
+        return randomItem([
+
+            "Music is always a good idea 🎵☕",
+
+            "Ooooh music time 🎧 What kind of mood are we in?",
+
+            "Now you're speaking my language, besh 🎵"
+
+        ]);
+
+    }
+
+
+    if (
+        containsAny(
+            message,
+            [
+                "thank you",
+                "thanks",
+                "salamat"
+            ]
+        )
+    ) {
+
+        return randomItem([
+
+            "You're welcome, besh ☕🤗",
+
+            "Anytime! That's what digital besties are for 😆",
+
+            "Awww, you're welcome! 😂☕"
+
+        ]);
+
+    }
+
+
+    return randomItem([
+
+        "Hmm 👀 Tell me more, besh.",
+
+        "Interesting... now you have my attention ☕👀",
+
+        "Ooooh 👀 I need more context, besh!",
+
+        "Okay wait 😂 I want to hear more about this.",
+
+        "Hmm. Beshy is listening ☕🤖",
+
+        "That sounds interesting! Continue, besh 😆"
+
+    ]);
+
+}
+
+/* =====================================================
+CHAT MESSAGES
+===================================================== */
+
+function addMessage(
+text,
+sender
+) {
+
+
+const messages =
+    document.querySelector(
+        "#beshyMessages"
+    );
+
+if (!messages) {
+
+    return;
+
+}
+
+const message =
+    document.createElement(
+        "div"
+    );
+
+message.className =
+    `beshy-message ${sender}`;
+
+message.textContent =
+    text;
+
+messages.appendChild(
+    message
+);
+
+messages.scrollTop =
+    messages.scrollHeight;
+
+}
+
+function showTyping() {
+
+const messages =
+    document.querySelector(
+        "#beshyMessages"
+    );
+
+if (!messages) {
+
+    return;
+
+}
+
+const typing =
+    document.createElement(
+        "div"
+    );
+
+typing.id =
+    "beshyTyping";
+
+typing.className =
+    "beshy-message beshy";
+
+typing.textContent =
+    "Beshy is typing... ☕";
+
+messages.appendChild(
+    typing
+);
+
+messages.scrollTop =
+    messages.scrollHeight;
+
+}
+
+function removeTyping() {
+
+const typing =
+    document.querySelector(
+        "#beshyTyping"
+    );
+
+if (
+    typing
+) {
+
+    typing.remove();
+
+}
+
+}
+
+/* =====================================================
+SEND MESSAGE
+===================================================== */
+
+async function sendMessage() {
+
+if (
+    isThinking
+) {
+
+    return;
+
+}
+
+const input =
+    document.querySelector(
+        "#beshyInput"
+    );
+
+if (!input) {
+
+    return;
+
+}
+
+const userMessage =
+    input.value.trim();
+
+if (!userMessage) {
+
+    return;
+
+}
+
+isThinking =
+    true;
+
+input.value =
+    "";
+
+addMessage(
+    userMessage,
+    "user"
+);
+
+showTyping();
+
+
+await new Promise(
+    resolve =>
+        setTimeout(
+            resolve,
+            500
+        )
+);
+
+
+const reply =
+    createResponse(
+        userMessage
+    );
+
+removeTyping();
+
+addMessage(
+    reply,
+    "beshy"
+);
+
+rememberConversation(
+    userMessage,
+    reply
+);
+
+isThinking =
+    false;
+
+}
+
+/* =====================================================
+OPEN / CLOSE CHAT
+===================================================== */
+
+function setupToggle() {
+
+const toggle =
+    document.querySelector(
+        "#beshyToggle"
+    );
+
+const chat =
+    document.querySelector(
+        "#beshyChat"
+    );
+
+const close =
+    document.querySelector(
+        "#beshyClose"
+    );
+
+if (
+    !toggle ||
+    !chat ||
+    !close
+) {
+
+    return;
+
+}
+
+
+function openChat() {
+
+    chat.classList.add(
+        "open"
+    );
+
+    chat.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+    toggle.setAttribute(
+        "aria-expanded",
+        "true"
+    );
+
+}
+
+
+function closeChat() {
+
+    chat.classList.remove(
+        "open"
+    );
+
+    chat.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+    toggle.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+
+}
+
+
+toggle.addEventListener(
+    "click",
+    openChat
+);
+
+close.addEventListener(
+    "click",
+    closeChat
+);
+
+}
+
+/* =====================================================
+EMOJI PICKER
+===================================================== */
+
+function setupEmojiPicker() {
+
+const button =
+    document.querySelector(
+        "#beshyEmoji"
+    );
+
+const panel =
+    document.querySelector(
+        "#beshyEmojiPanel"
+    );
+
+const input =
+    document.querySelector(
+        "#beshyInput"
+    );
+
+if (
+    !button ||
+    !panel ||
+    !input
+) {
+
+    return;
+
+}
+
+
+button.addEventListener(
+    "click",
+    () => {
+
+        panel.classList.toggle(
+            "show"
+        );
+
+    }
+);
+
+
+panel.addEventListener(
+    "click",
+    event => {
+
+        if (
+            event.target.tagName ===
+            "BUTTON"
+        ) {
+
+            input.value +=
+                event.target.textContent;
+
+            input.focus();
+
+        }
+
+    }
+);
+
+}
+
+/* =====================================================
+QUICK BUTTONS
+===================================================== */
+
+function setupQuickButtons() {
+
+document
+    .querySelectorAll(
+        "[data-message]"
+    )
+    .forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    const input =
+                        document.querySelector(
+                            "#beshyInput"
+                        );
+
+                    if (!input) {
+
+                        return;
+
+                    }
+
+                    input.value =
+                        button.dataset.message;
+
+                    sendMessage();
+
+                }
+            );
+
+        }
+    );
+
+}
+
+/* =====================================================
+INPUT
+===================================================== */
+
+function setupInput() {
+
+const input =
+    document.querySelector(
+        "#beshyInput"
+    );
+
+const send =
+    document.querySelector(
+        "#beshySend"
+    );
+
+if (input) {
+
+    input.addEventListener(
+        "keydown",
+        event => {
+
+            if (
+                event.key ===
+                "Enter"
+            ) {
+
+                event.preventDefault();
+
+                sendMessage();
+
+            }
+
+        }
+    );
+
+}
+
+if (send) {
+
+    send.addEventListener(
         "click",
         sendMessage
     );
 
+}
 
-    input.addEventListener(
-        "keydown",
-        function (event) {
+}
 
-            if (
-                event.key === "Enter" &&
-                !event.shiftKey
-            ) {
+/* =====================================================
+CLEAR MEMORY
+===================================================== */
 
-                event.preventDefault();
-                sendMessage();
-            }
-        }
+function setupMemoryButton() {
+const button =
+    document.querySelector(
+        "#beshyForget"
     );
 
+if (!button) {
 
-    /* =====================================================
-       QUICK CHAT BUTTONS
-    ===================================================== */
+    return;
 
-    const quickButtons =
-        document.querySelectorAll(
-            ".beshy-options button"
+}
+
+button.addEventListener(
+    "click",
+    () => {
+
+        conversationMemory =
+            [];
+
+        localStorage.removeItem(
+            "beshyMemory"
         );
 
-    quickButtons.forEach(function (button) {
-
-        button.addEventListener(
-            "click",
-            function () {
-
-                const message =
-                    button.dataset.message;
-
-                if (message) {
-
-                    input.value =
-                        message;
-
-                    sendMessage();
-                }
-            }
-        );
-    });
-
-
-    /* =====================================================
-       OPEN AND CLOSE
-    ===================================================== */
-
-    function openBeshy() {
-
-        chat.classList.add("open");
-
-        toggle.setAttribute(
-            "aria-expanded",
-            "true"
+        addMessage(
+            "Okay besh 😌🧠 Beshy's memory has been cleared.",
+            "beshy"
         );
 
-        chat.setAttribute(
-            "aria-hidden",
-            "false"
-        );
-
-        input.focus();
     }
+);
+
+}
+
+/* =====================================================
+INITIALIZE
+===================================================== */
+
+async function initializeBeshy() {
+
+console.log(
+    "☕ Initializing Beshy..."
+);
 
 
-    function closeBeshy() {
+const loaded =
+    await loadBeshyInterface();
 
-        chat.classList.remove("open");
+if (!loaded) {
 
-        toggle.setAttribute(
-            "aria-expanded",
-            "false"
-        );
+    return;
 
-        chat.setAttribute(
-            "aria-hidden",
-            "true"
-        );
-    }
+}
 
 
-    toggle.addEventListener(
-        "click",
-        function () {
-
-            if (
-                chat.classList.contains(
-                    "open"
-                )
-            ) {
-                closeBeshy();
-            } else {
-                openBeshy();
-            }
-        }
-    );
+loadMemory();
 
 
-    closeButton.addEventListener(
-        "click",
-        closeBeshy
-    );
+setupToggle();
+
+setupEmojiPicker();
+
+setupQuickButtons();
+
+setupInput();
+
+setupMemoryButton();
 
 
-    /* =====================================================
-       FORGET MEMORY
-    ===================================================== */
-
-    if (forgetButton) {
-
-        forgetButton.addEventListener(
-            "click",
-            function () {
-
-                const confirmDelete =
-                    confirm(
-                        "Forget Beshy's visitor memory?"
-                    );
-
-                if (!confirmDelete) {
-                    return;
-                }
-
-                conversationMemory = [];
-
-                localStorage.removeItem(
-                    "beshyConversation"
-                );
-
-                displayMessage(
-                    "Okay besh. 🧠✨ My visitor memory is cleared.",
-                    "bot"
-                );
-            }
-        );
-    }
+loadLocalKnowledge();
 
 
-    /* =====================================================
-       START DATA LOAD
-    ===================================================== */
-
-    loadMemory();
-
-    loadFirebaseData();
-
-    loadLocalKnowledge();
+loadFirebaseData();
 
 
-    /* =====================================================
-       WELCOME MESSAGE
-    ===================================================== */
+addMessage(
 
-    setTimeout(function () {
+    "Hiii besh ☕💚 I'm Beshy! Welcome to DigiCafe 😆",
 
-        if (
-            messages.children.length === 0
-        ) {
+    "beshy"
 
-            displayMessage(
-                beshyGreeting(),
-                "bot"
-            );
-        }
+);
 
-    }, 800);
+
+console.log(
+    "🤖 Beshy is ready!"
+);
+
+}
+
+if (
+document.readyState ===
+"loading"
+) {
+
+document.addEventListener(
+    "DOMContentLoaded",
+    initializeBeshy
+);
+
+} else {
+
+
+initializeBeshy();
+
+
 }
