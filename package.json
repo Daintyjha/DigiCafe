@@ -1,0 +1,13 @@
+{
+  "name": "digicafe-main",
+  "version": "1.0.0",
+  "description": "DigiCafe website",
+  "type": "module",
+  "scripts": {
+    "start": "firebase emulators:start",
+    "deploy": "firebase deploy"
+  },
+  "devDependencies": {
+    "firebase-tools": "^14.0.0"
+  }
+}
