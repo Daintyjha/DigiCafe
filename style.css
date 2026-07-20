@@ -125,7 +125,9 @@ strong{
     box-shadow:var(--soft-shadow);
     backdrop-filter:blur(12px);
 }
-
+nav a {
+    font-size: 1.2rem;
+}
 /* =====================================================
    LOGO
 ===================================================== */
@@ -1432,6 +1434,13 @@ button.active-playlist{
     }
 
 }
+@media (max-width: 768px) {
+
+    .ambience-widget {
+        bottom: 90px;
+    }
+
+}
 /* =====================================================
    BESHY EY AY
 ===================================================== */
@@ -1497,8 +1506,6 @@ button.active-playlist{
 .beshy-chat.open{
     display:flex;
 }
-
-
 /* =====================================================
    BESHY HEADER
 ===================================================== */
@@ -1788,7 +1795,7 @@ button.active-playlist{
 }
 @media (max-width: 768px) {
     .beshy-toggle {
-        bottom: 85px;
+        bottom: 80px;
     }
 }
 
@@ -2197,26 +2204,6 @@ SMALL PHONES
 }
 }
 
-/* =====================================================
-VERY SMALL PHONES
-===================================================== */
-@media(max-width:380px){
-.stories{
-    padding-left:10px;
-    padding-right:10px;
-}
-.story-card{
-    padding:14px;
-}
-
-.story-card img{
-    width:min(100%,190px);
-}
-.story-content h2{
-    font-size:1.3rem;
-}
-
-}
 /* =====================================================
    LIBRARY PAGE — MOBILE
 ===================================================== */
