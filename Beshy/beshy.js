@@ -45,7 +45,7 @@ try {
 await addDoc(
     collection(
         db,
-        "pendingKnowledge"
+        "beshypendingKnowledge"
     ),
     {
 
