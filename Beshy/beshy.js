@@ -2,14 +2,87 @@
 BESHY.JS
 DigiCafe AI Bestie
 ===================================================== */
-
-import { db } from "../firebase.js";
-
 import {
 collection,
-getDocs
+getDocs,
+addDoc,
+serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+/* =====================================================
+PENDING KNOWLEDGE
+===================================================== */
+function isKnowledgeSuggestion(message){
 
+const keywords = [
+
+    "should",
+    "could",
+    "would be nice",
+    "idea",
+    "suggest",
+    "add",
+    "maybe",
+    "you should",
+    "i think"
+
+];
+
+
+return keywords.some(
+    word =>
+    normalizeText(message)
+    .includes(word)
+);
+
+}
+
+async function savePendingKnowledge(message){
+
+try {
+
+await addDoc(
+    collection(
+        db,
+        "pendingKnowledge"
+    ),
+    {
+
+        suggestion:
+            message,
+
+        source:
+            "visitor",
+
+        status:
+            "pending",
+
+        createdAt:
+            serverTimestamp()
+
+    }
+);
+
+
+console.log(
+"☕ Pending knowledge saved"
+);
+
+
+return true;
+
+
+}catch(error){
+
+console.error(
+"Could not save pending knowledge:",
+error
+);
+
+return false;
+
+}
+
+}
 /* =====================================================
 STATE
 ===================================================== */
@@ -875,10 +948,36 @@ await new Promise(
 );
 
 
-const reply =
+let reply;
+
+
+if(
+    isKnowledgeSuggestion(
+        userMessage
+    )
+){
+
+const saved =
+    await savePendingKnowledge(
+        userMessage
+    );
+
+
+if(saved){
+
+reply =
+"Oooh ☕✨ that's an interesting idea! I saved it in my little notebook for review. My café owner will check if it should become part of my knowledge 😆";
+
+}
+
+}else{
+
+reply =
     createResponse(
         userMessage
     );
+
+}
 
 removeTyping();
 
