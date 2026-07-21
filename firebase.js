@@ -8,9 +8,20 @@ from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
 import { getFirestore }
 from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
+// Import the functions you need from the SDKs you need
+
+import { initializeApp } from "firebase/app";
+
+// TODO: Add SDKs for Firebase products that you want to use
+
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+
+// Your web app's Firebase configuration
+
 const firebaseConfig = {
 
-  apiKey: "AQ.Ab8RN6LC6WEs29o4miZ2qJ5aUgXiN383kgVDZUdzEcS_o-Oxyg",
+  apiKey: "AIzaSyBLI3WImMtnSWD5KtaHAu3s3iFnZNkkL74",
 
   authDomain: "digicafe-beshy.firebaseapp.com",
 
@@ -24,8 +35,7 @@ const firebaseConfig = {
 
 };
 
+
+// Initialize Firebase
+
 const app = initializeApp(firebaseConfig);
-
-export const db = getFirestore(app);
-
-export { app };
