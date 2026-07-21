@@ -2,6 +2,8 @@
 BESHY.JS
 DigiCafe AI Bestie
 ===================================================== */
+import { db } from "../firebase.js";
+
 import {
 collection,
 getDocs,
