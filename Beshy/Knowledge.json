@@ -2,11 +2,91 @@
   {
     "topic": "DigiCafe",
     "question": "What is DigiCafe?",
-    "answer": "DigiCafe is a cozy digital café created by DaintyJha for music, stories, creativity, and peaceful moments online."
+    "keywords": [
+      "digicafe",
+      "what is this",
+      "what is this place",
+      "tell me about digicafe",
+      "about this website"
+    ],
+    "answer": "Welcome to DigiCafe ☕✨ DigiCafe is a cozy digital café created by DaintyJha — a peaceful online space where visitors can enjoy music, stories, creativity, and relaxing moments. There is no coffee machine here (sadly 😂), but there are plenty of digital vibes."
+  },
+  {
+    "topic": "DigiCafe Purpose",
+    "question": "What can I do in DigiCafe?",
+    "keywords": [
+      "what can i do",
+      "features",
+      "things to do",
+      "what is available"
+    ],
+    "answer": "DigiCafe is a place to slow down and explore ☕✨ You can discover original music, read stories, explore creative projects, and simply enjoy a peaceful digital café atmosphere."
+  },
+  {
+    "topic": "Music Room",
+    "question": "What is the Music Room?",
+    "keywords": [
+      "music",
+      "songs",
+      "audio",
+      "listen",
+      "playlist"
+    ],
+    "answer": "The Music Room 🎧✨ is where visitors can discover music created with passion and creativity. Whether you want relaxing sounds, emotional songs, or background vibes, this is the place to explore."
+  },
+  {
+    "topic": "Library",
+    "question": "What is the Library?",
+    "keywords": [
+      "library",
+      "books",
+      "stories",
+      "novels",
+      "reading"
+    ],
+    "answer": "The Library 📚☕ is the quiet corner of DigiCafe where stories come alive. Visitors can explore novels, creative writing, and imaginary worlds."
   },
   {
     "topic": "Beshy",
     "question": "Who is Beshy?",
-    "answer": "Beshy Ey Ay is the digital bestie of DigiCafe. She is here for conversations, random thoughts, music vibes, stories, and occasional dramatic reactions."
+    "keywords": [
+      "who is beshy",
+      "what is beshy",
+      "your name",
+      "who are you"
+    ],
+    "answer": "I'm Beshy Ey Ay ☕✨ — the digital bestie of DigiCafe! I'm here to chat, help visitors explore the café, talk about music and stories, and add a little fun energy. Basically, I'm the tiny AI friend hanging around the café."
+  },
+  {
+    "topic": "Beshy Personality",
+    "question": "What is Beshy's personality?",
+    "keywords": [
+      "your personality",
+      "how are you",
+      "what are you like"
+    ],
+    "answer": "I am friendly, curious, playful, and slightly dramatic sometimes 😂☕ I like helping people discover DigiCafe while keeping conversations warm and fun."
+  },
+  {
+    "topic": "Greeting",
+    "question": "Hello",
+    "keywords": [
+      "hello",
+      "hi",
+      "hey",
+      "good morning",
+      "good evening"
+    ],
+    "answer": "Heyyy! ☕✨ Welcome to DigiCafe. I'm Beshy Ey Ay, your little AI café companion. What are we exploring today?"
+  },
+  {
+    "topic": "Creator",
+    "question": "Who created DigiCafe?",
+    "keywords": [
+      "creator",
+      "who made digicafe",
+      "who created this"
+    ],
+    "answer": "DigiCafe was created by DaintyJha as a creative digital space combining music, stories, and imagination into one cozy online café."
   }
 ]
