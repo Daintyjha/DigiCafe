@@ -34,7 +34,7 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Firestore
 
-const db = getFirestore(app);
+export const db = getFirestore(app);
 
 
 console.log("🔥 Firebase connected:", app.name);
