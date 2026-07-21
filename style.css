@@ -48,6 +48,11 @@
 /* =====================================================
    GLOBAL RESET
 ===================================================== */
+/* =====================================================
+   GLOBAL RESET & TYPOGRAPHY
+===================================================== */
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
 *,
 *::before,
 *::after{
@@ -55,14 +60,26 @@
     padding:0;
     box-sizing:border-box;
 }
+<<<<<<< HEAD
 html{
     scroll-behavior:smooth;
 }
+=======
+
+html{
+    scroll-behavior:smooth;
+}
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
 html,
 body{
     min-height:100%;
     overflow-x:hidden;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
 body{
     font-family:"Kumbh Sans",Arial,sans-serif;
     background:var(--bg);
@@ -70,38 +87,75 @@ body{
     line-height:1.6;
     padding-top:80px;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
 a{
     color:inherit;
     text-decoration:none;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
 button,
 input,
 textarea,
 select{
     font:inherit;
 }
+<<<<<<< HEAD
 button{
     cursor:pointer;
 }
+=======
+
+button{
+    cursor:pointer;
+}
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
 img{
     display:block;
     max-width:100%;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
 h1,
 h2,
 h3,
 h4{
     line-height:1.25;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
 p{
-    font-size:clamp(.9rem,1.2vw,1rem);
+    font-size:clamp(1rem,1.2vw,1.05rem);
+    line-height:1.65;
 }
+<<<<<<< HEAD
 ul{
     padding-left:25px;
 }
 li{
     margin-bottom:8px;
 }
+=======
+
+ul{
+    padding-left:25px;
+}
+
+li{
+    margin-bottom:8px;
+}
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
 strong{
     color:var(--accent);
 }
@@ -114,15 +168,29 @@ strong{
     top:0;
     left:0;
     width:100%;
+<<<<<<< HEAD
     min-height:80px;
+=======
+    min-height:82px;
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
     z-index:9999;
     display:flex;
     align-items:center;
     justify-content:space-between;
+<<<<<<< HEAD
     padding:16px clamp(16px,4vw,40px);
     background:var(--surface);
     border-bottom:1px solid var(--border);
     box-shadow:var(--soft-shadow);
+=======
+
+    padding:16px clamp(18px,4vw,50px);
+
+    background:var(--surface);
+    border-bottom:2px solid var(--border);
+    box-shadow:0 5px 20px rgba(50,35,20,.14);
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
     backdrop-filter:blur(12px);
 }
 nav a {
@@ -134,11 +202,24 @@ nav a {
 .logo{
     flex-shrink:0;
     font-family:Georgia,serif;
+<<<<<<< HEAD
     font-size:clamp(1.15rem,2vw,1.4rem);
     font-weight:700;
     letter-spacing:1px;
+=======
+    font-size:clamp(1.35rem,2.5vw,1.75rem);
+    font-weight:700;
+    letter-spacing:1.5px;
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
     color:var(--accent);
     white-space:nowrap;
+
+    transition:var(--transition);
+}
+
+.logo:hover{
+    transform:scale(1.03);
 }
 
 /* =====================================================
@@ -147,7 +228,13 @@ nav a {
 .navbar__menu{
     display:flex;
     align-items:center;
+<<<<<<< HEAD
     gap:clamp(15px,2.5vw,30px);
+=======
+
+    gap:clamp(22px,3vw,42px);
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
     list-style:none;
     margin:0;
     padding:0;
@@ -162,33 +249,73 @@ nav a {
 .navbar__links{
     position:relative;
     display:inline-block;
+<<<<<<< HEAD
     padding:8px 0;
     color:var(--text);
     font-size:clamp(.85rem,1.2vw,1rem);
     font-weight:500;
+=======
+
+    padding:10px 2px;
+
+    color:var(--text);
+
+    font-size:clamp(1rem,1.4vw,1.15rem);
+    font-weight:600;
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
     white-space:nowrap;
     transition:var(--transition);
 }
+<<<<<<< HEAD
+=======
+
+
+/* Elegant underline */
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
 .navbar__links::after{
     content:"";
     position:absolute;
     left:0;
+<<<<<<< HEAD
     bottom:0;
     width:0;
     height:2px;
     background:var(--accent);
     transition:var(--transition);
 }
+=======
+    bottom:2px;
+
+    width:0;
+    height:3px;
+
+    background:var(--accent);
+    border-radius:5px;
+
+    transition:var(--transition);
+}
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
 .navbar__links:hover::after,
 .navbar__links.active::after{
     width:100%;
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
 .navbar__links:hover,
 .navbar__links.active{
     color:var(--accent);
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
 .navbar__links.active{
-    font-weight:700;
+    font-weight:800;
 }
 /* =====================================================
    HAMBURGER BUTTON
@@ -198,15 +325,41 @@ nav a {
     display:none;
     flex-direction:column;
     justify-content:center;
+<<<<<<< HEAD
     gap:5px;
     width:34px;
     height:30px;
     padding:0;
     border:none;
     background:transparent;
+=======
+
+    gap:6px;
+
+    width:40px;
+    height:40px;
+
+    padding:7px;
+
+    border:1px solid var(--border);
+    border-radius:10px;
+
+    background:var(--card);
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
     cursor:pointer;
     z-index:10000;
+
+    transition:var(--transition);
 }
+<<<<<<< HEAD
+=======
+
+#mobile-menu:hover{
+    background:var(--accent);
+}
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
 #mobile-menu .bar{
     width:100%;
     height:3px;
@@ -214,22 +367,47 @@ nav a {
     background:var(--text);
     transition:var(--transition);
 }
+<<<<<<< HEAD
+=======
+
+#mobile-menu:hover .bar{
+    background:var(--bg);
+}
+
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
 /* =====================================================
    MOBILE NAVIGATION
 ===================================================== */
 @media(max-width:768px){
 
     body{
-        padding-top:70px;
+        padding-top:72px;
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
     .navbar{
-        min-height:70px;
-        padding:14px 16px;
+        min-height:72px;
+        padding:14px 18px;
     }
+<<<<<<< HEAD
+=======
+
+    .logo{
+        font-size:1.4rem;
+    }
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
     #mobile-menu{
         display:flex;
         flex-shrink:0;
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
     .navbar__menu{
         display:none;
         position:absolute;
@@ -242,9 +420,16 @@ nav a {
         padding:10px;
         flex-direction:column;
         align-items:stretch;
+<<<<<<< HEAD
         gap:4px;
+=======
+
+        gap:5px;
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
         background:var(--surface);
         border:1px solid var(--border);
+<<<<<<< HEAD
         border-radius:0 0 14px 14px;
         box-shadow:var(--shadow);
     }
@@ -264,25 +449,84 @@ nav a {
     .navbar__links:hover{
         background:var(--card);
     }
+=======
+        border-radius:0 0 16px 16px;
+
+        box-shadow:var(--shadow);
+    }
+
+    .navbar__menu.active{
+        display:flex;
+    }
+
+    .navbar__menu li{
+        width:100%;
+    }
+
+    .navbar__links{
+        display:block;
+        width:100%;
+
+        padding:14px 16px;
+
+        border-radius:10px;
+
+        font-size:1.05rem;
+        font-weight:600;
+
+        white-space:normal;
+    }
+
+    .navbar__links:hover{
+        background:var(--card);
+    }
+
+    .navbar__links::after{
+        display:none;
+    }
+
+    .navbar__links.active{
+        background:var(--accent);
+        color:var(--bg);
+    }
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
 }
 /* =====================================================
    SMALL PHONES
 ===================================================== */
 @media(max-width:480px){
+<<<<<<< HEAD
  .navbar{
         padding:12px 14px;
     }
+=======
+
+    .navbar{
+        min-height:70px;
+        padding:12px 14px;
+    }
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
     .logo{
-        font-size:1.1rem;
+        font-size:1.25rem;
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
     #mobile-menu{
-        width:30px;
-        height:28px;
+        width:40px;
+        height:40px;
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
     .navbar__menu{
         left:8px;
         right:8px;
     }
+<<<<<<< HEAD
 }
 /* =====================================================
    FOOTER
@@ -365,6 +609,13 @@ nav a {
     .small{
         max-width:100%;
     }
+=======
+
+    .navbar__links{
+        padding:14px;
+        font-size:1rem;
+    }
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
 }
 /* =====================================================
    SHARED COMPONENTS
@@ -1588,11 +1839,19 @@ button.active-playlist{
     width:fit-content;
     max-width:80%;
     margin:0 0 8px;
+<<<<<<< HEAD
     padding:8px 12px;
     border-radius:12px;
     font-family:"Kumbh Sans",Arial,sans-serif;
     font-size:14px;
     line-height:1.4;
+=======
+    padding:9px 13px;
+    border-radius:12px;
+    font-family:"Kumbh Sans",Arial,sans-serif;
+    font-size:15px;
+    line-height:1.55;
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
     white-space:pre-wrap;
     overflow-wrap:anywhere;
     word-break:break-word;
@@ -1623,22 +1882,32 @@ button.active-playlist{
 .beshy-options{
     flex-shrink:0;
     display:flex;
+<<<<<<< HEAD
     gap:5px;
     padding:6px;
+=======
+    gap:6px;
+    padding:7px;
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
     overflow-x:auto;
     overflow-y:hidden;
     background:var(--card);
 }
 .beshy-options button{
     flex-shrink:0;
+<<<<<<< HEAD
     min-height:30px;
     padding:5px 10px;
+=======
+    min-height:32px;
+    padding:6px 11px;
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
     border:1px solid var(--border);
     border-radius:15px;
     background:var(--surface);
     color:var(--text);
     font-family:"Kumbh Sans",Arial,sans-serif;
-    font-size:12px;
+    font-size:13px;
     line-height:1.2;
     white-space:nowrap;
     cursor:pointer;
@@ -1651,8 +1920,13 @@ button.active-playlist{
     flex-shrink:0;
     display:flex;
     align-items:center;
+<<<<<<< HEAD
     gap:5px;
     min-height:58px;
+=======
+    gap:6px;
+    min-height:60px;
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
     padding:8px;
     background:var(--card);
     border-top:1px solid var(--border);
@@ -1660,14 +1934,19 @@ button.active-playlist{
 .beshy-input-area input{
     flex:1;
     min-width:0;
+<<<<<<< HEAD
     height:40px;
     padding:8px 12px;
+=======
+    height:42px;
+    padding:8px 13px;
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
     border:1px solid var(--border);
     border-radius:20px;
     background:var(--surface);
     color:var(--text);
     font-family:"Kumbh Sans",Arial,sans-serif;
-    font-size:14px;
+    font-size:15px;
     line-height:1.2;
     outline:none;
 }
@@ -1683,14 +1962,19 @@ button.active-playlist{
     display:flex;
     align-items:center;
     justify-content:center;
+<<<<<<< HEAD
     width:36px;
     height:36px;
+=======
+    width:38px;
+    height:38px;
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
     padding:0;
     border:none;
     background:transparent;
     color:var(--accent);
     font-family:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif;
-    font-size:20px;
+    font-size:21px;
     line-height:1;
     cursor:pointer;
 }
@@ -1731,9 +2015,18 @@ button.active-playlist{
         right:10px;
         bottom:80px;
         width:calc(100vw - 20px);
+<<<<<<< HEAD
         height:75vh;
         border-radius:16px;
         font-size:13px;
+=======
+
+        /* SHORTER THAN BEFORE */
+        height:65vh;
+
+        border-radius:16px;
+        font-size:15px;
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
     }
     .beshy-header{
         min-height:54px;
@@ -1745,10 +2038,10 @@ button.active-playlist{
         font-size:24px;
     }
     .beshy-identity h3{
-        font-size:15px;
+        font-size:16px;
     }
     .beshy-identity p{
-        font-size:11px;
+        font-size:13px;
     }
     .beshy-close{
         width:30px;
@@ -1756,14 +2049,25 @@ button.active-playlist{
         font-size:24px;
     }
     .beshy-messages{
-        padding:8px;
+        padding:9px;
     }
     .beshy-message{
         max-width:85%;
+<<<<<<< HEAD
         font-size:13px;
         line-height:1.4;
+=======
+        font-size:15px;
+        line-height:1.55;
+    }
+
+    .beshy-message p{
+        font-size:15px;
+        line-height:1.55;
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
     }
     .beshy-options{
+<<<<<<< HEAD
         gap:4px;
         padding:5px;
     }
@@ -1780,17 +2084,44 @@ button.active-playlist{
         height:38px;
         padding:8px 10px;
         font-size:14px;
+=======
+        gap:5px;
+        padding:6px;
+    }
+
+    .beshy-options button{
+        min-height:30px;
+        padding:5px 9px;
+        font-size:13px;
+    }
+
+    .beshy-input-area{
+        min-height:56px;
+        padding:7px;
+    }
+
+    .beshy-input-area input{
+        height:40px;
+        padding:8px 11px;
+        font-size:15px;
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
     }
     .beshy-input-area button{
+<<<<<<< HEAD
         width:34px;
         height:34px;
         font-size:18px;
+=======
+        width:36px;
+        height:36px;
+        font-size:20px;
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
     }
     .beshy-memory-controls{
         padding:4px;
     }
     .beshy-memory-controls button{
-        font-size:11px;
+        font-size:12px;
     }
 }
 @media (max-width: 768px) {
@@ -1805,12 +2136,16 @@ button.active-playlist{
 @media(max-width:380px){
     .beshy-chat{
         bottom:70px;
-        height:80vh;
+
+        /* STILL SHORTER */
+        height:65vh;
     }
     .beshy-options button{
-        font-size:10px;
+        font-size:12px;
     }
 }
+
+
 /* =====================================================
    FINAL MOBILE ADJUSTMENTS
 ===================================================== */
@@ -2205,6 +2540,29 @@ SMALL PHONES
 }
 
 /* =====================================================
+<<<<<<< HEAD
+=======
+VERY SMALL PHONES
+===================================================== */
+@media(max-width:380px){
+.stories{
+    padding-left:10px;
+    padding-right:10px;
+}
+.story-card{
+    padding:14px;
+}
+
+.story-card img{
+    width:min(100%,190px);
+}
+.story-content h2{
+    font-size:1.3rem;
+}
+
+}
+/* =====================================================
+>>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
    LIBRARY PAGE — MOBILE
 ===================================================== */
 @media(max-width:480px){
@@ -2212,4 +2570,70 @@ SMALL PHONES
         padding:20px 12px;
     }
 
+}
+.social__icons{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.social__icons a{
+    width:42px;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border:1px solid var(--border);
+    border-radius:50%;
+
+    background:var(--card);
+
+    box-shadow:var(--soft-shadow);
+
+    transition:var(--transition);
+}
+
+.social__icons a:hover{
+    transform:translateY(-3px) scale(1.05);
+    background:var(--accent);
+}
+
+.social__custom-icon{
+    width:65%;
+    height:65%;
+
+    object-fit:contain;
+    border-radius:50%;
+}
+.footer__container{
+    width:100%;
+    max-width:1100px;
+    margin:auto;
+
+    padding:35px 20px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    gap:30px;
+    flex-wrap:wrap;
+}
+
+.footer__logo{
+    margin-bottom:6px;
+
+    font-family:Georgia,serif;
+    font-size:1.6rem;
+    color:var(--accent);
+}
+
+.small{
+    max-width:320px;
+    color:var(--text-light);
+    font-size:.95rem;
 }
