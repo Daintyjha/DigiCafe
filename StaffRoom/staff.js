@@ -142,7 +142,8 @@ card.querySelector(".approve")
 
 approveKnowledge(
     doc.id,
-    data
+    data,
+    card
 );
 
 
@@ -210,44 +211,77 @@ error
    APPROVE KNOWLEDGE
 ===================================================== */
 
-
 async function approveKnowledge(
 id,
-data
+data,
+card
 ){
 
 
 try {
 
 
+const topic =
+card.querySelector(".topic").value;
+
+
+const question =
+card.querySelector(".question").value;
+
+
+const answer =
+card.querySelector(".answer").value;
+
+
+
+if(
+!question ||
+!answer
+){
+
+alert(
+"Please add a question and answer first ☕"
+);
+
+return;
+
+}
+
+
 
 await addDoc(
 
 collection(
-    db,
-    "beshyKnowledge"
+db,
+"beshyKnowledge"
 ),
 
 {
 
-
 topic:
-"Visitor Contribution",
+
+topic || "Visitor Knowledge",
 
 
 question:
-data.suggestion,
+
+
+question,
 
 
 answer:
-data.suggestion,
+
+
+answer,
 
 
 source:
-"approved visitor knowledge",
+
+"approved by DaintyJha",
 
 
 createdAt:
+
 serverTimestamp()
 
 
@@ -262,22 +296,17 @@ serverTimestamp()
 await deleteDoc(
 
 doc(
-
-    db,
-
-    "pendingKnowledge",
-
-    id
-
+db,
+"pendingKnowledge",
+id
 )
 
 );
 
 
 
-
 alert(
-"☕ Beshy learned something new!"
+"🤖☕ Beshy learned something new!"
 );
 
 
@@ -287,7 +316,6 @@ loadPendingKnowledge();
 
 
 }
-
 
 
 catch(error){
@@ -302,11 +330,7 @@ error
 }
 
 
-
 }
-
-
-
 
 
 /* =====================================================
