@@ -1,4 +1,4 @@
-```javascript
+
 document.addEventListener("DOMContentLoaded", () => {
 
   const storyKey = new URLSearchParams(window.location.search).get("story");
