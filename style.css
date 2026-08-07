@@ -2450,246 +2450,39 @@ VERY SMALL PHONES
     color:var(--text-light);
     font-size:.95rem;
 }
-/* =====================================================
-   DIGICAFE — LOBBY ENTRANCE
-===================================================== */
+#welcome-screen{
 
-#welcome-screen {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
+    position:fixed;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    inset:0;
 
-    padding: 24px;
+    display:flex;
 
-    background:
-        radial-gradient(
-            circle at 50% 35%,
-            rgba(255, 255, 255, 0.08),
-            transparent 45%
-        ),
-        linear-gradient(
-            135deg,
-            #071426,
-            #0d2038 55%,
-            #16304f
-        );
+    justify-content:center;
 
-    overflow: hidden;
+    align-items:center;
+
+    background:#071426;
+
+    z-index:9999;
+
+    transition:opacity .8s ease;
 }
 
+.welcome-card{
 
-/* Decorative glow */
+    max-width:550px;
 
-#welcome-screen::before {
-    content: "";
+    padding:3rem;
 
-    position: absolute;
+    text-align:center;
 
-    width: 500px;
-    height: 500px;
-
-    border-radius: 50%;
-
-    background: rgba(214, 179, 106, 0.08);
-
-    filter: blur(80px);
-
-    pointer-events: none;
+    color:white;
 }
 
+#cafe{
 
-/* Entrance card */
+    opacity:0;
 
-.welcome-card {
-    position: relative;
-    z-index: 2;
-
-    width: min(520px, 100%);
-
-    padding: 60px 45px;
-
-    text-align: center;
-
-    background: rgba(255, 255, 255, 0.08);
-
-    border: 1px solid rgba(241, 216, 155, 0.25);
-
-    border-radius: 28px;
-
-    box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08);
-
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-
-    animation: entranceCard 1s ease both;
-}
-
-
-/* Café title */
-
-.welcome-card h1 {
-    margin: 0 0 20px;
-
-    font-family: "DM Serif Display", serif;
-
-    font-size: clamp(2.8rem, 7vw, 4.5rem);
-
-    font-weight: 400;
-
-    letter-spacing: 1px;
-
-    color: #f1d89b;
-
-    text-shadow:
-        0 0 25px rgba(241, 216, 155, 0.18);
-}
-
-
-/* "Take a seat" */
-
-.welcome-card p:first-of-type {
-    margin-bottom: 24px;
-
-    font-size: 1.35rem;
-
-    line-height: 1.7;
-
-    color: #ffffff;
-
-    letter-spacing: 1px;
-}
-
-
-/* Description */
-
-.welcome-card p:nth-of-type(2) {
-    max-width: 390px;
-
-    margin: 0 auto 35px;
-
-    font-size: 1rem;
-
-    line-height: 1.8;
-
-    color: rgba(255, 255, 255, 0.72);
-}
-
-
-/* Enter button */
-
-#enter-btn {
-    display: inline-flex;
-
-    align-items: center;
-    justify-content: center;
-
-    min-width: 210px;
-
-    padding: 15px 28px;
-
-    border: 1px solid #f1d89b;
-
-    border-radius: 999px;
-
-    background: #d6b36a;
-
-    color: #071426;
-
-    font-family: inherit;
-
-    font-size: 1rem;
-
-    font-weight: 600;
-
-    letter-spacing: 0.5px;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 10px 30px rgba(214, 179, 106, 0.18);
-
-    transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease,
-        background 0.25s ease;
-}
-
-
-#enter-btn:hover {
-    transform: translateY(-3px);
-
-    background: #f1d89b;
-
-    box-shadow:
-        0 15px 35px rgba(214, 179, 106, 0.3);
-}
-
-
-#enter-btn:active {
-    transform: translateY(0);
-}
-
-
-/* Entrance animation */
-
-@keyframes entranceCard {
-
-    from {
-        opacity: 0;
-        transform: translateY(25px) scale(0.97);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-
-}
-
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media (max-width: 600px) {
-
-    #welcome-screen {
-        padding: 18px;
-    }
-
-
-    .welcome-card {
-        padding: 45px 25px;
-
-        border-radius: 22px;
-    }
-
-
-    .welcome-card h1 {
-        font-size: 2.8rem;
-    }
-
-
-    .welcome-card p:first-of-type {
-        font-size: 1.15rem;
-    }
-
-
-    .welcome-card p:nth-of-type(2) {
-        font-size: 0.95rem;
-
-        line-height: 1.7;
-    }
-
-
-    #enter-btn {
-        width: 100%;
-    }
-
+    transition:opacity .8s ease;
 }
