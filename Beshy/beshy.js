@@ -17,18 +17,19 @@ function isKnowledgeSuggestion(message){
 
 const keywords = [
 
-    "should",
-    "could",
-    "would be nice",
-    "idea",
-    "suggest",
-    "add",
-    "maybe",
     "you should",
-    "i think"
+    "you could",
+    "it would be nice",
+    "i suggest",
+    "i suggest that",
+    "my suggestion",
+    "i have an idea",
+    "i think digicafe should",
+    "i think beshy should",
+    "you should add",
+    "maybe add"
 
 ];
-
 
 return keywords.some(
     word =>
@@ -373,7 +374,13 @@ return array[
 ];
 
 }
+function getCurrentPage() {
 
+    return document.body.dataset.beshyPage || "unknown";
+
+}
+const currentPage =
+    getCurrentPage();
 /* =====================================================
 SEARCH KNOWLEDGE
 ===================================================== */
@@ -1307,10 +1314,9 @@ setupInput();
 setupMemoryButton();
 
 
-loadLocalKnowledge();
+await loadLocalKnowledge();
 
-
-loadFirebaseData();
+await loadFirebaseData();
 
 
 addMessage(
