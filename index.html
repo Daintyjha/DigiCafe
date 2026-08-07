@@ -21,24 +21,14 @@
     <meta property="og:title" content="DigiCafe | A Cozy Digital Café">
 
     <meta property="og:description" content="A peaceful online café for music, stories, and creative escapes created by DaintyJha.">
-
     <meta property="og:type" content="website">
-
     <meta property="og:image" content="images/digicafe-preview.jpg">
-
-
     <!-- MOBILE BROWSER COLOR -->
     <meta name="theme-color" content="#f5efe6">
-
-<link rel="icon" href="favicon.ico">
     <!-- GOOGLE FONT -->
     <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@300;400;600&display=swap" rel="stylesheet">
-
-
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
-
-
 </head>
 
 
@@ -47,189 +37,174 @@
 
 <!-- NAVIGATION LOADS HERE -->
 <div id="navbar"></div>
-
-
-
 <main class="cafe-home">
 
-
-
     <!-- =========================
-         HERO SECTION
+         WELCOME SCREEN
     ========================== -->
 
-    <section class="hero">
+    <div id="welcome-screen">
 
+        <div class="welcome-card">
 
-        <h1>
-            ☕ Welcome to DigiCafe
-        </h1>
-
-
-        <p class="subtitle">
-            A cozy digital café for listening, reading, and drifting.
-        </p>
-
-
-        <p class="intro">
-            Leave the noise behind and enter a quiet corner of the internet
-            filled with music, stories, imagination, and moments of calm.
-        </p>
-
-
-        <p class="status">
-            ☁️ Currently serving: soft sounds, gentle stories, and creative thoughts.
-        </p>
-
-
-    </section>
-
-
-
-
-    <!-- =========================
-         MAIN EXPLORATION
-    ========================== -->
-
-    <section class="card-grid">
-
-
-
-        <a href="music.html" class="cafe-card">
-
-
-            <h2>
-                🎵 Music Room
-            </h2>
-
+            <h1>☕ DigiCafe</h1>
 
             <p>
-                Discover original songs, ambient sounds,
-                playlists, and relaxing audio experiences.
+                Take a seat.<br>
+                Stay awhile.
             </p>
-
-
-            <span>
-                Enter the sound space →
-            </span>
-
-
-        </a>
-
-
-
-
-
-        <a href="library.html" class="cafe-card">
-
-
-            <h2>
-                📚 Story Library
-            </h2>
-
 
             <p>
-                Explore original fiction, audiobooks,
-                and stories created from imagination.
+                A cozy digital café where stories,
+                music and creativity come together.
             </p>
 
+            <button id="enter-btn">
+                ☕ Enter the Café
+            </button>
 
-            <span>
-                Enter the story space →
-            </span>
+        </div>
 
-
-        </a>
-
-        <a href="about.html" class="cafe-card">
-
-
-            <h2>
-                ☕ About DigiCafe
-            </h2>
-
-
-            <p>
-                Discover the story behind DigiCafe
-                and the creator behind the café.
-            </p>
-
-
-            <span>
-                Learn more →
-            </span>
-
-
-        </a>
-
-
-
-
-    </section>
-
-
-
+    </div>
 
 
 
     <!-- =========================
-         FEATURE EXPERIENCE
+         MAIN WEBSITE
     ========================== -->
 
-
-    <section class="feature">
-
-
-        <h2>
-            ✨ Featured Experience
-        </h2>
-
-
-        <p>
-            Enter DigiCafe Radio — a continuous stream of carefully
-            crafted sounds designed for relaxing, studying, creating,
-            or simply taking a peaceful moment for yourself.
-        </p>
+    <div id="cafe">
 
 
 
-        <a class="feature-button" href="music.html">
+        <!-- HERO -->
 
-            ▶ Start Listening
+        <section class="hero">
 
-        </a>
+            <h1>☕ Welcome to DigiCafe</h1>
 
+            <p class="subtitle">
+                A cozy digital café for listening, reading, and drifting.
+            </p>
 
+            <p class="intro">
+                Leave the noise behind and enter a quiet corner of the internet
+                filled with music, stories, imagination, and moments of calm.
+            </p>
 
-    </section>
+            <p class="status">
+                ☁️ Currently serving:
+                soft sounds, gentle stories, and creative thoughts.
+            </p>
 
-
-
-
-
-
-
-    <!-- =========================
-         BRAND MESSAGE
-    ========================== -->
-
-
-    <section class="quote">
-
-
-        <p>
-            "Some places are built to make you hurry.
-            DigiCafe was created to help you slow down."
-        </p>
+        </section>
 
 
-    </section>
-<div id="beshy-container"></div>
+
+        <!-- MAIN ROOMS -->
+
+        <section class="card-grid">
+
+            <a href="music.html" class="cafe-card">
+
+                <h2>🎵 Music Lounge</h2>
+
+                <p>
+                    Discover original songs, ambient sounds,
+                    playlists, and relaxing audio experiences.
+                </p>
+
+                <span>
+                    Enter →
+                </span>
+
+            </a>
+
+
+
+            <a href="library.html" class="cafe-card">
+
+                <h2>📚 Story Library</h2>
+
+                <p>
+                    Explore original fiction,
+                    audiobooks,
+                    and immersive stories.
+                </p>
+
+                <span>
+                    Enter →
+                </span>
+
+            </a>
+
+
+
+            <a href="about.html" class="cafe-card">
+
+                <h2>☕ About DigiCafe</h2>
+
+                <p>
+                    Meet the creator behind the café
+                    and discover the vision that inspired it.
+                </p>
+
+                <span>
+                    Learn More →
+                </span>
+
+            </a>
+
+        </section>
+
+
+
+        <!-- FEATURE -->
+
+        <section class="feature">
+
+            <h2>✨ Featured Experience</h2>
+
+            <p>
+                Enter DigiCafe Radio—a continuous stream of carefully crafted
+                sounds designed for relaxing, studying, creating,
+                or simply taking a peaceful moment for yourself.
+            </p>
+
+            <a class="feature-button" href="music.html">
+
+                ▶ Start Listening
+
+            </a>
+
+        </section>
+
+
+
+        <!-- QUOTE -->
+
+        <section class="quote">
+
+            <p>
+                "Some places are built to make you hurry.
+                DigiCafe was created to help you slow down."
+            </p>
+
+        </section>
+
+
+
+        <!-- BESHY -->
+
+        <div id="beshy-container"></div>
+
+    </div>
+
 </main>
 <div id="footer"></div>
 <!-- SCRIPTS -->
 <script src="control-panel.js"></script>
 <script src="script.js"></script>
-<script type="module" src="Beshy/beshy.js"></script>
+<script src="Beshy/beshy.js"></script>
 </body>
 </html>
