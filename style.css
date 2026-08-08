@@ -2227,6 +2227,7 @@ padding:clamp(20px,4vw,40px) 20px 120px;
     background:var(--accent-hover);
     transform:translateY(-2px);
 }
+
 /* =====================================================
    TABLET
 ===================================================== */
@@ -2329,28 +2330,6 @@ SMALL PHONES
 }
 
 /* =====================================================
-<<<<<<< HEAD
-=======
-VERY SMALL PHONES
-===================================================== */
-@media(max-width:380px){
-.stories{
-    padding-left:10px;
-    padding-right:10px;
-}
-.story-card{
-    padding:14px;
-}
-
-.story-card img{
-    width:min(100%,190px);
-}
-.story-content h2{
-    font-size:1.3rem;
-}
-
-}
-/* =====================================================
    LIBRARY PAGE — MOBILE
 ===================================================== */
 @media(max-width:480px){
@@ -2384,7 +2363,19 @@ VERY SMALL PHONES
 
     transition:var(--transition);
 }
+@media (max-width: 600px) {
 
+    .reader,
+    .reader-container,
+    .story-reader,
+    .chapter-content {
+        width: 100%;
+        max-width: none;
+        margin-left: 0;
+        margin-right: 0;
+        box-sizing: border-box;
+    }
+}
 .social__icons a:hover{
     transform:translateY(-3px) scale(1.05);
     background:var(--accent);
