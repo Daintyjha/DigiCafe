@@ -188,7 +188,20 @@ contentEl.innerHTML = `
         document.getElementById(
             "pdfPageNumber"
         );
+const zoomOut =
+    document.getElementById(
+        "zoomOut"
+    );
 
+const zoomReset =
+    document.getElementById(
+        "zoomReset"
+    );
+
+const zoomIn =
+    document.getElementById(
+        "zoomIn"
+    );
 
     /* =================================================
        CHAPTER DATA
@@ -242,12 +255,24 @@ contentEl.innerHTML = `
 
     let currentPDF = null;
 
-    let currentPDFPage = 1;
+let currentPDFPage = 1;
 
-    let rendering = false;
+let rendering = false;
 
-    let pendingPage = null;
+let pendingPage = null;
 
+
+/* =================================================
+   PDF ZOOM
+================================================= */
+
+let zoomLevel = 1;
+
+const zoomStep = 0.15;
+
+const minZoom = 0.7;
+
+const maxZoom = 3;
 
     /* =================================================
        RENDER PDF PAGE
@@ -311,8 +336,9 @@ contentEl.innerHTML = `
 
 
             const scale =
-                availableWidth /
-                baseViewport.width;
+    (availableWidth /
+        baseViewport.width) *
+    zoomLevel;
 
 
             const viewport =
@@ -539,7 +565,9 @@ contentEl.innerHTML = `
         titleEl.textContent =
             chapter.title;
 
+zoomLevel = 1;
 
+zoomReset.textContent = "100%";
         /* ---------------------------------------------
            PDF
         --------------------------------------------- */
@@ -661,7 +689,73 @@ contentEl.innerHTML = `
         }
     );
 
+/* =================================================
+   PDF ZOOM OUT
+================================================= */
 
+zoomOut.addEventListener(
+    "click",
+    () => {
+
+        zoomLevel = Math.max(
+            minZoom,
+            zoomLevel - zoomStep
+        );
+
+        zoomReset.textContent =
+            `${Math.round(zoomLevel * 100)}%`;
+
+        renderPDFPage(
+            currentPDFPage
+        );
+
+    }
+);
+
+
+/* =================================================
+   PDF ZOOM IN
+================================================= */
+
+zoomIn.addEventListener(
+    "click",
+    () => {
+
+        zoomLevel = Math.min(
+            maxZoom,
+            zoomLevel + zoomStep
+        );
+
+        zoomReset.textContent =
+            `${Math.round(zoomLevel * 100)}%`;
+
+        renderPDFPage(
+            currentPDFPage
+        );
+
+    }
+);
+
+
+/* =================================================
+   PDF ZOOM RESET
+================================================= */
+
+zoomReset.addEventListener(
+    "click",
+    () => {
+
+        zoomLevel = 1;
+
+        zoomReset.textContent =
+            "100%";
+
+        renderPDFPage(
+            currentPDFPage
+        );
+
+    }
+);
     /* =================================================
        PREVIOUS CHAPTER
     ================================================= */
