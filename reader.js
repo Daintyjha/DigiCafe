@@ -93,19 +93,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =================================================
-       CREATE PDF VIEWER
-    ================================================= */
+   CREATE PDF VIEWER
+================================================= */
 
-    contentEl.innerHTML = `
+contentEl.innerHTML = `
 
-        <div class="pdf-viewer">
+    <div class="pdf-viewer">
 
-            <canvas
-                id="pdfCanvas"
-                class="pdf-page">
-            </canvas>
+        <canvas
+            id="pdfCanvas"
+            class="pdf-page">
+        </canvas>
 
-            <div class="pdf-controls">
+
+        <div class="pdf-controls">
+
+            <!-- PDF PAGE NAVIGATION -->
+
+            <div class="pdf-page-controls">
 
                 <button
                     id="prevPdfPage"
@@ -113,11 +118,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     ‹
                 </button>
 
-
                 <span id="pdfPageNumber">
                     1 / 1
                 </span>
-
 
                 <button
                     id="nextPdfPage"
@@ -127,10 +130,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
             </div>
 
+
+            <!-- PDF ZOOM -->
+
+            <div class="pdf-zoom-controls">
+
+                <button
+                    id="zoomOut"
+                    aria-label="Zoom out">
+                    −
+                </button>
+
+                <button
+                    id="zoomReset"
+                    aria-label="Reset zoom">
+                    100%
+                </button>
+
+                <button
+                    id="zoomIn"
+                    aria-label="Zoom in">
+                    +
+                </button>
+
+            </div>
+
         </div>
 
-    `;
+    </div>
 
+`;
 
     /* =================================================
        PDF ELEMENTS
