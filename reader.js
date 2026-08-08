@@ -172,10 +172,10 @@ document.addEventListener("DOMContentLoaded", () => {
                LOAD DOCUMENT
             ----------------------------------------- */
 
-            const pdf =
-                await getDocument(
-                    pdfPath
-                ).promise;
+           const pdf =
+    await getDocument({
+        url: pdfPath
+    }).promise;
 
 
             console.log(
