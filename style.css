@@ -356,31 +356,7 @@ nav a {
         color:var(--bg);
     }
 }
-/* =====================================================
-   SMALL PHONES
-===================================================== */
-@media(max-width:480px){
- .navbar{
-        padding:12px 14px;
-    }
 
-    .navbar{
-        min-height:70px;
-        padding:12px 14px;
-    }
-
-    .logo{
-        font-size:1.25rem;
-    }
-    #mobile-menu{
-        width:40px;
-        height:40px;
-    }
-    .navbar__menu{
-        left:8px;
-        right:8px;
-    }
-}
 /* =====================================================
    FOOTER
 ===================================================== */
@@ -2375,7 +2351,6 @@ VERY SMALL PHONES
 
 }
 /* =====================================================
->>>>>>> c3b67b66889421dab3ee721cea410587cb583ea5
    LIBRARY PAGE — MOBILE
 ===================================================== */
 @media(max-width:480px){
@@ -2450,39 +2425,643 @@ VERY SMALL PHONES
     color:var(--text-light);
     font-size:.95rem;
 }
-#welcome-screen{
+/* =========================================================
+   DIGICAFE — WELCOME / CAFÉ ENTRANCE
+   ========================================================= */
 
-    position:fixed;
+:root {
+    --cafe-night: #050d1a;
+    --cafe-navy: #08172b;
+    --cafe-blue: #102746;
 
-    inset:0;
+    --cafe-gold: #d6b36a;
+    --cafe-gold-light: #f3d99a;
+    --cafe-cream: #fff4d6;
 
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    background:#071426;
-
-    z-index:9999;
-
-    transition:opacity .8s ease;
+    --cafe-window: #f7d98c;
+    --cafe-shadow: rgba(0, 0, 0, 0.55);
 }
 
-.welcome-card{
 
-    max-width:550px;
+/* =========================================================
+   WELCOME SCREEN
+   ========================================================= */
 
-    padding:3rem;
+.welcome-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
 
-    text-align:center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
-    color:white;
+    min-height: 100vh;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 50% 45%,
+            rgba(35, 71, 110, 0.35),
+            transparent 45%
+        ),
+        linear-gradient(
+            180deg,
+            #030914 0%,
+            var(--cafe-night) 55%,
+            #020711 100%
+        );
+
+    color: var(--cafe-cream);
+
+    transition:
+        opacity 0.9s ease,
+        visibility 0.9s ease;
 }
 
-#cafe{
 
-    opacity:0;
+/* =========================================================
+   SUBTLE NIGHT GLOW
+   ========================================================= */
 
-    transition:opacity .8s ease;
+.welcome-screen::before {
+    content: "";
+    position: absolute;
+    width: 600px;
+    height: 600px;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -48%);
+
+    background: radial-gradient(
+        circle,
+        rgba(214, 179, 106, 0.08),
+        transparent 65%
+    );
+
+    pointer-events: none;
 }
+
+
+/* =========================================================
+   LITTLE FLOATING LIGHTS
+   ========================================================= */
+
+.welcome-screen::after {
+    content: "✦     ·       ✧        ·     ✦       ·       ✧";
+
+    position: absolute;
+    top: 15%;
+    left: 0;
+
+    width: 100%;
+
+    color: rgba(243, 217, 154, 0.35);
+    font-size: 12px;
+    letter-spacing: 30px;
+    text-align: center;
+
+    animation: floatingLights 8s ease-in-out infinite;
+
+    pointer-events: none;
+}
+
+@keyframes floatingLights {
+
+    0%,
+    100% {
+        transform: translateY(0);
+        opacity: 0.45;
+    }
+
+    50% {
+        transform: translateY(-12px);
+        opacity: 0.8;
+    }
+}
+
+
+/* =========================================================
+   DIGICAFE TITLE
+   ========================================================= */
+
+.welcome-title {
+    position: relative;
+    z-index: 3;
+
+    margin-bottom: 28px;
+
+    color: var(--cafe-gold-light);
+
+    font-family: "DM Serif Display", serif;
+    font-size: clamp(1.7rem, 4vw, 2.8rem);
+
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+
+    text-shadow:
+        0 0 12px rgba(214, 179, 106, 0.25),
+        0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.welcome-title::before,
+.welcome-title::after {
+    content: "✦";
+
+    margin: 0 14px;
+
+    color: var(--cafe-gold);
+    font-size: 0.55em;
+
+    vertical-align: middle;
+}
+
+
+/* =========================================================
+   CAFÉ ENTRANCE / BUILDING
+   ========================================================= */
+
+.cafe-entrance {
+    position: relative;
+    z-index: 2;
+
+    width: min(390px, 82vw);
+    height: 500px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding-top: 38px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #122744,
+            #08182d 55%,
+            #061326
+        );
+
+    border: 1px solid rgba(214, 179, 106, 0.45);
+
+    border-radius: 180px 180px 28px 28px;
+
+    box-shadow:
+        0 35px 80px var(--cafe-shadow),
+        0 0 50px rgba(214, 179, 106, 0.08),
+        inset 0 0 40px rgba(255, 255, 255, 0.025);
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   ROOF / ARCH GLOW
+   ========================================================= */
+
+.cafe-entrance::before {
+    content: "";
+
+    position: absolute;
+
+    top: 16px;
+    left: 50%;
+
+    width: 72%;
+    height: 80px;
+
+    transform: translateX(-50%);
+
+    border: 1px solid rgba(214, 179, 106, 0.3);
+
+    border-radius: 50% 50% 0 0;
+
+    box-shadow:
+        0 0 20px rgba(214, 179, 106, 0.08);
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   CAFÉ SIGN
+   ========================================================= */
+
+.cafe-sign {
+    position: relative;
+    z-index: 3;
+
+    padding: 8px 22px;
+
+    background: rgba(5, 13, 26, 0.75);
+
+    border: 1px solid rgba(214, 179, 106, 0.5);
+
+    border-radius: 50px;
+
+    color: var(--cafe-gold-light);
+
+    font-family: "DM Serif Display", serif;
+    font-size: 1rem;
+
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+
+    box-shadow:
+        0 0 18px rgba(214, 179, 106, 0.12);
+}
+
+
+/* =========================================================
+   WINDOWS
+   ========================================================= */
+
+.cafe-window {
+    position: absolute;
+
+    top: 125px;
+
+    width: 62px;
+    height: 82px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent 47%,
+            rgba(91, 61, 25, 0.65) 48%,
+            rgba(91, 61, 25, 0.65) 52%,
+            transparent 53%
+        ),
+        linear-gradient(
+            0deg,
+            transparent 47%,
+            rgba(91, 61, 25, 0.65) 48%,
+            rgba(91, 61, 25, 0.65) 52%,
+            transparent 53%
+        ),
+        var(--cafe-window);
+
+    border: 5px solid #7e6336;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 0 25px rgba(247, 217, 140, 0.28);
+}
+
+.cafe-window.left {
+    left: 48px;
+}
+
+.cafe-window.right {
+    right: 48px;
+}
+
+
+/* =========================================================
+   WINDOW CURTAIN / INNER GLOW
+   ========================================================= */
+
+.cafe-window::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 246, 208, 0.4),
+            transparent 65%
+        );
+
+    animation: windowGlow 4s ease-in-out infinite;
+}
+
+@keyframes windowGlow {
+
+    0%,
+    100% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
+   CAFÉ DOOR
+   ========================================================= */
+
+.cafe-door {
+    position: absolute;
+
+    bottom: 0;
+    left: 50%;
+
+    width: 150px;
+    height: 255px;
+
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    background:
+        linear-gradient(
+            145deg,
+            #172f4c,
+            #09182b
+        );
+
+    border: 2px solid var(--cafe-gold);
+
+    border-bottom: none;
+
+    border-radius: 85px 85px 0 0;
+
+    cursor: pointer;
+
+    box-shadow:
+        inset 0 0 30px rgba(0, 0, 0, 0.35),
+        0 0 35px rgba(214, 179, 106, 0.08);
+
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease,
+        background 0.35s ease;
+}
+
+
+/* Door warm light */
+
+.cafe-door::before {
+    content: "";
+
+    position: absolute;
+
+    inset: -25px -20px 0;
+
+    z-index: -1;
+
+    background: radial-gradient(
+        ellipse at center bottom,
+        rgba(255, 222, 145, 0.3),
+        transparent 70%
+    );
+
+    opacity: 0.5;
+
+    transition: opacity 0.35s ease;
+}
+
+
+/* =========================================================
+   DOOR HOVER
+   ========================================================= */
+
+.cafe-door:hover {
+    transform: translateX(-50%) translateY(-6px);
+
+    background:
+        linear-gradient(
+            145deg,
+            #1d3c5f,
+            #0c2038
+        );
+
+    box-shadow:
+        0 0 25px rgba(214, 179, 106, 0.25),
+        0 0 60px rgba(214, 179, 106, 0.12),
+        inset 0 0 35px rgba(255, 255, 255, 0.04);
+}
+
+.cafe-door:hover::before {
+    opacity: 1;
+}
+
+
+/* =========================================================
+   DOOR PANEL
+   ========================================================= */
+
+.cafe-door::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 20px;
+
+    border: 1px solid rgba(214, 179, 106, 0.25);
+
+    border-radius: 65px 65px 5px 5px;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   DOOR CONTENT
+   ========================================================= */
+
+.door-content {
+    position: relative;
+    z-index: 3;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 12px;
+
+    color: var(--cafe-cream);
+
+    font-family: "Inter", sans-serif;
+}
+
+
+/* Door icon */
+
+.door-icon {
+    font-size: 1.8rem;
+
+    color: var(--cafe-gold-light);
+
+    filter:
+        drop-shadow(
+            0 0 10px rgba(243, 217, 154, 0.35)
+        );
+}
+
+
+/* Door text */
+
+.door-text {
+    font-size: 0.75rem;
+    font-weight: 600;
+
+    letter-spacing: 0.16em;
+
+    text-transform: uppercase;
+
+    color: var(--cafe-gold-light);
+
+    text-align: center;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   DOOR HANDLE
+   ========================================================= */
+
+.door-handle {
+    position: absolute;
+
+    right: 22px;
+    top: 50%;
+
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+
+    background: var(--cafe-gold-light);
+
+    box-shadow:
+        0 0 8px rgba(243, 217, 154, 0.8),
+        0 0 16px rgba(243, 217, 154, 0.25);
+}
+
+
+/* =========================================================
+   TAGLINE
+   ========================================================= */
+
+.welcome-tagline {
+    position: relative;
+    z-index: 3;
+
+    margin-top: 26px;
+
+    color: rgba(255, 244, 214, 0.7);
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 0.85rem;
+
+    letter-spacing: 0.08em;
+
+    text-align: center;
+}
+
+.welcome-tagline span {
+    display: block;
+
+    margin-top: 5px;
+
+    color: rgba(214, 179, 106, 0.65);
+
+    font-size: 0.72rem;
+}
+
+
+/* =========================================================
+   ENTRANCE EXIT ANIMATION
+   ========================================================= */
+
+.welcome-screen.exit {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .welcome-title {
+        margin-bottom: 20px;
+
+        font-size: 1.35rem;
+
+        letter-spacing: 0.18em;
+    }
+
+    .welcome-title::before,
+    .welcome-title::after {
+        margin: 0 7px;
+    }
+
+    .cafe-entrance {
+        width: min(320px, 82vw);
+        height: 420px;
+
+        padding-top: 28px;
+
+        border-radius: 140px 140px 22px 22px;
+    }
+
+    .cafe-window {
+        top: 105px;
+
+        width: 48px;
+        height: 65px;
+    }
+
+    .cafe-window.left {
+        left: 32px;
+    }
+
+    .cafe-window.right {
+        right: 32px;
+    }
+
+    .cafe-door {
+        width: 125px;
+        height: 215px;
+    }
+
+    .welcome-tagline {
+        margin-top: 20px;
+
+        font-size: 0.75rem;
+    }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+.cafe-door:focus-visible {
+    outline: 2px solid var(--cafe-gold-light);
+    outline-offset: 5px;
+}
+
+
+/* Reduce animation for users who request it */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .welcome-screen,
+    .cafe-door,
+    .cafe-window::after,
+    .welcome-screen::after {
+        animation: none;
+        transition: none;
+    }
+}
+
