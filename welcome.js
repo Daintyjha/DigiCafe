@@ -34,24 +34,54 @@ document.addEventListener("DOMContentLoaded", () => {
     cafe.style.opacity = "0";
 
 
+    /* =====================================================
+       ENTER THE CAFÉ
+    ===================================================== */
+
     enterBtn.addEventListener("click", () => {
 
-        // Remember that the visitor entered
+        /* Prevent double-clicking */
+        enterBtn.disabled = true;
+
+
+        /* Remember that the visitor entered */
         sessionStorage.setItem("digicafeVisited", "true");
 
-        // Reveal the café
-        cafe.style.opacity = "1";
 
-        // Fade out welcome screen
-        welcome.style.opacity = "0";
+        /* Start the café entrance animation */
+        welcome.classList.add("door-opening");
 
 
-        // Remove welcome screen after animation
+        /*
+         * Give the door a moment to open
+         * before revealing the Lobby.
+         */
+        setTimeout(() => {
+
+            cafe.style.opacity = "1";
+
+        }, 700);
+
+
+        /*
+         * Fade the entrance away.
+         */
+        setTimeout(() => {
+
+            welcome.classList.add("exit");
+
+        }, 850);
+
+
+        /*
+         * Remove the entrance completely
+         * after the animation finishes.
+         */
         setTimeout(() => {
 
             welcome.style.display = "none";
 
-        }, 800);
+        }, 1500);
 
     });
 
