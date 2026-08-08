@@ -3716,3 +3716,226 @@ SMALL PHONES
         transition: none;
     }
 }
+/* =====================================================
+   DIGICAFE — MOBILE READABILITY
+   Comfortable reading size for all visitors
+===================================================== */
+
+@media (max-width: 768px) {
+
+    html {
+        font-size: 17px;
+    }
+
+    body {
+        font-size: 17px;
+        line-height: 1.7;
+    }
+
+
+    /* ---------------------------------------------
+       GENERAL TEXT
+    --------------------------------------------- */
+
+    p,
+    li,
+    label,
+    summary {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+
+    /* ---------------------------------------------
+       HEADINGS
+    --------------------------------------------- */
+
+    h1 {
+        font-size: 1.8rem;
+        line-height: 1.25;
+    }
+
+    h2 {
+        font-size: 1.45rem;
+        line-height: 1.3;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+        line-height: 1.35;
+    }
+
+    h4 {
+        font-size: 1.1rem;
+        line-height: 1.4;
+    }
+
+
+    /* ---------------------------------------------
+       NAVIGATION
+    --------------------------------------------- */
+
+    .navbar__links {
+        font-size: 1.1rem;
+        line-height: 1.4;
+        padding: 14px 16px;
+    }
+
+
+    /* ---------------------------------------------
+       LIBRARY
+    --------------------------------------------- */
+
+    .library-intro,
+    .library-section p,
+    .library-section li,
+    .library-section a,
+    .library-section summary {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+
+    /* ---------------------------------------------
+       HOME / HERO
+    --------------------------------------------- */
+
+    .hero .subtitle {
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    .hero .intro,
+    .hero .status {
+        font-size: 1rem;
+        line-height: 1.75;
+    }
+
+
+    /* ---------------------------------------------
+       CARDS
+    --------------------------------------------- */
+
+    .cafe-card p {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    .cafe-card span {
+        font-size: 1rem;
+    }
+
+
+    /* ---------------------------------------------
+       BUTTONS
+    --------------------------------------------- */
+
+    button,
+    .feature-button {
+        font-size: 1rem;
+    }
+
+
+    /* ---------------------------------------------
+       ABOUT / CONTACT
+    --------------------------------------------- */
+
+    .about-section p,
+    .contact-section p,
+    .closing p {
+        font-size: 1rem;
+        line-height: 1.75;
+    }
+
+
+    /* ---------------------------------------------
+       FOOTER
+    --------------------------------------------- */
+
+    .footer__text,
+    .footer .small {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+
+    /* ---------------------------------------------
+       READER
+    --------------------------------------------- */
+
+    .reader-note {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+
+    .reader-nav a {
+        font-size: 1rem;
+    }
+
+
+    /* ---------------------------------------------
+       MUSIC PLAYER
+       Override the very small mobile values
+    --------------------------------------------- */
+
+    .now-playing h3 {
+        font-size: 1rem;
+    }
+
+    .now-playing p {
+        font-size: 0.9rem;
+    }
+
+    #playbackSource {
+        font-size: 0.8rem;
+    }
+
+    .progress span {
+        font-size: 0.85rem;
+    }
+
+    .controls button {
+        font-size: 0.95rem;
+    }
+
+    #playBtn {
+        font-size: 1.1rem;
+    }
+
+    .player-actions button {
+        font-size: 0.9rem;
+    }
+}
+
+
+/* =====================================================
+   EXTRA LARGE MOBILE TEXT
+   Very small screens
+===================================================== */
+
+@media (max-width: 480px) {
+
+    body {
+        font-size: 17px;
+    }
+
+    p,
+    li,
+    label,
+    summary {
+        font-size: 1rem;
+    }
+
+    .navbar__links {
+        font-size: 1.1rem;
+    }
+
+    .now-playing h3 {
+        font-size: 1rem;
+    }
+
+    .now-playing p {
+        font-size: 0.9rem;
+    }
+
+}
