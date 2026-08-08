@@ -2426,7 +2426,7 @@ VERY SMALL PHONES
     font-size:.95rem;
 }
 /* =========================================================
-   DIGICAFE — WELCOME / CAFÉ ENTRANCE
+   DIGICAFE WELCOME / CAFÉ ENTRANCE
    ========================================================= */
 
 :root {
@@ -2439,106 +2439,129 @@ VERY SMALL PHONES
     --cafe-cream: #fff4d6;
 
     --cafe-window: #f7d98c;
-    --cafe-shadow: rgba(0, 0, 0, 0.55);
 }
 
 
 /* =========================================================
    WELCOME SCREEN
-   ========================================================= */
+========================================================= */
 
-.welcome-screen {
+#welcome-screen {
     position: fixed;
     inset: 0;
+
     z-index: 9999;
+
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
 
     display: flex;
     flex-direction: column;
+
     align-items: center;
     justify-content: center;
 
-    min-height: 100vh;
+    gap: 0;
+
     overflow: hidden;
+
+    box-sizing: border-box;
 
     background:
         radial-gradient(
             circle at 50% 45%,
-            rgba(35, 71, 110, 0.35),
+            rgba(35, 71, 110, 0.32),
             transparent 45%
         ),
         linear-gradient(
             180deg,
             #030914 0%,
-            var(--cafe-night) 55%,
+            #050d1a 55%,
             #020711 100%
         );
 
     color: var(--cafe-cream);
 
+    opacity: 1;
+
     transition:
-        opacity 0.9s ease,
-        visibility 0.9s ease;
+        opacity 0.8s ease,
+        visibility 0.8s ease;
 }
 
 
 /* =========================================================
-   SUBTLE NIGHT GLOW
-   ========================================================= */
+   ATMOSPHERIC CENTER GLOW
+========================================================= */
 
-.welcome-screen::before {
+#welcome-screen::before {
     content: "";
+
     position: absolute;
-    width: 600px;
-    height: 600px;
 
     top: 50%;
     left: 50%;
 
-    transform: translate(-50%, -48%);
+    width: min(700px, 90vw);
+    height: min(700px, 90vw);
 
-    background: radial-gradient(
-        circle,
-        rgba(214, 179, 106, 0.08),
-        transparent 65%
-    );
+    transform: translate(-50%, -50%);
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(214, 179, 106, 0.10) 0%,
+            rgba(214, 179, 106, 0.04) 35%,
+            transparent 70%
+        );
 
     pointer-events: none;
+
+    z-index: 0;
 }
 
 
 /* =========================================================
-   LITTLE FLOATING LIGHTS
-   ========================================================= */
+   LITTLE STARS / LIGHTS
+========================================================= */
 
-.welcome-screen::after {
-    content: "✦     ·       ✧        ·     ✦       ·       ✧";
+#welcome-screen::after {
+    content: "✦     ·       ✧       ·     ✦       ·       ✧";
 
     position: absolute;
-    top: 15%;
+
+    top: 10%;
     left: 0;
 
     width: 100%;
 
-    color: rgba(243, 217, 154, 0.35);
+    color: rgba(243, 217, 154, 0.4);
+
     font-size: 12px;
-    letter-spacing: 30px;
+
+    letter-spacing: 28px;
+
     text-align: center;
 
-    animation: floatingLights 8s ease-in-out infinite;
-
     pointer-events: none;
+
+    z-index: 0;
+
+    animation: floatingLights 8s ease-in-out infinite;
 }
+
 
 @keyframes floatingLights {
 
     0%,
     100% {
         transform: translateY(0);
-        opacity: 0.45;
+        opacity: 0.4;
     }
 
     50% {
-        transform: translateY(-12px);
+        transform: translateY(-10px);
         opacity: 0.8;
     }
 }
@@ -2546,71 +2569,95 @@ VERY SMALL PHONES
 
 /* =========================================================
    DIGICAFE TITLE
-   ========================================================= */
+========================================================= */
 
 .welcome-title {
     position: relative;
-    z-index: 3;
 
-    margin-bottom: 28px;
+    z-index: 5;
+
+    flex-shrink: 0;
+
+    margin: 0 0 22px;
 
     color: var(--cafe-gold-light);
 
-    font-family: "DM Serif Display", serif;
-    font-size: clamp(1.7rem, 4vw, 2.8rem);
+    font-family: "Kumbh Sans", sans-serif;
+
+    font-size: clamp(1.5rem, 3vw, 2.4rem);
+
+    font-weight: 600;
 
     letter-spacing: 0.28em;
+
     text-transform: uppercase;
 
+    text-align: center;
+
+    white-space: nowrap;
+
     text-shadow:
-        0 0 12px rgba(214, 179, 106, 0.25),
-        0 4px 20px rgba(0, 0, 0, 0.5);
+        0 0 12px rgba(214, 179, 106, 0.3),
+        0 4px 20px rgba(0, 0, 0, 0.7);
 }
+
 
 .welcome-title::before,
 .welcome-title::after {
     content: "✦";
 
+    display: inline-block;
+
     margin: 0 14px;
 
     color: var(--cafe-gold);
-    font-size: 0.55em;
+
+    font-size: 0.5em;
 
     vertical-align: middle;
 }
 
 
 /* =========================================================
-   CAFÉ ENTRANCE / BUILDING
-   ========================================================= */
+   CAFÉ BUILDING
+========================================================= */
 
 .cafe-entrance {
     position: relative;
+
     z-index: 2;
 
-    width: min(390px, 82vw);
-    height: 500px;
+    flex-shrink: 0;
+
+    width: min(390px, 78vw);
+    height: 470px;
+
+    box-sizing: border-box;
 
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    padding-top: 38px;
+    padding-top: 32px;
 
     background:
         linear-gradient(
             145deg,
-            #122744,
+            #122744 0%,
             #08182d 55%,
-            #061326
+            #061326 100%
         );
 
     border: 1px solid rgba(214, 179, 106, 0.45);
 
-    border-radius: 180px 180px 28px 28px;
+    border-radius:
+        180px
+        180px
+        28px
+        28px;
 
     box-shadow:
-        0 35px 80px var(--cafe-shadow),
+        0 35px 80px rgba(0, 0, 0, 0.6),
         0 0 50px rgba(214, 179, 106, 0.08),
         inset 0 0 40px rgba(255, 255, 255, 0.025);
 
@@ -2619,15 +2666,15 @@ VERY SMALL PHONES
 
 
 /* =========================================================
-   ROOF / ARCH GLOW
-   ========================================================= */
+   ARCH DETAIL
+========================================================= */
 
 .cafe-entrance::before {
     content: "";
 
     position: absolute;
 
-    top: 16px;
+    top: 15px;
     left: 50%;
 
     width: 72%;
@@ -2635,12 +2682,17 @@ VERY SMALL PHONES
 
     transform: translateX(-50%);
 
-    border: 1px solid rgba(214, 179, 106, 0.3);
+    border:
+        1px solid
+        rgba(214, 179, 106, 0.3);
 
-    border-radius: 50% 50% 0 0;
+    border-bottom: none;
 
-    box-shadow:
-        0 0 20px rgba(214, 179, 106, 0.08);
+    border-radius:
+        50%
+        50%
+        0
+        0;
 
     pointer-events: none;
 }
@@ -2648,36 +2700,49 @@ VERY SMALL PHONES
 
 /* =========================================================
    CAFÉ SIGN
-   ========================================================= */
+========================================================= */
 
 .cafe-sign {
     position: relative;
-    z-index: 3;
 
-    padding: 8px 22px;
+    z-index: 5;
 
-    background: rgba(5, 13, 26, 0.75);
+    flex-shrink: 0;
 
-    border: 1px solid rgba(214, 179, 106, 0.5);
+    padding: 8px 20px;
+
+    background:
+        rgba(5, 13, 26, 0.9);
+
+    border:
+        1px solid
+        rgba(214, 179, 106, 0.55);
 
     border-radius: 50px;
 
     color: var(--cafe-gold-light);
 
-    font-family: "DM Serif Display", serif;
-    font-size: 1rem;
+    font-family: "Kumbh Sans", sans-serif;
 
-    letter-spacing: 0.2em;
+    font-size: 0.9rem;
+
+    font-weight: 600;
+
+    letter-spacing: 0.16em;
+
     text-transform: uppercase;
 
+    white-space: nowrap;
+
     box-shadow:
-        0 0 18px rgba(214, 179, 106, 0.12);
+        0 0 18px
+        rgba(214, 179, 106, 0.12);
 }
 
 
 /* =========================================================
    WINDOWS
-   ========================================================= */
+========================================================= */
 
 .cafe-window {
     position: absolute;
@@ -2687,20 +2752,22 @@ VERY SMALL PHONES
     width: 62px;
     height: 82px;
 
+    box-sizing: border-box;
+
     background:
         linear-gradient(
             90deg,
-            transparent 47%,
-            rgba(91, 61, 25, 0.65) 48%,
-            rgba(91, 61, 25, 0.65) 52%,
-            transparent 53%
+            transparent 46%,
+            rgba(91, 61, 25, 0.7) 47%,
+            rgba(91, 61, 25, 0.7) 53%,
+            transparent 54%
         ),
         linear-gradient(
             0deg,
-            transparent 47%,
-            rgba(91, 61, 25, 0.65) 48%,
-            rgba(91, 61, 25, 0.65) 52%,
-            transparent 53%
+            transparent 46%,
+            rgba(91, 61, 25, 0.7) 47%,
+            rgba(91, 61, 25, 0.7) 53%,
+            transparent 54%
         ),
         var(--cafe-window);
 
@@ -2709,37 +2776,43 @@ VERY SMALL PHONES
     border-radius: 12px;
 
     box-shadow:
-        0 0 25px rgba(247, 217, 140, 0.28);
+        0 0 25px
+        rgba(247, 217, 140, 0.3);
+
+    overflow: hidden;
 }
+
 
 .cafe-window.left {
-    left: 48px;
+    left: 45px;
 }
+
 
 .cafe-window.right {
-    right: 48px;
+    right: 45px;
 }
 
 
-/* =========================================================
-   WINDOW CURTAIN / INNER GLOW
-   ========================================================= */
+/* Window glow */
 
 .cafe-window::after {
     content: "";
 
     position: absolute;
+
     inset: 0;
 
     background:
         radial-gradient(
             circle,
-            rgba(255, 246, 208, 0.4),
-            transparent 65%
+            rgba(255, 246, 208, 0.45),
+            transparent 70%
         );
 
-    animation: windowGlow 4s ease-in-out infinite;
+    animation:
+        windowGlow 4s ease-in-out infinite;
 }
+
 
 @keyframes windowGlow {
 
@@ -2756,20 +2829,25 @@ VERY SMALL PHONES
 
 /* =========================================================
    CAFÉ DOOR
-   ========================================================= */
+========================================================= */
 
 .cafe-door {
     position: absolute;
 
-    bottom: 0;
     left: 50%;
+    bottom: 0;
 
-    width: 150px;
+    z-index: 4;
+
+    width: 155px;
     height: 255px;
 
     transform: translateX(-50%);
 
+    box-sizing: border-box;
+
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -2782,17 +2860,31 @@ VERY SMALL PHONES
             #09182b
         );
 
-    border: 2px solid var(--cafe-gold);
+    border:
+        2px solid
+        var(--cafe-gold);
 
     border-bottom: none;
 
-    border-radius: 85px 85px 0 0;
+    border-radius:
+        85px
+        85px
+        0
+        0;
+
+    color: var(--cafe-cream);
 
     cursor: pointer;
 
     box-shadow:
-        inset 0 0 30px rgba(0, 0, 0, 0.35),
-        0 0 35px rgba(214, 179, 106, 0.08);
+        inset 0 0 30px
+        rgba(0, 0, 0, 0.35),
+        0 0 35px
+        rgba(214, 179, 106, 0.08);
+
+    appearance: none;
+
+    -webkit-appearance: none;
 
     transition:
         transform 0.35s ease,
@@ -2801,35 +2893,73 @@ VERY SMALL PHONES
 }
 
 
-/* Door warm light */
+/* =========================================================
+   DOOR LIGHT
+========================================================= */
 
 .cafe-door::before {
     content: "";
 
     position: absolute;
 
-    inset: -25px -20px 0;
+    left: -35px;
+    right: -35px;
+    bottom: 0;
+
+    height: 260px;
 
     z-index: -1;
 
-    background: radial-gradient(
-        ellipse at center bottom,
-        rgba(255, 222, 145, 0.3),
-        transparent 70%
-    );
+    background:
+        radial-gradient(
+            ellipse at center bottom,
+            rgba(255, 222, 145, 0.28),
+            transparent 68%
+        );
 
     opacity: 0.5;
 
-    transition: opacity 0.35s ease;
+    pointer-events: none;
+
+    transition:
+        opacity 0.35s ease;
+}
+
+
+/* =========================================================
+   DOOR INNER BORDER
+========================================================= */
+
+.cafe-door::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 18px;
+
+    border:
+        1px solid
+        rgba(214, 179, 106, 0.25);
+
+    border-radius:
+        68px
+        68px
+        5px
+        5px;
+
+    pointer-events: none;
 }
 
 
 /* =========================================================
    DOOR HOVER
-   ========================================================= */
+========================================================= */
 
 .cafe-door:hover {
-    transform: translateX(-50%) translateY(-6px);
+
+    transform:
+        translateX(-50%)
+        translateY(-6px);
 
     background:
         linear-gradient(
@@ -2839,10 +2969,16 @@ VERY SMALL PHONES
         );
 
     box-shadow:
-        0 0 25px rgba(214, 179, 106, 0.25),
-        0 0 60px rgba(214, 179, 106, 0.12),
-        inset 0 0 35px rgba(255, 255, 255, 0.04);
+        0 0 25px
+        rgba(214, 179, 106, 0.3),
+
+        0 0 60px
+        rgba(214, 179, 106, 0.12),
+
+        inset 0 0 35px
+        rgba(255, 255, 255, 0.04);
 }
+
 
 .cafe-door:hover::before {
     opacity: 1;
@@ -2850,175 +2986,291 @@ VERY SMALL PHONES
 
 
 /* =========================================================
-   DOOR PANEL
-   ========================================================= */
+   DOOR CONTENT
+========================================================= */
 
-.cafe-door::after {
-    content: "";
+.door-content {
 
-    position: absolute;
+    position: relative;
 
-    inset: 20px;
+    z-index: 5;
 
-    border: 1px solid rgba(214, 179, 106, 0.25);
+    display: flex;
 
-    border-radius: 65px 65px 5px 5px;
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 12px;
 
     pointer-events: none;
 }
 
 
 /* =========================================================
-   DOOR CONTENT
-   ========================================================= */
-
-.door-content {
-    position: relative;
-    z-index: 3;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    gap: 12px;
-
-    color: var(--cafe-cream);
-
-    font-family: "Inter", sans-serif;
-}
-
-
-/* Door icon */
+   DOOR ICON
+========================================================= */
 
 .door-icon {
-    font-size: 1.8rem;
 
     color: var(--cafe-gold-light);
 
+    font-size: 1.8rem;
+
+    line-height: 1;
+
     filter:
         drop-shadow(
-            0 0 10px rgba(243, 217, 154, 0.35)
+            0 0 10px
+            rgba(243, 217, 154, 0.45)
         );
 }
 
 
-/* Door text */
+/* =========================================================
+   DOOR TEXT
+========================================================= */
 
 .door-text {
+
+    color: var(--cafe-gold-light);
+
+    font-family: "Kumbh Sans", sans-serif;
+
     font-size: 0.75rem;
+
     font-weight: 600;
 
     letter-spacing: 0.16em;
 
-    text-transform: uppercase;
-
-    color: var(--cafe-gold-light);
+    line-height: 1.6;
 
     text-align: center;
 
-    line-height: 1.6;
+    text-transform: uppercase;
 }
 
 
 /* =========================================================
    DOOR HANDLE
-   ========================================================= */
+========================================================= */
 
 .door-handle {
+
     position: absolute;
 
-    right: 22px;
     top: 50%;
+    right: 20px;
 
     width: 9px;
     height: 9px;
 
+    transform: translateY(-50%);
+
     border-radius: 50%;
 
-    background: var(--cafe-gold-light);
+    background:
+        var(--cafe-gold-light);
 
     box-shadow:
-        0 0 8px rgba(243, 217, 154, 0.8),
-        0 0 16px rgba(243, 217, 154, 0.25);
+        0 0 8px
+        rgba(243, 217, 154, 0.9),
+
+        0 0 16px
+        rgba(243, 217, 154, 0.3);
 }
 
 
 /* =========================================================
    TAGLINE
-   ========================================================= */
+========================================================= */
 
 .welcome-tagline {
+
     position: relative;
-    z-index: 3;
 
-    margin-top: 26px;
+    z-index: 5;
 
-    color: rgba(255, 244, 214, 0.7);
+    flex-shrink: 0;
 
-    font-family: "Inter", sans-serif;
+    margin: 20px 0 0;
+
+    color:
+        rgba(255, 244, 214, 0.78);
+
+    font-family:
+        "Kumbh Sans",
+        sans-serif;
 
     font-size: 0.85rem;
 
+    font-weight: 400;
+
     letter-spacing: 0.08em;
+
+    line-height: 1.6;
 
     text-align: center;
 }
 
+
 .welcome-tagline span {
+
     display: block;
 
-    margin-top: 5px;
+    margin-top: 4px;
 
-    color: rgba(214, 179, 106, 0.65);
+    color:
+        rgba(214, 179, 106, 0.75);
 
-    font-size: 0.72rem;
+    font-size: 0.7rem;
+
+    letter-spacing: 0.12em;
 }
 
 
 /* =========================================================
-   ENTRANCE EXIT ANIMATION
-   ========================================================= */
+   ENTER ANIMATION
+========================================================= */
 
-.welcome-screen.exit {
+#welcome-screen.door-opening::before {
+
+    animation:
+        entranceLight 1.4s ease forwards;
+}
+
+
+#welcome-screen.door-opening .cafe-door {
+
+    animation:
+        doorOpen 1.1s ease forwards;
+}
+
+
+#welcome-screen.door-opening .cafe-entrance {
+
+    animation:
+        cafeGlow 1.2s ease forwards;
+}
+
+
+@keyframes entranceLight {
+
+    0% {
+        opacity: 1;
+        transform:
+            translate(-50%, -50%)
+            scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform:
+            translate(-50%, -50%)
+            scale(1.15);
+    }
+
+    100% {
+        opacity: 1;
+        transform:
+            translate(-50%, -50%)
+            scale(2.5);
+    }
+}
+
+
+@keyframes doorOpen {
+
+    0% {
+        transform:
+            translateX(-50%)
+            scaleX(1);
+
+        opacity: 1;
+    }
+
+    35% {
+        transform:
+            translateX(-50%)
+            scaleX(0.92);
+    }
+
+    100% {
+        transform:
+            translateX(-50%)
+            scaleX(0.08);
+
+        opacity: 0.15;
+    }
+}
+
+
+@keyframes cafeGlow {
+
+    0% {
+        filter: brightness(1);
+    }
+
+    50% {
+        filter: brightness(1.25);
+    }
+
+    100% {
+        filter: brightness(1.7);
+    }
+}
+
+
+/* =========================================================
+   EXIT
+========================================================= */
+
+#welcome-screen.exit {
+
     opacity: 0;
+
     visibility: hidden;
+
     pointer-events: none;
 }
 
 
 /* =========================================================
-   RESPONSIVE
-   ========================================================= */
+   TABLET
+========================================================= */
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
 
-    .welcome-title {
-        margin-bottom: 20px;
-
-        font-size: 1.35rem;
-
-        letter-spacing: 0.18em;
+    #welcome-screen {
+        padding: 20px;
     }
 
-    .welcome-title::before,
-    .welcome-title::after {
-        margin: 0 7px;
+    .welcome-title {
+
+        margin-bottom: 18px;
+
+        font-size: 1.5rem;
+
+        letter-spacing: 0.2em;
     }
 
     .cafe-entrance {
-        width: min(320px, 82vw);
-        height: 420px;
+
+        width: min(340px, 82vw);
+
+        height: 430px;
 
         padding-top: 28px;
-
-        border-radius: 140px 140px 22px 22px;
     }
 
     .cafe-window {
-        top: 105px;
 
-        width: 48px;
-        height: 65px;
+        top: 112px;
+
+        width: 52px;
+        height: 70px;
     }
 
     .cafe-window.left {
@@ -3030,38 +3282,251 @@ VERY SMALL PHONES
     }
 
     .cafe-door {
-        width: 125px;
-        height: 215px;
+
+        width: 135px;
+
+        height: 225px;
     }
 
     .welcome-tagline {
-        margin-top: 20px;
 
-        font-size: 0.75rem;
+        margin-top: 16px;
+
+        font-size: 0.78rem;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    #welcome-screen {
+
+        padding:
+            16px;
+
+        justify-content: center;
+    }
+
+
+    .welcome-title {
+
+        margin-bottom: 14px;
+
+        font-size: 1.15rem;
+
+        letter-spacing: 0.14em;
+    }
+
+
+    .welcome-title::before,
+    .welcome-title::after {
+
+        margin: 0 6px;
+    }
+
+
+    .cafe-entrance {
+
+        width: min(300px, 82vw);
+
+        height: 390px;
+
+        padding-top: 24px;
+
+        border-radius:
+            140px
+            140px
+            22px
+            22px;
+    }
+
+
+    .cafe-sign {
+
+        padding: 7px 15px;
+
+        font-size: 0.72rem;
+
+        letter-spacing: 0.12em;
+    }
+
+
+    .cafe-window {
+
+        top: 98px;
+
+        width: 44px;
+        height: 60px;
+
+        border-width: 4px;
+    }
+
+
+    .cafe-window.left {
+        left: 25px;
+    }
+
+
+    .cafe-window.right {
+        right: 25px;
+    }
+
+
+    .cafe-door {
+
+        width: 120px;
+
+        height: 205px;
+    }
+
+
+    .door-text {
+
+        font-size: 0.65rem;
+
+        letter-spacing: 0.13em;
+    }
+
+
+    .door-icon {
+
+        font-size: 1.5rem;
+    }
+
+
+    .welcome-tagline {
+
+        margin-top: 14px;
+
+        font-size: 0.7rem;
+    }
+
+
+    .welcome-tagline span {
+
+        font-size: 0.62rem;
+    }
+}
+
+
+/* =========================================================
+   VERY SHORT SCREENS
+========================================================= */
+
+@media (max-height: 650px) {
+
+    #welcome-screen {
+
+        padding: 12px;
+    }
+
+
+    .welcome-title {
+
+        margin-bottom: 8px;
+
+        font-size: 1rem;
+    }
+
+
+    .cafe-entrance {
+
+        width: min(280px, 70vw);
+
+        height: 315px;
+
+        padding-top: 18px;
+    }
+
+
+    .cafe-sign {
+
+        padding: 5px 12px;
+
+        font-size: 0.65rem;
+    }
+
+
+    .cafe-window {
+
+        top: 75px;
+
+        width: 38px;
+        height: 50px;
+    }
+
+
+    .cafe-window.left {
+        left: 22px;
+    }
+
+
+    .cafe-window.right {
+        right: 22px;
+    }
+
+
+    .cafe-door {
+
+        width: 100px;
+
+        height: 170px;
+    }
+
+
+    .door-icon {
+
+        font-size: 1.2rem;
+    }
+
+
+    .door-text {
+
+        font-size: 0.55rem;
+    }
+
+
+    .welcome-tagline {
+
+        margin-top: 8px;
+
+        font-size: 0.62rem;
     }
 }
 
 
 /* =========================================================
    ACCESSIBILITY
-   ========================================================= */
+========================================================= */
 
 .cafe-door:focus-visible {
-    outline: 2px solid var(--cafe-gold-light);
+
+    outline:
+        2px solid
+        var(--cafe-gold-light);
+
     outline-offset: 5px;
 }
 
 
-/* Reduce animation for users who request it */
-
 @media (prefers-reduced-motion: reduce) {
 
-    .welcome-screen,
-    .cafe-door,
+    #welcome-screen::after,
     .cafe-window::after,
-    .welcome-screen::after {
+    #welcome-screen.door-opening::before,
+    #welcome-screen.door-opening .cafe-door,
+    #welcome-screen.door-opening .cafe-entrance {
+
         animation: none;
+    }
+
+    #welcome-screen,
+    .cafe-door {
+
         transition: none;
     }
 }
-
