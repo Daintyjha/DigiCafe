@@ -2364,123 +2364,128 @@ SMALL PHONES
     color:var(--accent);
 }
 /* =====================================================
-   DIGICAFE BOOK READER FRAME
-===================================================== */
-
-.book-layout {
-
-    width: min(100%, 1100px);
-
-    margin: 0 auto;
-
-    padding: 30px 20px 50px;
-
-    box-sizing: border-box;
-}
-
-
-/* =====================================================
-   BOOK FRAME
-===================================================== */
-
-.book-page {
-
-    width: 100%;
-
-    background: #ffffff;
-
-    border-radius: 18px;
-
-    overflow: hidden;
-
-    box-shadow:
-        0 15px 45px rgba(0, 0, 0, 0.12);
-
-    border: 1px solid #e5e5e5;
-
-}
-
-
-/* =====================================================
-   CHAPTER TITLE
-===================================================== */
-
-#chapterTitle {
-
-    margin: 0;
-
-    padding: 22px 25px;
-
-    text-align: center;
-
-    font-size: 1.25rem;
-
-    font-weight: 600;
-
-    border-bottom: 1px solid #e5e5e5;
-
-    background: #faf8f4;
-}
-
-
-/* =====================================================
-   PDF AREA
+   SINGLE-PAGE PDF READER
 ===================================================== */
 
 #chapterContent {
-
     width: 100%;
-
     margin: 0;
-
     padding: 0;
-
     background: #eeeeee;
-
-    box-sizing: border-box;
 }
 
 
 /* =====================================================
-   PDF VIEWER
+   PDF FRAME
 ===================================================== */
 
 .pdf-viewer {
-
     width: 100%;
-
     max-width: 900px;
-
     margin: 0 auto;
-
     background: #ffffff;
-
-    box-sizing: border-box;
+    overflow: hidden;
 }
 
 
 /* =====================================================
-   PDF PAGES
+   PDF CANVAS
 ===================================================== */
 
 .pdf-page {
-
     display: block;
-
     width: 100%;
-
     height: auto;
-
     margin: 0 auto;
-
-    padding: 0;
-
-    background: #ffffff;
 }
 
 
 /* =====================================================
-   CHAPTER BUTTON FRAME
+   PDF PAGE CONTROLS
+===================================================== */
+
+.pdf-controls {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 25px;
+
+    padding: 12px 15px;
+
+    background: #071426;
+
+    color: #ffffff;
+}
+
+
+/* =====================================================
+   PDF PAGE ARROWS
+===================================================== */
+
+.pdf-controls button {
+
+    width: 38px;
+
+    height: 38px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: #c59d5f;
+
+    color: #ffffff;
+
+    font-size: 1.5rem;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease;
+}
+
+
+.pdf-controls button:hover {
+
+    transform: scale(1.08);
+
+}
+
+
+.pdf-controls button:disabled {
+
+    opacity: 0.3;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* =====================================================
+   PAGE NUMBER
+===================================================== */
+
+#pdfPageNumber {
+
+    min-width: 60px;
+
+    text-align: center;
+
+    font-size: 0.9rem;
+
+}
+
+
+/* =====================================================
+   CHAPTER NAVIGATION
 ===================================================== */
 
 .book-nav {
@@ -2488,8 +2493,6 @@ SMALL PHONES
     display: flex;
 
     justify-content: space-between;
-
-    align-items: center;
 
     gap: 15px;
 
@@ -2501,17 +2504,13 @@ SMALL PHONES
 }
 
 
-/* =====================================================
-   PREVIOUS / NEXT BUTTONS
-===================================================== */
-
 .book-nav button {
 
     flex: 1;
 
     max-width: 220px;
 
-    padding: 12px 20px;
+    padding: 12px 18px;
 
     border: none;
 
@@ -2523,19 +2522,7 @@ SMALL PHONES
 
     font-family: inherit;
 
-    font-size: 0.95rem;
-
     cursor: pointer;
-
-    transition:
-        transform 0.2s ease,
-        opacity 0.2s ease;
-}
-
-
-.book-nav button:hover {
-
-    transform: translateY(-2px);
 
 }
 
@@ -2545,90 +2532,6 @@ SMALL PHONES
     opacity: 0.35;
 
     cursor: not-allowed;
-
-    transform: none;
-}
-
-
-/* =====================================================
-   AUDIO
-===================================================== */
-
-.audio-bottom {
-
-    width: 100%;
-
-    margin-top: 15px;
-
-}
-
-
-.audio-bottom audio {
-
-    width: 100%;
-
-}
-
-
-/* =====================================================
-   READER NAVIGATION
-===================================================== */
-
-.reader-nav {
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    flex-wrap: wrap;
-
-    gap: 10px 20px;
-
-    margin-top: 20px;
-
-    padding: 15px;
-
-    text-align: center;
-}
-
-
-.reader-nav a {
-
-    color: #071426;
-
-    text-decoration: none;
-
-    font-size: 0.9rem;
-
-    transition:
-        color 0.2s ease;
-}
-
-
-.reader-nav a:hover {
-
-    color: #c59d5f;
-
-}
-
-
-/* =====================================================
-   READER NOTE
-===================================================== */
-
-.reader-note {
-
-    margin: 15px auto;
-
-    max-width: 700px;
-
-    text-align: center;
-
-    color: #667085;
-
-    font-size: 0.85rem;
 
 }
 
@@ -2643,17 +2546,17 @@ SMALL PHONES
 
         width: 100%;
 
-        padding: 15px 0 30px;
+        padding-left: 0;
+
+        padding-right: 0;
     }
 
 
     .book-page {
 
+        width: 100%;
+
         border-radius: 0;
-
-        border-left: none;
-
-        border-right: none;
 
         box-shadow: none;
     }
@@ -2661,16 +2564,9 @@ SMALL PHONES
 
     #chapterTitle {
 
-        padding: 16px 12px;
+        padding: 14px 10px;
 
-        font-size: 1.05rem;
-    }
-
-
-    #chapterContent {
-
-        width: 100vw;
-
+        font-size: 1rem;
     }
 
 
@@ -2679,25 +2575,28 @@ SMALL PHONES
         width: 100vw;
 
         max-width: 100vw;
-
     }
 
 
     .pdf-page {
 
         width: 100vw;
+    }
 
-        max-width: 100vw;
 
+    .pdf-controls {
+
+        gap: 20px;
+
+        padding: 10px;
     }
 
 
     .book-nav {
 
-        padding: 12px;
+        padding: 12px 10px;
 
         gap: 10px;
-
     }
 
 
@@ -2705,57 +2604,9 @@ SMALL PHONES
 
         max-width: none;
 
-        padding: 11px 10px;
+        padding: 11px 8px;
 
         font-size: 0.85rem;
-
-    }
-
-
-    .reader-nav {
-
-        padding: 12px 10px;
-
-        gap: 8px 14px;
-
-    }
-
-
-    .reader-nav a {
-
-        font-size: 0.8rem;
-
-    }
-
-}
-
-
-/* =====================================================
-   VERY SMALL PHONES
-===================================================== */
-
-@media (max-width: 400px) {
-
-    .book-nav {
-
-        gap: 8px;
-
-    }
-
-
-    .book-nav button {
-
-        font-size: 0.78rem;
-
-        padding: 10px 6px;
-
-    }
-
-
-    .reader-nav {
-
-        gap: 6px 10px;
-
     }
 
 }
