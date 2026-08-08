@@ -1582,386 +1582,420 @@ p {
 }
 
 
-/* =========================================================
-   15. BESHY
-========================================================= */
+/* =====================================================
+   BESHY EY AY
+===================================================== */
 
-.beshy-toggle {
-
-    position: fixed;
-
-    right: 20px;
-    bottom: 20px;
-
-    width: 58px;
-    height: 58px;
-
-    z-index: 9999;
-
-    border:
-        2px solid var(--gold);
-
-    border-radius: 50%;
-
-    background:
-        var(--navy-dark);
-
-    color: var(--gold-light);
-
-    box-shadow:
-        var(--shadow),
-        var(--gold-glow);
-
-    font-size: 28px;
-
-    transition:
-        transform var(--transition);
+.beshy-toggle,
+.beshy-chat,
+.beshy-chat *{
+    box-sizing:border-box;
 }
 
 
-.beshy-toggle:hover {
+/* =====================================================
+   BESHY TOGGLE BUTTON
+===================================================== */
 
-    transform: scale(1.08);
+.beshy-toggle{
+    position:fixed;
+    right:20px;
+    bottom:90px;
+    z-index:9999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:58px;
+    height:58px;
+    padding:0;
+    border:1px solid var(--border);
+    border-radius:50%;
+    background:var(--card);
+    color:var(--text);
+    font-family:"Kumbh Sans",Arial,sans-serif;
+    font-size:28px;
+    line-height:1;
+    cursor:pointer;
+    box-shadow:0 5px 20px rgba(0,0,0,.25);
 }
 
 
-/* CHAT */
+/* =====================================================
+   BESHY CHAT WINDOW
+===================================================== */
 
-.beshy-chat {
+.beshy-chat{
+    position:fixed;
+    right:20px;
+    bottom:160px;
+    z-index:9999;
+    display:none;
+    flex-direction:column;
+    width:340px;
+    height:480px;
+    overflow:hidden;
+    background:var(--card);
+    color:var(--text);
+    border:1px solid var(--border);
+    border-radius:18px;
+    font-family:"Kumbh Sans",Arial,sans-serif;
+    font-size:14px;
+    line-height:1.4;
+    box-shadow:0 10px 35px rgba(0,0,0,.25);
+}
 
-    position: fixed;
+.beshy-chat.open{
+    display:flex;
+}
+/* =====================================================
+   BESHY HEADER
+===================================================== */
 
-    right: 20px;
-    bottom: 90px;
+.beshy-header{
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    min-height:58px;
+    padding:10px 14px;
+    background:var(--beshy-header);
+    color:var(--beshy-header-text);
+}
 
-    width: 360px;
-    height: 500px;
+.beshy-identity{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-width:0;
+}
 
-    z-index: 9999;
+.beshy-avatar{
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:34px;
+    height:34px;
+    font-family:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif;
+    font-size:28px;
+    line-height:1;
+}
 
-    display: none;
+.beshy-identity h3{
+    margin:0;
+    font-family:"Kumbh Sans",Arial,sans-serif;
+    font-size:16px;
+    line-height:1.2;
+}
 
-    flex-direction: column;
+.beshy-identity p{
+    margin:2px 0 0;
+    font-family:"Kumbh Sans",Arial,sans-serif;
+    font-size:12px;
+    line-height:1.2;
+}
 
-    overflow: hidden;
-
-    background: var(--cream-light);
-
-    border:
-        1px solid rgba(214,179,106,.4);
-
-    border-radius: var(--radius-lg);
-
-    box-shadow: var(--shadow-lg);
+.beshy-close{
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:32px;
+    height:32px;
+    padding:0;
+    border:none;
+    background:transparent;
+    color:inherit;
+    font-family:Arial,sans-serif;
+    font-size:25px;
+    line-height:1;
+    cursor:pointer;
 }
 
 
-.beshy-chat.open {
+/* =====================================================
+   BESHY MESSAGES AREA
+===================================================== */
 
-    display: flex;
+.beshy-messages{
+    flex:1;
+    min-height:0;
+    padding:10px;
+    overflow-y:auto;
+    overflow-x:hidden;
 }
 
-
-/* HEADER */
-
-.beshy-header {
-
-    flex-shrink: 0;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    padding:
-        12px 15px;
-
-    background:
-        var(--navy-dark);
-
-    color: var(--cream);
+.beshy-message{
+    width:fit-content;
+    max-width:80%;
+    margin:0 0 8px;
+    padding:8px 12px;
+    border-radius:12px;
+    font-family:"Kumbh Sans",Arial,sans-serif;
+    font-size:14px;
+    line-height:1.4;
+    padding:9px 13px;
+    border-radius:12px;
+    font-family:"Kumbh Sans",Arial,sans-serif;
+    font-size:15px;
+    line-height:1.55;
+    white-space:pre-wrap;
+    overflow-wrap:anywhere;
+    word-break:break-word;
 }
 
+.beshy-message p{
+    margin:0 0 6px;
+    font-family:inherit;
+    font-size:inherit;
+    line-height:inherit;
+}
+.beshy-message p:last-child{
+    margin-bottom:0;
+}
+.beshy-message.bot{
+    align-self:flex-start;
+    background:var(--surface);
+    color:var(--text);
+}
+.beshy-message.user{
+    margin-left:auto;
+    background:var(--beshy-user);
+    color:var(--beshy-user-text);
+}
+/* =====================================================
+   BESHY QUICK OPTIONS
+===================================================== */
+.beshy-options{
+    flex-shrink:0;
+    display:flex;
+    gap:5px;
+    padding:6px;
+    gap:6px;
+    padding:7px;
+    overflow-x:auto;
+    overflow-y:hidden;
+    background:var(--card);
+}
+.beshy-options button{
+    flex-shrink:0;
+    min-height:30px;
+    padding:5px 10px;
+    min-height:32px;
+    padding:6px 11px;
+    border:1px solid var(--border);
+    border-radius:15px;
+    background:var(--surface);
+    color:var(--text);
+    font-family:"Kumbh Sans",Arial,sans-serif;
+    font-size:13px;
+    line-height:1.2;
+    white-space:nowrap;
+    cursor:pointer;
+}
+/* =====================================================
+   BESHY INPUT AREA
+===================================================== */
+.beshy-input-area{
+    position:relative;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    gap:5px;
+    min-height:58px;
+    gap:6px;
+    min-height:60px;
+    padding:8px;
+    background:var(--card);
+    border-top:1px solid var(--border);
+}
+.beshy-input-area input{
+    flex:1;
+    min-width:0;
+    height:40px;
+    padding:8px 12px;
+    height:42px;
+    padding:8px 13px;
+    border:1px solid var(--border);
+    border-radius:20px;
+    background:var(--surface);
+    color:var(--text);
+    font-family:"Kumbh Sans",Arial,sans-serif;
+    font-size:15px;
+    line-height:1.2;
+    outline:none;
+}
+.beshy-input-area input::placeholder{
+    color:var(--text-light);
+    opacity:.8;
+}
+.beshy-input-area input:focus{
+    border-color:var(--accent);
+}
+.beshy-input-area button{
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:36px;
+    height:36px;
+    width:38px;
+    height:38px;
+    border:none;
+    background:transparent;
+    color:var(--accent);
+    font-family:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif;
+    font-size:21px;
+    line-height:1;
+    cursor:pointer;
+}
+/* =====================================================
+   BESHY MEMORY CONTROLS
+===================================================== */
+.beshy-memory-controls{
+    flex-shrink:0;
+    padding:5px;
+    background:var(--card);
+    text-align:center;
+}
+.beshy-memory-controls button{
+    padding:2px 5px;
+    border:none;
+    background:transparent;
+    color:var(--text-light);
+    font-family:"Kumbh Sans",Arial,sans-serif;
+    font-size:12px;
+    line-height:1.2;
+    cursor:pointer;
+}
+.beshy-memory-controls button:hover{
+    color:var(--accent);
+}
+/* =====================================================
+   BESHY — MOBILE
+===================================================== */
+@media(max-width:600px){
+    .beshy-toggle{
+        right:15px;
+        bottom:15px;
+        width:52px;
+        height:52px;
+        font-size:24px;
+    }
+    .beshy-chat{
+        right:10px;
+        bottom:80px;
+        width:calc(100vw - 20px);
+        /* SHORTER THAN BEFORE */
+        height:65vh;
 
-.beshy-identity {
+        border-radius:16px;
+        font-size:15px;
+    }
+    .beshy-header{
+        min-height:54px;
+        padding:10px;
+    }
+    .beshy-avatar{
+        width:30px;
+        height:30px;
+        font-size:24px;
+    }
+    .beshy-identity h3{
+        font-size:16px;
+    }
+    .beshy-identity p{
+        font-size:13px;
+    }
+    .beshy-close{
+        width:30px;
+        height:30px;
+        font-size:24px;
+    }
+    .beshy-messages{
+        padding:9px;
+    }
+    .beshy-message{
+        max-width:85%;
+        font-size:13px;
+        line-height:1.4;
+        font-size:15px;
+        line-height:1.55;
+    }
 
-    display: flex;
+    .beshy-message p{
+        font-size:15px;
+        line-height:1.55;
+    }
+    .beshy-options{
+        gap:4px;
+        padding:5px;
+    }
+    .beshy-options button{
+        min-height:28px;
+        padding:5px 8px;
+        font-size:11px;
+    }
+    .beshy-input-area{
+        min-height:52px;
+        padding:6px;
+    }
+    .beshy-input-area input{
+        height:38px;
+        padding:8px 10px;
+        font-size:14px;
+        gap:5px;
+        padding:6px;
+    }
 
-    align-items: center;
+    .beshy-options button{
+        min-height:30px;
+        padding:5px 9px;
+        font-size:13px;
+    }
 
-    gap: 10px;
+    .beshy-input-area{
+        min-height:56px;
+        padding:7px;
+    }
+
+    .beshy-input-area input{
+        height:40px;
+        padding:8px 11px;
+        font-size:15px;
+    }
+    .beshy-input-area button{
+        width:34px;
+        height:34px;
+        font-size:18px;
+    }
+    .beshy-memory-controls{
+        padding:4px;
+    }
+    .beshy-memory-controls button{
+        font-size:12px;
+    }
+}
+@media (max-width: 768px) {
+    .beshy-toggle {
+        bottom: 80px;
+    }
 }
 
+/* =====================================================
+   BESHY — VERY SMALL PHONES
+===================================================== */
+@media(max-width:380px){
+    .beshy-chat{
+        bottom:70px;
 
-.beshy-avatar {
-
-    font-size: 28px;
+        /* STILL SHORTER */
+        height:65vh;
+    }
+    .beshy-options button{
+        font-size:12px;
+    }
 }
-
-
-.beshy-title h3 {
-
-    margin: 0;
-
-    color: var(--gold-light);
-
-    font-size: 1rem;
-}
-
-
-.beshy-title p {
-
-    margin: 2px 0 0;
-
-    color: rgba(255,255,255,.7);
-
-    font-size: .75rem;
-}
-
-
-.beshy-close {
-
-    border: none;
-
-    background: transparent;
-
-    color: var(--cream);
-
-    font-size: 24px;
-}
-
-
-/* MESSAGES */
-
-.beshy-messages {
-
-    flex: 1;
-
-    padding: 12px;
-
-    overflow-y: auto;
-}
-
-
-.beshy-message {
-
-    width: max-content;
-
-    max-width: 82%;
-
-    margin-bottom: 8px;
-
-    padding:
-        9px 12px;
-
-    border-radius:
-        14px;
-
-    font-size: .9rem;
-
-    line-height: 1.55;
-}
-
-
-.beshy-message.bot {
-
-    align-self: flex-start;
-
-    background: var(--white);
-
-    color: var(--text);
-}
-
-
-.beshy-message.user {
-
-    margin-left: auto;
-
-    background: var(--navy);
-
-    color: var(--cream);
-}
-
-
-/* QUICK BUTTONS */
-
-.beshy-options {
-
-    flex-shrink: 0;
-
-    display: flex;
-
-    gap: 6px;
-
-    padding: 7px;
-
-    overflow-x: auto;
-}
-
-
-.beshy-options button {
-
-    flex-shrink: 0;
-
-    min-height: 36px;
-
-    padding:
-        6px 11px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 999px;
-
-    background: var(--white);
-
-    color: var(--navy-soft);
-
-    white-space: nowrap;
-
-    font-size: .8rem;
-}
-
-
-/* INPUT */
-
-.beshy-input-area {
-
-    position: relative;
-
-    flex-shrink: 0;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 6px;
-
-    padding: 9px;
-
-    background: var(--white);
-
-    border-top:
-        1px solid var(--border);
-}
-
-
-.beshy-input-area input {
-
-    flex: 1;
-
-    min-width: 0;
-
-    min-height: 42px;
-
-    padding:
-        8px 12px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius: 999px;
-
-    outline: none;
-}
-
-
-.beshy-input-area input:focus {
-
-    border-color: var(--gold-dark);
-
-    box-shadow:
-        0 0 0 3px rgba(214,179,106,.15);
-}
-
-
-.beshy-input-area button {
-
-    min-width: 42px;
-    min-height: 42px;
-
-    border: none;
-
-    background: transparent;
-
-    cursor: pointer;
-
-    font-size: 20px;
-}
-
-
-/* EMOJI */
-
-.beshy-emoji-panel {
-
-    display: none;
-
-    position: absolute;
-
-    left: 10px;
-    right: 10px;
-    bottom: 58px;
-
-    padding: 8px;
-
-    background: var(--white);
-
-    border:
-        1px solid var(--border);
-
-    border-radius: var(--radius);
-
-    box-shadow: var(--shadow);
-
-    grid-template-columns:
-        repeat(6, 1fr);
-
-    gap: 5px;
-
-    z-index: 10;
-}
-
-
-.beshy-emoji-panel.open {
-
-    display: grid;
-}
-
-
-.beshy-emoji-panel button {
-
-    border: none;
-
-    background: transparent;
-
-    font-size: 20px;
-}
-
-
-/* MEMORY */
-
-.beshy-memory-controls {
-
-    flex-shrink: 0;
-
-    padding: 6px;
-
-    text-align: center;
-}
-
-
-.beshy-memory-controls button {
-
-    border: none;
-
-    background: transparent;
-
-    color: var(--text-light);
-
-    font-size: .75rem;
-}
-
 
 /* =========================================================
    16. MUSIC LOUNGE
