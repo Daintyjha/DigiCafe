@@ -1,13 +1,20 @@
 /* =====================================================
-   DIGICAFE PDF + AUDIO READER
+   DIGICAFE SINGLE-PAGE PDF + AUDIO READER
 ===================================================== */
+
 import {
     getDocument,
     GlobalWorkerOptions
 } from "./build/pdf.mjs";
 
+
+/* =====================================================
+   PDF.JS WORKER
+===================================================== */
+
 GlobalWorkerOptions.workerSrc =
     "./build/pdf.worker.mjs";
+
 
 /* =====================================================
    START READER
@@ -30,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =================================================
-       CHECK STORY
+       STORY NOT FOUND
     ================================================= */
 
     if (!story) {
@@ -44,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             titleEl.textContent =
                 "Story not found";
-
         }
 
         console.error(
@@ -75,19 +81,88 @@ document.addEventListener("DOMContentLoaded", () => {
             "chapterAudio"
         );
 
-    const prevBtn =
+    const prevChapterBtn =
         document.getElementById(
             "prevChapter"
         );
 
-    const nextBtn =
+    const nextChapterBtn =
         document.getElementById(
             "nextChapter"
         );
 
 
     /* =================================================
-       CREATE CHAPTER LIST
+       CREATE PDF VIEWER
+    ================================================= */
+
+    contentEl.innerHTML = `
+
+        <div class="pdf-viewer">
+
+            <canvas
+                id="pdfCanvas"
+                class="pdf-page">
+            </canvas>
+
+            <div class="pdf-controls">
+
+                <button
+                    id="prevPdfPage"
+                    aria-label="Previous PDF page">
+                    ‹
+                </button>
+
+
+                <span id="pdfPageNumber">
+                    1 / 1
+                </span>
+
+
+                <button
+                    id="nextPdfPage"
+                    aria-label="Next PDF page">
+                    ›
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    /* =================================================
+       PDF ELEMENTS
+    ================================================= */
+
+    const canvas =
+        document.getElementById(
+            "pdfCanvas"
+        );
+
+    const canvasContext =
+        canvas.getContext("2d");
+
+
+    const prevPdfPage =
+        document.getElementById(
+            "prevPdfPage"
+        );
+
+    const nextPdfPage =
+        document.getElementById(
+            "nextPdfPage"
+        );
+
+    const pdfPageNumber =
+        document.getElementById(
+            "pdfPageNumber"
+        );
+
+
+    /* =================================================
+       CHAPTER DATA
     ================================================= */
 
     const chapters =
@@ -109,6 +184,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     audio:
                         `./Asset/NovelFiles/${storyKey}/${storyKey}_mp3/ch${num}.mp3`
+
                 };
 
             }
@@ -116,14 +192,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =================================================
-       SAVED PROGRESS
+       READING PROGRESS
     ================================================= */
 
     const storageKey =
         "progress_" + storyKey;
 
 
-    let current =
+    let currentChapter =
         parseInt(
             localStorage.getItem(
                 storageKey
@@ -132,33 +208,210 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =================================================
-       LOAD PDF
+       PDF STATE
     ================================================= */
 
-    async function loadPDF(pdfPath) {
+    let currentPDF = null;
 
-        const viewer =
-            document.getElementById(
-                "pdfViewer"
-            );
+    let currentPDFPage = 1;
+
+    let rendering = false;
+
+    let pendingPage = null;
 
 
-        if (!viewer) {
+    /* =================================================
+       RENDER PDF PAGE
+    ================================================= */
 
-            console.error(
-                "PDF viewer container missing."
-            );
+    async function renderPDFPage(
+        pageNumber
+    ) {
 
+        if (!currentPDF) {
             return;
         }
 
 
         /* ---------------------------------------------
-           CLEAR PREVIOUS PDF
+           PREVENT DOUBLE RENDER
         --------------------------------------------- */
 
-        viewer.innerHTML = "";
+        if (rendering) {
 
+            pendingPage =
+                pageNumber;
+
+            return;
+        }
+
+
+        rendering = true;
+
+
+        try {
+
+            const page =
+                await currentPDF.getPage(
+                    pageNumber
+                );
+
+
+            /* -----------------------------------------
+               VIEWER WIDTH
+            ----------------------------------------- */
+
+            const viewer =
+                document.querySelector(
+                    ".pdf-viewer"
+                );
+
+
+            const availableWidth =
+                viewer.clientWidth;
+
+
+            /* -----------------------------------------
+               PAGE SIZE
+            ----------------------------------------- */
+
+            const baseViewport =
+                page.getViewport({
+                    scale: 1
+                });
+
+
+            const scale =
+                availableWidth /
+                baseViewport.width;
+
+
+            const viewport =
+                page.getViewport({
+                    scale
+                });
+
+
+            /* -----------------------------------------
+               HIGH DPI
+            ----------------------------------------- */
+
+            const pixelRatio =
+                window.devicePixelRatio ||
+                1;
+
+
+            canvas.width =
+                Math.floor(
+                    viewport.width *
+                    pixelRatio
+                );
+
+
+            canvas.height =
+                Math.floor(
+                    viewport.height *
+                    pixelRatio
+                );
+
+
+            canvas.style.width =
+                `${viewport.width}px`;
+
+
+            canvas.style.height =
+                `${viewport.height}px`;
+
+
+            canvasContext.setTransform(
+                pixelRatio,
+                0,
+                0,
+                pixelRatio,
+                0,
+                0
+            );
+
+
+            /* -----------------------------------------
+               RENDER
+            ----------------------------------------- */
+
+            await page.render({
+
+                canvasContext:
+                    canvasContext,
+
+                viewport:
+                    viewport
+
+            }).promise;
+
+
+            /* -----------------------------------------
+               UPDATE PAGE NUMBER
+            ----------------------------------------- */
+
+            currentPDFPage =
+                pageNumber;
+
+
+            pdfPageNumber.textContent =
+                `${currentPDFPage} / ${currentPDF.numPages}`;
+
+
+            /* -----------------------------------------
+               BUTTON STATES
+            ----------------------------------------- */
+
+            prevPdfPage.disabled =
+                currentPDFPage <= 1;
+
+
+            nextPdfPage.disabled =
+                currentPDFPage >=
+                currentPDF.numPages;
+
+
+        } catch (error) {
+
+            console.error(
+                "PDF page rendering error:",
+                error
+            );
+
+        }
+
+
+        rendering = false;
+
+
+        /* ---------------------------------------------
+           RENDER PENDING PAGE
+        --------------------------------------------- */
+
+        if (pendingPage !== null) {
+
+            const nextPage =
+                pendingPage;
+
+            pendingPage = null;
+
+            renderPDFPage(
+                nextPage
+            );
+        }
+
+    }
+
+
+    /* =================================================
+       LOAD PDF
+    ================================================= */
+
+    async function loadPDF(
+        pdfPath
+    ) {
 
         try {
 
@@ -168,151 +421,30 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-            /* -----------------------------------------
-               LOAD DOCUMENT
-            ----------------------------------------- */
+            currentPDF =
+                await getDocument({
 
-           const pdf =
-    await getDocument({
-        url: pdfPath
-    }).promise;
-
-
-            console.log(
-                `PDF loaded: ${pdf.numPages} page(s)`
-            );
-
-
-            /* -----------------------------------------
-               RENDER EACH PAGE
-            ----------------------------------------- */
-
-            for (
-                let pageNumber = 1;
-                pageNumber <= pdf.numPages;
-                pageNumber++
-            ) {
-
-                const page =
-                    await pdf.getPage(
-                        pageNumber
-                    );
-
-
-                /* -------------------------------------
-                   ORIGINAL PAGE SIZE
-                ------------------------------------- */
-
-                const baseViewport =
-                    page.getViewport({
-                        scale: 1
-                    });
-
-
-                /* -------------------------------------
-                   AVAILABLE WIDTH
-                ------------------------------------- */
-
-                const viewerWidth =
-                    viewer.clientWidth;
-
-
-                /* -------------------------------------
-                   SCALE PDF TO CONTAINER
-                ------------------------------------- */
-
-                const scale =
-                    viewerWidth /
-                    baseViewport.width;
-
-
-                const viewport =
-                    page.getViewport({
-                        scale
-                    });
-
-
-                /* -------------------------------------
-                   CREATE CANVAS
-                ------------------------------------- */
-
-                const canvas =
-                    document.createElement(
-                        "canvas"
-                    );
-
-
-                canvas.className =
-                    "pdf-page";
-
-
-                const context =
-                    canvas.getContext(
-                        "2d"
-                    );
-
-
-                /* -------------------------------------
-                   HIGH-DPI DISPLAY
-                ------------------------------------- */
-
-                const pixelRatio =
-                    window.devicePixelRatio ||
-                    1;
-
-
-                canvas.width =
-                    Math.floor(
-                        viewport.width *
-                        pixelRatio
-                    );
-
-
-                canvas.height =
-                    Math.floor(
-                        viewport.height *
-                        pixelRatio
-                    );
-
-
-                canvas.style.width =
-                    `${viewport.width}px`;
-
-
-                canvas.style.height =
-                    `${viewport.height}px`;
-
-
-                context.scale(
-                    pixelRatio,
-                    pixelRatio
-                );
-
-
-                /* -------------------------------------
-                   ADD PAGE TO VIEWER
-                ------------------------------------- */
-
-                viewer.appendChild(
-                    canvas
-                );
-
-
-                /* -------------------------------------
-                   RENDER PAGE
-                ------------------------------------- */
-
-                await page.render({
-
-                    canvasContext:
-                        context,
-
-                    viewport:
-                        viewport
+                    url:
+                        pdfPath
 
                 }).promise;
 
-            }
+
+            console.log(
+                `PDF loaded: ${currentPDF.numPages} page(s)`
+            );
+
+
+            currentPDFPage = 1;
+
+
+            pdfPageNumber.textContent =
+                `1 / ${currentPDF.numPages}`;
+
+
+            await renderPDFPage(
+                1
+            );
 
 
         } catch (error) {
@@ -323,7 +455,11 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
 
-            viewer.innerHTML = `
+            currentPDF = null;
+
+
+            contentEl.innerHTML = `
+
                 <div class="pdf-error">
 
                     <p>
@@ -332,8 +468,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     </p>
 
                 </div>
+
             `;
+
         }
+
     }
 
 
@@ -341,11 +480,13 @@ document.addEventListener("DOMContentLoaded", () => {
        LOAD CHAPTER
     ================================================= */
 
-    async function loadChapter(i) {
+    async function loadChapter(
+        chapterIndex
+    ) {
 
         if (
-            i < 0 ||
-            i >= chapters.length
+            chapterIndex < 0 ||
+            chapterIndex >= chapters.length
         ) {
 
             return;
@@ -353,10 +494,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         const chapter =
-            chapters[i];
+            chapters[
+                chapterIndex
+            ];
 
 
-        current = i;
+        currentChapter =
+            chapterIndex;
 
 
         /* ---------------------------------------------
@@ -368,7 +512,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         /* ---------------------------------------------
-           LOAD PDF
+           PDF
         --------------------------------------------- */
 
         await loadPDF(
@@ -377,7 +521,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         /* ---------------------------------------------
-           LOAD AUDIO
+           AUDIO
         --------------------------------------------- */
 
         if (audioEl) {
@@ -393,6 +537,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
             audioEl.load();
+
         }
 
 
@@ -402,31 +547,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
         localStorage.setItem(
             storageKey,
-            current
+            currentChapter
         );
 
 
         /* ---------------------------------------------
-           BUTTON STATE
+           CHAPTER BUTTONS
         --------------------------------------------- */
 
-        if (prevBtn) {
+        if (prevChapterBtn) {
 
-            prevBtn.disabled =
-                current === 0;
+            prevChapterBtn.disabled =
+                currentChapter === 0;
+
         }
 
 
-        if (nextBtn) {
+        if (nextChapterBtn) {
 
-            nextBtn.disabled =
-                current ===
+            nextChapterBtn.disabled =
+                currentChapter ===
                 chapters.length - 1;
+
         }
 
 
         /* ---------------------------------------------
-           RETURN TO TOP
+           SCROLL TO READER
         --------------------------------------------- */
 
         window.scrollTo({
@@ -441,15 +588,61 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     /* =================================================
+       PDF PREVIOUS PAGE
+    ================================================= */
+
+    prevPdfPage.addEventListener(
+        "click",
+        () => {
+
+            if (
+                currentPDFPage > 1
+            ) {
+
+                renderPDFPage(
+                    currentPDFPage - 1
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =================================================
+       PDF NEXT PAGE
+    ================================================= */
+
+    nextPdfPage.addEventListener(
+        "click",
+        () => {
+
+            if (
+                currentPDF &&
+                currentPDFPage <
+                currentPDF.numPages
+            ) {
+
+                renderPDFPage(
+                    currentPDFPage + 1
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =================================================
        PREVIOUS CHAPTER
     ================================================= */
 
-    prevBtn?.addEventListener(
+    prevChapterBtn?.addEventListener(
         "click",
         () => {
 
             loadChapter(
-                current - 1
+                currentChapter - 1
             );
 
         }
@@ -460,12 +653,12 @@ document.addEventListener("DOMContentLoaded", () => {
        NEXT CHAPTER
     ================================================= */
 
-    nextBtn?.addEventListener(
+    nextChapterBtn?.addEventListener(
         "click",
         () => {
 
             loadChapter(
-                current + 1
+                currentChapter + 1
             );
 
         }
@@ -477,7 +670,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ================================================= */
 
     loadChapter(
-        current
+        currentChapter
     );
 
 });
