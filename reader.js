@@ -1,20 +1,13 @@
 /* =====================================================
    DIGICAFE PDF + AUDIO READER
 ===================================================== */
-
 import {
     getDocument,
     GlobalWorkerOptions
-} from "./pdfjs/build/pdf.mjs";
-
-
-/* =====================================================
-   PDF.JS WORKER
-===================================================== */
+} from "./build/pdf.mjs";
 
 GlobalWorkerOptions.workerSrc =
-    "./pdfjs/build/pdf.worker.mjs";
-
+    "./build/pdf.worker.mjs";
 
 /* =====================================================
    START READER
