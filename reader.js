@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
 
   const storyKey = new URLSearchParams(window.location.search).get("story");
@@ -15,8 +16,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     return {
       title: `${story.title}: Chapter ${num}`,
-      pdf: `Asset/NovelFiles/${storyKey}/${storyKey}_pdf/ch${num}.pdf`,
-audio: `Asset/NovelFiles/${storyKey}/${storyKey}_mp3/ch${num}.mp3`
+
+      pdf: `./Asset/NovelFiles/${storyKey}/${storyKey}_pdf/ch${num}.pdf`,
+
+      audio: `./Asset/NovelFiles/${storyKey}/${storyKey}_mp3/ch${num}.mp3`
     };
   });
 
@@ -25,36 +28,58 @@ audio: `Asset/NovelFiles/${storyKey}/${storyKey}_mp3/ch${num}.mp3`
   const audioEl = document.getElementById("chapterAudio");
 
   let current = 0;
+
   const storageKey = "progress_" + storyKey;
 
   current = parseInt(localStorage.getItem(storageKey)) || 0;
 
+
   function loadChapter(i) {
+
     if (i < 0 || i >= chapters.length) return;
 
     const ch = chapters[i];
+
     current = i;
 
     titleEl.textContent = ch.title;
 
+
+    // Load PDF
     contentEl.innerHTML = `
-      <iframe src="${ch.pdf}" style="width:100%; height:600px; border:none;"></iframe>
+      <iframe
+        src="${ch.pdf}"
+        style="width:100%; height:600px; border:none;"
+        loading="lazy">
+      </iframe>
     `;
+
+
+    // Load audiobook
+    console.log("Loading audio:", ch.audio);
 
     audioEl.src = ch.audio;
     audioEl.load();
 
+
+    // Save reading progress
     localStorage.setItem(storageKey, current);
   }
 
+
+  // Previous chapter
   document.getElementById("prevChapter")?.addEventListener("click", () => {
     loadChapter(current - 1);
   });
 
+
+  // Next chapter
   document.getElementById("nextChapter")?.addEventListener("click", () => {
     loadChapter(current + 1);
   });
 
+
+  // Start current chapter
   loadChapter(current);
 
 });

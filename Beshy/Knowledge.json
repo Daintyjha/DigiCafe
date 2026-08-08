@@ -89,4 +89,66 @@
     ],
     "answer": "DigiCafe was created by DaintyJha as a creative digital space combining music, stories, and imagination into one cozy online café."
   }
+],
+[
+  {
+    "topic": "DigiCafe",
+    "question": "What is DigiCafe?",
+    "answer": "DigiCafe is a cozy digital café created by DaintyJha where music, stories, creativity, and peaceful moments come together online."
+  },
+  {
+    "topic": "DigiCafe",
+    "question": "What can I do at DigiCafe?",
+    "answer": "At DigiCafe, visitors can listen to original music and relaxing sounds, explore stories and audiobooks, and enjoy creative experiences designed for quiet moments and imagination."
+  },
+  {
+    "topic": "DigiCafe",
+    "question": "What is the DigiCafe Lobby?",
+    "answer": "The Lobby is the welcoming home of DigiCafe. It introduces visitors to the café and provides entrances to the Music Lounge, Story Library, and About DigiCafe."
+  },
+  {
+    "topic": "DigiCafe",
+    "question": "What rooms are in DigiCafe?",
+    "answer": "From the Lobby, visitors can enter the Music Lounge, Story Library, and About DigiCafe. DigiCafe may grow with more experiences and spaces over time."
+  },
+  {
+    "topic": "Music Lounge",
+    "question": "What is the Music Lounge?",
+    "answer": "The Music Lounge is where visitors can discover original songs, ambient sounds, playlists, relaxing audio experiences, and DigiCafe Radio."
+  },
+  {
+    "topic": "Music Lounge",
+    "question": "What can I listen to in the Music Lounge?",
+    "answer": "You can listen to original songs, ambient sounds, playlists, relaxing audio experiences, and DigiCafe Radio."
+  },
+  {
+    "topic": "DigiCafe Radio",
+    "question": "What is DigiCafe Radio?",
+    "answer": "DigiCafe Radio is a continuous stream of carefully crafted sounds designed for relaxing, studying, creating, or simply taking a peaceful moment."
+  },
+  {
+    "topic": "Story Library",
+    "question": "What is the Story Library?",
+    "answer": "The Story Library is where visitors can explore original fiction, audiobooks, and immersive stories."
+  },
+  {
+    "topic": "Story Library",
+    "question": "What can I find in the Story Library?",
+    "answer": "You can find original fiction, audiobooks, and immersive stories in the Story Library."
+  },
+  {
+    "topic": "About DigiCafe",
+    "question": "What is the About page?",
+    "answer": "The About DigiCafe page introduces the creator behind the café and explains the vision that inspired DigiCafe."
+  },
+  {
+    "topic": "DigiCafe",
+    "question": "Why was DigiCafe created?",
+    "answer": "DigiCafe was created as a quiet corner of the internet where people can leave the noise behind and enjoy music, stories, imagination, and moments of calm."
+  },
+  {
+    "topic": "DigiCafe",
+    "question": "What is DigiCafe for?",
+    "answer": "DigiCafe is designed for listening, reading, drifting, relaxing, creating, and enjoying peaceful moments online."
+  }
 ]
