@@ -23,14 +23,6 @@ document.addEventListener(
     let activeCategory = "All";
 
 
-    let queue =
-      JSON.parse(
-        localStorage.getItem(
-          "musicQueue"
-        )
-      ) || [];
-
-
     let favorites =
       JSON.parse(
         localStorage.getItem(
@@ -84,11 +76,6 @@ document.addEventListener(
         "favoriteBtn"
       );
 
-
-    const queueBtn =
-      document.getElementById(
-        "queueBtn"
-      );
 
 
     const trackTitle =
@@ -145,21 +132,9 @@ document.addEventListener(
       );
 
 
-    const queueList =
-      document.getElementById(
-        "queueList"
-      );
-
-
     const favoriteList =
       document.getElementById(
         "favoriteList"
-      );
-
-
-    const clearQueueBtn =
-      document.getElementById(
-        "clearQueueBtn"
       );
 
 
@@ -212,15 +187,8 @@ document.addEventListener(
         );
 
 
-        displayRecent();
-
-
-        renderQueue();
-
-
+        displayRecent()
         renderFavorites();
-
-
         displayCollections();
 
 
@@ -260,20 +228,6 @@ document.addEventListener(
 
     }
 
-
-    function isInQueue(
-      song
-    ) {
-
-      return queue.some(
-        item =>
-          item.id ===
-          song.id
-      );
-
-    }
-
-
     /* =====================================================
        CREATE SONG CARD
     ===================================================== */
@@ -312,22 +266,6 @@ document.addEventListener(
           </button>
 
 
-          <button
-            class="add-queue ${
-              isInQueue(song)
-                ? "active-queue"
-                : ""
-            }"
-            title="Add to queue"
-          >
-
-            ${
-              isInQueue(song)
-                ? "✓"
-                : "+"
-            }
-
-          </button>
 
 
           <button
@@ -367,22 +305,6 @@ document.addEventListener(
             activeCategory === "All"
               ? "library"
               : activeCategory
-          );
-
-        };
-
-
-      /* QUEUE */
-
-      card
-        .querySelector(
-          ".add-queue"
-        )
-        .onclick =
-        () => {
-
-          addQueue(
-            song
           );
 
         };
@@ -713,16 +635,6 @@ document.addEventListener(
 
       if (
         playlistName ===
-        "queue"
-      ) {
-
-        return "＋ Queue";
-
-      }
-
-
-      if (
-        playlistName ===
         "library"
       ) {
 
@@ -759,15 +671,6 @@ document.addEventListener(
       }
 
 
-      if (queueBtn) {
-
-        queueBtn.classList.remove(
-          "active-playlist"
-        );
-
-      }
-
-
       if (
         activePlaylist ===
         "favorites"
@@ -783,21 +686,6 @@ document.addEventListener(
 
       }
 
-
-      if (
-        activePlaylist ===
-        "queue"
-      ) {
-
-        if (queueBtn) {
-
-          queueBtn.classList.add(
-            "active-playlist"
-          );
-
-        }
-
-      }
 
     }
 
@@ -828,39 +716,6 @@ document.addEventListener(
             favorites[0],
             favorites,
             "favorites"
-          );
-
-        };
-
-    }
-
-
-    /* =====================================================
-       QUEUE PLAYER BUTTON
-    ===================================================== */
-
-    if (queueBtn) {
-
-      queueBtn.onclick =
-        () => {
-
-          if (
-            !queue.length
-          ) {
-
-            alert(
-              "Your Queue is empty."
-            );
-
-            return;
-
-          }
-
-
-          playSong(
-            queue[0],
-            queue,
-            "queue"
           );
 
         };
@@ -1163,175 +1018,6 @@ if (shuffleBtn) {
       }
     );
 
-
-    /* =====================================================
-       QUEUE
-    ===================================================== */
-
-    function addQueue(
-      song
-    ) {
-
-      const index =
-        queue.findIndex(
-          item =>
-            item.id ===
-            song.id
-        );
-
-
-      if (
-        index ===
-        -1
-      ) {
-
-        queue.push(
-          song
-        );
-
-      } else {
-
-        queue.splice(
-          index,
-          1
-        );
-
-      }
-
-
-      saveQueue();
-
-
-      renderQueue();
-
-
-      refreshDisplays();
-
-    }
-
-
-    function saveQueue() {
-
-      localStorage.setItem(
-        "musicQueue",
-        JSON.stringify(
-          queue
-        )
-      );
-
-    }
-
-
-    function renderQueue() {
-
-      if (!queueList) {
-
-        return;
-
-      }
-
-
-      queueList.innerHTML =
-        "";
-
-
-      if (
-        !queue.length
-      ) {
-
-        queueList.innerHTML =
-          `
-          <li>
-            Queue is empty
-          </li>
-          `;
-
-        return;
-
-      }
-
-
-      queue.forEach(
-        (
-          song,
-          index
-        ) => {
-
-          const li =
-            document.createElement(
-              "li"
-            );
-
-
-          li.innerHTML = `
-
-            <span>
-              ${song.title}
-            </span>
-
-            <button>
-              ✕
-            </button>
-
-          `;
-
-
-          li
-            .querySelector(
-              "button"
-            )
-            .onclick =
-            () => {
-
-              queue.splice(
-                index,
-                1
-              );
-
-
-              saveQueue();
-
-
-              renderQueue();
-
-
-              refreshDisplays();
-
-            };
-
-
-          queueList.appendChild(
-            li
-          );
-
-        }
-      );
-
-    }
-
-
-    if (clearQueueBtn) {
-
-      clearQueueBtn.onclick =
-        () => {
-
-          queue =
-            [];
-
-
-          saveQueue();
-
-
-          renderQueue();
-
-
-          refreshDisplays();
-
-        };
-
-    }
-
-
     /* =====================================================
        FAVORITES
     ===================================================== */
@@ -1514,15 +1200,9 @@ if (shuffleBtn) {
         activeSongs
       );
 
-
       displayRecent();
 
-
-      renderQueue();
-
-
       renderFavorites();
-
 
       displayCollections();
 
@@ -1824,23 +1504,6 @@ if (shuffleBtn) {
 
                   </button>
 
-
-                  <button
-                    class="add-queue ${
-                      isInQueue(song)
-                        ? "active-queue"
-                        : ""
-                    }"
-                  >
-
-                    ${
-                      isInQueue(song)
-                        ? "✓"
-                        : "+"
-                    }
-
-                  </button>
-
                 </div>
 
               `;
@@ -1874,22 +1537,6 @@ if (shuffleBtn) {
                 () => {
 
                   addFavorite(
-                    song
-                  );
-
-                };
-
-
-              /* QUEUE */
-
-              row
-                .querySelector(
-                  ".add-queue"
-                )
-                .onclick =
-                () => {
-
-                  addQueue(
                     song
                   );
 
