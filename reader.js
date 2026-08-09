@@ -80,7 +80,11 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById(
             "chapterAudio"
         );
-
+const interactionContainer =
+    document.getElementById(
+        "interactionContainer"
+    );
+   
     const prevChapterBtn =
         document.getElementById(
             "prevChapter"
