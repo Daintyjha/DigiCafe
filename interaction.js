@@ -10,7 +10,8 @@ import {
     getDocs,
     query,
     where,
-    serverTimestamp
+    serverTimestamp,
+    orderBy
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 import { db } from "./firebase.js";
@@ -49,7 +50,7 @@ export function initializeInteractions() {
 
 
     /* =================================================
-       CONTENT ID
+       CONTENT INFORMATION
     ================================================= */
 
     const contentId =
@@ -63,7 +64,7 @@ export function initializeInteractions() {
     if (!contentId) {
 
         console.warn(
-            "Interaction cannot initialize yet: missing content ID."
+            "Interaction cannot initialize: missing content ID."
         );
 
         return;
@@ -106,6 +107,24 @@ export function initializeInteractions() {
         );
 
 
+    const commentCount =
+        interaction.querySelector(
+            ".interaction-comment-count"
+        );
+
+
+    const commentsSection =
+        interaction.querySelector(
+            ".interaction-comments"
+        );
+
+
+    const commentList =
+        interaction.querySelector(
+            ".comment-list"
+        );
+
+
     const commentInput =
         interaction.querySelector(
             ".comment-input"
@@ -119,15 +138,25 @@ export function initializeInteractions() {
 
 
     /* =================================================
-       CLEAN PREVIOUS AUTH LISTENER
+       VALIDATE ELEMENTS
     ================================================= */
 
-    if (authUnsubscribe) {
+    if (
+        !likeButton ||
+        !likeIcon ||
+        !likeCount ||
+        !commentButton ||
+        !commentCount ||
+        !commentList ||
+        !commentInput ||
+        !submitComment
+    ) {
 
-        authUnsubscribe();
+        console.warn(
+            "DigiCafe interaction HTML is incomplete."
+        );
 
-        authUnsubscribe =
-            null;
+        return;
 
     }
 
@@ -145,7 +174,21 @@ export function initializeInteractions() {
 
 
     /* =================================================
-       INITIAL BUTTON STATE
+       CLEAN PREVIOUS AUTH LISTENER
+    ================================================= */
+
+    if (authUnsubscribe) {
+
+        authUnsubscribe();
+
+        authUnsubscribe =
+            null;
+
+    }
+
+
+    /* =================================================
+       INITIAL STATE
     ================================================= */
 
     likeButton.disabled =
@@ -165,10 +208,14 @@ export function initializeInteractions() {
 
 
     /* =================================================
-       LOAD LIKE COUNT
+       LOAD INITIAL DATA
     ================================================= */
 
     loadLikeCount();
+
+    loadCommentCount();
+
+    loadComments();
 
 
     /* =================================================
@@ -209,14 +256,6 @@ export function initializeInteractions() {
 
                     submitComment.disabled =
                         false;
-
-
-                    likeButton.title =
-                        "Like this content";
-
-
-                    commentButton.title =
-                        "View comments";
 
 
                     commentInput.placeholder =
@@ -269,14 +308,6 @@ export function initializeInteractions() {
 
                     submitComment.disabled =
                         true;
-
-
-                    likeButton.title =
-                        "Please log in to like";
-
-
-                    commentButton.title =
-                        "Please log in to view comments";
 
 
                     commentInput.placeholder =
@@ -383,7 +414,6 @@ export function initializeInteractions() {
 
                 updateLikeButton();
 
-
                 await loadLikeCount();
 
 
@@ -394,14 +424,182 @@ export function initializeInteractions() {
                     error
                 );
 
+
                 alert(
-                    "Sorry, something went wrong."
+                    "Sorry, something went wrong with the like."
                 );
 
             }
 
 
             likeButton.disabled =
+                false;
+
+        }
+    );
+
+
+    /* =================================================
+       COMMENT BUTTON
+    ================================================= */
+
+    commentButton.addEventListener(
+        "click",
+        () => {
+
+            if (!currentUser) {
+
+                alert(
+                    "Please log in to view and write comments."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                commentsSection
+            ) {
+
+                commentsSection.classList.toggle(
+                    "comments-open"
+                );
+
+
+                if (
+                    commentsSection.classList.contains(
+                        "comments-open"
+                    )
+                ) {
+
+                    commentInput.focus();
+
+                }
+
+            }
+
+        }
+    );
+
+
+    /* =================================================
+       SUBMIT COMMENT
+    ================================================= */
+
+    submitComment.addEventListener(
+        "click",
+        async () => {
+
+            if (!currentUser) {
+
+                alert(
+                    "Please log in to comment."
+                );
+
+                return;
+
+            }
+
+
+            const text =
+                commentInput.value.trim();
+
+
+            if (!text) {
+
+                alert(
+                    "Please write something first."
+                );
+
+                return;
+
+            }
+
+
+            if (text.length > 1000) {
+
+                alert(
+                    "Your comment is too long. Please keep it under 1000 characters."
+                );
+
+                return;
+
+            }
+
+
+            submitComment.disabled =
+                true;
+
+
+            try {
+
+                const commentRef =
+                    doc(
+                        collection(
+                            db,
+                            "comments"
+                        )
+                    );
+
+
+                await setDoc(
+                    commentRef,
+                    {
+
+                        userId:
+                            currentUser.uid,
+
+                        userEmail:
+                            currentUser.email,
+
+                        contentId:
+                            contentId,
+
+                        contentType:
+                            contentType,
+
+                        text:
+                            text,
+
+                        createdAt:
+                            serverTimestamp()
+
+                    }
+                );
+
+
+                console.log(
+                    "Comment posted:",
+                    commentRef.id
+                );
+
+
+                commentInput.value =
+                    "";
+
+
+                await loadComments();
+
+                await loadCommentCount();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Comment error:",
+                    error
+                );
+
+
+                alert(
+                    "Sorry, your comment could not be posted."
+                );
+
+            }
+
+
+            submitComment.disabled =
                 false;
 
         }
@@ -425,6 +623,7 @@ export function initializeInteractions() {
 
             const likesQuery =
                 query(
+
                     likesRef,
 
                     where(
@@ -438,6 +637,7 @@ export function initializeInteractions() {
                         "==",
                         contentType
                     )
+
                 );
 
 
@@ -469,8 +669,8 @@ export function initializeInteractions() {
 
     async function checkUserLike(
         userId,
-        contentId,
-        contentType
+        currentContentId,
+        currentContentType
     ) {
 
         try {
@@ -496,13 +696,13 @@ export function initializeInteractions() {
                     where(
                         "contentId",
                         "==",
-                        contentId
+                        currentContentId
                     ),
 
                     where(
                         "contentType",
                         "==",
-                        contentType
+                        currentContentType
                     )
 
                 );
@@ -561,6 +761,458 @@ export function initializeInteractions() {
             );
 
         }
+
+    }
+
+
+    /* =================================================
+       LOAD COMMENT COUNT
+    ================================================= */
+
+    async function loadCommentCount() {
+
+        try {
+
+            const commentsRef =
+                collection(
+                    db,
+                    "comments"
+                );
+
+
+            const commentsQuery =
+                query(
+
+                    commentsRef,
+
+                    where(
+                        "contentId",
+                        "==",
+                        contentId
+                    ),
+
+                    where(
+                        "contentType",
+                        "==",
+                        contentType
+                    )
+
+                );
+
+
+            const snapshot =
+                await getDocs(
+                    commentsQuery
+                );
+
+
+            commentCount.textContent =
+                snapshot.size;
+
+
+        } catch (error) {
+
+            console.error(
+                "Could not load comment count:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* =================================================
+       LOAD COMMENTS
+    ================================================= */
+
+    async function loadComments() {
+
+        try {
+
+            commentList.innerHTML = "";
+
+
+            const commentsRef =
+                collection(
+                    db,
+                    "comments"
+                );
+
+
+            const commentsQuery =
+                query(
+
+                    commentsRef,
+
+                    where(
+                        "contentId",
+                        "==",
+                        contentId
+                    ),
+
+                    where(
+                        "contentType",
+                        "==",
+                        contentType
+                    ),
+
+                    orderBy(
+                        "createdAt",
+                        "asc"
+                    )
+
+                );
+
+
+            const snapshot =
+                await getDocs(
+                    commentsQuery
+                );
+
+
+            if (
+                snapshot.empty
+            ) {
+
+                commentList.innerHTML = `
+
+                    <p class="no-comments">
+                        No comments yet. Be the first to say something! ☕
+                    </p>
+
+                `;
+
+
+                return;
+
+            }
+
+
+            snapshot.forEach(
+                (commentDoc) => {
+
+                    const data =
+                        commentDoc.data();
+
+
+                    const commentElement =
+                        createCommentElement(
+                            commentDoc.id,
+                            data
+                        );
+
+
+                    commentList.appendChild(
+                        commentElement
+                    );
+
+                }
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Could not load comments:",
+                error
+            );
+
+
+            commentList.innerHTML = `
+
+                <p class="comment-error">
+                    Comments could not be loaded right now.
+                </p>
+
+            `;
+
+        }
+
+    }
+
+
+    /* =================================================
+       CREATE COMMENT ELEMENT
+    ================================================= */
+
+    function createCommentElement(
+        commentId,
+        data
+    ) {
+
+        const wrapper =
+            document.createElement(
+                "article"
+            );
+
+
+        wrapper.className =
+            "comment-item";
+
+
+        /* =============================================
+           USER
+        ============================================= */
+
+        const user =
+            document.createElement(
+                "strong"
+            );
+
+
+        user.className =
+            "comment-user";
+
+
+        user.textContent =
+            data.userEmail ||
+            "DigiCafe Guest";
+
+
+        /* =============================================
+           COMMENT TEXT
+        ============================================= */
+
+        const text =
+            document.createElement(
+                "p"
+            );
+
+
+        text.className =
+            "comment-text";
+
+
+        text.textContent =
+            data.text ||
+            "";
+
+
+        /* =============================================
+           COMMENT DATE
+        ============================================= */
+
+        const date =
+            document.createElement(
+                "small"
+            );
+
+
+        date.className =
+            "comment-date";
+
+
+        if (
+            data.createdAt &&
+            data.createdAt.toDate
+        ) {
+
+            date.textContent =
+                formatCommentDate(
+                    data.createdAt.toDate()
+                );
+
+        }
+
+        else {
+
+            date.textContent =
+                "Just now";
+
+        }
+
+
+        /* =============================================
+           DELETE BUTTON
+        ============================================= */
+
+        const deleteButton =
+            document.createElement(
+                "button"
+            );
+
+
+        deleteButton.type =
+            "button";
+
+
+        deleteButton.className =
+            "comment-delete";
+
+
+        deleteButton.textContent =
+            "Delete";
+
+
+        if (
+            !currentUser ||
+            currentUser.uid !==
+            data.userId
+        ) {
+
+            deleteButton.style.display =
+                "none";
+
+        }
+
+
+        deleteButton.addEventListener(
+            "click",
+            async () => {
+
+                if (!currentUser) {
+
+                    return;
+
+                }
+
+
+                if (
+                    currentUser.uid !==
+                    data.userId
+                ) {
+
+                    return;
+
+                }
+
+
+                const confirmed =
+                    confirm(
+                        "Delete this comment?"
+                    );
+
+
+                if (!confirmed) {
+
+                    return;
+
+                }
+
+
+                try {
+
+                    await deleteDoc(
+                        doc(
+                            db,
+                            "comments",
+                            commentId
+                        )
+                    );
+
+
+                    await loadComments();
+
+                    await loadCommentCount();
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Could not delete comment:",
+                        error
+                    );
+
+
+                    alert(
+                        "Sorry, the comment could not be deleted."
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =============================================
+           BUILD COMMENT
+        ============================================= */
+
+        const header =
+            document.createElement(
+                "div"
+            );
+
+
+        header.className =
+            "comment-header";
+
+
+        header.appendChild(
+            user
+        );
+
+
+        header.appendChild(
+            date
+        );
+
+
+        const footer =
+            document.createElement(
+                "div"
+            );
+
+
+        footer.className =
+            "comment-footer";
+
+
+        footer.appendChild(
+            deleteButton
+        );
+
+
+        wrapper.appendChild(
+            header
+        );
+
+
+        wrapper.appendChild(
+            text
+        );
+
+
+        wrapper.appendChild(
+            footer
+        );
+
+
+        return wrapper;
+
+    }
+
+
+    /* =================================================
+       FORMAT COMMENT DATE
+    ================================================= */
+
+    function formatCommentDate(
+        date
+    ) {
+
+        return date.toLocaleString(
+            undefined,
+            {
+
+                year:
+                    "numeric",
+
+                month:
+                    "short",
+
+                day:
+                    "numeric",
+
+                hour:
+                    "2-digit",
+
+                minute:
+                    "2-digit"
+
+            }
+        );
 
     }
 
