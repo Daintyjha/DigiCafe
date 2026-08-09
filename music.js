@@ -1269,38 +1269,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     }
 
-
-    /* =====================================================
-       CATEGORY EMOJIS
-    ===================================================== */
-
-    function getEmoji(category) {
-
-        const emojis = {
-
-            "Ambience": "🌿",
-
-            "Night Atmosphere": "🌙",
-
-            "Piano": "🎹",
-
-            "Heal": "💗",
-
-            "PsyChill": "🌌",
-
-            "DancePop": "💃"
-
-        };
-
-
-        return (
-            emojis[category] ||
-            "🎵"
-        );
-
-    }
-
-
     /* =====================================================
        MEDIA SESSION
     ===================================================== */
