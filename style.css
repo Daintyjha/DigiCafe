@@ -911,7 +911,20 @@ h6 {
     color: var(--navy-dark);
 }
 
+/* Zoom percentage display */
+#zoomLevel {
+    min-width: 62px;
+    height: 42px;
 
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--white);
+    font-size: .95rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
 /* =========================================================
    10. MUSIC LOUNGE
 ========================================================= */
