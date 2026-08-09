@@ -127,61 +127,61 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
 
-    /* =====================================================
-       CREATE SONG CARD
-    ===================================================== */
+   /* =====================================================
+   CREATE SONG CARD
+===================================================== */
 
-    function createSongCard(song) {
+function createSongCard(song) {
 
-        const card =
-            document.createElement("div");
+    const card =
+        document.createElement("div");
 
-        card.className = "song-card";
+    card.className = "song-card";
 
-        card.innerHTML = `
+    card.dataset.songId = song.id;
 
-            <h3>
-                ${song.title || "Untitled"}
-            </h3>
+    card.innerHTML = `
 
-            <p>
-                ${song.category || "Music"}
-            </p>
+        <h3>
+            ${song.title || "Untitled"}
+        </h3>
 
-            <div class="song-buttons">
+        <p>
+            ${song.category || "Music"}
+        </p>
 
-                <button
-                    class="play-song"
-                    type="button"
-                    title="Play song"
-                >
-                    ▶
-                </button>
+        <div class="song-buttons">
 
-                <button
-                    class="add-favorite ${
-                        isFavorite(song)
-                            ? "active-favorite"
-                            : ""
-                    }"
-                    type="button"
-                    title="${
-                        isFavorite(song)
-                            ? "Remove from favorites"
-                            : "Add to favorites"
-                    }"
-                >
-                    ${
-                        isFavorite(song)
-                            ? "♥"
-                            : "♡"
-                    }
-                </button>
+            <button
+                class="play-song"
+                type="button"
+                title="Play song"
+            >
+                ▶
+            </button>
 
-            </div>
-        `;
+            <button
+                class="add-favorite ${
+                    isFavorite(song)
+                        ? "active-favorite"
+                        : ""
+                }"
+                type="button"
+                title="${
+                    isFavorite(song)
+                        ? "Remove from favorites"
+                        : "Add to favorites"
+                }"
+            >
+                ${
+                    isFavorite(song)
+                        ? "♥"
+                        : "♡"
+                }
+            </button>
 
-
+        </div>
+    `;
         /* =================================================
            PLAY SONG
         ================================================= */
@@ -355,111 +355,130 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
 
 
-    /* =====================================================
-       PLAY SONG
-    ===================================================== */
+     /* =====================================================
+    PLAY SONG
+ ===================================================== */
 
-    function playSong(
-        song,
-        list = musicLibrary,
-        playlistName = "library"
-    ) {
+ function playSong(
+     song,
+     list = musicLibrary,
+     playlistName = "library"
+ ) {
 
-        if (!song) {
+     if (!song) {
 
-            return;
+         return;
 
-        }
+     }
 
 
-        if (!song.file) {
+     if (!song.file) {
 
-            console.error(
-                "❌ Song has no audio file:",
-                song
+         console.error(
+             "❌ Song has no audio file:",
+             song
+         );
+
+         return;
+
+     }
+
+
+     playbackList = Array.isArray(list)
+         ? list
+         : musicLibrary;
+
+
+     activePlaylist = playlistName;
+
+
+     currentTrack = song;
+
+
+     currentIndex =
+         playbackList.findIndex(
+             item =>
+                 item.id === song.id
+         );
+
+
+     if (currentIndex < 0) {
+
+         currentIndex = 0;
+
+     }
+
+
+     audio.src = song.file;
+
+
+     audio.load();
+
+
+     audio.play()
+         .catch(error => {
+
+             console.warn(
+                 "⚠️ Audio playback error:",
+                 error
+             );
+
+         });
+
+
+     if (trackTitle) {
+
+         trackTitle.textContent =
+             song.title || "Untitled";
+
+     }
+
+
+     if (trackArtist) {
+
+         trackArtist.textContent =
+             song.artist || "DaintyJha";
+
+     }
+
+
+     if (playbackSource) {
+
+         playbackSource.textContent =
+             getPlaybackSourceName(
+                 playlistName,
+                 song
+             );
+
+     }
+
+/* =====================================================
+   CURRENTLY PLAYING INDICATOR
+===================================================== */
+
+function updateCurrentSongIndicator() {
+
+    document
+        .querySelectorAll("[data-song-id]")
+        .forEach(element => {
+
+            const isCurrent =
+                element.dataset.songId ===
+                String(currentTrack?.id);
+
+            element.classList.toggle(
+                "is-current",
+                isCurrent
             );
 
-            return;
-
-        }
-
-
-        playbackList = Array.isArray(list)
-            ? list
-            : musicLibrary;
-
-
-        activePlaylist = playlistName;
-
-
-        currentTrack = song;
-
-
-        currentIndex =
-            playbackList.findIndex(
-                item =>
-                    item.id === song.id
+            element.classList.toggle(
+                "paused",
+                isCurrent && audio.paused
             );
 
+        });
 
-        if (currentIndex < 0) {
-
-            currentIndex = 0;
-
-        }
-
-
-        audio.src = song.file;
-
-
-        audio.load();
-
-
-        audio.play()
-            .catch(error => {
-
-                console.warn(
-                    "⚠️ Audio playback error:",
-                    error
-                );
-
-            });
-
-
-        if (trackTitle) {
-
-            trackTitle.textContent =
-                song.title || "Untitled";
-
-        }
-
-
-        if (trackArtist) {
-
-            trackArtist.textContent =
-                song.artist || "DaintyJha";
-
-        }
-
-
-        if (playbackSource) {
-
-            playbackSource.textContent =
-                getPlaybackSourceName(
-                    playlistName,
-                    song
-                );
-
-        }
-
-
-        updatePlaybackButtons();
-
-        updateMediaSession(song);
-
-    }
-
-
+ }
     /* =====================================================
        PLAYBACK SOURCE
     ===================================================== */
@@ -739,53 +758,58 @@ document.addEventListener("DOMContentLoaded", async () => {
     /* =====================================================
        PLAYING STATE
     ===================================================== */
+audio.addEventListener(
+    "play",
+    () => {
 
-    audio.addEventListener(
-        "play",
-        () => {
+        if (player) {
 
-            if (player) {
-
-                player.classList.add(
-                    "is-playing"
-                );
-
-            }
-
-
-            if (playBtn) {
-
-                playBtn.textContent =
-                    "⏸";
-
-            }
+            player.classList.add(
+                "is-playing"
+            );
 
         }
-    );
 
 
-    audio.addEventListener(
-        "pause",
-        () => {
+        if (playBtn) {
 
-            if (player) {
-
-                player.classList.remove(
-                    "is-playing"
-                );
-
-            }
-
-
-            if (playBtn) {
-
-                playBtn.textContent =
-                    "▶";
-
-            }
+            playBtn.textContent =
+                "⏸";
 
         }
-    );
+
+
+        updateCurrentSongIndicator();
+
+    }
+);
+
+
+audio.addEventListener(
+    "pause",
+    () => {
+
+        if (player) {
+
+            player.classList.remove(
+                "is-playing"
+            );
+
+        }
+
+
+        if (playBtn) {
+
+            playBtn.textContent =
+                "▶";
+
+        }
+
+
+        updateCurrentSongIndicator();
+
+    }
+);
 
 
     /* =====================================================
@@ -1154,9 +1178,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                     document.createElement("div");
 
 
-                row.className =
-                    "song-row";
-
+               row.className = "song-row";
+row.dataset.songId = song.id;
 
                 row.innerHTML = `
 
