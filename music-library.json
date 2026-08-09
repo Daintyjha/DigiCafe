@@ -132,7 +132,7 @@
     "artist": "DaintyJha",
     "album": "ASMR Collection",
     "category": "ASMR",
-    "file": "Asset/MusicFiles/ASMR/ASMR2.mp3",
+    "file": "Asset/MusicFiles/Piano/ASMR2.mp3",
     "dateAdded": "2026-07-17"
   },
   {
@@ -141,7 +141,7 @@
     "artist": "DaintyJha",
     "album": "ASMR Collection",
     "category": "ASMR",
-    "file": "Asset/MusicFiles/ASMR/ASMR3.mp3",
+    "file": "Asset/MusicFiles/Piano/ASMR3.mp3",
     "dateAdded": "2026-07-17"
   },
   {
@@ -150,7 +150,7 @@
     "artist": "DaintyJha",
     "album": "ASMR Collection",
     "category": "ASMR",
-    "file": "Asset/MusicFiles/ASMR/ASMR4.mp3",
+    "file": "Asset/MusicFiles/Piano/ASMR4.mp3",
     "dateAdded": "2026-07-17"
   },
   {
@@ -159,7 +159,7 @@
     "artist": "DaintyJha",
     "album": "ASMR Collection",
     "category": "ASMR",
-    "file": "Asset/MusicFiles/ASMR/ASMR5.mp3",
+    "file": "Asset/MusicFiles/Piano/ASMR5.mp3",
     "dateAdded": "2026-07-17"
   },
   {
@@ -168,34 +168,8 @@
     "artist": "DaintyJha",
     "album": "ASMR Collection",
     "category": "ASMR",
-    "file": "Asset/MusicFiles/ASMR/ASMR6.mp3",
+    "file": "Asset/MusicFiles/Piano/ASMR6.mp3",
     "dateAdded": "2026-07-17"
   },
-  {
-    "id": 20,
-    "title": "Almost Silent",
-    "artist": "DaintyJha",
-    "album": "Ambient Collection",
-    "category": "Ambience",
-    "file": "Asset/MusicFiles/Ambience/Almost Silent.wav",
-    "dateAdded": "2026-07-17"
-  },
-  {
-    "id": 21,
-    "title": "Almost Yours",
-    "artist": "DaintyJha",
-    "album": "Music Collection",
-    "category": "Music",
-    "file": "Asset/MusicFiles/Almost Yours.mp3",
-    "dateAdded": "2026-07-17"
-  },
-  {
-    "id": 22,
-    "title": "Alone in the Snow",
-    "artist": "DaintyJha",
-    "album": "Ambient Collection",
-    "category": "Ambience",
-    "file": "Asset/MusicFiles/Ambience/Alone in The Snow.mp3",
-    "dateAdded": "2026-07-17"
-  }
+  
 ]
