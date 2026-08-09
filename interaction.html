@@ -1,0 +1,105 @@
+<!-- =====================================================
+     DIGICAFE CONTENT INTERACTIONS
+===================================================== -->
+
+<section
+    class="digi-interactions"
+    data-content-id=""
+    data-content-type="novel"
+>
+
+    <!-- LIKE / COMMENT SUMMARY -->
+
+    <div class="interaction-actions">
+
+        <button
+            type="button"
+            class="interaction-like"
+            aria-label="Like this content"
+        >
+            <span class="interaction-like-icon">♡</span>
+
+            <span class="interaction-like-label">
+                Like
+            </span>
+
+            <span
+                class="interaction-like-count"
+                id="likeCount"
+            >
+                0
+            </span>
+        </button>
+
+
+        <button
+            type="button"
+            class="interaction-comment"
+            aria-label="View comments"
+        >
+            <span class="interaction-comment-icon">
+                💬
+            </span>
+
+            <span class="interaction-comment-label">
+                Comments
+            </span>
+
+            <span
+                class="interaction-comment-count"
+                id="commentCount"
+            >
+                0
+            </span>
+        </button>
+
+    </div>
+
+
+    <!-- COMMENTS AREA -->
+
+    <div
+        class="interaction-comments"
+        id="commentsSection"
+    >
+
+        <h3 class="comments-title">
+            Comments
+        </h3>
+
+
+        <!-- COMMENTS WILL APPEAR HERE -->
+
+        <div
+            class="comment-list"
+            id="commentList"
+        >
+            <!-- Firebase comments will be loaded here later -->
+        </div>
+
+
+        <!-- COMMENT FORM -->
+
+        <div class="comment-form">
+
+            <textarea
+                id="commentInput"
+                class="comment-input"
+                placeholder="Write a comment..."
+                rows="4"
+            ></textarea>
+
+
+            <button
+                type="button"
+                id="submitComment"
+                class="comment-submit"
+            >
+                Post Comment
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
