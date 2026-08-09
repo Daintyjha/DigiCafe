@@ -716,9 +716,14 @@ h6 {
 }
 
 
+```css
 /* =========================================================
    09. READER / PDF.JS
 ========================================================= */
+
+/* ---------------------------------------------------------
+   BOOK LAYOUT
+--------------------------------------------------------- */
 
 .book-layout {
     width: min(calc(100% - 30px), 1050px);
@@ -735,13 +740,22 @@ h6 {
     border-radius: var(--radius-lg);
 
     box-shadow: var(--shadow);
+    box-sizing: border-box;
 }
 
 #chapterTitle {
     margin: 5px 0 18px;
+
     color: var(--navy-dark);
+
     font-size: clamp(1.05rem, 2vw, 1.35rem);
+    font-weight: 700;
 }
+
+
+/* ---------------------------------------------------------
+   PDF CONTENT AREA
+--------------------------------------------------------- */
 
 #chapterContent {
     width: 100%;
@@ -749,19 +763,42 @@ h6 {
     padding: 0;
 
     background: #e9edf2;
+
+    box-sizing: border-box;
 }
 
+
+/* ---------------------------------------------------------
+   PDF VIEWER
+--------------------------------------------------------- */
+
 .pdf-viewer {
+    position: relative;
+
     width: 100%;
     max-width: 900px;
-    margin: 0 auto;
 
-    overflow: hidden;
+    margin: 0 auto;
 
     background: #fff;
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
+
+    box-shadow: var(--shadow);
+
+    box-sizing: border-box;
+
+    /*
+     * Keep the PDF itself contained,
+     * while allowing controls positioned above it.
+     */
+    overflow: visible;
 }
+
+
+/* ---------------------------------------------------------
+   PDF PAGE / CANVAS
+--------------------------------------------------------- */
 
 .pdf-page {
     display: block;
@@ -772,23 +809,55 @@ h6 {
     margin: 0 auto;
 
     background: #fff;
+
+    border-radius: var(--radius-sm);
+
+    box-sizing: border-box;
 }
 
-.pdf-controls {
+
+/* ---------------------------------------------------------
+   PDF ZOOM / MAGNIFIER CONTROLS
+--------------------------------------------------------- */
+
+.pdf-zoom-controls {
+    position: absolute;
+
+    top: 12px;
+    right: 12px;
+
+    z-index: 50;
+
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 25px;
+    gap: 8px;
 
-    padding: 12px 15px;
+    padding: 6px;
 
-    background: var(--navy-dark);
-    color: var(--white);
+    background: rgba(7, 20, 38, .92);
+
+    border: 1px solid rgba(255, 255, 255, .15);
+    border-radius: 999px;
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .18);
+
+    backdrop-filter: blur(6px);
 }
 
-.pdf-controls button {
-    width: 42px;
-    height: 42px;
+
+/* ---------------------------------------------------------
+   ZOOM BUTTONS
+--------------------------------------------------------- */
+
+.pdf-zoom-controls button {
+    width: 38px;
+    height: 38px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
 
     border: none;
     border-radius: 50%;
@@ -796,33 +865,168 @@ h6 {
     background: var(--gold);
     color: var(--navy-dark);
 
-    font-size: 1.5rem;
+    font-size: 1.15rem;
     font-weight: 700;
+
     line-height: 1;
 
+    cursor: pointer;
+
     transition: var(--transition);
+
+    box-sizing: border-box;
+}
+
+.pdf-zoom-controls button:hover {
+    background: var(--gold-light);
+    transform: scale(1.08);
+}
+
+.pdf-zoom-controls button:active {
+    transform: scale(.96);
+}
+
+.pdf-zoom-controls button:disabled {
+    opacity: .35;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+
+/* ---------------------------------------------------------
+   ZOOM PERCENTAGE CIRCLE
+--------------------------------------------------------- */
+
+#zoomLevel {
+    width: 46px;
+    height: 46px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    padding: 0;
+
+    border-radius: 50%;
+
+    background: var(--gold);
+    color: var(--navy-dark);
+
+    font-size: .78rem;
+    font-weight: 700;
+
+    line-height: 1;
+    white-space: nowrap;
+
+    box-sizing: border-box;
+}
+
+
+/* ---------------------------------------------------------
+   PDF PAGE NAVIGATION
+--------------------------------------------------------- */
+
+.pdf-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 20px;
+
+    width: 100%;
+
+    padding: 12px 15px;
+
+    background: var(--navy-dark);
+    color: var(--white);
+
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+
+    box-sizing: border-box;
+}
+
+
+/* ---------------------------------------------------------
+   PAGE NAVIGATION BUTTONS
+--------------------------------------------------------- */
+
+.pdf-controls button {
+    width: 42px;
+    height: 42px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: var(--gold);
+    color: var(--navy-dark);
+
+    font-size: 1.35rem;
+    font-weight: 700;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition: var(--transition);
+
+    box-sizing: border-box;
 }
 
 .pdf-controls button:hover {
-    transform: scale(1.08);
     background: var(--gold-light);
+
+    transform: scale(1.08);
+}
+
+.pdf-controls button:active {
+    transform: scale(.96);
 }
 
 .pdf-controls button:disabled {
     opacity: .35;
+
     cursor: not-allowed;
+
     transform: none;
 }
 
+
+/* ---------------------------------------------------------
+   PAGE NUMBER
+--------------------------------------------------------- */
+
 #pdfPageNumber {
-    min-width: 70px;
+    min-width: 75px;
+
     text-align: center;
-    font-size: .95rem;
+
+    color: var(--white);
+
+    font-size: .9rem;
+    font-weight: 600;
+
+    white-space: nowrap;
 }
+
+
+/* ---------------------------------------------------------
+   BOOK PREVIOUS / NEXT NAVIGATION
+--------------------------------------------------------- */
 
 .book-nav {
     display: flex;
     justify-content: space-between;
+
     gap: 15px;
 
     padding: 15px 5px;
@@ -830,9 +1034,11 @@ h6 {
 
 .book-nav button {
     flex: 1;
+
     max-width: 260px;
 
     min-height: 48px;
+
     padding: 12px 18px;
 
     border: none;
@@ -843,47 +1049,88 @@ h6 {
 
     font-weight: 700;
 
+    cursor: pointer;
+
     transition: var(--transition);
+
+    box-sizing: border-box;
 }
 
 .book-nav button:hover:not(:disabled) {
     background: var(--gold);
     color: var(--navy-dark);
+
     transform: translateY(-2px);
+}
+
+.book-nav button:active:not(:disabled) {
+    transform: translateY(0);
 }
 
 .book-nav button:disabled {
     opacity: .35;
+
     cursor: not-allowed;
 }
 
+
+/* ---------------------------------------------------------
+   AUDIO PLAYER
+--------------------------------------------------------- */
+
 .audio-bottom {
     width: min(calc(100% - 30px), 700px);
+
     margin: 20px auto;
 }
 
 .audio-bottom audio {
+    display: block;
+
     width: 100%;
+
+    border-radius: var(--radius-sm);
 }
+
+
+/* ---------------------------------------------------------
+   READER NOTE
+--------------------------------------------------------- */
 
 .reader-note {
     width: min(calc(100% - 30px), 700px);
+
     margin: 20px auto;
 
     padding: 15px 20px;
 
     background: var(--cream-light);
+
     border-left: 4px solid var(--gold);
     border-radius: var(--radius-sm);
 
     color: var(--text-soft);
+
     text-align: left;
+
+    line-height: 1.6;
+
+    box-sizing: border-box;
 }
+
+
+/* ---------------------------------------------------------
+   READER NAVIGATION
+--------------------------------------------------------- */
 
 .reader-nav {
     display: flex;
+
     justify-content: center;
+    align-items: center;
+
     flex-wrap: wrap;
+
     gap: 10px;
 
     margin-top: 25px;
@@ -891,40 +1138,242 @@ h6 {
 
 .reader-nav a {
     display: inline-flex;
+
     align-items: center;
+    justify-content: center;
 
     min-height: 44px;
+
     padding: 9px 15px;
 
     background: var(--white);
+
     border: 1px solid var(--border);
     border-radius: 999px;
 
     color: var(--navy-soft);
 
+    text-decoration: none;
+
     transition: var(--transition);
+
+    box-sizing: border-box;
 }
 
 .reader-nav a:hover {
     background: var(--gold);
+
     border-color: var(--gold);
+
     color: var(--navy-dark);
+
+    transform: translateY(-2px);
 }
 
-/* Zoom percentage display */
-#zoomLevel {
-    min-width: 62px;
-    height: 42px;
 
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+/* =========================================================
+   MOBILE READER
+========================================================= */
 
-    color: var(--white);
-    font-size: .95rem;
-    font-weight: 700;
-    white-space: nowrap;
+@media (max-width: 768px) {
+
+    .book-layout {
+        width: calc(100% - 20px);
+
+        margin-top: 15px;
+        margin-bottom: 50px;
+    }
+
+    .book-page {
+        padding: 10px;
+
+        border-radius: var(--radius-sm);
+    }
+
+    #chapterTitle {
+        margin-bottom: 12px;
+
+        font-size: 1.05rem;
+    }
+
+    .pdf-viewer {
+        max-width: 100%;
+
+        border-radius: var(--radius-sm);
+    }
+
+
+    /* Zoom controls become slightly smaller */
+
+    .pdf-zoom-controls {
+        top: 8px;
+        right: 8px;
+
+        gap: 5px;
+
+        padding: 5px;
+    }
+
+    .pdf-zoom-controls button {
+        width: 34px;
+        height: 34px;
+
+        font-size: 1rem;
+    }
+
+    #zoomLevel {
+        width: 40px;
+        height: 40px;
+
+        font-size: .7rem;
+    }
+
+
+    /* Page controls */
+
+    .pdf-controls {
+        gap: 12px;
+
+        padding: 10px;
+    }
+
+    .pdf-controls button {
+        width: 38px;
+        height: 38px;
+
+        font-size: 1.15rem;
+    }
+
+    #pdfPageNumber {
+        min-width: 65px;
+
+        font-size: .82rem;
+    }
+
+
+    /* Previous / next chapter */
+
+    .book-nav {
+        gap: 10px;
+
+        padding: 12px 0;
+    }
+
+    .book-nav button {
+        min-height: 44px;
+
+        padding: 10px 12px;
+
+        font-size: .85rem;
+    }
+
+
+    /* Reader navigation */
+
+    .reader-nav {
+        gap: 8px;
+
+        margin-top: 20px;
+    }
+
+    .reader-nav a {
+        min-height: 40px;
+
+        padding: 8px 12px;
+
+        font-size: .85rem;
+    }
+
+    .reader-note {
+        width: calc(100% - 20px);
+
+        padding: 13px 15px;
+
+        font-size: .9rem;
+    }
 }
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .book-layout {
+        width: calc(100% - 12px);
+    }
+
+    .book-page {
+        padding: 7px;
+    }
+
+    #chapterTitle {
+        font-size: 1rem;
+    }
+
+
+    /* Keep zoom controls compact */
+
+    .pdf-zoom-controls {
+        top: 6px;
+        right: 6px;
+
+        gap: 4px;
+
+        padding: 4px;
+    }
+
+    .pdf-zoom-controls button {
+        width: 31px;
+        height: 31px;
+
+        font-size: .9rem;
+    }
+
+    #zoomLevel {
+        width: 36px;
+        height: 36px;
+
+        font-size: .62rem;
+    }
+
+
+    /* PDF page controls */
+
+    .pdf-controls {
+        gap: 8px;
+
+        padding: 8px;
+    }
+
+    .pdf-controls button {
+        width: 35px;
+        height: 35px;
+
+        font-size: 1rem;
+    }
+
+    #pdfPageNumber {
+        min-width: 58px;
+        font-size: .75rem;
+    }
+
+
+    /* Chapter navigation */
+
+    .book-nav {
+        flex-direction: column;
+    }
+
+    .book-nav button {
+        width: 100%;
+
+        max-width: none;
+    }
+}
+```
+
 /* =========================================================
    10. MUSIC LOUNGE
 ========================================================= */
