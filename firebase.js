@@ -8,6 +8,8 @@ from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
 import { getFirestore }
 from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
+import { getAuth }
+from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
 const firebaseConfig = {
 
@@ -27,15 +29,35 @@ const firebaseConfig = {
 };
 
 
-// Initialize Firebase
+// =====================================================
+// INITIALIZE FIREBASE
+// =====================================================
 
-const app = initializeApp(firebaseConfig);
-
-
-// Initialize Firestore
-
-export const db = getFirestore(app);
+const app =
+    initializeApp(firebaseConfig);
 
 
-console.log("🔥 Firebase connected:", app.name);
+// =====================================================
+// FIRESTORE
+// =====================================================
 
+export const db =
+    getFirestore(app);
+
+
+// =====================================================
+// AUTHENTICATION
+// =====================================================
+
+export const auth =
+    getAuth(app);
+
+
+console.log(
+    "🔥 Firebase connected:",
+    app.name
+);
+
+console.log(
+    "🔐 Firebase Authentication ready"
+);
