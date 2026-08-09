@@ -3078,10 +3078,32 @@ h6 {
         height: 78vh;
     }
 
-    .beshy-toggle {
-        right: 10px;
-        bottom: 75px;
+   /* =========================================================
+   BESHY TOGGLE — MOBILE POSITION
+========================================================= */
+
+@media (max-width: 768px) {
+
+    /*
+       Keep Beshy directly above the fixed music player.
+       Adjust 95px if your player is taller/shorter.
+    */
+
+    #beshyToggle,
+    .beshy-toggle,
+    .beshy-button {
+
+        position: fixed;
+
+        right: 16px;
+
+        bottom: 100px;
+
+        z-index: 10001;
+
     }
+
+}
 
     .footer__container {
         width: calc(100% - 24px);
@@ -3328,4 +3350,3 @@ h6 {
         animation-iteration-count: 1 !important;
         transition-duration: .01ms !important;
     }
-}
