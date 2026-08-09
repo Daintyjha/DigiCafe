@@ -3865,19 +3865,298 @@ html {
 
 }
 /* =========================================================
-   DIGICAFE INTERACTION PLACEHOLDER
+   DIGICAFE CONTENT INTERACTIONS
 ========================================================= */
 
 .digi-interactions {
     width: 100%;
+    max-width: 700px;
 
-    margin: 20px auto 5px;
-    padding: 15px;
+    margin: 25px auto 10px;
+    padding: 18px 20px;
 
-    background: var(--cream-light);
+    background: var(--white);
 
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
 
     box-sizing: border-box;
+}
+
+
+/* ---------------------------------------------------------
+   LIKE / COMMENT ACTIONS
+--------------------------------------------------------- */
+
+.interaction-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+}
+
+
+/* ---------------------------------------------------------
+   LIKE + COMMENT BUTTONS
+--------------------------------------------------------- */
+
+.interaction-like,
+.interaction-comment {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    min-height: 42px;
+
+    padding: 8px 16px;
+
+    border: 1px solid var(--border);
+    border-radius: 999px;
+
+    background: var(--white);
+    color: var(--navy-dark);
+
+    font-size: .9rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: var(--transition);
+
+    box-sizing: border-box;
+}
+
+
+/* ---------------------------------------------------------
+   ICONS
+--------------------------------------------------------- */
+
+.interaction-like-icon {
+    font-size: 1.25rem;
+
+    line-height: 1;
+}
+
+.interaction-comment-icon {
+    font-size: 1rem;
+
+    line-height: 1;
+}
+
+
+/* ---------------------------------------------------------
+   COUNTS
+--------------------------------------------------------- */
+
+.interaction-like-count,
+.interaction-comment-count {
+    min-width: 20px;
+
+    text-align: center;
+
+    color: var(--text-soft);
+
+    font-size: .8rem;
+}
+
+
+/* ---------------------------------------------------------
+   HOVER
+--------------------------------------------------------- */
+
+.interaction-like:hover,
+.interaction-comment:hover {
+    background: var(--gold);
+
+    border-color: var(--gold);
+
+    color: var(--navy-dark);
+
+    transform: translateY(-2px);
+}
+
+
+/* ---------------------------------------------------------
+   COMMENTS AREA
+--------------------------------------------------------- */
+
+.interaction-comments {
+    margin-top: 20px;
+
+    padding-top: 18px;
+
+    border-top: 1px solid var(--border);
+
+    text-align: left;
+}
+
+
+/* ---------------------------------------------------------
+   COMMENTS TITLE
+--------------------------------------------------------- */
+
+.comments-title {
+    margin: 0 0 15px;
+
+    color: var(--navy-dark);
+
+    font-size: 1rem;
+}
+
+
+/* ---------------------------------------------------------
+   COMMENT LIST
+--------------------------------------------------------- */
+
+.comment-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+/* ---------------------------------------------------------
+   COMMENT FORM
+--------------------------------------------------------- */
+
+.comment-form {
+    margin-top: 18px;
+}
+
+.comment-input {
+    display: block;
+
+    width: 100%;
+    min-height: 90px;
+
+    padding: 12px 14px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+
+    color: var(--text-dark);
+
+    font-family: inherit;
+    font-size: .9rem;
+
+    resize: vertical;
+
+    box-sizing: border-box;
+
+    outline: none;
+
+    transition: var(--transition);
+}
+
+.comment-input:focus {
+    border-color: var(--gold);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(214, 179, 106, .15);
+}
+
+
+/* ---------------------------------------------------------
+   COMMENT SUBMIT
+--------------------------------------------------------- */
+
+.comment-submit {
+    display: block;
+
+    margin: 10px 0 0 auto;
+
+    min-height: 42px;
+
+    padding: 9px 18px;
+
+    border: none;
+    border-radius: 999px;
+
+    background: var(--navy-dark);
+    color: var(--white);
+
+    font-size: .85rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: var(--transition);
+}
+
+.comment-submit:hover {
+    background: var(--gold);
+
+    color: var(--navy-dark);
+
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .digi-interactions {
+        width: 100%;
+
+        margin-top: 20px;
+
+        padding: 15px;
+    }
+
+
+    .interaction-actions {
+        gap: 8px;
+    }
+
+
+    .interaction-like,
+    .interaction-comment {
+        flex: 1;
+
+        min-height: 40px;
+
+        padding: 8px 10px;
+
+        font-size: .82rem;
+    }
+
+
+    .interaction-like-icon {
+        font-size: 1.15rem;
+    }
+
+
+    .interaction-comment-icon {
+        font-size: .9rem;
+    }
+
+
+    .interaction-like-count,
+    .interaction-comment-count {
+        min-width: 16px;
+
+        font-size: .75rem;
+    }
+
+
+    .comment-input {
+        min-height: 80px;
+    }
+
+
+    .comment-submit {
+        width: 100%;
+    }
+
 }
