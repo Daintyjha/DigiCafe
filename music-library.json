@@ -171,5 +171,40 @@
     "file": "Asset/MusicFiles/Piano/ASMR6.mp3",
     "dateAdded": "2026-07-17"
   },
-  
+    {
+   "id": 20,
+    "title": "Crickets",
+    "artist": "DaintyJha",
+    "album": "Night Atmosphere Collection",
+    "category": "Night Atmosphere",
+    "file": "Asset/adio/Crickets",
+    "dateAdded": "2026-07-17"
+     },
+  {
+   "id": 21,
+    "title": "Firplace",
+    "artist": "DaintyJha",
+    "album": "Night Atmosphere Collection",
+    "category": "Night Atmosphere",
+    "file": "Asset/adio/Fireplace",
+    "dateAdded": "2026-07-17"
+     },
+  {
+   "id": 22,
+    "title": "Rain",
+    "artist": "DaintyJha",
+    "album": "Night Atmosphere Collection",
+    "category": "Night Atmosphere",
+    "file": "Asset/adio/Rain",
+    "dateAdded": "2026-07-17"
+     },
+  {
+   "id": 23,
+    "title": "Sream",
+    "artist": "DaintyJha",
+    "album": "Night Atmosphere Collection",
+    "category": "Night Atmosphere",
+    "file": "Asset/adio/Stream",
+    "dateAdded": "2026-07-17"
+     },
 ]
