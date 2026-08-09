@@ -7,7 +7,9 @@ import {
     GlobalWorkerOptions
 } from "./build/pdf.mjs";
 
-
+import {
+    initializeInteractions
+} from "./interaction.js";
 /* =====================================================
    PDF.JS WORKER
 ===================================================== */
@@ -141,8 +143,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             interactionContainer.innerHTML =
                 html;
-
-
+initializeInteractions();
+           
             console.log(
                 "DigiCafe interaction component loaded."
             );
