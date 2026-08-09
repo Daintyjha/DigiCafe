@@ -3864,3 +3864,20 @@ html {
 }
 
 }
+/* =========================================================
+   DIGICAFE INTERACTION PLACEHOLDER
+========================================================= */
+
+.digi-interactions {
+    width: 100%;
+
+    margin: 20px auto 5px;
+    padding: 15px;
+
+    background: var(--cream-light);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+
+    box-sizing: border-box;
+}
