@@ -8,7 +8,9 @@
     data-content-type="novel"
 >
 
-    <!-- LIKE / COMMENT SUMMARY -->
+    <!-- =================================================
+         LIKE / COMMENT SUMMARY
+    ================================================== -->
 
     <div class="interaction-actions">
 
@@ -17,18 +19,19 @@
             class="interaction-like"
             aria-label="Like this content"
         >
-            <span class="interaction-like-icon">♡</span>
+
+            <span class="interaction-like-icon">
+                ♡
+            </span>
 
             <span class="interaction-like-label">
                 Like
             </span>
 
-            <span
-                class="interaction-like-count"
-                id="likeCount"
-            >
+            <span class="interaction-like-count">
                 0
             </span>
+
         </button>
 
 
@@ -37,6 +40,7 @@
             class="interaction-comment"
             aria-label="View comments"
         >
+
             <span class="interaction-comment-icon">
                 💬
             </span>
@@ -45,45 +49,46 @@
                 Comments
             </span>
 
-            <span
-                class="interaction-comment-count"
-                id="commentCount"
-            >
+            <span class="interaction-comment-count">
                 0
             </span>
+
         </button>
 
     </div>
 
 
-    <!-- COMMENTS AREA -->
+    <!-- =================================================
+         COMMENTS AREA
+    ================================================== -->
 
-    <div
-        class="interaction-comments"
-        id="commentsSection"
-    >
+    <div class="interaction-comments">
 
         <h3 class="comments-title">
             Comments
         </h3>
 
 
-        <!-- COMMENTS WILL APPEAR HERE -->
+        <!-- =================================================
+             COMMENT LIST
+        ================================================== -->
 
-        <div
-            class="comment-list"
-            id="commentList"
-        >
-            <!-- Firebase comments will be loaded here later -->
+        <div class="comment-list">
+
+            <!--
+                Firebase comments will appear here later.
+            -->
+
         </div>
 
 
-        <!-- COMMENT FORM -->
+        <!-- =================================================
+             COMMENT FORM
+        ================================================== -->
 
         <div class="comment-form">
 
             <textarea
-                id="commentInput"
                 class="comment-input"
                 placeholder="Write a comment..."
                 rows="4"
@@ -92,7 +97,6 @@
 
             <button
                 type="button"
-                id="submitComment"
                 class="comment-submit"
             >
                 Post Comment
