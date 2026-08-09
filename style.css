@@ -3024,372 +3024,381 @@ h6 {
     }
 }
 
-
 /* =========================================================
-   18. SMALL PHONES
+18. SMALL PHONES
 ========================================================= */
 
 @media (max-width: 480px) {
-
-    html {
-        font-size: 17px;
-    }
-
-    .logo {
-        font-size: 1.25rem;
-    }
-
-    .hero h1,
-    .library > h1,
-    .stories > h1 {
-        font-size: 1.9rem;
-    }
-
-    .cafe-home {
-        padding-inline: 12px;
-    }
-
-    .about-container,
-    .library {
-        width: calc(100% - 24px);
-    }
-
-    .book-layout {
-        padding: 0;
-    }
-
-    .book-page {
-        padding: 4px;
-    }
-
-    .book-nav {
-        flex-direction: column;
-    }
-
-    .reader-nav a {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .beshy-chat {
-        right: 6px;
-        width: calc(100vw - 12px);
-        bottom: 135px;
-        height: 78vh;
-    }
-
-   /* =========================================================
-   BESHY TOGGLE — MOBILE POSITION
-========================================================= */
-
-@media (max-width: 768px) {
-
-    /*
-       Keep Beshy directly above the fixed music player.
-       Adjust 95px if your player is taller/shorter.
-    */
-
-    #beshyToggle,
-    .beshy-toggle,
-    .beshy-button {
-
-        position: fixed;
-
-        right: 16px;
-
-        bottom: 100px;
-
-        z-index: 10001;
-
-    }
-
+html {
+    font-size: 17px;
 }
 
-    .footer__container {
-        width: calc(100% - 24px);
-    }
-
-    /* Welcome */
-
-    .welcome-title {
-        margin-bottom: 14px;
-        font-size: 1.12rem;
-        letter-spacing: .13em;
-    }
-
-    .welcome-title::before,
-    .welcome-title::after {
-        margin-inline: 6px;
-    }
-
-    .cafe-entrance {
-        width: min(300px, 84vw);
-        height: 390px;
-        padding-top: 24px;
-        border-radius: 140px 140px 22px 22px;
-    }
-
-    .cafe-sign {
-        padding: 7px 15px;
-        font-size: .72rem;
-    }
-
-    .cafe-window {
-        top: 98px;
-        width: 44px;
-        height: 60px;
-        border-width: 4px;
-    }
-
-    .cafe-window.left {
-        left: 25px;
-    }
-
-    .cafe-window.right {
-        right: 25px;
-    }
-
-    .cafe-door {
-        width: 120px;
-        height: 205px;
-    }
-
-    .door-text {
-        font-size: .65rem;
-    }
-
-    .door-icon {
-        font-size: 1.5rem;
-    }
-
-    .welcome-tagline {
-        margin-top: 14px;
-        font-size: .76rem;
-    }
-
-    .welcome-tagline span {
-        font-size: .68rem;
-    }
+.logo {
+    font-size: 1.25rem;
 }
 
+.hero h1,
+.library > h1,
+.stories > h1 {
+    font-size: 1.9rem;
+}
+
+.cafe-home {
+    padding-inline: 12px;
+}
+
+.about-container,
+.library {
+    width: calc(100% - 24px);
+}
+
+.book-layout {
+    padding: 0;
+}
+
+.book-page {
+    padding: 4px;
+}
+
+.book-nav {
+    flex-direction: column;
+}
+
+.reader-nav a {
+    width: 100%;
+    justify-content: center;
+}
+
+.footer__container {
+    width: calc(100% - 24px);
+}
+
+/* BESHY */
+
+.beshy-chat {
+    right: 6px;
+    width: calc(100vw - 12px);
+    bottom: 135px;
+    height: 78vh;
+}
+
+/* WELCOME */
+
+.welcome-title {
+    margin-bottom: 14px;
+    font-size: 1.12rem;
+    letter-spacing: .13em;
+}
+
+.welcome-title::before,
+.welcome-title::after {
+    margin-inline: 6px;
+}
+
+.cafe-entrance {
+    width: min(300px, 84vw);
+    height: 390px;
+    padding-top: 24px;
+    border-radius: 140px 140px 22px 22px;
+}
+
+.cafe-sign {
+    padding: 7px 15px;
+    font-size: .72rem;
+}
+
+.cafe-window {
+    top: 98px;
+    width: 44px;
+    height: 60px;
+    border-width: 4px;
+}
+
+.cafe-window.left {
+    left: 25px;
+}
+
+.cafe-window.right {
+    right: 25px;
+}
+
+.cafe-door {
+    width: 120px;
+    height: 205px;
+}
+
+.door-text {
+    font-size: .65rem;
+}
+
+.door-icon {
+    font-size: 1.5rem;
+}
+
+.welcome-tagline {
+    margin-top: 14px;
+    font-size: .76rem;
+}
+
+.welcome-tagline span {
+    font-size: .68rem;
+}
+
+}
 
 /* =========================================================
-   19. VERY SHORT SCREENS
+19. VERY SHORT SCREENS
 ========================================================= */
 
 @media (max-height: 650px) and (max-width: 600px) {
 
-    #welcome-screen {
-        padding: 10px;
-    }
+#welcome-screen {
+    padding: 10px;
+}
 
-    .welcome-title {
-        margin-bottom: 8px;
-        font-size: 1rem;
-    }
+.welcome-title {
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
 
-    .cafe-entrance {
-        width: min(280px, 72vw);
-        height: 315px;
-        padding-top: 18px;
-    }
+.cafe-entrance {
+    width: min(280px, 72vw);
+    height: 315px;
+    padding-top: 18px;
+}
 
-    .cafe-sign {
-        padding: 5px 12px;
-        font-size: .65rem;
-    }
+.cafe-sign {
+    padding: 5px 12px;
+    font-size: .65rem;
+}
 
-    .cafe-window {
-        top: 75px;
-        width: 38px;
-        height: 50px;
-    }
+.cafe-window {
+    top: 75px;
+    width: 38px;
+    height: 50px;
+}
 
-    .cafe-window.left {
-        left: 22px;
-    }
+.cafe-window.left {
+    left: 22px;
+}
 
-    .cafe-window.right {
-        right: 22px;
-    }
+.cafe-window.right {
+    right: 22px;
+}
 
-    .cafe-door {
-        width: 100px;
-        height: 170px;
-    }
+.cafe-door {
+    width: 100px;
+    height: 170px;
+}
 
-    .door-icon {
-        font-size: 1.2rem;
-    }
+.door-icon {
+    font-size: 1.2rem;
+}
 
-    .door-text {
-        font-size: .55rem;
-    }
+.door-text {
+    font-size: .55rem;
+}
 
-    .welcome-tagline {
-        margin-top: 8px;
-        font-size: .65rem;
-    }
+.welcome-tagline {
+    margin-top: 8px;
+    font-size: .65rem;
+}
+
 }
 
 /* =====================================================
-   CURRENTLY PLAYING SONG
+CURRENTLY PLAYING SONG
 ===================================================== */
 
 .song-card.is-current,
 .song-row.is-current {
-    border-color: var(--gold);
-    box-shadow:
-        0 0 0 1px rgba(214, 179, 106, 0.25),
-        0 0 20px rgba(214, 179, 106, 0.18);
+border-color: var(--gold);
 
-    background: rgba(214, 179, 106, 0.08);
+box-shadow:
+    0 0 0 1px rgba(214, 179, 106, .25),
+    0 0 20px rgba(214, 179, 106, .18);
 
-    transition:
-        background 0.3s ease,
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
+background: rgba(214, 179, 106, .08);
+
+transition:
+    background .3s ease,
+    border-color .3s ease,
+    box-shadow .3s ease;
 }
-
 
 /* Song title */
 
 .song-card.is-current h3,
 .song-row.is-current .song-title {
-    color: var(--gold);
+color: var(--gold);
 }
-
 
 /* Playing indicator */
 
 .song-card.is-current .play-song,
 .song-row.is-current .play {
-    color: var(--gold);
+color: var(--gold);
 }
 
-
 /* =====================================================
-   EQUALIZER INDICATOR
+EQUALIZER INDICATOR
 ===================================================== */
 
 .playing-indicator {
-    display: inline-flex;
-    align-items: flex-end;
-    gap: 3px;
-    height: 16px;
-    margin-left: 8px;
-    vertical-align: middle;
-}
+display: inline-flex;
+align-items: flex-end;
+gap: 3px;
+height: 16px;
+margin-left: 8px;
 
+vertical-align: middle;
+
+}
 
 .playing-indicator span {
-    width: 3px;
-    height: 5px;
-    background: var(--gold);
-    border-radius: 3px;
+width: 3px;
+height: 5px;
+background: var(--gold);
+border-radius: 3px;
 
-    animation:
-        musicBars 0.8s ease-in-out infinite alternate;
+animation:
+    musicBars .8s ease-in-out infinite alternate;
+
 }
 
-
 .playing-indicator span:nth-child(1) {
-    animation-delay: 0s;
+animation-delay: 0s;
 }
 
 .playing-indicator span:nth-child(2) {
-    animation-delay: 0.2s;
+animation-delay: .2s;
 }
 
 .playing-indicator span:nth-child(3) {
-    animation-delay: 0.4s;
+animation-delay: .4s;
 }
-
 
 @keyframes musicBars {
-
-    from {
-        height: 4px;
-    }
-
-    to {
-        height: 16px;
-    }
-
+from {
+    height: 4px;
 }
 
+to {
+    height: 16px;
+}
+}
 
 /* =====================================================
-   PAUSED STATE
+PAUSED STATE
 ===================================================== */
 
 .song-card.is-current.paused,
 .song-row.is-current.paused {
-    box-shadow:
-        0 0 0 1px rgba(214, 179, 106, 0.15);
+box-shadow:
+0 0 0 1px rgba(214, 179, 106, .15);
 }
+
 /* =========================================================
-   20. ACCESSIBILITY / MOTION
+20. BESHY TOGGLE — MOBILE POSITION
+========================================================= */
+
+@media (max-width: 768px) {
+/*
+   Beshy stays directly above the fixed music player.
+   Adjust bottom if the player height changes.
+*/
+
+#beshyToggle,
+.beshy-toggle,
+.beshy-button {
+    position: fixed;
+
+    right: 16px;
+    bottom: 100px;
+
+    z-index: 10001;
+}
+
+}
+
+/* =========================================================
+21. MOBILE MUSIC LAYOUT
+========================================================= */
+
+@media (max-width: 768px) {
+/*
+   On mobile:
+   1. Music content appears first.
+   2. Sidebar moves to the bottom.
+*/
+
+.music-app {
+    display: flex;
+    flex-direction: column;
+}
+
+.music-content {
+    order: 1;
+
+    width: 100%;
+    margin-left: 0;
+
+    padding: 25px 16px 170px;
+}
+
+.sidebar {
+    position: static;
+
+    order: 2;
+
+    width: 100%;
+    height: auto;
+
+    margin: 30px 0 100px;
+
+    padding: 20px;
+
+    border-right: none;
+    border-top: 1px solid rgba(214, 179, 106, .16);
+}
+
+.sidebar nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.sidebar nav a {
+    min-width: 0;
+    text-align: center;
+}
+
+.sidebar-card {
+    margin-bottom: 15px;
+}
+
+}
+
+/* =========================================================
+22. ACCESSIBILITY / MOTION
 ========================================================= */
 
 .cafe-door:focus-visible {
-    outline: 3px solid var(--cafe-gold-light);
-    outline-offset: 5px;
+outline: 3px solid var(--cafe-gold-light);
+outline-offset: 5px;
 }
 
 @media (prefers-reduced-motion: reduce) {
+html {
+    scroll-behavior: auto;
+}
 
-    html {
-        scroll-behavior: auto;
-    }
-
-    *,
-    *::before,
-    *::after {
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: .01ms !important;
-    }
-@media (max-width: 768px) {
-
-    .music-app {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .sidebar {
-        position: static;
-
-        order: 2;
-
-        width: 100%;
-        height: auto;
-
-        margin: 30px 0 100px;
-
-        padding: 20px;
-
-        border-right: none;
-        border-top: 1px solid rgba(214,179,106,.16);
-    }
-
-    .music-content {
-        order: 1;
-
-        width: 100%;
-        margin-left: 0;
-
-        padding: 25px 16px 170px;
-    }
-
-    .sidebar nav {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-    }
-
-    .sidebar-card {
-        margin-bottom: 15px;
-    }
+*,
+*::before,
+*::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+}
 
 }
