@@ -19,10 +19,17 @@ import { watchAuthState } from "./auth.js";
 
 
 // =====================================================
+// CURRENT INTERACTION INSTANCE
+// =====================================================
+
+let authUnsubscribe = null;
+
+
+// =====================================================
 // INITIALIZE INTERACTIONS
 // =====================================================
 
-function initializeInteractions() {
+export function initializeInteractions() {
 
     const interaction =
         document.querySelector(
@@ -39,6 +46,36 @@ function initializeInteractions() {
         return;
 
     }
+
+
+    /* =================================================
+       CONTENT ID
+    ================================================= */
+
+    const contentId =
+        interaction.dataset.contentId;
+
+
+    const contentType =
+        interaction.dataset.contentType;
+
+
+    if (!contentId) {
+
+        console.warn(
+            "Interaction cannot initialize yet: missing content ID."
+        );
+
+        return;
+
+    }
+
+
+    console.log(
+        "Initializing interaction:",
+        contentType,
+        contentId
+    );
 
 
     /* =================================================
@@ -82,153 +119,176 @@ function initializeInteractions() {
 
 
     /* =================================================
-       CONTENT INFORMATION
+       CLEAN PREVIOUS AUTH LISTENER
     ================================================= */
 
-    const contentId =
-        interaction.dataset.contentId;
+    if (authUnsubscribe) {
 
+        authUnsubscribe();
 
-    const contentType =
-        interaction.dataset.contentType;
-
-
-    if (!contentId) {
-
-        console.warn(
-            "DigiCafe interaction is missing data-content-id."
-        );
-
-        return;
+        authUnsubscribe =
+            null;
 
     }
 
 
     /* =================================================
-       CURRENT USER
+       USER STATE
     ================================================= */
 
-    let currentUser = null;
+    let currentUser =
+        null;
+
+
+    let userHasLiked =
+        false;
 
 
     /* =================================================
-       LIKE STATE
+       INITIAL BUTTON STATE
     ================================================= */
 
-    let userHasLiked = false;
+    likeButton.disabled =
+        true;
+
+
+    commentButton.disabled =
+        true;
+
+
+    commentInput.disabled =
+        true;
+
+
+    submitComment.disabled =
+        true;
+
+
+    /* =================================================
+       LOAD LIKE COUNT
+    ================================================= */
+
+    loadLikeCount();
 
 
     /* =================================================
        WATCH AUTH STATE
     ================================================= */
 
-    watchAuthState(
-        async (user) => {
+    authUnsubscribe =
+        watchAuthState(
+            async (user) => {
 
-            currentUser =
-                user;
-
-
-            if (user) {
-
-                console.log(
-                    "Interaction user:",
-                    user.email
-                );
+                currentUser =
+                    user;
 
 
-                likeButton.disabled =
-                    false;
+                /* =========================================
+                   LOGGED IN
+                ========================================= */
 
-                commentButton.disabled =
-                    false;
+                if (user) {
 
-                commentInput.disabled =
-                    false;
-
-                submitComment.disabled =
-                    false;
-
-
-                likeButton.title =
-                    "Like this content";
-
-
-                commentButton.title =
-                    "View comments";
-
-
-                /* -----------------------------------------
-                   CHECK USER LIKE
-                ----------------------------------------- */
-
-                userHasLiked =
-                    await checkUserLike(
-                        user.uid,
-                        contentId,
-                        contentType
+                    console.log(
+                        "Interaction user:",
+                        user.email
                     );
 
 
-                updateLikeButton();
+                    likeButton.disabled =
+                        false;
 
 
-                /* -----------------------------------------
-                   LOAD LIKE COUNT
-                ----------------------------------------- */
-
-                await loadLikeCount();
+                    commentButton.disabled =
+                        false;
 
 
-            } else {
-
-                console.log(
-                    "No user logged in."
-                );
+                    commentInput.disabled =
+                        false;
 
 
-                currentUser =
-                    null;
+                    submitComment.disabled =
+                        false;
 
 
-                userHasLiked =
-                    false;
+                    likeButton.title =
+                        "Like this content";
 
 
-                likeButton.disabled =
-                    true;
-
-                commentButton.disabled =
-                    true;
-
-                commentInput.disabled =
-                    true;
-
-                submitComment.disabled =
-                    true;
+                    commentButton.title =
+                        "View comments";
 
 
-                likeButton.title =
-                    "Please log in to like";
+                    commentInput.placeholder =
+                        "Write a comment...";
 
 
-                commentButton.title =
-                    "Please log in to view comments";
+                    userHasLiked =
+                        await checkUserLike(
+                            user.uid,
+                            contentId,
+                            contentType
+                        );
 
 
-                commentInput.placeholder =
-                    "Please log in to comment.";
+                    updateLikeButton();
+
+                }
 
 
-                updateLikeButton();
+                /* =========================================
+                   LOGGED OUT
+                ========================================= */
+
+                else {
+
+                    console.log(
+                        "No user logged in."
+                    );
 
 
-                await loadLikeCount();
+                    currentUser =
+                        null;
+
+
+                    userHasLiked =
+                        false;
+
+
+                    likeButton.disabled =
+                        true;
+
+
+                    commentButton.disabled =
+                        true;
+
+
+                    commentInput.disabled =
+                        true;
+
+
+                    submitComment.disabled =
+                        true;
+
+
+                    likeButton.title =
+                        "Please log in to like";
+
+
+                    commentButton.title =
+                        "Please log in to view comments";
+
+
+                    commentInput.placeholder =
+                        "Please log in to comment.";
+
+
+                    updateLikeButton();
+
+                }
 
             }
-
-        }
-    );
+        );
 
 
     /* =================================================
@@ -272,11 +332,11 @@ function initializeInteractions() {
                     );
 
 
-                if (userHasLiked) {
+                /* =========================================
+                   REMOVE LIKE
+                ========================================= */
 
-                    /* -------------------------------------
-                       REMOVE LIKE
-                    ------------------------------------- */
+                if (userHasLiked) {
 
                     await deleteDoc(
                         likeRef
@@ -286,12 +346,14 @@ function initializeInteractions() {
                     userHasLiked =
                         false;
 
+                }
 
-                } else {
 
-                    /* -------------------------------------
-                       ADD LIKE
-                    ------------------------------------- */
+                /* =========================================
+                   ADD LIKE
+                ========================================= */
+
+                else {
 
                     await setDoc(
                         likeRef,
@@ -320,6 +382,7 @@ function initializeInteractions() {
 
 
                 updateLikeButton();
+
 
                 await loadLikeCount();
 
@@ -387,6 +450,7 @@ function initializeInteractions() {
             likeCount.textContent =
                 snapshot.size;
 
+
         } catch (error) {
 
             console.error(
@@ -420,6 +484,7 @@ function initializeInteractions() {
 
             const userLikeQuery =
                 query(
+
                     likesRef,
 
                     where(
@@ -439,6 +504,7 @@ function initializeInteractions() {
                         "==",
                         contentType
                     )
+
                 );
 
 
@@ -449,6 +515,7 @@ function initializeInteractions() {
 
 
             return !snapshot.empty;
+
 
         } catch (error) {
 
@@ -476,14 +543,18 @@ function initializeInteractions() {
             likeIcon.textContent =
                 "♥";
 
+
             likeButton.classList.add(
                 "liked"
             );
 
-        } else {
+        }
+
+        else {
 
             likeIcon.textContent =
                 "♡";
+
 
             likeButton.classList.remove(
                 "liked"
@@ -496,9 +567,9 @@ function initializeInteractions() {
 }
 
 
-/* =====================================================
-   CREATE LIKE DOCUMENT ID
-===================================================== */
+// =====================================================
+// CREATE LIKE DOCUMENT ID
+// =====================================================
 
 function createLikeDocumentId(
     contentType,
@@ -511,8 +582,3 @@ function createLikeDocumentId(
     );
 
 }
-
-
-export {
-    initializeInteractions
-};
