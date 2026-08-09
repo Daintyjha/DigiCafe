@@ -1359,7 +1359,226 @@ h6 {
     border-color: var(--gold);
 }
 
+/* =========================================================
+   MOBILE MUSIC LAYOUT
+========================================================= */
 
+@media (max-width: 768px) {
+
+    /* -----------------------------------------
+       MUSIC APP
+    ----------------------------------------- */
+
+    .music-app {
+        display: block;
+        width: 100%;
+        min-height: auto;
+    }
+
+
+    /* -----------------------------------------
+       SIDEBAR
+    ----------------------------------------- */
+
+    .sidebar {
+        position: relative;
+
+        top: auto;
+        left: auto;
+
+        width: 100%;
+        height: auto;
+
+        max-height: none;
+
+        overflow: visible;
+
+        padding: 20px;
+
+        border-right: none;
+        border-bottom: 1px solid rgba(214, 179, 106, .16);
+    }
+
+
+    .sidebar nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+
+    .sidebar nav a {
+        flex: 1 1 auto;
+    }
+
+
+    /* -----------------------------------------
+       MAIN CONTENT
+    ----------------------------------------- */
+
+    .music-content {
+        width: 100%;
+        min-width: 0;
+
+        margin-left: 0;
+
+        padding: 25px 16px 180px;
+    }
+
+
+    /* -----------------------------------------
+       HERO
+    ----------------------------------------- */
+
+    .music-hero {
+        padding: 28px 20px;
+    }
+
+
+    .music-hero h1 {
+        font-size: 2rem;
+    }
+
+
+    /* -----------------------------------------
+       LIBRARY PANELS
+    ----------------------------------------- */
+
+    .library-panels {
+        grid-template-columns: 1fr;
+    }
+
+
+    /* -----------------------------------------
+       CATEGORY BUTTONS
+    ----------------------------------------- */
+
+    .category-buttons {
+        gap: 8px;
+    }
+
+
+    .category-buttons button {
+        min-height: 40px;
+        padding: 8px 13px;
+
+        font-size: .9rem;
+    }
+
+
+    /* -----------------------------------------
+       SONG GRID
+    ----------------------------------------- */
+
+    .song-grid {
+        grid-template-columns: 1fr;
+
+        width: 100%;
+        min-width: 0;
+    }
+
+
+    /* -----------------------------------------
+       SONG CARD
+    ----------------------------------------- */
+
+    .song-card {
+        width: 100%;
+        min-width: 0;
+
+        padding: 16px;
+    }
+
+
+    .song-card h3 {
+        overflow-wrap: anywhere;
+    }
+
+
+    /* -----------------------------------------
+       COLLECTIONS
+    ----------------------------------------- */
+
+    .collection {
+        width: 100%;
+        min-width: 0;
+    }
+
+
+    .collection-header {
+        padding: 14px 15px;
+    }
+
+
+    .collection-body {
+        width: 100%;
+    }
+
+
+    .song-row {
+        width: 100%;
+        min-width: 0;
+
+        padding: 13px 15px;
+
+        gap: 10px;
+    }
+
+
+    .song-title {
+        min-width: 0;
+
+        overflow-wrap: anywhere;
+    }
+
+
+    .song-actions {
+        flex-shrink: 0;
+    }
+
+
+    /* -----------------------------------------
+       MUSIC PLAYER
+    ----------------------------------------- */
+
+    .player {
+        min-height: auto;
+
+        flex-wrap: wrap;
+
+        gap: 10px;
+
+        padding: 10px 12px;
+    }
+
+
+    .now-playing {
+        width: calc(100% - 60px);
+    }
+
+
+    .controls {
+        order: 2;
+    }
+
+
+    .progress {
+        order: 3;
+
+        width: 100%;
+        flex-basis: 100%;
+    }
+
+
+    .volume {
+        display: none;
+    }
+
+
+    .player-actions {
+        order: 2;
+    }
+
+}
 /* =========================================================
    12. AMBIENCE
 ========================================================= */
