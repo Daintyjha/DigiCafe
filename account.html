@@ -1,0 +1,258 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>DigiCafe Account</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+<div id="navbar"></div>
+
+
+<main class="account-page">
+
+    <section class="account-card">
+
+        <!-- =================================================
+             ACCOUNT HEADER
+        ================================================== -->
+
+        <div class="account-header">
+
+            <h1>
+                ☕ DigiCafe Account
+            </h1>
+
+            <p>
+                Your little corner of the café.
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             LOGIN / REGISTER AREA
+        ================================================== -->
+
+        <div id="authForms">
+
+
+            <!-- =================================================
+                 LOGIN FORM
+            ================================================== -->
+
+            <div
+                id="loginForm"
+                class="auth-form"
+            >
+
+                <h2>
+                    Welcome back
+                </h2>
+
+
+                <label for="loginEmail">
+                    Email
+                </label>
+
+                <input
+                    id="loginEmail"
+                    type="email"
+                    placeholder="Your email"
+                    autocomplete="email"
+                >
+
+
+                <label for="loginPassword">
+                    Password
+                </label>
+
+                <input
+                    id="loginPassword"
+                    type="password"
+                    placeholder="Your password"
+                    autocomplete="current-password"
+                >
+
+
+                <button
+                    type="button"
+                    id="loginButton"
+                    class="account-button"
+                >
+                    Log In
+                </button>
+
+
+                <p
+                    id="loginMessage"
+                    class="auth-message"
+                ></p>
+
+
+                <p class="auth-switch">
+
+                    Don't have an account?
+
+                    <button
+                        type="button"
+                        id="showRegister"
+                        class="text-button"
+                    >
+                        Create one
+                    </button>
+
+                </p>
+
+            </div>
+
+
+            <!-- =================================================
+                 REGISTER FORM
+            ================================================== -->
+
+            <div
+                id="registerForm"
+                class="auth-form"
+                hidden
+            >
+
+                <h2>
+                    Join the café
+                </h2>
+
+
+                <label for="registerEmail">
+                    Email
+                </label>
+
+                <input
+                    id="registerEmail"
+                    type="email"
+                    placeholder="Your email"
+                    autocomplete="email"
+                >
+
+
+                <label for="registerPassword">
+                    Password
+                </label>
+
+                <input
+                    id="registerPassword"
+                    type="password"
+                    placeholder="Create a password"
+                    autocomplete="new-password"
+                >
+
+
+                <button
+                    type="button"
+                    id="registerButton"
+                    class="account-button"
+                >
+                    Create Account
+                </button>
+
+
+                <p
+                    id="registerMessage"
+                    class="auth-message"
+                ></p>
+
+
+                <p class="auth-switch">
+
+                    Already have an account?
+
+                    <button
+                        type="button"
+                        id="showLogin"
+                        class="text-button"
+                    >
+                        Log in
+                    </button>
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             LOGGED-IN AREA
+        ================================================== -->
+
+        <div
+            id="accountLoggedIn"
+            hidden
+        >
+
+            <h2>
+                Welcome back! ☕
+            </h2>
+
+
+            <p>
+                You are logged in as:
+            </p>
+
+
+            <p
+                id="currentUserEmail"
+                class="account-email"
+            >
+            </p>
+
+
+            <button
+                type="button"
+                id="logoutButton"
+                class="account-button"
+            >
+                Log Out
+            </button>
+
+
+            <p
+                id="logoutMessage"
+                class="auth-message"
+            ></p>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<script src="script.js"></script>
+
+
+<script
+    type="module"
+    src="account.js">
+</script>
+
+</body>
+
+</html>
+```
