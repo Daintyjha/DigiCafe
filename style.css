@@ -1,2622 +1,1820 @@
-/* =====================================================
-   DIGICAFE DESIGN SYSTEM
-   AUTOMATIC DEVICE LIGHT/DARK MODE
-===================================================== */
-:root{
-    --bg:#efe7dc;
-    --text:#2b2623;
-    --text-light:#6f665f;
-    --surface:#fffaf4;
-    --card:#fffdf9;
-    --accent:#8b6f47;
-    --accent-hover:#735a39;
-    --coffee:#6b4f3a;
-    --border:#e2d8cc;
-    --radius:14px;
-    --shadow:0 8px 25px rgba(50,35,20,.12);
-    --soft-shadow:0 4px 15px rgba(50,35,20,.08);
-    --transition:.25s ease;
-    /* Beshy */
-    --beshy-header:#dff7e8;
-    --beshy-header-text:#21352a;
-    --beshy-user:#dff7e8;
-    --beshy-user-text:#21352a;
-}
-/* =====================================================
-   AUTOMATIC DARK MODE
-===================================================== */
-@media(prefers-color-scheme:dark){
+/* =========================================================
+   DIGICAFE — MASTER STYLESHEET
+   Clean reconstruction
+   Midnight navy • warm gold • readable typography
+========================================================= */
 
-    :root{
-        --bg:#12100e;
-        --text:#eee7df;
-        --text-light:#bdb3aa;
-        --surface:#1c1916;
-        --card:#221e1a;
-        --accent:#c4a77d;
-        --accent-hover:#d8bd94;
-        --coffee:#d0a77d;
-        --border:#3a332d;
-        --shadow:0 8px 25px rgba(0,0,0,.38);
-        --soft-shadow:0 4px 15px rgba(0,0,0,.28);
-        --beshy-header:#243b2d;
-        --beshy-header-text:#e4f6e9;
-        --beshy-user:#2b4937;
-        --beshy-user-text:#eaf8ed;
-    }
+/* =========================================================
+   01. DESIGN TOKENS
+========================================================= */
+
+:root {
+    --navy-dark: #050d1a;
+    --navy: #08172b;
+    --navy-soft: #102746;
+    --navy-light: #17385f;
+
+    --gold: #d6b36a;
+    --gold-light: #f3d99a;
+    --gold-dark: #a88342;
+
+    --cream: #f5efe6;
+    --cream-light: #fbf8f2;
+    --white: #ffffff;
+
+    --text: #172033;
+    --text-soft: #667085;
+    --text-light: #8a94a6;
+
+    --border: #dfe6ef;
+    --border-dark: rgba(255,255,255,.12);
+
+    --surface: #ffffff;
+    --card: #ffffff;
+    --background: #f5efe6;
+
+    --radius-sm: 10px;
+    --radius: 18px;
+    --radius-lg: 26px;
+
+    --shadow-sm: 0 4px 15px rgba(7,20,38,.08);
+    --shadow: 0 10px 30px rgba(7,20,38,.12);
+    --shadow-lg: 0 20px 55px rgba(7,20,38,.20);
+
+    --transition: .25s ease;
+
+    --navbar-height: 76px;
 }
-/* =====================================================
-   GLOBAL RESET
-===================================================== */
-/* =====================================================
-   GLOBAL RESET & TYPOGRAPHY
-===================================================== */
+
+
+/* =========================================================
+   02. RESET
+========================================================= */
+
 *,
 *::before,
-*::after{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-body{
-    min-height:100%;
-    overflow-x:hidden;
-}
-body{
-    font-family:"Kumbh Sans",Arial,sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    line-height:1.6;
-    padding-top:80px;
-}
-a{
-    color:inherit;
-    text-decoration:none;
-    font:inherit;
-}
-button{
-    cursor:pointer;
+*::after {
+    box-sizing: border-box;
 }
 
-button{
-    cursor:pointer;
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
 }
-img{
-    display:block;
-    max-width:100%;
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+
+    font-family: "Kumbh Sans", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+
+    background: var(--background);
+    color: var(--text);
+
+    padding-top: var(--navbar-height);
+
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 }
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+ul,
+ol {
+    padding-left: 1.4rem;
+}
+
+p {
+    margin: 0 0 1rem;
+}
+
 h1,
 h2,
 h3,
-h4{
-    line-height:1.25;
-}
-p{
-    font-size:clamp(1rem,1.2vw,1.05rem);
-    line-height:1.65;
-}
-ul{
-    padding-left:25px;
-}
-li{
-    margin-bottom:8px;
+h4,
+h5,
+h6 {
+    margin-top: 0;
+    line-height: 1.25;
+    color: var(--navy-dark);
 }
 
-ul{
-    padding-left:25px;
+::selection {
+    background: var(--gold);
+    color: var(--navy-dark);
 }
 
-li{
-    margin-bottom:8px;
-}
-strong{
-    color:var(--accent);
-}
-/* =====================================================
-   NAVBAR
-===================================================== */
-
-.navbar{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    min-height:80px;
-    min-height:82px;
-    z-index:9999;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:16px clamp(16px,4vw,40px);
-    background:var(--surface);
-    border-bottom:1px solid var(--border);
-    box-shadow:var(--soft-shadow);
-    padding:16px clamp(18px,4vw,50px);
-    background:var(--surface);
-    border-bottom:2px solid var(--border);
-    box-shadow:0 5px 20px rgba(50,35,20,.14);
-    backdrop-filter:blur(12px);
-}
-nav a {
-    font-size: 1.2rem;
-}
-/* =====================================================
-   LOGO
-===================================================== */
-.logo{
-    flex-shrink:0;
-    font-family:Georgia,serif;
-    font-size:clamp(1.15rem,2vw,1.4rem);
-    font-weight:700;
-    letter-spacing:1px;
-    font-size:clamp(1.35rem,2.5vw,1.75rem);
-    font-weight:700;
-    letter-spacing:1.5px;
-    color:var(--accent);
-    white-space:nowrap;
-
-    transition:var(--transition);
+:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 3px;
 }
 
-.logo:hover{
-    transform:scale(1.03);
+
+/* =========================================================
+   03. NAVBAR
+========================================================= */
+
+.navbar {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 9999;
+
+    min-height: var(--navbar-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 12px clamp(18px, 4vw, 50px);
+
+    background: rgba(5,13,26,.97);
+    border-bottom: 1px solid rgba(214,179,106,.20);
+    box-shadow: 0 6px 25px rgba(0,0,0,.20);
+
+    backdrop-filter: blur(12px);
 }
 
-/* =====================================================
-   DESKTOP NAVIGATION
-===================================================== */
-.navbar__menu{
-    display:flex;
-    align-items:center;
-    gap:clamp(15px,2.5vw,30px);
-    gap:clamp(22px,3vw,42px);
-    list-style:none;
-    margin:0;
-    padding:0;
+.logo {
+    flex-shrink: 0;
+
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+    font-weight: 700;
+    letter-spacing: 1.5px;
+
+    color: var(--gold-light);
+    white-space: nowrap;
+
+    transition: transform var(--transition);
 }
 
-.navbar__menu li{
-    list-style:none;
-    margin:0;
-    padding:0;
+.logo:hover {
+    transform: scale(1.03);
 }
 
-.navbar__links{
-    position:relative;
-    display:inline-block;
-    padding:8px 0;
-    color:var(--text);
-    font-size:clamp(.85rem,1.2vw,1rem);
-    font-weight:500;
-    padding:10px 2px;
-    color:var(--text);
+.navbar__menu {
+    display: flex;
+    align-items: center;
+    gap: clamp(18px, 3vw, 38px);
 
-    font-size:clamp(1rem,1.4vw,1.15rem);
-    font-weight:600;
-    white-space:nowrap;
-    transition:var(--transition);
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
-/* Elegant underline */
-.navbar__links::after{
-    content:"";
-    position:absolute;
-    left:0;
-    bottom:0;
-    width:0;
-    height:2px;
-    background:var(--accent);
-    transition:var(--transition);
+.navbar__menu li {
+    margin: 0;
+    list-style: none;
+}
+
+.navbar__links {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 44px;
+    padding: 8px 2px;
+
+    color: var(--cream);
+    font-size: clamp(1rem, 1.4vw, 1.12rem);
+    font-weight: 600;
+    white-space: nowrap;
+
+    transition: color var(--transition);
+}
+
+.navbar__links::after {
+    content: "";
+
+    position: absolute;
+    left: 0;
+    bottom: 3px;
+
+    width: 0;
+    height: 2px;
+
+    background: var(--gold);
+
+    transition: width var(--transition);
+}
+
+.navbar__links:hover,
+.navbar__links.active {
+    color: var(--gold-light);
 }
 
 .navbar__links:hover::after,
-.navbar__links.active::after{
-    width:100%;
-}
-.navbar__links:hover,
-.navbar__links.active{
-    color:var(--accent);
-}
-.navbar__links.active{
-    font-weight:800;
-}
-/* =====================================================
-   HAMBURGER BUTTON
-===================================================== */
-
-#mobile-menu{
-    display:none;
-    flex-direction:column;
-    justify-content:center;
-    gap:5px;
-    width:34px;
-    height:30px;
-    padding:0;
-    border:none;
-    background:transparent;
-    gap:6px;
-
-    width:40px;
-    height:40px;
-
-    padding:7px;
-
-    border:1px solid var(--border);
-    border-radius:10px;
-
-    background:var(--card);
-    cursor:pointer;
-    z-index:10000;
-
-    transition:var(--transition);
-}
-#mobile-menu:hover{
-    background:var(--accent);
-}
-#mobile-menu .bar{
-    width:100%;
-    height:3px;
-    border-radius:5px;
-    background:var(--text);
-    transition:var(--transition);
+.navbar__links.active::after {
+    width: 100%;
 }
 
-#mobile-menu:hover .bar{
-    background:var(--bg);
-}
-
-/* =====================================================
-   MOBILE NAVIGATION
-===================================================== */
-@media(max-width:768px){
-
-    body{
-        padding-top:72px;
-    }
-    .navbar{
-        min-height:72px;
-        padding:14px 18px;
-    }
-
-    .logo{
-        font-size:1.4rem;
-    }
-
-    #mobile-menu{
-        display:flex;
-        flex-shrink:0;
-    }
-    .navbar__menu{
-        display:none;
-        position:absolute;
-        top:100%;
-        left:10px;
-        right:10px;
-        width:auto;
-        max-height:calc(100vh - 85px);
-        overflow-y:auto;
-        padding:10px;
-        flex-direction:column;
-        align-items:stretch;
-        gap:4px;
-        background:var(--surface);
-        border:1px solid var(--border);
-        border-radius:0 0 14px 14px;
-        box-shadow:var(--shadow);
-    }
-    .navbar__menu.active{
-        display:flex;
-    }
-    .navbar__menu li{
-        width:100%;
-    }
-    .navbar__links{
-        display:block;
-        width:100%;
-        padding:11px 12px;
-        border-radius:8px;
-        white-space:normal;
-    }
-    .navbar__links:hover{
-        background:var(--card);
-    }
-
-    .navbar__menu.active{
-        display:flex;
-    }
-
-    .navbar__menu li{
-        width:100%;
-    }
-
-    .navbar__links{
-        display:block;
-        width:100%;
-
-        padding:14px 16px;
-
-        border-radius:10px;
-
-        font-size:1.05rem;
-        font-weight:600;
-
-        white-space:normal;
-    }
-
-    .navbar__links:hover{
-        background:var(--card);
-    }
-
-    .navbar__links::after{
-        display:none;
-    }
-
-    .navbar__links.active{
-        background:var(--accent);
-        color:var(--bg);
-    }
-}
-
-/* =====================================================
-   FOOTER
-===================================================== */
-.footer{
-    margin-top:4rem;
-    background:var(--surface);
-    border-top:1px solid var(--border);
-    box-shadow:var(--soft-shadow);
-}
-.footer__container{
-    width:100%;
-    max-width:1100px;
-    margin:auto;
-    padding:clamp(25px,5vw,40px) 20px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:30px;
-    flex-wrap:wrap;
-}
-.footer__logo{
-    margin-bottom:8px;
-    font-family:Georgia,serif;
-    font-size:clamp(1.4rem,3vw,1.8rem);
-    color:var(--accent);
-}
-.small{
-    max-width:320px;
-    color:var(--text-light);
-}
-.footer__text{
-    margin-bottom:15px;
-    color:var(--text-light);
-}
-.social__block{
-    text-align:center;
-}
-.social__icons{
-    display:flex;
-    justify-content:center;
-    gap:12px;
-    flex-wrap:wrap;
-}
-.social__icons a{
-    width:clamp(45px,7vw,60px);
-    height:clamp(45px,7vw,60px);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    border:2px solid var(--accent);
-    border-radius:50%;
-    background:var(--card);
-    box-shadow:var(--soft-shadow);
-    transition:var(--transition);
-}
-.social__icons a:hover{
-    transform:translateY(-4px);
-    background:var(--accent);
-}
-.social__custom-icon{
-    width:55%;
-    height:55%;
-    object-fit:contain;
-    border-radius:50%;
-}
-.footer__bottom{
-    padding:15px;
-    border-top:1px solid var(--border);
-    color:var(--text-light);
-    text-align:center;
-    font-size:clamp(.75rem,.9vw,.9rem);
-}
-@media(max-width:768px){
-    .footer__container{
-        flex-direction:column;
-
-        text-align:center;
-    }
-    .small{
-        max-width:100%;
-    }
-
-    .navbar__links{
-        padding:14px;
-        font-size:1rem;
-    }
-}
-/* =====================================================
-   SHARED COMPONENTS
-===================================================== */
-.card{
-    padding:20px;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    box-shadow:var(--soft-shadow);
-}
-.btn{
-    display:inline-block;
-    padding:10px 18px;
-    background:var(--accent);
-    color:var(--bg);
-    border-radius:10px;
-    transition:var(--transition);
-}
-.btn:hover{
-    background:var(--accent-hover);
-    transform:translateY(-2px);
-}
-.section-title{
-    margin-bottom:20px;
-    color:var(--accent);
-    font-size:clamp(1.4rem,3vw,2rem);
-}
-.content-box{
-    padding:clamp(20px,4vw,30px);
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    box-shadow:var(--soft-shadow);
-    transition:var(--transition);
-}
-.content-box:hover{
-    transform:translateY(-3px);
-}
-.content-link{
-    color:var(--accent);
-    font-weight:600;
-    transition:var(--transition);
-}
-.content-link:hover{
-    opacity:.8;
-}
-/* =====================================================
-   HOME PAGE
-===================================================== */
-.cafe-home{
-    width:100%;
-    text-align:center;
-}
-.hero{
-    width:100%;
-    max-width:800px;
-    margin:30px auto 50px;
-}
-.hero h1{
-    color:var(--accent);
-    font-size:clamp(2rem,5vw,3.5rem);
-}
-.subtitle{
-    margin-bottom:15px;
-    color:var(--coffee);
-    font-size:clamp(1rem,2vw,1.2rem);
-}
-.intro{
-    max-width:650px;
-    margin:20px auto;
-}
-.status{
-    color:var(--text-light);
-    font-size:clamp(.8rem,1.2vw,.95rem);
-}
-.card-grid{
-    width:100%;
-    max-width:750px;
-    margin:40px auto;
-    display:flex;
-    flex-direction:column;
-    gap:15px;
-}
-.card-grid a{
-    display:block;
-    padding:clamp(18px,3vw,22px);
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    box-shadow:var(--soft-shadow);
-    text-align:left;
-    transition:var(--transition);
-}
-.card-grid a:hover{
-    transform:translateY(-4px);
-    box-shadow:var(--shadow);
-}
-.card-grid h2{
-    margin-bottom:8px;
-    color:var(--accent);
-    font-size:clamp(1.15rem,2.5vw,1.5rem);
-}
-.card-grid p{
-    color:var(--text-light);
-}
-.card-grid span{
-    display:block;
-    margin-top:10px;
-    color:var(--accent);
-    font-size:.9rem;
-}
-.feature{
-    width:100%;
-    max-width:700px;
-    margin:50px auto;
-    padding:clamp(22px,4vw,30px);
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    box-shadow:var(--soft-shadow);
-}
-.feature h2{
-    color:var(--accent);
-    font-size:clamp(1.3rem,3vw,2rem);
-}
-.feature-button{
-    display:inline-block;
-    margin-top:20px;
-    padding:12px 25px;
-    background:var(--accent);
-    color:var(--bg);
-    border-radius:30px;
-    transition:var(--transition);
-}
-.feature-button:hover{
-    transform:translateY(-3px);
-    background:var(--accent-hover);
-}
-.quote{
-    max-width:650px;
-    margin:50px auto 20px;
-    color:var(--coffee);
-    font-size:clamp(1rem,2vw,1.2rem);
-    font-style:italic;
-}
-/* =====================================================
-   MUSIC APP
-===================================================== */
-.music-app{
-    display:flex;
-    width:100%;
-    min-height:100vh;
-}
-/* =====================================================
-   MUSIC SIDEBAR
-===================================================== */
-.sidebar{
-    position:fixed;
-    top:80px;
-    left:0;
-    width:260px;
-    height:calc(100vh - 80px);
-    overflow-y:auto;
-    padding:clamp(18px,2vw,30px);
-    background:var(--surface);
-    border-right:1px solid var(--border);
-    box-shadow:var(--soft-shadow);
-    z-index:100;
-}
-.sidebar h3{
-    margin-bottom:18px;
-    color:var(--accent);
-    font-size:clamp(1.1rem,1.6vw,1.5rem);
-}
-.sidebar nav{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-    margin-bottom:25px;
-}
-.sidebar nav a{
-    display:block;
-    padding:10px 14px;
-    color:var(--text);
-    border-radius:12px;
-    font-size:clamp(.9rem,1.2vw,1rem);
-    transition:var(--transition);
-}
-.sidebar nav a:hover,
-.sidebar nav a.active{
-    background:var(--accent);
-    color:var(--bg);
-}
-.sidebar-card{
-    margin-bottom:20px;
-    padding:clamp(14px,1.5vw,20px);
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    box-shadow:var(--soft-shadow);
-}
-.sidebar-card h4{
-    margin-bottom:12px;
-    color:var(--accent);
-    font-size:clamp(1rem,1.2vw,1.2rem);
-}
-.sidebar-card a{
-    display:block;
-    padding:7px 0;
-    font-size:clamp(.8rem,.85vw,.9rem);
-    transition:var(--transition);
-}
-.sidebar-card a:hover{
-    padding-left:6px;
-    color:var(--accent);
-}
-/* =====================================================
-   MUSIC CONTENT
-===================================================== */
-
-.music-content{
-    flex:1;
-    min-width:0;
-    margin-left:260px;
-    padding:
-        clamp(25px,4vw,60px)
-        clamp(15px,4vw,60px)
-        180px;
-}
-.music-content section{
-    margin-bottom:clamp(30px,4vw,50px);
-}
-.music-content section h2{
-    margin-bottom:clamp(14px,2vw,22px);
-    color:var(--accent);
-    font-size:clamp(1.4rem,2.5vw,2.2rem);
-}
-/* =====================================================
-   MUSIC HERO
-===================================================== */
-.music-hero{
-    padding:clamp(25px,5vw,60px);
-    background:
-        linear-gradient(
-            135deg,
-            var(--accent),
-            var(--coffee)
-        );
-    color:var(--bg);
-    border-radius:var(--radius);
-    box-shadow:var(--shadow);
-}
-.music-hero h1{
-    margin-bottom:15px;
-    font-size:clamp(1.9rem,4vw,3.5rem);
-}
-.music-hero p{
-    max-width:700px;
-    font-size:clamp(.9rem,1.2vw,1rem);
-    line-height:1.7;
-    opacity:.95;
-}
-/* =====================================================
-   LIBRARY PANELS
-===================================================== */
-.library-panels{
-    display:grid;
-    grid-template-columns:
-        repeat(2,minmax(0,1fr));
-    gap:clamp(14px,2vw,24px);
-}
-.library-panel{
-    padding:clamp(15px,2vw,24px);
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    box-shadow:var(--soft-shadow);
-}
-.library-panel h2{
-    margin-bottom:15px;
-    color:var(--accent);
-    font-size:clamp(1.1rem,1.6vw,1.5rem);
-}
-.library-panel ul{
-    list-style:none;
-    padding:0;
-}
-.library-panel li{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    padding:10px 0;
-    border-bottom:1px solid var(--border);
-    font-size:clamp(.8rem,.85vw,.9rem);
-}
-.library-panel li:last-child{
-    border-bottom:none;
-}
-.library-panel button{
-    margin-top:15px;
-    padding:8px 14px;
-    background:var(--surface);
-    color:var(--text);
-    border:1px solid var(--border);
-    border-radius:8px;
-    font-size:clamp(.8rem,.85vw,.9rem);
-    transition:var(--transition);
-}
-.library-panel button:hover{
-    background:var(--accent);
-    color:var(--bg);
-}
-/* =====================================================
-   SONG GRID
-===================================================== */
-.song-grid{
-    display:grid;
-    grid-template-columns:
-        repeat(
-            auto-fill,
-            minmax(230px,1fr)
-        );
-    gap:clamp(12px,2vw,24px);
-}
-.song-card{
-    padding:clamp(14px,2vw,22px);
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    box-shadow:var(--soft-shadow);
-    transition:var(--transition);
-}
-.song-card:hover{
-    transform:translateY(-5px);
-    box-shadow:var(--shadow);
-}
-.song-card h3{
-    margin-bottom:6px;
-    color:var(--accent);
-    font-size:clamp(1.1rem,1.6vw,1.5rem);
-}
-.song-card p{
-    margin-bottom:18px;
-    color:var(--text-light);
-    font-size:clamp(.8rem,.85vw,.9rem);
-}
-/* =====================================================
-   SONG BUTTONS
-===================================================== */
-.song-buttons{
-    display:flex;
-    gap:8px;
-}
-.song-buttons button{
-    flex:1;
-    height:42px;
-    background:var(--surface);
-    color:var(--text);
-    border:1px solid var(--border);
-    border-radius:12px;
-    font-size:clamp(1rem,1.2vw,1.2rem);
-    transition:var(--transition);
-}
-.song-buttons button:hover{
-    background:var(--accent);
-    color:var(--bg);
-}
-.song-buttons .favorite-active{
-    background:#ff5b8a;
-    color:#fff;
-    border-color:#ff5b8a;
-}
-.song-buttons .queue-active{
-    background:#5f8dee;
-    color:#fff;
-    border-color:#5f8dee;
-}
-/* =====================================================
-   CATEGORY BUTTONS
-===================================================== */
-.category-buttons{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-}
-.category-buttons button{
-    padding:9px 17px;
-    background:var(--surface);
-    color:var(--text);
-    border:1px solid var(--border);
-    border-radius:40px;
-    box-shadow:var(--soft-shadow);
-    font-size:clamp(.8rem,.85vw,.9rem);
-    transition:var(--transition);
-}
-.category-buttons button:hover{
-    background:var(--accent);
-    color:var(--bg);
-}
-/* =====================================================
-   EMPTY MESSAGE
-===================================================== */
-.empty-message{
-    padding:40px;
-    color:var(--text-light);
-    text-align:center;
-    font-size:clamp(.9rem,1.2vw,1rem);
-    font-style:italic;
-}
-/* =====================================================
-   MUSIC CATEGORY BUTTONS
-===================================================== */
-.category-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin: 15px 0 25px;
-}
-.category-buttons button {
-    padding: 9px 15px;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    background: var(--card);
-    color: var(--text);
-    font-size: 14px;
-    cursor: pointer;
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        transform 0.2s ease;
-}
-.category-buttons button:hover {
-    background: var(--accent);
-    color: white;
-    transform: translateY(-2px);
-}
-/* =====================================================
-   MUSIC GRID
-===================================================== */
-.song-grid {
-    display: grid;
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(
-                220px,
-                1fr
-            )
-        );
-    gap: 15px;
-}
-/* =====================================================
-   SONG CARD
-===================================================== */
-.song-card {
-    padding: 18px;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    background: var(--card);
-    box-shadow:
-        0 5px 18px
-        rgba(0, 0, 0, 0.08);
-}
-.song-card h3 {
-    margin: 0 0 6px;
-    color: var(--text);
-    font-size: 16px;
-}
-.song-card p {
-    margin: 0 0 15px;
-    color: var(--text-light);
-    font-size: 13px;
-}
-/* =====================================================
-   SONG BUTTONS
-===================================================== */
-.song-buttons {
-    display: flex;
-    gap: 8px;
-}
-.song-buttons button {
-    width: 34px;
-    height: 34px;
-    border: 1px solid var(--border);
-    border-radius: 50%;
-    background: var(--surface);
-    color: var(--text);
-    cursor: pointer;
-    transition:
-        background 0.2s ease,
-        color 0.2s ease;
-}
-.song-buttons button:hover {
-    background: var(--accent);
-    color: white;
-}
-/* =====================================================
-   FAVORITES
-===================================================== */
-.active-favorite {
-    color: var(--accent) !important;
-}
-/* =====================================================
-   QUEUE
-===================================================== */
-.active-queue {
-    color: var(--accent) !important;
-}
-/* =====================================================
-   COLLECTIONS
-===================================================== */
-.collection {
-    margin-bottom: 12px;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
-    background: var(--card);
-}
-
-.collection-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 14px 16px;
-    cursor: pointer;
-    color: var(--text);
-    font-weight: 600;
-}
-.collection-header:hover {
-    background: var(--surface);
-}
-.collection-body {
+#mobile-menu {
     display: none;
-    border-top: 1px solid var(--border);
+
+    width: 44px;
+    height: 44px;
+
+    padding: 8px;
+
+    border: 1px solid rgba(214,179,106,.25);
+    border-radius: 10px;
+
+    background: var(--navy);
 }
-.collection.open
-.collection-body {
+
+#mobile-menu .bar {
     display: block;
+
+    width: 100%;
+    height: 3px;
+
+    margin: 4px 0;
+
+    border-radius: 5px;
+    background: var(--gold-light);
 }
-/* =====================================================
-   COLLECTION SONG ROW
-===================================================== */
-.song-row {
-    display: flex;
+
+
+/* =========================================================
+   04. GENERIC COMPONENTS
+========================================================= */
+
+.card,
+.content-box {
+    padding: 24px;
+
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow-sm);
+
+    transition:
+        transform var(--transition),
+        box-shadow var(--transition);
+}
+
+.card:hover,
+.content-box:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+}
+
+.btn,
+.read-btn,
+.feature-button {
+    display: inline-flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    padding: 10px 14px;
-    border-bottom: 1px solid var(--border);
+    justify-content: center;
+
+    min-height: 44px;
+    padding: 10px 20px;
+
+    border: 0;
+    border-radius: 999px;
+
+    background: var(--gold);
+    color: var(--navy-dark);
+
+    font-weight: 700;
+
+    transition:
+        transform var(--transition),
+        background var(--transition),
+        box-shadow var(--transition);
 }
-.song-row:last-child {
-    border-bottom: none;
+
+.btn:hover,
+.read-btn:hover,
+.feature-button:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 0 25px rgba(214,179,106,.22);
 }
-.song-title {
-    flex: 1;
-    color: var(--text);
-    font-size: 14px;
+
+
+/* =========================================================
+   05. HOME PAGE
+========================================================= */
+
+.cafe-home {
+    width: 100%;
+    padding: 25px 20px 70px;
+    text-align: center;
 }
-.song-actions {
+
+.hero {
+    width: min(100%, 850px);
+    margin: 25px auto 50px;
+}
+
+.hero h1 {
+    margin-bottom: 15px;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    color: var(--navy-dark);
+}
+
+.hero .subtitle {
+    margin-bottom: 15px;
+    color: var(--gold-dark);
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+}
+
+.hero .intro {
+    max-width: 700px;
+    margin: 0 auto 18px;
+    color: var(--text-soft);
+}
+
+.hero .status {
+    color: var(--text-light);
+    font-size: .98rem;
+}
+
+.card-grid {
+    width: min(100%, 900px);
+    margin: 40px auto;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+
+    text-align: left;
+}
+
+.card-grid a {
     display: flex;
-    gap: 6px;
-}
-.song-actions button {
-    width: 30px;
-    height: 30px;
-    border: none;
-    border-radius: 50%;
-    background: var(--surface);
-    color: var(--text);
-    cursor: pointer;
-}
-/* =====================================================
-   MOBILE
-===================================================== */
-@media (max-width: 600px) {
-    .category-buttons {
-        gap: 6px;
-    }
-    .category-buttons button {
-        padding: 7px 11px;
+    flex-direction: column;
 
-        font-size: 12px;
-    }
-    .song-grid {
-        grid-template-columns:
-            repeat(
-                2,
-                minmax(
-                    0,
-                    1fr
-                )
-            );
-        gap: 10px;
-    }
-    .song-card {
-        padding: 12px;
-    }
-    .song-card h3 {
-        font-size: 14px;
-    }
-    .song-card p {
-        font-size: 11px;
-    }
-    .song-buttons {
-        gap: 5px;
-    }
-    .song-buttons button {
-        width: 30px;
-        height: 30px;
-        font-size: 12px;
-    }
-    .song-row {
-        padding: 9px 10px;
-    }
-    .song-title {
-        font-size: 12px;
-    }
+    min-height: 235px;
+    padding: 26px;
+
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
+    box-shadow: var(--shadow-sm);
+
+    transition:
+        transform var(--transition),
+        box-shadow var(--transition),
+        border-color var(--transition);
 }
-/* =====================================================
-   MUSIC PLAYER
-===================================================== */
-.player{
-    position:fixed;
-    right:0;
-    bottom:0;
-    left:0;
-    min-height:95px;
-    display:flex;
-    align-items:center;
-    gap:clamp(10px,2vw,22px);
-    padding:
-        12px
-        clamp(12px,3vw,30px);
-    background:var(--surface);
-    border-top:1px solid var(--border);
-    box-shadow:
-        0 -8px 25px rgba(0,0,0,.08);
-    z-index:999;
+
+.card-grid a:hover {
+    transform: translateY(-5px);
+    border-color: rgba(214,179,106,.55);
+    box-shadow: var(--shadow);
 }
-/* =====================================================
-   NOW PLAYING
-===================================================== */
-.now-playing{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    width:260px;
-    min-width:0;
+
+.card-grid h2 {
+    margin-bottom: 12px;
+    color: var(--navy-dark);
 }
-.now-playing-info{
-    min-width:0;
+
+.card-grid p {
+    flex: 1;
+    color: var(--text-soft);
 }
-.now-playing h3{
-    margin-bottom:3px;
-    overflow:hidden;
-    font-size:clamp(1rem,1.2vw,1.2rem);
-    white-space:nowrap;
-    text-overflow:ellipsis;
+
+.card-grid span {
+    color: var(--gold-dark);
+    font-weight: 700;
 }
-.now-playing p{
-    margin-bottom:3px;
-    overflow:hidden;
-    color:var(--text-light);
-    font-size:clamp(.8rem,.85vw,.9rem);
-    white-space:nowrap;
-    text-overflow:ellipsis;
+
+.feature {
+    width: min(100%, 760px);
+    margin: 60px auto;
+    padding: 35px;
+
+    background: linear-gradient(135deg, var(--navy-dark), var(--navy));
+
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+
+    color: var(--cream);
 }
-#playbackSource{
-    color:var(--accent);
-    font-size:clamp(.7rem,.7vw,.8rem);
-    opacity:.9;
+
+.feature h2 {
+    color: var(--gold-light);
 }
-/* =====================================================
-   PLAYER CONTROLS
-===================================================== */
-.controls{
-    display:flex;
-    align-items:center;
-    flex-shrink:0;
-    gap:8px;
+
+.feature p {
+    max-width: 650px;
+    margin-inline: auto;
+    color: rgba(255,255,255,.86);
 }
-.controls button{
-    width:40px;
-    height:40px;
-    background:var(--card);
-    color:var(--text);
-    border:1px solid var(--border);
-    border-radius:50%;
-    font-size:clamp(.9rem,1.2vw,1rem);
-    transition:var(--transition);
-}
-.controls button:hover{
-    background:var(--accent);
-    color:var(--bg);
-}
-#playBtn{
-    width:50px;
-    height:50px;
-    background:var(--accent);
-    color:var(--bg);
-    font-size:clamp(1.1rem,1.6vw,1.5rem);
-}
-/* =====================================================
-   PROGRESS BAR
-===================================================== */
-.progress{
-    display:flex;
-    align-items:center;
-    flex:1;
-    min-width:100px;
-    gap:8px;
-}
-.progress span{
-    width:40px;
-    color:var(--text-light);
-    text-align:center;
-    font-size:clamp(.7rem,.7vw,.8rem);
-}
-.progress input{
-    flex:1;
-    min-width:60px;
-    cursor:pointer;
-    accent-color:var(--accent);
-}
-/* =====================================================
-   VOLUME
-===================================================== */
-.volume{
-    display:flex;
-    align-items:center;
-    flex-shrink:0;
-    gap:8px;
-}
-.volume input{
-    width:90px;
-    accent-color:var(--accent);
-}
-/* =====================================================
-   PLAYER ACTIONS
-===================================================== */
-.player-actions{
-    display:flex;
-    flex-shrink:0;
-    gap:6px;
-}
-.player-actions button{
-    width:42px;
-    height:42px;
-    background:var(--card);
-    color:var(--text);
-    border:1px solid var(--border);
-    border-radius:12px;
-    font-size:clamp(.9rem,1.2vw,1rem);
-    transition:var(--transition);
+
+.quote {
+    width: min(100%, 700px);
+    margin: 60px auto 20px;
+    padding: 25px;
+
+    border-top: 1px solid rgba(214,179,106,.45);
+    border-bottom: 1px solid rgba(214,179,106,.45);
+
+    color: var(--navy-soft);
+
+    font-family: Georgia, serif;
+    font-size: 1.15rem;
+    font-style: italic;
 }
 
 
-.player-actions button:hover{
-    background:var(--accent);
-    color:var(--bg);
-}
-.player-actions
-button.active-playlist{
-    background:var(--accent);
-    color:var(--bg);
-    border-color:var(--accent);
-    transform:scale(1.05);
-}
-/* =====================================================
-   TABLET AND MOBILE MUSIC LAYOUT
-===================================================== */
+/* =========================================================
+   06. ABOUT / CONTACT
+========================================================= */
 
-@media(max-width:768px){
-    .music-app{
-        flex-direction:column;
-    }
-    .music-content{
-        order:1;
-        margin-left:0;
-        padding:
-            25px
-            15px
-            230px;
-    }
-    .sidebar{
-        position:relative;
-        top:auto;
-        left:auto;
-        order:2;
-        width:100%;
-        height:auto;
-        padding:20px;
-        border-top:1px solid var(--border);
-        border-right:none;
-        box-shadow:none;
-    }
-    .sidebar nav{
-        flex-direction:row;
-        flex-wrap:wrap;
-    }
-    .sidebar nav a{
-        flex:1;
-        min-width:100px;
-        text-align:center;
-    }
-    .library-panels{
-        grid-template-columns:1fr;
-    }
-    .song-grid{
-        grid-template-columns:
-            repeat(
-                auto-fill,
-                minmax(160px,1fr)
-            );
-        gap:12px;
-    }
-    .song-buttons{
-        gap:6px;
-    }
-    .song-buttons button{
-        height:36px;
-    }
-    .category-buttons{
-        gap:6px;
-    }
-    .category-buttons button{
-        padding:7px 12px;
-    }
-    .song-row{
-        gap:8px;
-        padding:
-            10px
-            12px;
-    }
-    .song-actions{
-        gap:5px;
-    }
-    .song-actions button{
-        width:32px;
-        height:32px;
-        font-size:.85rem;
-    }
-    /* PLAYER */
-    .player{
-        display:grid;
-        grid-template-columns:
-            minmax(0,1fr)
-            auto;
-        gap:6px 8px;
-        min-height:125px;
-        padding:8px 10px;
-    }
-    .now-playing{
-        grid-column:1;
-        width:auto;
-        gap:8px;
-    }
-    .now-playing h3{
-        font-size:.9rem;
-    }
-    .now-playing p{
-        font-size:.7rem;
-    }
-    #playbackSource{
-        font-size:.65rem;
-    }
-    .controls{
-        grid-column:2;
-        gap:3px;
-    }
-    .controls button{
-        width:30px;
-        height:30px;
-        font-size:.8rem;
-    }
-    #playBtn{
-        width:38px;
-        height:38px;
-        font-size:1rem;
-    }
-    .progress{
-        grid-column:1 / -1;
-        grid-row:2;
-        width:100%;
-        min-width:0;
-        gap:4px;
-    }
-    .progress span{
-        width:32px;
-
-        font-size:.7rem;
-    }
-    .progress input{
-        width:100%;
-
-        min-width:0;
-    }
-    .volume{
-        grid-column:1;
-
-        grid-row:3;
-
-        gap:5px;
-    }
-    .volume input{
-        width:70px;
-    }
-    .player-actions{
-        grid-column:2;
-
-        grid-row:3;
-
-        gap:4px;
-    }
-    .player-actions button{
-        width:32px;
-        height:32px;
-
-        font-size:.8rem;
-    }
-}
-/* =====================================================
-   SMALL PHONES
-===================================================== */
-@media(max-width:480px){
-    .music-content{
-        padding-right:10px;
-        padding-left:10px;
-    }
-    .sidebar{
-        padding:15px;
-    }
-    .sidebar nav a{
-        min-width:80px;
-
-        padding:
-            9px
-            6px;
-
-        font-size:.8rem;
-    }
-    .song-grid{
-        grid-template-columns:
-            repeat(
-                2,
-                minmax(0,1fr)
-            );
-        gap:8px;
-    }
-    .song-card{
-        padding:12px;
-    }
-    .song-buttons{
-        gap:4px;
-    }
-    .song-buttons button{
-        height:32px;
-
-        font-size:.8rem;
-    }
-    .library-panel{
-        padding:15px;
-    }
-    .collection-header{
-        padding:
-            12px
-            14px;
-    }
-    .song-title{
-        font-size:.85rem;
-    }
-    .song-actions button{
-        width:30px;
-        height:30px;
-    }
-
-}
-/* =====================================================
-   AMBIENCE WIDGET
-===================================================== */
-
-#ambience-panel{
-    position:fixed;
-    right:20px;
-    bottom:20px;
-    z-index:9990;
-    padding:10px;
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    box-shadow:var(--shadow);
-    user-select:none;
-    touch-action:none;
+.about-container {
+    width: min(calc(100% - 40px), 1000px);
+    margin: 35px auto 70px;
 }
 
-#toggle{
-    width:45px;
-    height:45px;
-    border:none;
-    border-radius:50%;
-    background:var(--accent);
-    color:var(--bg);
-    font-size:20px;
-    cursor:pointer;
+.about-hero {
+    margin-bottom: 30px;
+    padding: clamp(45px, 7vw, 65px) 25px;
+
+    background: linear-gradient(135deg, var(--navy-dark), var(--navy-soft));
+
+    color: var(--cream);
+    text-align: center;
+
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
 }
 
-.ambience-menu{
-    margin-top:10px;
-    padding:10px;
-    background:var(--card);
-    border-radius:12px;
-    box-shadow:var(--soft-shadow);
+.about-hero h1 {
+    color: var(--gold-light);
+    font-size: clamp(2rem, 5vw, 3.4rem);
 }
 
-.sound-row{
-    display:flex;
-    justify-content:center;
-    flex-wrap:wrap;
-    gap:8px;
+.about-hero .subtitle {
+    max-width: 700px;
+    margin: auto;
+    color: var(--cream);
 }
 
-.sound-row button{
-    width:35px;
-    height:35px;
-    border:none;
-    border-radius:8px;
-    background:var(--bg);
-    color:var(--text);
-    cursor:pointer;
-    transition:var(--transition);
-}
-
-.sound-row button:hover{
-    transform:scale(1.1);
-}
-
-.volume-row{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-top:10px;
-}
-
-#volumeSlider{
-    width:100px;
-    accent-color:var(--accent);
-}
-
-
-/* =====================================================
-   AMBIENCE — MOBILE
-===================================================== */
-
-@media(max-width:600px){
-    #ambience-panel{
-        right:10px;
-        bottom:10px;
-    }
-    #toggle{
-        width:40px;
-        height:40px;
-    }
-    #volumeSlider{
-        width:85px;
-    }
-
-}
-@media (max-width: 768px) {
-
-    .ambience-widget {
-        bottom: 90px;
-    }
-
-}
-/* =====================================================
-   BESHY EY AY
-===================================================== */
-
-.beshy-toggle,
-.beshy-chat,
-.beshy-chat *{
-    box-sizing:border-box;
-}
-
-
-/* =====================================================
-   BESHY TOGGLE BUTTON
-===================================================== */
-
-.beshy-toggle{
-    position:fixed;
-    right:20px;
-    bottom:90px;
-    z-index:9999;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    width:58px;
-    height:58px;
-    padding:0;
-    border:1px solid var(--border);
-    border-radius:50%;
-    background:var(--card);
-    color:var(--text);
-    font-family:"Kumbh Sans",Arial,sans-serif;
-    font-size:28px;
-    line-height:1;
-    cursor:pointer;
-    box-shadow:0 5px 20px rgba(0,0,0,.25);
-}
-
-
-/* =====================================================
-   BESHY CHAT WINDOW
-===================================================== */
-
-.beshy-chat{
-    position:fixed;
-    right:20px;
-    bottom:160px;
-    z-index:9999;
-    display:none;
-    flex-direction:column;
-    width:340px;
-    height:480px;
-    overflow:hidden;
-    background:var(--card);
-    color:var(--text);
-    border:1px solid var(--border);
-    border-radius:18px;
-    font-family:"Kumbh Sans",Arial,sans-serif;
-    font-size:14px;
-    line-height:1.4;
-    box-shadow:0 10px 35px rgba(0,0,0,.25);
-}
-
-.beshy-chat.open{
-    display:flex;
-}
-/* =====================================================
-   BESHY HEADER
-===================================================== */
-
-.beshy-header{
-    flex-shrink:0;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    min-height:58px;
-    padding:10px 14px;
-    background:var(--beshy-header);
-    color:var(--beshy-header-text);
-}
-
-.beshy-identity{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    min-width:0;
-}
-
-.beshy-avatar{
-    flex-shrink:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    width:34px;
-    height:34px;
-    font-family:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif;
-    font-size:28px;
-    line-height:1;
-}
-
-.beshy-identity h3{
-    margin:0;
-    font-family:"Kumbh Sans",Arial,sans-serif;
-    font-size:16px;
-    line-height:1.2;
-}
-
-.beshy-identity p{
-    margin:2px 0 0;
-    font-family:"Kumbh Sans",Arial,sans-serif;
-    font-size:12px;
-    line-height:1.2;
-}
-
-.beshy-close{
-    flex-shrink:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    width:32px;
-    height:32px;
-    padding:0;
-    border:none;
-    background:transparent;
-    color:inherit;
-    font-family:Arial,sans-serif;
-    font-size:25px;
-    line-height:1;
-    cursor:pointer;
-}
-
-
-/* =====================================================
-   BESHY MESSAGES AREA
-===================================================== */
-
-.beshy-messages{
-    flex:1;
-    min-height:0;
-    padding:10px;
-    overflow-y:auto;
-    overflow-x:hidden;
-}
-
-.beshy-message{
-    width:fit-content;
-    max-width:80%;
-    margin:0 0 8px;
-    padding:8px 12px;
-    border-radius:12px;
-    font-family:"Kumbh Sans",Arial,sans-serif;
-    font-size:14px;
-    line-height:1.4;
-    padding:9px 13px;
-    border-radius:12px;
-    font-family:"Kumbh Sans",Arial,sans-serif;
-    font-size:15px;
-    line-height:1.55;
-    white-space:pre-wrap;
-    overflow-wrap:anywhere;
-    word-break:break-word;
-}
-
-.beshy-message p{
-    margin:0 0 6px;
-    font-family:inherit;
-    font-size:inherit;
-    line-height:inherit;
-}
-.beshy-message p:last-child{
-    margin-bottom:0;
-}
-.beshy-message.bot{
-    align-self:flex-start;
-    background:var(--surface);
-    color:var(--text);
-}
-.beshy-message.user{
-    margin-left:auto;
-    background:var(--beshy-user);
-    color:var(--beshy-user-text);
-}
-/* =====================================================
-   BESHY QUICK OPTIONS
-===================================================== */
-.beshy-options{
-    flex-shrink:0;
-    display:flex;
-    gap:5px;
-    padding:6px;
-    gap:6px;
-    padding:7px;
-    overflow-x:auto;
-    overflow-y:hidden;
-    background:var(--card);
-}
-.beshy-options button{
-    flex-shrink:0;
-    min-height:30px;
-    padding:5px 10px;
-    min-height:32px;
-    padding:6px 11px;
-    border:1px solid var(--border);
-    border-radius:15px;
-    background:var(--surface);
-    color:var(--text);
-    font-family:"Kumbh Sans",Arial,sans-serif;
-    font-size:13px;
-    line-height:1.2;
-    white-space:nowrap;
-    cursor:pointer;
-}
-/* =====================================================
-   BESHY INPUT AREA
-===================================================== */
-.beshy-input-area{
-    position:relative;
-    flex-shrink:0;
-    display:flex;
-    align-items:center;
-    gap:5px;
-    min-height:58px;
-    gap:6px;
-    min-height:60px;
-    padding:8px;
-    background:var(--card);
-    border-top:1px solid var(--border);
-}
-.beshy-input-area input{
-    flex:1;
-    min-width:0;
-    height:40px;
-    padding:8px 12px;
-    height:42px;
-    padding:8px 13px;
-    border:1px solid var(--border);
-    border-radius:20px;
-    background:var(--surface);
-    color:var(--text);
-    font-family:"Kumbh Sans",Arial,sans-serif;
-    font-size:15px;
-    line-height:1.2;
-    outline:none;
-}
-.beshy-input-area input::placeholder{
-    color:var(--text-light);
-    opacity:.8;
-}
-.beshy-input-area input:focus{
-    border-color:var(--accent);
-}
-.beshy-input-area button{
-    flex-shrink:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    width:36px;
-    height:36px;
-    width:38px;
-    height:38px;
-    border:none;
-    background:transparent;
-    color:var(--accent);
-    font-family:"Segoe UI Emoji","Apple Color Emoji","Noto Color Emoji",sans-serif;
-    font-size:21px;
-    line-height:1;
-    cursor:pointer;
-}
-/* =====================================================
-   BESHY MEMORY CONTROLS
-===================================================== */
-.beshy-memory-controls{
-    flex-shrink:0;
-    padding:5px;
-    background:var(--card);
-    text-align:center;
-}
-.beshy-memory-controls button{
-    padding:2px 5px;
-    border:none;
-    background:transparent;
-    color:var(--text-light);
-    font-family:"Kumbh Sans",Arial,sans-serif;
-    font-size:12px;
-    line-height:1.2;
-    cursor:pointer;
-}
-.beshy-memory-controls button:hover{
-    color:var(--accent);
-}
-/* =====================================================
-   BESHY — MOBILE
-===================================================== */
-@media(max-width:600px){
-    .beshy-toggle{
-        right:15px;
-        bottom:15px;
-        width:52px;
-        height:52px;
-        font-size:24px;
-    }
-    .beshy-chat{
-        right:10px;
-        bottom:80px;
-        width:calc(100vw - 20px);
-        /* SHORTER THAN BEFORE */
-        height:65vh;
-
-        border-radius:16px;
-        font-size:15px;
-    }
-    .beshy-header{
-        min-height:54px;
-        padding:10px;
-    }
-    .beshy-avatar{
-        width:30px;
-        height:30px;
-        font-size:24px;
-    }
-    .beshy-identity h3{
-        font-size:16px;
-    }
-    .beshy-identity p{
-        font-size:13px;
-    }
-    .beshy-close{
-        width:30px;
-        height:30px;
-        font-size:24px;
-    }
-    .beshy-messages{
-        padding:9px;
-    }
-    .beshy-message{
-        max-width:85%;
-        font-size:13px;
-        line-height:1.4;
-        font-size:15px;
-        line-height:1.55;
-    }
-
-    .beshy-message p{
-        font-size:15px;
-        line-height:1.55;
-    }
-    .beshy-options{
-        gap:4px;
-        padding:5px;
-    }
-    .beshy-options button{
-        min-height:28px;
-        padding:5px 8px;
-        font-size:11px;
-    }
-    .beshy-input-area{
-        min-height:52px;
-        padding:6px;
-    }
-    .beshy-input-area input{
-        height:38px;
-        padding:8px 10px;
-        font-size:14px;
-        gap:5px;
-        padding:6px;
-    }
-
-    .beshy-options button{
-        min-height:30px;
-        padding:5px 9px;
-        font-size:13px;
-    }
-
-    .beshy-input-area{
-        min-height:56px;
-        padding:7px;
-    }
-
-    .beshy-input-area input{
-        height:40px;
-        padding:8px 11px;
-        font-size:15px;
-    }
-    .beshy-input-area button{
-        width:34px;
-        height:34px;
-        font-size:18px;
-    }
-    .beshy-memory-controls{
-        padding:4px;
-    }
-    .beshy-memory-controls button{
-        font-size:12px;
-    }
-}
-@media (max-width: 768px) {
-    .beshy-toggle {
-        bottom: 80px;
-    }
-}
-
-/* =====================================================
-   BESHY — VERY SMALL PHONES
-===================================================== */
-@media(max-width:380px){
-    .beshy-chat{
-        bottom:70px;
-
-        /* STILL SHORTER */
-        height:65vh;
-    }
-    .beshy-options button{
-        font-size:12px;
-    }
-}
-
-
-/* =====================================================
-   FINAL MOBILE ADJUSTMENTS
-===================================================== */
-@media(max-width:480px){
-    body{
-        padding-top:70px;
-    }
-    .navbar{
-        min-height:70px;
-    }
-    .library{
-        padding:20px 12px;
-    }
-    .about-section,
-    .contact-section,
-    .closing{
-        padding:20px 16px;
-    }
-    .story-card{
-        padding:14px;
-    }
-}
-/* =====================================================
-   ABOUT PAGE
-===================================================== */
-.about-container{
-    width:100%;
-    max-width:1000px;
-    margin:auto;
-}
-.about-hero{
-    margin-bottom:35px;
-    padding:clamp(40px,7vw,60px) clamp(20px,5vw,30px);
-    background:linear-gradient(
-        135deg,
-        var(--accent),
-        var(--coffee)
-    );
-    color:var(--bg);
-    text-align:center;
-    border-radius:var(--radius);
-    box-shadow:var(--shadow);
-}
-
-.about-hero h1{
-    margin-bottom:15px;
-    font-size:clamp(2rem,5vw,3.5rem);
-}
-.about-hero .subtitle{
-    max-width:650px;
-    margin:auto;
-
-    color:var(--bg);
-    opacity:.95;
-}
 .about-section,
 .contact-section,
-.closing{
-    margin-bottom:25px;
-    padding:clamp(20px,4vw,30px);
+.closing {
+    margin-bottom: 25px;
+    padding: clamp(22px, 4vw, 32px);
 
-    background:var(--card);
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
 
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-
-    box-shadow:var(--soft-shadow);
-    transition:var(--transition);
+    box-shadow: var(--shadow-sm);
 }
-.about-section:hover,
-.contact-section:hover{
-    transform:translateY(-3px);
-}
+
 .about-section h2,
-.contact-section h2{
-    margin-bottom:15px;
-    padding-bottom:10px;
+.contact-section h2 {
+    margin-bottom: 18px;
+    padding-bottom: 10px;
 
-    color:var(--accent);
-    font-size:clamp(1.3rem,3vw,1.8rem);
-
-    border-bottom:1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    color: var(--navy-dark);
 }
+
 .about-section p,
 .contact-section p,
-.closing p{
-    margin-bottom:15px;
-}
-.about-section ul{
-    margin:15px 0;
-}
-.contact-box{
-    margin-top:20px;
-}
-.stream-links{
-    display:flex;
-    flex-wrap:wrap;
-    gap:12px;
-}
-.stream-links a{
-    padding:12px 18px;
-    background:var(--surface);
-    color:var(--accent);
-    border:1px solid var(--border);
-    border-radius:12px;
-    font-weight:600;
-    box-shadow:var(--soft-shadow);
-    transition:var(--transition);
-}
-.stream-links a:hover{
-    background:var(--accent);
-    color:var(--bg);
-}
-.closing{
-    text-align:center;
-}
-.closing p:first-child{
-    color:var(--accent);
-    font-size:clamp(1.1rem,2.5vw,1.4rem);
-    font-weight:600;
-}
-/* =====================================================
-   ABOUT PAGE — MOBILE
-===================================================== */
-@media(max-width:768px){
-    .stream-links{
-        flex-direction:column;
-    }
-    .stream-links a{
-        text-align:center;
-    }
-}
-/* =====================================================
-   LIBRARY PAGE
-===================================================== */
-.library{
-    width:100%;
-    max-width:1100px;
-    margin:auto;
-    padding:clamp(20px,4vw,30px);
-}
-.library h2{
-    margin-bottom:25px;
-
-    color:var(--accent);
-    font-size:clamp(1.5rem,3vw,2rem);
-}
-.library-section{
-    margin-bottom:30px;
-}
-.library h3{
-    margin:15px 0;
-    color:var(--accent);
-    font-size:clamp(1.1rem,2vw,1.4rem);
-}
-.library ul{
-    list-style:none;
-    padding:0;
-}
-.library li{
-    margin:8px 0;
-}
-.library li a{
-    display:block;
-    padding:12px 16px;
-    background:var(--card);
-    color:var(--text);
-    border:1px solid var(--border);
-    border-radius:12px;
-    transition:var(--transition);
-}
-.library li a:hover{
-    background:var(--accent);
-    color:var(--bg);
-    transform:translateX(5px);
-}
-.library details{
-    margin:10px 0;
-    overflow:hidden;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:14px;
-}
-.library summary{
-    padding:15px 18px;
-    color:var(--accent);
-    font-weight:600;
-    cursor:pointer;
-}
-.library details ul{
-    padding:0 15px 12px;
-}
-.library details li{
-    margin:6px 0;
-}
-.library details li a{
-    padding:10px 14px;
-}
-/* =====================================================
-STORIES PAGE
-DIGICAFE DESIGN SYSTEM
-===================================================== */
-.stories{
-width:100%;
-max-width:1000px;
-margin:0 auto;
-padding:clamp(20px,4vw,40px) 20px 120px;
-}
-/* =====================================================
-   STORIES PAGE
-===================================================== */
-.stories{
-    width:100%;
-    max-width:1000px;
-    margin:0 auto;
-    padding:clamp(20px,4vw,40px) 20px 120px;
-}
-.stories > h1{
-    margin-bottom:35px;
-    color:var(--accent);
-    font-size:clamp(2rem,5vw,3.5rem);
-}
-/* =====================================================
-   STORY CARD
-===================================================== */
-.story-card{
-    width:100%;
-    margin-bottom:25px;
-    padding:clamp(15px,3vw,24px);
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    box-shadow:var(--soft-shadow);
-    overflow:hidden;
-    transition:var(--transition);
-}
-.story-card:hover{
-    transform:translateY(-4px);
-    box-shadow:var(--shadow);
-}
-/* =====================================================
-   STORY IMAGE
-===================================================== */
-.story-card img{
-    float:left;
-    width:clamp(140px,20vw,220px);
-    height:clamp(200px,28vw,300px);
-    margin:0 25px 15px 0;
-    object-fit:cover;
-    border-radius:12px;
-}
-/* =====================================================
-   STORY CONTENT
-===================================================== */
-.story-content{
-    min-width:0;
-}
-.story-content h3{
-    margin-bottom:10px;
-    color:var(--accent);
-    font-size:clamp(1.3rem,3vw,2rem);
-}
-.story-content p{
-    color:var(--text-light);
-    line-height:1.7;
-}
-/* =====================================================
-   STORY LINK
-===================================================== */
-.story-link{
-    color:inherit;
-    text-decoration:none;
-}
-.story-link:hover h3{
-    color:var(--coffee);
-}
-/* =====================================================
-   READ BUTTON
-===================================================== */
-.read-btn{
-    display:inline-block;
-    margin-top:15px;
-    padding:10px 18px;
-    background:var(--accent);
-    color:var(--bg);
-    border-radius:10px;
-    transition:var(--transition);
-}
-.read-btn:hover{
-    background:var(--accent-hover);
-    transform:translateY(-2px);
+.closing p {
+    line-height: 1.8;
 }
 
-/* =====================================================
-   TABLET
-===================================================== */
-@media(max-width:768px){
-    .stories{
-        padding:25px 15px 120px;
-    }
-    .story-card img{
-        width:150px;
-        height:220px;
-
-        margin-right:18px;
-    }
-}
-/* =====================================================
-   MOBILE
-===================================================== */
-@media(max-width:600px){
-    .stories{
-        padding:20px 12px 120px;
-    }
-    .story-card img{
-        float:none;
-        display:block;
-        width:min(100%,220px);
-        height:auto;
-        margin:0 auto 20px;
-    }
-    .story-content{
-        width:100%;
-    }
-    .story-content p{
-        text-align:left;
-    }
-}
-/* =====================================================
-   VERY SMALL PHONES
-===================================================== */
-@media(max-width:380px){
-    .stories{
-        padding-left:10px;
-        padding-right:10px;
-    }
-    .story-card{
-        padding:14px;
-    }
-    .story-card img{
-        width:min(100%,190px);
-    }
-
-}
-/* =====================================================
-TABLET AND MOBILE
-===================================================== */
-@media(max-width:768px){
-.stories{
-    padding:25px 15px 120px;
-}
-.story-card{
-    gap:18px;
-    padding:16px;
-}
-.story-card img{
-    width:150px;
-    height:220px;
-}
+.about-section strong,
+.contact-section strong {
+    color: var(--gold-dark);
 }
 
-/* =====================================================
-SMALL PHONES
-===================================================== */
-@media(max-width:600px){
-.stories{
-    padding:20px 12px 120px;
-}
-.story-card{
-    flex-direction:column;
-    align-items:center;
-
-    text-align:center;
-}
-.story-card img{
-    width:min(100%,220px);
-    height:auto;
-    max-height:300px;
-}
-.story-content{
-    width:100%;
-}
-.story-content p{
-    text-align:left;
-}
-.story-meta{
-    justify-content:center;
-}
-.read-btn{
-    width:100%;
-    text-align:center;
-}
+.stream-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
 }
 
-.social__icons a:hover{
-    transform:translateY(-3px) scale(1.05);
-    background:var(--accent);
+.stream-links a {
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 44px;
+    padding: 10px 18px;
+
+    background: var(--cream-light);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+
+    color: var(--navy-soft);
+    font-weight: 700;
+
+    transition: var(--transition);
 }
 
-.social__custom-icon{
-    width:65%;
-    height:65%;
-
-    object-fit:contain;
-    border-radius:50%;
-}
-.footer__container{
-    width:100%;
-    max-width:1100px;
-    margin:auto;
-
-    padding:35px 20px;
-
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    gap:30px;
-    flex-wrap:wrap;
+.stream-links a:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--navy-dark);
 }
 
-.footer__logo{
-    margin-bottom:6px;
-
-    font-family:Georgia,serif;
-    font-size:1.6rem;
-    color:var(--accent);
+.closing {
+    text-align: center;
 }
-/* =====================================================
-   SINGLE-PAGE PDF READER
-===================================================== */
+
+.closing p:first-child {
+    color: var(--gold-dark);
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   07. LIBRARY
+========================================================= */
+
+.library {
+    width: min(calc(100% - 40px), 1100px);
+    margin: 35px auto 70px;
+}
+
+.library > h1 {
+    margin-bottom: 12px;
+    text-align: center;
+    color: var(--navy-dark);
+    font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.library-intro {
+    max-width: 720px;
+    margin: 0 auto 45px;
+
+    text-align: center;
+    color: var(--text-soft);
+    font-size: 1.05rem;
+}
+
+.library-section {
+    margin-bottom: 35px;
+}
+
+.library-section h2 {
+    margin-bottom: 18px;
+    color: var(--navy-dark);
+}
+
+.library ul {
+    list-style: none;
+    padding: 0;
+}
+
+.library li {
+    margin: 10px 0;
+}
+
+.library li a {
+    display: block;
+
+    padding: 15px 18px;
+
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+
+    color: var(--navy-soft);
+
+    box-shadow: var(--shadow-sm);
+
+    transition: var(--transition);
+}
+
+.library li a:hover {
+    transform: translateX(5px);
+    background: var(--cream-light);
+    border-color: var(--gold);
+}
+
+.library details {
+    margin: 12px 0;
+    overflow: hidden;
+
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow-sm);
+}
+
+.library summary {
+    padding: 17px 20px;
+
+    cursor: pointer;
+
+    color: var(--navy-dark);
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.library details[open] summary {
+    border-bottom: 1px solid var(--border);
+    color: var(--gold-dark);
+}
+
+.library details ul {
+    padding: 10px 18px 18px;
+}
+
+
+/* =========================================================
+   08. STORIES / CATEGORY PAGES
+========================================================= */
+
+.stories {
+    width: min(calc(100% - 40px), 1000px);
+    margin: 0 auto;
+    padding: 35px 0 100px;
+}
+
+.stories > h1 {
+    margin-bottom: 35px;
+    color: var(--navy-dark);
+    font-size: clamp(2rem, 5vw, 3.2rem);
+}
+
+.story-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 25px;
+
+    width: 100%;
+    margin-bottom: 25px;
+    padding: 24px;
+
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
+    box-shadow: var(--shadow-sm);
+
+    transition: var(--transition);
+}
+
+.story-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+}
+
+.story-card img {
+    flex-shrink: 0;
+
+    width: 180px;
+    height: 260px;
+
+    object-fit: cover;
+
+    border-radius: 12px;
+}
+
+.story-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.story-content h3 {
+    margin-bottom: 10px;
+    color: var(--navy-dark);
+    font-size: clamp(1.35rem, 3vw, 2rem);
+}
+
+.story-content p {
+    color: var(--text-soft);
+    line-height: 1.8;
+}
+
+.story-link:hover h3 {
+    color: var(--gold-dark);
+}
+
+
+/* =========================================================
+   09. READER / PDF.JS
+========================================================= */
+
+.book-layout {
+    width: min(calc(100% - 30px), 1050px);
+    margin: 25px auto 70px;
+    text-align: center;
+}
+
+.book-page {
+    width: 100%;
+    padding: 15px;
+
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
+    box-shadow: var(--shadow);
+}
+
+#chapterTitle {
+    margin: 5px 0 18px;
+    color: var(--navy-dark);
+    font-size: clamp(1.05rem, 2vw, 1.35rem);
+}
 
 #chapterContent {
     width: 100%;
     margin: 0;
     padding: 0;
-    background: #eeeeee;
+
+    background: #e9edf2;
 }
-
-
-/* =====================================================
-   PDF FRAME
-===================================================== */
 
 .pdf-viewer {
     width: 100%;
     max-width: 900px;
     margin: 0 auto;
-    background: #ffffff;
+
     overflow: hidden;
+
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
 }
-
-
-/* =====================================================
-   PDF CANVAS
-===================================================== */
 
 .pdf-page {
     display: block;
+
     width: 100%;
     height: auto;
+
     margin: 0 auto;
+
+    background: #fff;
 }
 
-
-/* =====================================================
-   PDF PAGE CONTROLS
-===================================================== */
-
 .pdf-controls {
-
     display: flex;
-
-    justify-content: center;
-
     align-items: center;
-
+    justify-content: center;
     gap: 25px;
 
     padding: 12px 15px;
 
-    background: #071426;
-
-    color: #ffffff;
+    background: var(--navy-dark);
+    color: var(--white);
 }
-
-
-/* =====================================================
-   PDF PAGE ARROWS
-===================================================== */
 
 .pdf-controls button {
-
-    width: 38px;
-
-    height: 38px;
+    width: 42px;
+    height: 42px;
 
     border: none;
-
     border-radius: 50%;
 
-    background: #c59d5f;
-
-    color: #ffffff;
+    background: var(--gold);
+    color: var(--navy-dark);
 
     font-size: 1.5rem;
-
+    font-weight: 700;
     line-height: 1;
 
-    cursor: pointer;
-
-    transition:
-        transform 0.2s ease,
-        opacity 0.2s ease;
+    transition: var(--transition);
 }
-
 
 .pdf-controls button:hover {
-
     transform: scale(1.08);
-
+    background: var(--gold-light);
 }
 
-
 .pdf-controls button:disabled {
-
-    opacity: 0.3;
-
+    opacity: .35;
     cursor: not-allowed;
-
     transform: none;
 }
 
-
-/* =====================================================
-   PAGE NUMBER
-===================================================== */
-
 #pdfPageNumber {
-
-    min-width: 60px;
-
+    min-width: 70px;
     text-align: center;
-
-    font-size: 0.9rem;
-
+    font-size: .95rem;
 }
-
-
-/* =====================================================
-   CHAPTER NAVIGATION
-===================================================== */
 
 .book-nav {
-
     display: flex;
-
     justify-content: space-between;
-
     gap: 15px;
 
-    padding: 15px 20px;
-
-    background: #ffffff;
-
-    border-top: 1px solid #e5e5e5;
+    padding: 15px 5px;
 }
 
-
 .book-nav button {
-
     flex: 1;
+    max-width: 260px;
 
-    max-width: 220px;
-
+    min-height: 48px;
     padding: 12px 18px;
 
     border: none;
+    border-radius: 999px;
 
-    border-radius: 10px;
+    background: var(--navy-dark);
+    color: var(--white);
 
-    background: #071426;
+    font-weight: 700;
 
-    color: #ffffff;
-
-    font-family: inherit;
-
-    cursor: pointer;
-
+    transition: var(--transition);
 }
 
+.book-nav button:hover:not(:disabled) {
+    background: var(--gold);
+    color: var(--navy-dark);
+    transform: translateY(-2px);
+}
 
 .book-nav button:disabled {
-
-    opacity: 0.35;
-
+    opacity: .35;
     cursor: not-allowed;
-
 }
 
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media (max-width: 768px) {
-
-    .book-layout {
-
-        width: 100%;
-
-        padding-left: 0;
-
-        padding-right: 0;
-    }
-
-
-    .book-page {
-
-        width: 100%;
-
-        border-radius: 0;
-
-        box-shadow: none;
-    }
-
-
-    #chapterTitle {
-
-        padding: 14px 10px;
-
-        font-size: 1rem;
-    }
-
-
-    .pdf-viewer {
-
-        width: 100vw;
-
-        max-width: 100vw;
-    }
-
-
-    .pdf-page {
-
-        width: 100vw;
-    }
-
-
-    .pdf-controls {
-
-        gap: 20px;
-
-        padding: 10px;
-    }
-
-
-    .book-nav {
-
-        padding: 12px 10px;
-
-        gap: 10px;
-    }
-
-
-    .book-nav button {
-
-        max-width: none;
-
-        padding: 11px 8px;
-
-        font-size: 0.85rem;
-    }
-
+.audio-bottom {
+    width: min(calc(100% - 30px), 700px);
+    margin: 20px auto;
 }
+
+.audio-bottom audio {
+    width: 100%;
+}
+
+.reader-note {
+    width: min(calc(100% - 30px), 700px);
+    margin: 20px auto;
+
+    padding: 15px 20px;
+
+    background: var(--cream-light);
+    border-left: 4px solid var(--gold);
+    border-radius: var(--radius-sm);
+
+    color: var(--text-soft);
+    text-align: left;
+}
+
+.reader-nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    margin-top: 25px;
+}
+
+.reader-nav a {
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 44px;
+    padding: 9px 15px;
+
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+
+    color: var(--navy-soft);
+
+    transition: var(--transition);
+}
+
+.reader-nav a:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--navy-dark);
+}
+
 
 /* =========================================================
-   DIGICAFE WELCOME / CAFÉ ENTRANCE
-   ========================================================= */
+   10. MUSIC LOUNGE
+========================================================= */
+
+.music-app {
+    display: flex;
+    width: 100%;
+    min-height: calc(100vh - var(--navbar-height));
+}
+
+.sidebar {
+    position: fixed;
+
+    top: var(--navbar-height);
+    left: 0;
+
+    width: 260px;
+    height: calc(100vh - var(--navbar-height));
+
+    overflow-y: auto;
+
+    padding: 25px;
+
+    background: var(--navy-dark);
+    color: var(--cream);
+
+    border-right: 1px solid rgba(214,179,106,.16);
+
+    z-index: 100;
+}
+
+.sidebar h3 {
+    margin-bottom: 18px;
+    color: var(--gold-light);
+}
+
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+
+    margin-bottom: 25px;
+}
+
+.sidebar nav a {
+    display: block;
+
+    min-height: 44px;
+    padding: 10px 14px;
+
+    border-radius: var(--radius-sm);
+
+    color: var(--cream);
+
+    transition: var(--transition);
+}
+
+.sidebar nav a:hover,
+.sidebar nav a.active {
+    background: var(--gold);
+    color: var(--navy-dark);
+}
+
+.sidebar-card {
+    margin-bottom: 20px;
+    padding: 18px;
+
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.10);
+    border-radius: var(--radius);
+}
+
+.sidebar-card h4 {
+    color: var(--gold-light);
+    margin-bottom: 12px;
+}
+
+.sidebar-card a {
+    display: block;
+    padding: 7px 0;
+}
+
+.music-content {
+    flex: 1;
+    min-width: 0;
+
+    margin-left: 260px;
+    padding: 40px 40px 170px;
+}
+
+.music-content section {
+    margin-bottom: 45px;
+}
+
+.music-content section h2 {
+    margin-bottom: 20px;
+    color: var(--navy-dark);
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+}
+
+.music-hero {
+    padding: clamp(30px, 5vw, 60px);
+
+    background: linear-gradient(135deg, var(--navy-dark), var(--navy-soft));
+
+    color: var(--cream);
+
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+}
+
+.music-hero h1 {
+    margin-bottom: 15px;
+    color: var(--gold-light);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+}
+
+.music-hero p {
+    max-width: 700px;
+    color: rgba(255,255,255,.86);
+}
+
+.library-panels {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.library-panel {
+    padding: 22px;
+
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow-sm);
+}
+
+.library-panel h2 {
+    margin-bottom: 15px;
+    color: var(--navy-dark);
+}
+
+.library-panel ul {
+    list-style: none;
+    padding: 0;
+}
+
+.library-panel li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.library-panel li:last-child {
+    border-bottom: none;
+}
+
+.category-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    margin: 15px 0 25px;
+}
+
+.category-buttons button {
+    min-height: 42px;
+    padding: 8px 16px;
+
+    border: 1px solid var(--border);
+    border-radius: 999px;
+
+    background: var(--white);
+    color: var(--navy-soft);
+
+    font-size: .95rem;
+
+    transition: var(--transition);
+}
+
+.category-buttons button:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--navy-dark);
+}
+
+.song-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 20px;
+}
+
+.song-card {
+    padding: 20px;
+
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow-sm);
+
+    transition: var(--transition);
+}
+
+.song-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+}
+
+.song-card h3 {
+    margin-bottom: 7px;
+    color: var(--navy-dark);
+    font-size: 1.15rem;
+}
+
+.song-card p {
+    margin-bottom: 16px;
+    color: var(--text-soft);
+    font-size: .95rem;
+}
+
+.song-buttons,
+.song-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.song-buttons button,
+.song-actions button {
+    min-width: 40px;
+    min-height: 40px;
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    background: var(--cream-light);
+    color: var(--navy-dark);
+
+    transition: var(--transition);
+}
+
+.song-buttons button:hover,
+.song-actions button:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+}
+
+.active-favorite,
+.active-queue {
+    color: var(--gold-dark) !important;
+}
+
+.collection {
+    margin-bottom: 14px;
+    overflow: hidden;
+
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.collection-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    min-height: 56px;
+    padding: 15px 18px;
+
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.collection-header:hover {
+    background: var(--cream-light);
+}
+
+.collection-body {
+    display: none;
+    border-top: 1px solid var(--border);
+}
+
+.collection.open .collection-body {
+    display: block;
+}
+
+.song-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+    padding: 14px 18px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.song-row:last-child {
+    border-bottom: none;
+}
+
+.song-title {
+    flex: 1;
+    min-width: 0;
+    font-size: 1rem;
+}
+
+
+/* =========================================================
+   11. MUSIC PLAYER
+========================================================= */
+
+.player {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    z-index: 9998;
+
+    min-height: 88px;
+
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    padding: 12px 18px;
+
+    background: rgba(5,13,26,.98);
+    border-top: 1px solid rgba(214,179,106,.20);
+
+    color: var(--cream);
+
+    box-shadow: 0 -10px 30px rgba(0,0,0,.22);
+}
+
+.now-playing {
+    width: 250px;
+    min-width: 0;
+    flex-shrink: 0;
+}
+
+.now-playing h3 {
+    margin-bottom: 3px;
+    color: var(--gold-light);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.now-playing p {
+    margin-bottom: 2px;
+    color: rgba(255,255,255,.72);
+    font-size: .9rem;
+}
+
+#playbackSource {
+    color: var(--gold);
+    font-size: .78rem;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.controls button,
+.player-actions button {
+    width: 42px;
+    height: 42px;
+
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 10px;
+
+    background: rgba(255,255,255,.06);
+    color: var(--cream);
+
+    transition: var(--transition);
+}
+
+.controls button:hover,
+.player-actions button:hover {
+    background: var(--gold);
+    color: var(--navy-dark);
+}
+
+#playBtn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+
+    background: var(--gold);
+    color: var(--navy-dark);
+
+    font-size: 1.15rem;
+}
+
+.progress {
+    flex: 1;
+    min-width: 120px;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.progress span {
+    width: 42px;
+    color: rgba(255,255,255,.68);
+    font-size: .8rem;
+    text-align: center;
+}
+
+.progress input,
+.volume input {
+    accent-color: var(--gold);
+}
+
+.progress input {
+    flex: 1;
+    min-width: 60px;
+}
+
+.volume {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.volume input {
+    width: 90px;
+}
+
+.player-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.player-actions button.active-playlist {
+    background: var(--gold);
+    color: var(--navy-dark);
+    border-color: var(--gold);
+}
+
+
+/* =========================================================
+   12. AMBIENCE
+========================================================= */
+
+#ambience-panel {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+
+    z-index: 9990;
+
+    padding: 10px;
+
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow);
+
+    user-select: none;
+    touch-action: none;
+}
+
+#toggle {
+    width: 46px;
+    height: 46px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: var(--navy-dark);
+    color: var(--gold-light);
+
+    font-size: 20px;
+}
+
+.ambience-menu {
+    margin-top: 10px;
+    padding: 10px;
+
+    background: var(--cream-light);
+    border-radius: var(--radius-sm);
+
+    box-shadow: var(--shadow-sm);
+}
+
+.sound-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.sound-row button {
+    width: 38px;
+    height: 38px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: var(--white);
+    color: var(--navy-dark);
+
+    transition: var(--transition);
+}
+
+.sound-row button:hover {
+    background: var(--gold);
+    transform: scale(1.06);
+}
+
+.volume-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+#volumeSlider {
+    width: 100px;
+    accent-color: var(--gold);
+}
+
+
+/* =========================================================
+   13. BESHY
+========================================================= */
+
+.beshy-toggle,
+.beshy-chat,
+.beshy-chat * {
+    box-sizing: border-box;
+}
+
+.beshy-toggle {
+    position: fixed;
+
+    right: 20px;
+    bottom: 90px;
+
+    z-index: 9999;
+
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+
+    background: var(--navy-dark);
+    color: var(--gold-light);
+
+    font-size: 28px;
+    line-height: 1;
+
+    box-shadow:
+        var(--shadow),
+        0 0 25px rgba(214,179,106,.18);
+
+    transition: transform var(--transition);
+}
+
+.beshy-toggle:hover {
+    transform: scale(1.08);
+}
+
+.beshy-chat {
+    position: fixed;
+
+    right: 20px;
+    bottom: 160px;
+
+    z-index: 9999;
+
+    display: none;
+    flex-direction: column;
+
+    width: 360px;
+    height: 500px;
+
+    overflow: hidden;
+
+    background: var(--cream-light);
+    color: var(--text);
+
+    border: 1px solid rgba(214,179,106,.40);
+    border-radius: var(--radius-lg);
+
+    font-size: .95rem;
+
+    box-shadow: var(--shadow-lg);
+}
+
+.beshy-chat.open {
+    display: flex;
+}
+
+.beshy-header {
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    min-height: 60px;
+    padding: 10px 14px;
+
+    background: var(--navy-dark);
+    color: var(--cream);
+}
+
+.beshy-identity {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.beshy-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 36px;
+    height: 36px;
+
+    font-size: 28px;
+}
+
+.beshy-identity h3 {
+    margin: 0;
+    color: var(--gold-light);
+    font-size: 1rem;
+}
+
+.beshy-identity p {
+    margin: 2px 0 0;
+    color: rgba(255,255,255,.70);
+    font-size: .78rem;
+}
+
+.beshy-close {
+    width: 34px;
+    height: 34px;
+
+    border: none;
+    background: transparent;
+
+    color: var(--cream);
+    font-size: 24px;
+}
+
+.beshy-messages {
+    flex: 1;
+    min-height: 0;
+
+    padding: 12px;
+
+    overflow-y: auto;
+}
+
+.beshy-message {
+    width: fit-content;
+    max-width: 84%;
+
+    margin: 0 0 9px;
+    padding: 9px 13px;
+
+    border-radius: 14px;
+
+    font-size: .95rem;
+    line-height: 1.55;
+
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.beshy-message p {
+    margin: 0 0 6px;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.beshy-message p:last-child {
+    margin-bottom: 0;
+}
+
+.beshy-message.bot {
+    background: var(--white);
+    color: var(--text);
+}
+
+.beshy-message.user {
+    margin-left: auto;
+    background: var(--navy);
+    color: var(--cream);
+}
+
+.beshy-options {
+    flex-shrink: 0;
+
+    display: flex;
+    gap: 6px;
+
+    padding: 7px;
+
+    overflow-x: auto;
+
+    background: var(--white);
+}
+
+.beshy-options button {
+    flex-shrink: 0;
+
+    min-height: 36px;
+    padding: 6px 11px;
+
+    border: 1px solid var(--border);
+    border-radius: 999px;
+
+    background: var(--cream-light);
+    color: var(--navy-soft);
+
+    font-size: .85rem;
+    white-space: nowrap;
+}
+
+.beshy-input-area {
+    position: relative;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    min-height: 60px;
+    padding: 8px;
+
+    background: var(--white);
+    border-top: 1px solid var(--border);
+}
+
+.beshy-input-area input {
+    flex: 1;
+    min-width: 0;
+
+    height: 42px;
+    padding: 8px 13px;
+
+    border: 1px solid var(--border);
+    border-radius: 999px;
+
+    background: var(--cream-light);
+    color: var(--text);
+
+    font-size: .95rem;
+    outline: none;
+}
+
+.beshy-input-area input:focus {
+    border-color: var(--gold-dark);
+    box-shadow: 0 0 0 3px rgba(214,179,106,.15);
+}
+
+.beshy-input-area button {
+    flex-shrink: 0;
+
+    width: 40px;
+    height: 40px;
+
+    border: none;
+    background: transparent;
+
+    color: var(--gold-dark);
+    font-size: 20px;
+}
+
+.beshy-memory-controls {
+    flex-shrink: 0;
+
+    padding: 6px;
+
+    background: var(--white);
+    text-align: center;
+}
+
+.beshy-memory-controls button {
+    border: none;
+    background: transparent;
+    color: var(--text-light);
+    font-size: .78rem;
+}
+
+
+/* =========================================================
+   14. FOOTER
+========================================================= */
+
+.footer {
+    margin-top: 4rem;
+
+    background: var(--navy-dark);
+    color: var(--cream);
+
+    border-top: 1px solid rgba(214,179,106,.18);
+}
+
+.footer__container {
+    width: min(calc(100% - 40px), 1100px);
+    margin: auto;
+
+    padding: 42px 0;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.footer__logo {
+    margin-bottom: 8px;
+
+    font-family: Georgia, serif;
+    font-size: 1.8rem;
+
+    color: var(--gold-light);
+}
+
+.footer__text,
+.small {
+    color: rgba(255,255,255,.72);
+}
+
+.social__block {
+    text-align: center;
+}
+
+.social__icons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.social__icons a {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(214,179,106,.55);
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.04);
+
+    transition: var(--transition);
+}
+
+.social__icons a:hover {
+    background: var(--gold);
+    color: var(--navy-dark);
+    transform: translateY(-3px);
+}
+
+.social__custom-icon {
+    width: 65%;
+    height: 65%;
+    object-fit: contain;
+    border-radius: 50%;
+}
+
+.footer__bottom {
+    padding: 15px;
+
+    border-top: 1px solid rgba(255,255,255,.08);
+
+    color: rgba(255,255,255,.55);
+    text-align: center;
+    font-size: .85rem;
+}
+
+
+/* =========================================================
+   15. WELCOME / CAFÉ ENTRANCE
+========================================================= */
 
 :root {
-    --cafe-night: #050d1a;
+    --cafe-night: #030914;
     --cafe-navy: #08172b;
     --cafe-blue: #102746;
 
@@ -2627,16 +1825,11 @@ SMALL PHONES
     --cafe-window: #f7d98c;
 }
 
-
-/* =========================================================
-   WELCOME SCREEN
-========================================================= */
-
 #welcome-screen {
     position: fixed;
     inset: 0;
 
-    z-index: 9999;
+    z-index: 99999;
 
     width: 100%;
     height: 100vh;
@@ -2644,20 +1837,17 @@ SMALL PHONES
 
     display: flex;
     flex-direction: column;
-
     align-items: center;
     justify-content: center;
 
-    gap: 0;
-
     overflow: hidden;
 
-    box-sizing: border-box;
+    padding: 20px;
 
     background:
         radial-gradient(
             circle at 50% 45%,
-            rgba(35, 71, 110, 0.32),
+            rgba(35,71,110,.32),
             transparent 45%
         ),
         linear-gradient(
@@ -2670,22 +1860,18 @@ SMALL PHONES
     color: var(--cafe-cream);
 
     opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 
     transition:
-        opacity 0.8s ease,
-        visibility 0.8s ease;
+        opacity .8s ease,
+        visibility .8s ease;
 }
-
-
-/* =========================================================
-   ATMOSPHERIC CENTER GLOW
-========================================================= */
 
 #welcome-screen::before {
     content: "";
 
     position: absolute;
-
     top: 50%;
     left: 50%;
 
@@ -2697,128 +1883,81 @@ SMALL PHONES
     background:
         radial-gradient(
             circle,
-            rgba(214, 179, 106, 0.10) 0%,
-            rgba(214, 179, 106, 0.04) 35%,
+            rgba(214,179,106,.10),
+            rgba(214,179,106,.04) 35%,
             transparent 70%
         );
 
     pointer-events: none;
-
-    z-index: 0;
 }
-
-
-/* =========================================================
-   LITTLE STARS / LIGHTS
-========================================================= */
 
 #welcome-screen::after {
     content: "✦     ·       ✧       ·     ✦       ·       ✧";
 
     position: absolute;
-
     top: 10%;
     left: 0;
 
     width: 100%;
 
-    color: rgba(243, 217, 154, 0.4);
-
+    color: rgba(243,217,154,.40);
     font-size: 12px;
-
     letter-spacing: 28px;
-
     text-align: center;
 
     pointer-events: none;
 
-    z-index: 0;
-
     animation: floatingLights 8s ease-in-out infinite;
 }
 
-
 @keyframes floatingLights {
-
-    0%,
-    100% {
+    0%, 100% {
         transform: translateY(0);
-        opacity: 0.4;
+        opacity: .4;
     }
 
     50% {
         transform: translateY(-10px);
-        opacity: 0.8;
+        opacity: .8;
     }
 }
 
-
-/* =========================================================
-   DIGICAFE TITLE
-========================================================= */
-
 .welcome-title {
     position: relative;
-
     z-index: 5;
-
-    flex-shrink: 0;
 
     margin: 0 0 22px;
 
     color: var(--cafe-gold-light);
 
-    font-family: "Kumbh Sans", sans-serif;
-
     font-size: clamp(1.5rem, 3vw, 2.4rem);
-
     font-weight: 600;
-
-    letter-spacing: 0.28em;
-
+    letter-spacing: .28em;
+    text-align: center;
     text-transform: uppercase;
 
-    text-align: center;
-
-    white-space: nowrap;
-
     text-shadow:
-        0 0 12px rgba(214, 179, 106, 0.3),
-        0 4px 20px rgba(0, 0, 0, 0.7);
+        0 0 12px rgba(214,179,106,.3),
+        0 4px 20px rgba(0,0,0,.7);
 }
-
 
 .welcome-title::before,
 .welcome-title::after {
     content: "✦";
-
     display: inline-block;
-
     margin: 0 14px;
 
     color: var(--cafe-gold);
-
-    font-size: 0.5em;
-
+    font-size: .5em;
     vertical-align: middle;
 }
 
-
-/* =========================================================
-   CAFÉ BUILDING
-========================================================= */
-
 .cafe-entrance {
     position: relative;
-
     z-index: 2;
-
-    flex-shrink: 0;
 
     width: min(390px, 78vw);
     height: 470px;
-
-    box-sizing: border-box;
 
     display: flex;
     flex-direction: column;
@@ -2834,32 +1973,21 @@ SMALL PHONES
             #061326 100%
         );
 
-    border: 1px solid rgba(214, 179, 106, 0.45);
-
-    border-radius:
-        180px
-        180px
-        28px
-        28px;
+    border: 1px solid rgba(214,179,106,.45);
+    border-radius: 180px 180px 28px 28px;
 
     box-shadow:
-        0 35px 80px rgba(0, 0, 0, 0.6),
-        0 0 50px rgba(214, 179, 106, 0.08),
-        inset 0 0 40px rgba(255, 255, 255, 0.025);
+        0 35px 80px rgba(0,0,0,.6),
+        0 0 50px rgba(214,179,106,.08),
+        inset 0 0 40px rgba(255,255,255,.025);
 
     overflow: hidden;
 }
-
-
-/* =========================================================
-   ARCH DETAIL
-========================================================= */
 
 .cafe-entrance::before {
     content: "";
 
     position: absolute;
-
     top: 15px;
     left: 50%;
 
@@ -2868,158 +1996,95 @@ SMALL PHONES
 
     transform: translateX(-50%);
 
-    border:
-        1px solid
-        rgba(214, 179, 106, 0.3);
-
+    border: 1px solid rgba(214,179,106,.30);
     border-bottom: none;
-
-    border-radius:
-        50%
-        50%
-        0
-        0;
+    border-radius: 50% 50% 0 0;
 
     pointer-events: none;
 }
 
-
-/* =========================================================
-   CAFÉ SIGN
-========================================================= */
-
 .cafe-sign {
     position: relative;
-
     z-index: 5;
-
-    flex-shrink: 0;
 
     padding: 8px 20px;
 
-    background:
-        rgba(5, 13, 26, 0.9);
+    background: rgba(5,13,26,.90);
 
-    border:
-        1px solid
-        rgba(214, 179, 106, 0.55);
-
+    border: 1px solid rgba(214,179,106,.55);
     border-radius: 50px;
 
     color: var(--cafe-gold-light);
 
-    font-family: "Kumbh Sans", sans-serif;
-
-    font-size: 0.9rem;
-
+    font-size: .9rem;
     font-weight: 600;
-
-    letter-spacing: 0.16em;
-
+    letter-spacing: .16em;
     text-transform: uppercase;
-
-    white-space: nowrap;
-
-    box-shadow:
-        0 0 18px
-        rgba(214, 179, 106, 0.12);
 }
-
-
-/* =========================================================
-   WINDOWS
-========================================================= */
 
 .cafe-window {
     position: absolute;
-
     top: 125px;
 
     width: 62px;
     height: 82px;
 
-    box-sizing: border-box;
-
     background:
         linear-gradient(
             90deg,
             transparent 46%,
-            rgba(91, 61, 25, 0.7) 47%,
-            rgba(91, 61, 25, 0.7) 53%,
+            rgba(91,61,25,.7) 47%,
+            rgba(91,61,25,.7) 53%,
             transparent 54%
         ),
         linear-gradient(
             0deg,
             transparent 46%,
-            rgba(91, 61, 25, 0.7) 47%,
-            rgba(91, 61, 25, 0.7) 53%,
+            rgba(91,61,25,.7) 47%,
+            rgba(91,61,25,.7) 53%,
             transparent 54%
         ),
         var(--cafe-window);
 
     border: 5px solid #7e6336;
-
     border-radius: 12px;
 
-    box-shadow:
-        0 0 25px
-        rgba(247, 217, 140, 0.3);
+    box-shadow: 0 0 25px rgba(247,217,140,.30);
 
     overflow: hidden;
 }
-
 
 .cafe-window.left {
     left: 45px;
 }
 
-
 .cafe-window.right {
     right: 45px;
 }
-
-
-/* Window glow */
 
 .cafe-window::after {
     content: "";
 
     position: absolute;
-
     inset: 0;
 
     background:
         radial-gradient(
             circle,
-            rgba(255, 246, 208, 0.45),
+            rgba(255,246,208,.45),
             transparent 70%
         );
 
-    animation:
-        windowGlow 4s ease-in-out infinite;
+    animation: windowGlow 4s ease-in-out infinite;
 }
-
 
 @keyframes windowGlow {
-
-    0%,
-    100% {
-        opacity: 0.6;
-    }
-
-    50% {
-        opacity: 1;
-    }
+    0%, 100% { opacity: .6; }
+    50% { opacity: 1; }
 }
-
-
-/* =========================================================
-   CAFÉ DOOR
-========================================================= */
 
 .cafe-door {
     position: absolute;
-
     left: 50%;
     bottom: 0;
 
@@ -3030,64 +2095,38 @@ SMALL PHONES
 
     transform: translateX(-50%);
 
-    box-sizing: border-box;
-
     display: flex;
-
     align-items: center;
     justify-content: center;
 
     padding: 0;
 
-    background:
-        linear-gradient(
-            145deg,
-            #172f4c,
-            #09182b
-        );
+    background: linear-gradient(145deg,#172f4c,#09182b);
 
-    border:
-        2px solid
-        var(--cafe-gold);
-
+    border: 2px solid var(--cafe-gold);
     border-bottom: none;
 
-    border-radius:
-        85px
-        85px
-        0
-        0;
+    border-radius: 85px 85px 0 0;
 
     color: var(--cafe-cream);
 
-    cursor: pointer;
-
-    box-shadow:
-        inset 0 0 30px
-        rgba(0, 0, 0, 0.35),
-        0 0 35px
-        rgba(214, 179, 106, 0.08);
-
     appearance: none;
-
     -webkit-appearance: none;
 
+    box-shadow:
+        inset 0 0 30px rgba(0,0,0,.35),
+        0 0 35px rgba(214,179,106,.08);
+
     transition:
-        transform 0.35s ease,
-        box-shadow 0.35s ease,
-        background 0.35s ease;
+        transform .35s ease,
+        box-shadow .35s ease,
+        background .35s ease;
 }
-
-
-/* =========================================================
-   DOOR LIGHT
-========================================================= */
 
 .cafe-door::before {
     content: "";
 
     position: absolute;
-
     left: -35px;
     right: -35px;
     bottom: 0;
@@ -3099,94 +2138,47 @@ SMALL PHONES
     background:
         radial-gradient(
             ellipse at center bottom,
-            rgba(255, 222, 145, 0.28),
+            rgba(255,222,145,.28),
             transparent 68%
         );
 
-    opacity: 0.5;
-
-    pointer-events: none;
-
-    transition:
-        opacity 0.35s ease;
+    opacity: .5;
 }
-
-
-/* =========================================================
-   DOOR INNER BORDER
-========================================================= */
 
 .cafe-door::after {
     content: "";
 
     position: absolute;
-
     inset: 18px;
 
-    border:
-        1px solid
-        rgba(214, 179, 106, 0.25);
-
-    border-radius:
-        68px
-        68px
-        5px
-        5px;
+    border: 1px solid rgba(214,179,106,.25);
+    border-radius: 68px 68px 5px 5px;
 
     pointer-events: none;
 }
 
-
-/* =========================================================
-   DOOR HOVER
-========================================================= */
-
 .cafe-door:hover {
+    transform: translateX(-50%) translateY(-6px);
 
-    transform:
-        translateX(-50%)
-        translateY(-6px);
-
-    background:
-        linear-gradient(
-            145deg,
-            #1d3c5f,
-            #0c2038
-        );
+    background: linear-gradient(145deg,#1d3c5f,#0c2038);
 
     box-shadow:
-        0 0 25px
-        rgba(214, 179, 106, 0.3),
-
-        0 0 60px
-        rgba(214, 179, 106, 0.12),
-
-        inset 0 0 35px
-        rgba(255, 255, 255, 0.04);
+        0 0 25px rgba(214,179,106,.3),
+        0 0 60px rgba(214,179,106,.12),
+        inset 0 0 35px rgba(255,255,255,.04);
 }
-
 
 .cafe-door:hover::before {
     opacity: 1;
 }
 
-
-/* =========================================================
-   DOOR CONTENT
-========================================================= */
-
 .door-content {
-
     position: relative;
-
     z-index: 5;
 
     display: flex;
-
     flex-direction: column;
-
     align-items: center;
-
     justify-content: center;
 
     gap: 12px;
@@ -3194,59 +2186,28 @@ SMALL PHONES
     pointer-events: none;
 }
 
-
-/* =========================================================
-   DOOR ICON
-========================================================= */
-
 .door-icon {
-
     color: var(--cafe-gold-light);
-
     font-size: 1.8rem;
-
     line-height: 1;
 
-    filter:
-        drop-shadow(
-            0 0 10px
-            rgba(243, 217, 154, 0.45)
-        );
+    filter: drop-shadow(0 0 10px rgba(243,217,154,.45));
 }
 
-
-/* =========================================================
-   DOOR TEXT
-========================================================= */
-
 .door-text {
-
     color: var(--cafe-gold-light);
 
-    font-family: "Kumbh Sans", sans-serif;
-
-    font-size: 0.75rem;
-
+    font-size: .75rem;
     font-weight: 600;
-
-    letter-spacing: 0.16em;
-
+    letter-spacing: .16em;
     line-height: 1.6;
 
     text-align: center;
-
     text-transform: uppercase;
 }
 
-
-/* =========================================================
-   DOOR HANDLE
-========================================================= */
-
 .door-handle {
-
     position: absolute;
-
     top: 50%;
     right: 20px;
 
@@ -3256,205 +2217,571 @@ SMALL PHONES
     transform: translateY(-50%);
 
     border-radius: 50%;
-
-    background:
-        var(--cafe-gold-light);
+    background: var(--cafe-gold-light);
 
     box-shadow:
-        0 0 8px
-        rgba(243, 217, 154, 0.9),
-
-        0 0 16px
-        rgba(243, 217, 154, 0.3);
+        0 0 8px rgba(243,217,154,.9),
+        0 0 16px rgba(243,217,154,.3);
 }
 
-
-/* =========================================================
-   TAGLINE
-========================================================= */
-
 .welcome-tagline {
-
     position: relative;
-
     z-index: 5;
-
-    flex-shrink: 0;
 
     margin: 20px 0 0;
 
-    color:
-        rgba(255, 244, 214, 0.78);
+    color: rgba(255,244,214,.78);
 
-    font-family:
-        "Kumbh Sans",
-        sans-serif;
-
-    font-size: 0.85rem;
-
-    font-weight: 400;
-
-    letter-spacing: 0.08em;
-
+    font-size: .9rem;
     line-height: 1.6;
-
+    letter-spacing: .08em;
     text-align: center;
 }
 
-
 .welcome-tagline span {
-
     display: block;
-
     margin-top: 4px;
 
-    color:
-        rgba(214, 179, 106, 0.75);
-
-    font-size: 0.7rem;
-
-    letter-spacing: 0.12em;
+    color: rgba(214,179,106,.75);
+    font-size: .75rem;
+    letter-spacing: .12em;
 }
-
-
-/* =========================================================
-   ENTER ANIMATION
-========================================================= */
 
 #welcome-screen.door-opening::before {
-
-    animation:
-        entranceLight 1.4s ease forwards;
+    animation: entranceLight 1.4s ease forwards;
 }
-
 
 #welcome-screen.door-opening .cafe-door {
-
-    animation:
-        doorOpen 1.1s ease forwards;
+    animation: doorOpen 1.1s ease forwards;
 }
-
 
 #welcome-screen.door-opening .cafe-entrance {
-
-    animation:
-        cafeGlow 1.2s ease forwards;
+    animation: cafeGlow 1.2s ease forwards;
 }
 
-
 @keyframes entranceLight {
-
     0% {
         opacity: 1;
-        transform:
-            translate(-50%, -50%)
-            scale(1);
+        transform: translate(-50%,-50%) scale(1);
     }
 
     50% {
         opacity: 1;
-        transform:
-            translate(-50%, -50%)
-            scale(1.15);
+        transform: translate(-50%,-50%) scale(1.15);
     }
 
     100% {
         opacity: 1;
-        transform:
-            translate(-50%, -50%)
-            scale(2.5);
+        transform: translate(-50%,-50%) scale(2.5);
     }
 }
 
-
 @keyframes doorOpen {
-
     0% {
-        transform:
-            translateX(-50%)
-            scaleX(1);
-
+        transform: translateX(-50%) scaleX(1);
         opacity: 1;
     }
 
     35% {
-        transform:
-            translateX(-50%)
-            scaleX(0.92);
+        transform: translateX(-50%) scaleX(.92);
     }
 
     100% {
-        transform:
-            translateX(-50%)
-            scaleX(0.08);
-
-        opacity: 0.15;
+        transform: translateX(-50%) scaleX(.08);
+        opacity: .15;
     }
 }
-
 
 @keyframes cafeGlow {
-
-    0% {
-        filter: brightness(1);
-    }
-
-    50% {
-        filter: brightness(1.25);
-    }
-
-    100% {
-        filter: brightness(1.7);
-    }
+    0% { filter: brightness(1); }
+    50% { filter: brightness(1.25); }
+    100% { filter: brightness(1.7); }
 }
 
-
-/* =========================================================
-   EXIT
-========================================================= */
-
 #welcome-screen.exit {
-
     opacity: 0;
-
     visibility: hidden;
-
     pointer-events: none;
 }
 
 
 /* =========================================================
-   TABLET
+   16. RESPONSIVE — TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .sidebar {
+        width: 230px;
+    }
+
+    .music-content {
+        margin-left: 230px;
+    }
+
+    .now-playing {
+        width: 210px;
+    }
+}
+
+
+/* =========================================================
+   17. RESPONSIVE — MOBILE
 ========================================================= */
 
 @media (max-width: 768px) {
 
-    #welcome-screen {
+    :root {
+        --navbar-height: 70px;
+    }
+
+    html {
+        font-size: 17px;
+    }
+
+    body {
+        font-size: 17px;
+        line-height: 1.75;
+    }
+
+    /* NAV */
+
+    #mobile-menu {
+        display: block;
+    }
+
+    .navbar {
+        min-height: var(--navbar-height);
+        padding: 10px 16px;
+    }
+
+    .navbar__menu {
+        display: none;
+
+        position: absolute;
+        top: 100%;
+        left: 10px;
+        right: 10px;
+
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+
+        max-height: calc(100vh - 80px);
+        overflow-y: auto;
+
+        padding: 10px;
+
+        background: var(--navy-dark);
+
+        border: 1px solid rgba(214,179,106,.20);
+        border-radius: 0 0 16px 16px;
+
+        box-shadow: var(--shadow-lg);
+    }
+
+    .navbar__menu.active {
+        display: flex;
+    }
+
+    .navbar__menu li {
+        width: 100%;
+    }
+
+    .navbar__links {
+        display: flex;
+        width: 100%;
+
+        min-height: 50px;
+        padding: 12px 14px;
+
+        border-radius: 10px;
+
+        font-size: 1.08rem;
+        white-space: normal;
+    }
+
+    .navbar__links::after {
+        display: none;
+    }
+
+    .navbar__links:hover,
+    .navbar__links.active {
+        background: var(--navy-soft);
+    }
+
+    /* GLOBAL MOBILE TEXT */
+
+    p,
+    li,
+    label,
+    summary {
+        font-size: 1rem;
+        line-height: 1.75;
+    }
+
+    /* HOME */
+
+    .cafe-home {
+        padding: 20px 15px 60px;
+    }
+
+    .card-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .card-grid a {
+        min-height: auto;
+        padding: 22px;
+    }
+
+    .feature {
+        padding: 28px 20px;
+    }
+
+    /* ABOUT */
+
+    .about-container {
+        width: calc(100% - 30px);
+        margin-top: 25px;
+    }
+
+    .about-hero {
+        padding: 45px 20px;
+    }
+
+    .about-section,
+    .contact-section,
+    .closing {
+        padding: 22px 18px;
+    }
+
+    .stream-links {
+        flex-direction: column;
+    }
+
+    .stream-links a {
+        justify-content: center;
+        width: 100%;
+    }
+
+    /* LIBRARY */
+
+    .library {
+        width: calc(100% - 30px);
+        margin-top: 25px;
+    }
+
+    .library li a {
+        padding: 16px;
+        font-size: 1rem;
+    }
+
+    /* STORIES */
+
+    .stories {
+        width: calc(100% - 24px);
+        padding: 25px 0 100px;
+    }
+
+    .story-card {
+        flex-direction: column;
+        align-items: center;
+
+        text-align: center;
+
         padding: 20px;
     }
 
+    .story-card img {
+        width: min(220px, 70vw);
+        height: auto;
+        aspect-ratio: 2 / 3;
+    }
+
+    .story-content {
+        width: 100%;
+    }
+
+    .story-content p {
+        text-align: left;
+        font-size: 1rem;
+    }
+
+    .read-btn {
+        width: 100%;
+    }
+
+    /* READER */
+
+    .book-layout {
+        width: 100%;
+        margin-top: 10px;
+        padding: 0;
+    }
+
+    .book-page {
+        padding: 6px;
+        border-radius: 0;
+        border-left: 0;
+        border-right: 0;
+        box-shadow: none;
+    }
+
+    #chapterTitle {
+        padding: 12px 8px;
+        font-size: 1.05rem;
+    }
+
+    .pdf-viewer {
+        width: 100%;
+        max-width: none;
+
+        border-radius: 0;
+        border-left: 0;
+        border-right: 0;
+    }
+
+    .pdf-page {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .pdf-controls {
+        gap: 20px;
+        padding: 10px;
+    }
+
+    .pdf-controls button {
+        width: 44px;
+        height: 44px;
+    }
+
+    .book-nav {
+        padding: 12px 5px;
+        gap: 10px;
+    }
+
+    .book-nav button {
+        max-width: none;
+        min-height: 50px;
+        padding: 11px 8px;
+        font-size: .95rem;
+    }
+
+    .reader-nav {
+        gap: 8px;
+        padding-inline: 10px;
+    }
+
+    .reader-nav a {
+        font-size: .95rem;
+    }
+
+    /* MUSIC */
+
+    .music-app {
+        flex-direction: column;
+    }
+
+    .music-content {
+        order: 1;
+        margin-left: 0;
+        padding: 25px 15px 250px;
+    }
+
+    .sidebar {
+        position: relative;
+        top: auto;
+        left: auto;
+        order: 2;
+
+        width: 100%;
+        height: auto;
+
+        padding: 20px;
+
+        border-top: 1px solid rgba(214,179,106,.18);
+        border-right: none;
+    }
+
+    .sidebar nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .sidebar nav a {
+        flex: 1;
+        min-width: 120px;
+        text-align: center;
+    }
+
+    .library-panels {
+        grid-template-columns: 1fr;
+    }
+
+    .song-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .song-card {
+        padding: 20px;
+    }
+
+    .song-card h3 {
+        font-size: 1.15rem;
+    }
+
+    .song-card p {
+        font-size: .95rem;
+    }
+
+    .category-buttons button {
+        min-height: 44px;
+        font-size: .95rem;
+    }
+
+    .song-row {
+        padding: 14px 12px;
+    }
+
+    .song-title {
+        font-size: 1rem;
+    }
+
+    /* MUSIC PLAYER */
+
+    .player {
+        display: grid;
+
+        grid-template-columns: minmax(0,1fr) auto;
+
+        gap: 7px 8px;
+
+        min-height: 125px;
+
+        padding: 9px 10px;
+    }
+
+    .now-playing {
+        grid-column: 1;
+        width: auto;
+    }
+
+    .now-playing h3 {
+        font-size: .95rem;
+    }
+
+    .now-playing p {
+        font-size: .82rem;
+    }
+
+    .controls {
+        grid-column: 2;
+        gap: 4px;
+    }
+
+    .controls button,
+    .player-actions button {
+        width: 38px;
+        height: 38px;
+    }
+
+    #playBtn {
+        width: 46px;
+        height: 46px;
+    }
+
+    .progress {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        width: 100%;
+        min-width: 0;
+    }
+
+    .volume {
+        display: none;
+    }
+
+    .player-actions {
+        grid-column: 2;
+        grid-row: 3;
+    }
+
+    /* AMBIENCE */
+
+    #ambience-panel {
+        right: 10px;
+        bottom: 10px;
+    }
+
+    /* BESHY */
+
+    .beshy-toggle {
+        right: 14px;
+        bottom: 80px;
+
+        width: 54px;
+        height: 54px;
+
+        font-size: 25px;
+    }
+
+    .beshy-chat {
+        right: 10px;
+        bottom: 145px;
+
+        width: calc(100vw - 20px);
+        height: min(75vh, 600px);
+    }
+
+    .beshy-message {
+        max-width: 88%;
+        font-size: .95rem;
+    }
+
+    .beshy-options button {
+        min-height: 38px;
+        font-size: .85rem;
+    }
+
+    .beshy-input-area input {
+        font-size: 1rem;
+    }
+
+    /* FOOTER */
+
+    .footer__container {
+        flex-direction: column;
+        text-align: center;
+        padding: 35px 20px;
+    }
+
+    /* WELCOME */
+
+    #welcome-screen {
+        padding: 16px;
+    }
+
     .welcome-title {
-
-        margin-bottom: 18px;
-
-        font-size: 1.5rem;
-
-        letter-spacing: 0.2em;
+        margin-bottom: 16px;
+        font-size: 1.35rem;
+        letter-spacing: .18em;
     }
 
     .cafe-entrance {
-
         width: min(340px, 82vw);
-
         height: 430px;
-
         padding-top: 28px;
     }
 
     .cafe-window {
-
         top: 112px;
-
         width: 52px;
         height: 70px;
     }
@@ -3468,474 +2795,223 @@ SMALL PHONES
     }
 
     .cafe-door {
-
         width: 135px;
-
         height: 225px;
     }
 
     .welcome-tagline {
-
         margin-top: 16px;
-
-        font-size: 0.78rem;
+        font-size: .82rem;
     }
 }
 
 
 /* =========================================================
-   MOBILE
+   18. SMALL PHONES
 ========================================================= */
 
 @media (max-width: 480px) {
-
-    #welcome-screen {
-
-        padding:
-            16px;
-
-        justify-content: center;
-    }
-
-
-    .welcome-title {
-
-        margin-bottom: 14px;
-
-        font-size: 1.15rem;
-
-        letter-spacing: 0.14em;
-    }
-
-
-    .welcome-title::before,
-    .welcome-title::after {
-
-        margin: 0 6px;
-    }
-
-
-    .cafe-entrance {
-
-        width: min(300px, 82vw);
-
-        height: 390px;
-
-        padding-top: 24px;
-
-        border-radius:
-            140px
-            140px
-            22px
-            22px;
-    }
-
-
-    .cafe-sign {
-
-        padding: 7px 15px;
-
-        font-size: 0.72rem;
-
-        letter-spacing: 0.12em;
-    }
-
-
-    .cafe-window {
-
-        top: 98px;
-
-        width: 44px;
-        height: 60px;
-
-        border-width: 4px;
-    }
-
-
-    .cafe-window.left {
-        left: 25px;
-    }
-
-
-    .cafe-window.right {
-        right: 25px;
-    }
-
-
-    .cafe-door {
-
-        width: 120px;
-
-        height: 205px;
-    }
-
-
-    .door-text {
-
-        font-size: 0.65rem;
-
-        letter-spacing: 0.13em;
-    }
-
-
-    .door-icon {
-
-        font-size: 1.5rem;
-    }
-
-
-    .welcome-tagline {
-
-        margin-top: 14px;
-
-        font-size: 0.7rem;
-    }
-
-
-    .welcome-tagline span {
-
-        font-size: 0.62rem;
-    }
-}
-
-
-/* =========================================================
-   VERY SHORT SCREENS
-========================================================= */
-
-@media (max-height: 650px) {
-
-    #welcome-screen {
-
-        padding: 12px;
-    }
-
-
-    .welcome-title {
-
-        margin-bottom: 8px;
-
-        font-size: 1rem;
-    }
-
-
-    .cafe-entrance {
-
-        width: min(280px, 70vw);
-
-        height: 315px;
-
-        padding-top: 18px;
-    }
-
-
-    .cafe-sign {
-
-        padding: 5px 12px;
-
-        font-size: 0.65rem;
-    }
-
-
-    .cafe-window {
-
-        top: 75px;
-
-        width: 38px;
-        height: 50px;
-    }
-
-
-    .cafe-window.left {
-        left: 22px;
-    }
-
-
-    .cafe-window.right {
-        right: 22px;
-    }
-
-
-    .cafe-door {
-
-        width: 100px;
-
-        height: 170px;
-    }
-
-
-    .door-icon {
-
-        font-size: 1.2rem;
-    }
-
-
-    .door-text {
-
-        font-size: 0.55rem;
-    }
-
-
-    .welcome-tagline {
-
-        margin-top: 8px;
-
-        font-size: 0.62rem;
-    }
-}
-
-
-/* =========================================================
-   ACCESSIBILITY
-========================================================= */
-
-.cafe-door:focus-visible {
-
-    outline:
-        2px solid
-        var(--cafe-gold-light);
-
-    outline-offset: 5px;
-}
-
-
-@media (prefers-reduced-motion: reduce) {
-
-    #welcome-screen::after,
-    .cafe-window::after,
-    #welcome-screen.door-opening::before,
-    #welcome-screen.door-opening .cafe-door,
-    #welcome-screen.door-opening .cafe-entrance {
-
-        animation: none;
-    }
-
-    #welcome-screen,
-    .cafe-door {
-
-        transition: none;
-    }
-}
-/* =====================================================
-   DIGICAFE — MOBILE READABILITY
-   Comfortable reading size for all visitors
-===================================================== */
-
-@media (max-width: 768px) {
 
     html {
         font-size: 17px;
     }
 
-    body {
-        font-size: 17px;
-        line-height: 1.7;
-    }
-
-
-    /* ---------------------------------------------
-       GENERAL TEXT
-    --------------------------------------------- */
-
-    p,
-    li,
-    label,
-    summary {
-        font-size: 1rem;
-        line-height: 1.7;
-    }
-
-
-    /* ---------------------------------------------
-       HEADINGS
-    --------------------------------------------- */
-
-    h1 {
-        font-size: 1.8rem;
-        line-height: 1.25;
-    }
-
-    h2 {
-        font-size: 1.45rem;
-        line-height: 1.3;
-    }
-
-    h3 {
+    .logo {
         font-size: 1.25rem;
-        line-height: 1.35;
     }
 
-    h4 {
-        font-size: 1.1rem;
-        line-height: 1.4;
+    .hero h1,
+    .library > h1,
+    .stories > h1 {
+        font-size: 1.9rem;
     }
 
-
-    /* ---------------------------------------------
-       NAVIGATION
-    --------------------------------------------- */
-
-    .navbar__links {
-        font-size: 1.1rem;
-        line-height: 1.4;
-        padding: 14px 16px;
+    .cafe-home {
+        padding-inline: 12px;
     }
 
-
-    /* ---------------------------------------------
-       LIBRARY
-    --------------------------------------------- */
-
-    .library-intro,
-    .library-section p,
-    .library-section li,
-    .library-section a,
-    .library-section summary {
-        font-size: 1rem;
-        line-height: 1.7;
+    .about-container,
+    .library {
+        width: calc(100% - 24px);
     }
 
-
-    /* ---------------------------------------------
-       HOME / HERO
-    --------------------------------------------- */
-
-    .hero .subtitle {
-        font-size: 1.1rem;
-        line-height: 1.6;
+    .book-layout {
+        padding: 0;
     }
 
-    .hero .intro,
-    .hero .status {
-        font-size: 1rem;
-        line-height: 1.75;
+    .book-page {
+        padding: 4px;
     }
 
-
-    /* ---------------------------------------------
-       CARDS
-    --------------------------------------------- */
-
-    .cafe-card p {
-        font-size: 1rem;
-        line-height: 1.7;
-    }
-
-    .cafe-card span {
-        font-size: 1rem;
-    }
-
-
-    /* ---------------------------------------------
-       BUTTONS
-    --------------------------------------------- */
-
-    button,
-    .feature-button {
-        font-size: 1rem;
-    }
-
-
-    /* ---------------------------------------------
-       ABOUT / CONTACT
-    --------------------------------------------- */
-
-    .about-section p,
-    .contact-section p,
-    .closing p {
-        font-size: 1rem;
-        line-height: 1.75;
-    }
-
-
-    /* ---------------------------------------------
-       FOOTER
-    --------------------------------------------- */
-
-    .footer__text,
-    .footer .small {
-        font-size: 1rem;
-        line-height: 1.7;
-    }
-
-
-    /* ---------------------------------------------
-       READER
-    --------------------------------------------- */
-
-    .reader-note {
-        font-size: 1rem;
-        line-height: 1.7;
+    .book-nav {
+        flex-direction: column;
     }
 
     .reader-nav a {
-        font-size: 1rem;
+        width: 100%;
+        justify-content: center;
     }
 
-
-    /* ---------------------------------------------
-       MUSIC PLAYER
-       Override the very small mobile values
-    --------------------------------------------- */
-
-    .now-playing h3 {
-        font-size: 1rem;
+    .beshy-chat {
+        right: 6px;
+        width: calc(100vw - 12px);
+        bottom: 135px;
+        height: 78vh;
     }
 
-    .now-playing p {
-        font-size: 0.9rem;
+    .beshy-toggle {
+        right: 10px;
+        bottom: 75px;
     }
 
-    #playbackSource {
-        font-size: 0.8rem;
+    .footer__container {
+        width: calc(100% - 24px);
     }
 
-    .progress span {
-        font-size: 0.85rem;
+    /* Welcome */
+
+    .welcome-title {
+        margin-bottom: 14px;
+        font-size: 1.12rem;
+        letter-spacing: .13em;
     }
 
-    .controls button {
-        font-size: 0.95rem;
+    .welcome-title::before,
+    .welcome-title::after {
+        margin-inline: 6px;
     }
 
-    #playBtn {
-        font-size: 1.1rem;
+    .cafe-entrance {
+        width: min(300px, 84vw);
+        height: 390px;
+        padding-top: 24px;
+        border-radius: 140px 140px 22px 22px;
     }
 
-    .player-actions button {
-        font-size: 0.9rem;
+    .cafe-sign {
+        padding: 7px 15px;
+        font-size: .72rem;
+    }
+
+    .cafe-window {
+        top: 98px;
+        width: 44px;
+        height: 60px;
+        border-width: 4px;
+    }
+
+    .cafe-window.left {
+        left: 25px;
+    }
+
+    .cafe-window.right {
+        right: 25px;
+    }
+
+    .cafe-door {
+        width: 120px;
+        height: 205px;
+    }
+
+    .door-text {
+        font-size: .65rem;
+    }
+
+    .door-icon {
+        font-size: 1.5rem;
+    }
+
+    .welcome-tagline {
+        margin-top: 14px;
+        font-size: .76rem;
+    }
+
+    .welcome-tagline span {
+        font-size: .68rem;
     }
 }
 
 
-/* =====================================================
-   EXTRA LARGE MOBILE TEXT
-   Very small screens
-===================================================== */
+/* =========================================================
+   19. VERY SHORT SCREENS
+========================================================= */
 
-@media (max-width: 480px) {
+@media (max-height: 650px) and (max-width: 600px) {
 
-    body {
-        font-size: 17px;
+    #welcome-screen {
+        padding: 10px;
     }
 
-    p,
-    li,
-    label,
-    summary {
+    .welcome-title {
+        margin-bottom: 8px;
         font-size: 1rem;
     }
 
-    .navbar__links {
-        font-size: 1.1rem;
+    .cafe-entrance {
+        width: min(280px, 72vw);
+        height: 315px;
+        padding-top: 18px;
     }
 
-    .now-playing h3 {
-        font-size: 1rem;
+    .cafe-sign {
+        padding: 5px 12px;
+        font-size: .65rem;
     }
 
-    .now-playing p {
-        font-size: 0.9rem;
+    .cafe-window {
+        top: 75px;
+        width: 38px;
+        height: 50px;
     }
 
+    .cafe-window.left {
+        left: 22px;
+    }
+
+    .cafe-window.right {
+        right: 22px;
+    }
+
+    .cafe-door {
+        width: 100px;
+        height: 170px;
+    }
+
+    .door-icon {
+        font-size: 1.2rem;
+    }
+
+    .door-text {
+        font-size: .55rem;
+    }
+
+    .welcome-tagline {
+        margin-top: 8px;
+        font-size: .65rem;
+    }
+}
+
+
+/* =========================================================
+   20. ACCESSIBILITY / MOTION
+========================================================= */
+
+.cafe-door:focus-visible {
+    outline: 3px solid var(--cafe-gold-light);
+    outline-offset: 5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
 }
