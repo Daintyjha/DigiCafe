@@ -71,24 +71,30 @@ document.addEventListener("DOMContentLoaded", () => {
             "chapterTitle"
         );
 
+
     const contentEl =
         document.getElementById(
             "chapterContent"
         );
 
+
     const audioEl =
         document.getElementById(
             "chapterAudio"
         );
-const interactionContainer =
-    document.getElementById(
-        "interactionContainer"
-    );
-   
+
+
+    const interactionContainer =
+        document.getElementById(
+            "interactionContainer"
+        );
+
+
     const prevChapterBtn =
         document.getElementById(
             "prevChapter"
         );
+
 
     const nextChapterBtn =
         document.getElementById(
@@ -97,73 +103,136 @@ const interactionContainer =
 
 
     /* =================================================
-   CREATE PDF VIEWER
-================================================= */
+       LOAD DIGICAFE INTERACTIONS
+    ================================================= */
 
-contentEl.innerHTML = `
+    async function loadInteractions() {
 
-    <div class="pdf-viewer">
+        if (!interactionContainer) {
 
-        <canvas
-            id="pdfCanvas"
-            class="pdf-page">
-        </canvas>
+            console.warn(
+                "Interaction container not found."
+            );
 
-
-        <div class="pdf-controls">
-
-            <!-- PDF PAGE NAVIGATION -->
-
-            <div class="pdf-page-controls">
-
-                <button
-                    id="prevPdfPage"
-                    aria-label="Previous PDF page">
-                    ‹
-                </button>
-
-                <span id="pdfPageNumber">
-                    1 / 1
-                </span>
-
-                <button
-                    id="nextPdfPage"
-                    aria-label="Next PDF page">
-                    ›
-                </button>
-
-            </div>
+            return;
+        }
 
 
-            <!-- PDF ZOOM -->
+        try {
 
-            <div class="pdf-zoom-controls">
+            const response =
+                await fetch(
+                    "./interaction.html"
+                );
 
-                <button
-                    id="zoomOut"
-                    aria-label="Zoom out">
-                    −
-                </button>
 
-                <button
-                    id="zoomReset"
-                    aria-label="Reset zoom">
-                    100%
-                </button>
+            if (!response.ok) {
 
-                <button
-                    id="zoomIn"
-                    aria-label="Zoom in">
-                    +
-                </button>
+                throw new Error(
+                    `Could not load interaction.html: ${response.status}`
+                );
+
+            }
+
+
+            const html =
+                await response.text();
+
+
+            interactionContainer.innerHTML =
+                html;
+
+
+            console.log(
+                "DigiCafe interaction component loaded."
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Interaction loading error:",
+                error
+            );
+
+        }
+
+    }
+
+
+    /* =================================================
+       CREATE PDF VIEWER
+    ================================================= */
+
+    contentEl.innerHTML = `
+
+        <div class="pdf-viewer">
+
+            <canvas
+                id="pdfCanvas"
+                class="pdf-page">
+            </canvas>
+
+
+            <div class="pdf-controls">
+
+                <!-- PDF PAGE NAVIGATION -->
+
+                <div class="pdf-page-controls">
+
+                    <button
+                        id="prevPdfPage"
+                        aria-label="Previous PDF page">
+                        ‹
+                    </button>
+
+
+                    <span id="pdfPageNumber">
+                        1 / 1
+                    </span>
+
+
+                    <button
+                        id="nextPdfPage"
+                        aria-label="Next PDF page">
+                        ›
+                    </button>
+
+                </div>
+
+
+                <!-- PDF ZOOM -->
+
+                <div class="pdf-zoom-controls">
+
+                    <button
+                        id="zoomOut"
+                        aria-label="Zoom out">
+                        −
+                    </button>
+
+
+                    <button
+                        id="zoomReset"
+                        aria-label="Reset zoom">
+                        100%
+                    </button>
+
+
+                    <button
+                        id="zoomIn"
+                        aria-label="Zoom in">
+                        +
+                    </button>
+
+                </div>
 
             </div>
 
         </div>
 
-    </div>
+    `;
 
-`;
 
     /* =================================================
        PDF ELEMENTS
@@ -174,6 +243,7 @@ contentEl.innerHTML = `
             "pdfCanvas"
         );
 
+
     const canvasContext =
         canvas.getContext("2d");
 
@@ -183,29 +253,36 @@ contentEl.innerHTML = `
             "prevPdfPage"
         );
 
+
     const nextPdfPage =
         document.getElementById(
             "nextPdfPage"
         );
 
+
     const pdfPageNumber =
         document.getElementById(
             "pdfPageNumber"
         );
-const zoomOut =
-    document.getElementById(
-        "zoomOut"
-    );
 
-const zoomReset =
-    document.getElementById(
-        "zoomReset"
-    );
 
-const zoomIn =
-    document.getElementById(
-        "zoomIn"
-    );
+    const zoomOut =
+        document.getElementById(
+            "zoomOut"
+        );
+
+
+    const zoomReset =
+        document.getElementById(
+            "zoomReset"
+        );
+
+
+    const zoomIn =
+        document.getElementById(
+            "zoomIn"
+        );
+
 
     /* =================================================
        CHAPTER DATA
@@ -218,7 +295,9 @@ const zoomIn =
             },
             (_, i) => {
 
-                const num = i + 1;
+                const num =
+                    i + 1;
+
 
                 return {
 
@@ -257,26 +336,103 @@ const zoomIn =
        PDF STATE
     ================================================= */
 
-    let currentPDF = null;
-
-let currentPDFPage = 1;
-
-let rendering = false;
-
-let pendingPage = null;
+    let currentPDF =
+        null;
 
 
-/* =================================================
-   PDF ZOOM
-================================================= */
+    let currentPDFPage =
+        1;
 
-let zoomLevel = 1;
 
-const zoomStep = 0.15;
+    let rendering =
+        false;
 
-const minZoom = 0.7;
 
-const maxZoom = 3;
+    let pendingPage =
+        null;
+
+
+    /* =================================================
+       PDF ZOOM
+    ================================================= */
+
+    let zoomLevel =
+        1;
+
+
+    const zoomStep =
+        0.15;
+
+
+    const minZoom =
+        0.7;
+
+
+    const maxZoom =
+        3;
+
+
+    /* =================================================
+       UPDATE ZOOM DISPLAY
+    ================================================= */
+
+    function updateZoomDisplay() {
+
+        zoomReset.textContent =
+            `${Math.round(
+                zoomLevel * 100
+            )}%`;
+
+    }
+
+
+    /* =================================================
+       UPDATE INTERACTION CONTENT ID
+    ================================================= */
+
+    function updateInteractionContent(
+        chapterIndex
+    ) {
+
+        if (!interactionContainer) {
+            return;
+        }
+
+
+        const interaction =
+            interactionContainer.querySelector(
+                ".digi-interactions"
+            );
+
+
+        if (!interaction) {
+            return;
+        }
+
+
+        const chapterNumber =
+            chapterIndex + 1;
+
+
+        const contentId =
+            `${storyKey}-chapter-${chapterNumber}`;
+
+
+        interaction.dataset.contentId =
+            contentId;
+
+
+        interaction.dataset.contentType =
+            "novel";
+
+
+        console.log(
+            "Interaction content ID:",
+            contentId
+        );
+
+    }
+
 
     /* =================================================
        RENDER PDF PAGE
@@ -301,10 +457,12 @@ const maxZoom = 3;
                 pageNumber;
 
             return;
+
         }
 
 
-        rendering = true;
+        rendering =
+            true;
 
 
         try {
@@ -340,9 +498,10 @@ const maxZoom = 3;
 
 
             const scale =
-    (availableWidth /
-        baseViewport.width) *
-    zoomLevel;
+                (
+                    availableWidth /
+                    baseViewport.width
+                ) * zoomLevel;
 
 
             const viewport =
@@ -442,23 +601,30 @@ const maxZoom = 3;
         }
 
 
-        rendering = false;
+        rendering =
+            false;
 
 
         /* ---------------------------------------------
            RENDER PENDING PAGE
         --------------------------------------------- */
 
-        if (pendingPage !== null) {
+        if (
+            pendingPage !== null
+        ) {
 
             const nextPage =
                 pendingPage;
 
-            pendingPage = null;
+
+            pendingPage =
+                null;
+
 
             renderPDFPage(
                 nextPage
             );
+
         }
 
     }
@@ -494,7 +660,8 @@ const maxZoom = 3;
             );
 
 
-            currentPDFPage = 1;
+            currentPDFPage =
+                1;
 
 
             pdfPageNumber.textContent =
@@ -514,7 +681,8 @@ const maxZoom = 3;
             );
 
 
-            currentPDF = null;
+            currentPDF =
+                null;
 
 
             contentEl.innerHTML = `
@@ -549,6 +717,7 @@ const maxZoom = 3;
         ) {
 
             return;
+
         }
 
 
@@ -569,9 +738,27 @@ const maxZoom = 3;
         titleEl.textContent =
             chapter.title;
 
-zoomLevel = 1;
 
-zoomReset.textContent = "100%";
+        /* ---------------------------------------------
+           RESET ZOOM
+        --------------------------------------------- */
+
+        zoomLevel =
+            1;
+
+
+        updateZoomDisplay();
+
+
+        /* ---------------------------------------------
+           UPDATE INTERACTION ID
+        --------------------------------------------- */
+
+        updateInteractionContent(
+            currentChapter
+        );
+
+
         /* ---------------------------------------------
            PDF
         --------------------------------------------- */
@@ -693,73 +880,84 @@ zoomReset.textContent = "100%";
         }
     );
 
-/* =================================================
-   PDF ZOOM OUT
-================================================= */
 
-zoomOut.addEventListener(
-    "click",
-    () => {
+    /* =================================================
+       PDF ZOOM OUT
+    ================================================= */
 
-        zoomLevel = Math.max(
-            minZoom,
-            zoomLevel - zoomStep
-        );
+    zoomOut.addEventListener(
+        "click",
+        () => {
 
-        zoomReset.textContent =
-            `${Math.round(zoomLevel * 100)}%`;
-
-        renderPDFPage(
-            currentPDFPage
-        );
-
-    }
-);
+            zoomLevel =
+                Math.max(
+                    minZoom,
+                    zoomLevel -
+                    zoomStep
+                );
 
 
-/* =================================================
-   PDF ZOOM IN
-================================================= */
-
-zoomIn.addEventListener(
-    "click",
-    () => {
-
-        zoomLevel = Math.min(
-            maxZoom,
-            zoomLevel + zoomStep
-        );
-
-        zoomReset.textContent =
-            `${Math.round(zoomLevel * 100)}%`;
-
-        renderPDFPage(
-            currentPDFPage
-        );
-
-    }
-);
+            updateZoomDisplay();
 
 
-/* =================================================
-   PDF ZOOM RESET
-================================================= */
+            renderPDFPage(
+                currentPDFPage
+            );
 
-zoomReset.addEventListener(
-    "click",
-    () => {
+        }
+    );
 
-        zoomLevel = 1;
 
-        zoomReset.textContent =
-            "100%";
+    /* =================================================
+       PDF ZOOM IN
+    ================================================= */
 
-        renderPDFPage(
-            currentPDFPage
-        );
+    zoomIn.addEventListener(
+        "click",
+        () => {
 
-    }
-);
+            zoomLevel =
+                Math.min(
+                    maxZoom,
+                    zoomLevel +
+                    zoomStep
+                );
+
+
+            updateZoomDisplay();
+
+
+            renderPDFPage(
+                currentPDFPage
+            );
+
+        }
+    );
+
+
+    /* =================================================
+       PDF ZOOM RESET
+    ================================================= */
+
+    zoomReset.addEventListener(
+        "click",
+        () => {
+
+            zoomLevel =
+                1;
+
+
+            updateZoomDisplay();
+
+
+            renderPDFPage(
+                currentPDFPage
+            );
+
+        }
+    );
+
+
     /* =================================================
        PREVIOUS CHAPTER
     ================================================= */
@@ -793,11 +991,16 @@ zoomReset.addEventListener(
 
 
     /* =================================================
-       START CURRENT CHAPTER
+       START READER
     ================================================= */
 
-    loadChapter(
-        currentChapter
-    );
+    loadInteractions()
+        .then(() => {
+
+            loadChapter(
+                currentChapter
+            );
+
+        });
 
 });
