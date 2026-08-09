@@ -324,6 +324,7 @@
 "file": "Asset/MusicFiles/PsyChill/Pinayun-an Peak.mp3",
 "dateAdded": "2026-08-09"
 },
+  {
  "id": 36,
 "title": "Love in the Air",
 "artist": "DaintyJha",
@@ -332,7 +333,7 @@
 "file": "Asset/MusicFiles/DancePop/Love in the Air.mp3",
 "dateAdded": "2026-08-09"
 }, 
-  },
+  {
  "id": 37,
 "title": "No Signal",
 "artist": "DaintyJha",
@@ -341,7 +342,7 @@
 "file": "Asset/MusicFiles/DancePop/No Signal(1).mp3",
 "dateAdded": "2026-08-09"
 },
-  },
+  {
  "id": 38,
 "title": "We Were Young",
 "artist": "DaintyJha",
@@ -349,5 +350,5 @@
 "category": "DancePop ",
 "file": "Asset/MusicFiles/DancePop/We Were Young.mp3",
 "dateAdded": "2026-08-09"
-},
+}
 ]
