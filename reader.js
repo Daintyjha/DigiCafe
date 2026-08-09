@@ -7,6 +7,10 @@ import {
     GlobalWorkerOptions
 } from "./build/pdf.mjs";
 
+import {
+    initializeInteractions
+} from "./interaction.js";
+
 
 /* =====================================================
    PDF.JS WORKER
@@ -20,928 +24,764 @@ GlobalWorkerOptions.workerSrc =
    START READER
 ===================================================== */
 
-document.addEventListener("DOMContentLoaded", () => {
-
-    /* =================================================
-       GET STORY
-    ================================================= */
-
-    const storyKey =
-        new URLSearchParams(
-            window.location.search
-        ).get("story");
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
 
-    const story =
-        window.STORIES?.[storyKey];
+        /* =================================================
+           GET STORY
+        ================================================= */
+
+        const storyKey =
+            new URLSearchParams(
+                window.location.search
+            ).get("story");
 
 
-    /* =================================================
-       STORY NOT FOUND
-    ================================================= */
+        const story =
+            window.STORIES?.[storyKey];
 
-    if (!story) {
+
+        /* =================================================
+           STORY NOT FOUND
+        ================================================= */
+
+        if (!story) {
+
+            const titleEl =
+                document.getElementById(
+                    "chapterTitle"
+                );
+
+
+            if (titleEl) {
+
+                titleEl.textContent =
+                    "Story not found";
+
+            }
+
+
+            console.error(
+                "Missing story:",
+                storyKey
+            );
+
+
+            return;
+
+        }
+
+
+        /* =================================================
+           ELEMENTS
+        ================================================= */
 
         const titleEl =
             document.getElementById(
                 "chapterTitle"
             );
 
-        if (titleEl) {
 
-            titleEl.textContent =
-                "Story not found";
-        }
-
-        console.error(
-            "Missing story:",
-            storyKey
-        );
-
-        return;
-    }
-
-
-    /* =================================================
-       ELEMENTS
-    ================================================= */
-
-    const titleEl =
-        document.getElementById(
-            "chapterTitle"
-        );
-
-
-    const contentEl =
-        document.getElementById(
-            "chapterContent"
-        );
-
-
-    const audioEl =
-        document.getElementById(
-            "chapterAudio"
-        );
-
-
-    const interactionContainer =
-        document.getElementById(
-            "interactionContainer"
-        );
-
-
-    const prevChapterBtn =
-        document.getElementById(
-            "prevChapter"
-        );
-
-
-    const nextChapterBtn =
-        document.getElementById(
-            "nextChapter"
-        );
-
-
-    /* =================================================
-       LOAD DIGICAFE INTERACTIONS
-    ================================================= */
-
-    async function loadInteractions() {
-
-        if (!interactionContainer) {
-
-            console.warn(
-                "Interaction container not found."
+        const contentEl =
+            document.getElementById(
+                "chapterContent"
             );
 
-            return;
-        }
+
+        const audioEl =
+            document.getElementById(
+                "chapterAudio"
+            );
 
 
-        try {
+        const interactionContainer =
+            document.getElementById(
+                "interactionContainer"
+            );
 
-            const response =
-                await fetch(
-                    "./interaction.html"
+
+        const prevChapterBtn =
+            document.getElementById(
+                "prevChapter"
+            );
+
+
+        const nextChapterBtn =
+            document.getElementById(
+                "nextChapter"
+            );
+
+
+        /* =================================================
+           LOAD DIGICAFE INTERACTIONS
+        ================================================= */
+
+        async function loadInteractions() {
+
+            if (!interactionContainer) {
+
+                console.warn(
+                    "Interaction container not found."
                 );
 
 
-            if (!response.ok) {
-
-                throw new Error(
-                    `Could not load interaction.html: ${response.status}`
-                );
+                return;
 
             }
 
 
-            const html =
-                await response.text();
+            try {
+
+                const response =
+                    await fetch(
+                        "./interaction.html"
+                    );
 
 
-            interactionContainer.innerHTML =
-                html;
+                if (!response.ok) {
+
+                    throw new Error(
+                        `Could not load interaction.html: ${response.status}`
+                    );
+
+                }
 
 
-            console.log(
-                "DigiCafe interaction component loaded."
-            );
+                const html =
+                    await response.text();
 
 
-        } catch (error) {
+                interactionContainer.innerHTML =
+                    html;
 
-            console.error(
-                "Interaction loading error:",
-                error
-            );
+
+                console.log(
+                    "DigiCafe interaction component loaded."
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "Interaction loading error:",
+                    error
+                );
+
+            }
 
         }
 
-    }
+
+        /* =================================================
+           CREATE PDF VIEWER
+        ================================================= */
+
+        contentEl.innerHTML = `
+
+            <div class="pdf-viewer">
+
+                <canvas
+                    id="pdfCanvas"
+                    class="pdf-page">
+                </canvas>
 
 
-    /* =================================================
-       CREATE PDF VIEWER
-    ================================================= */
-
-    contentEl.innerHTML = `
-
-        <div class="pdf-viewer">
-
-            <canvas
-                id="pdfCanvas"
-                class="pdf-page">
-            </canvas>
+                <div class="pdf-controls">
 
 
-            <div class="pdf-controls">
+                    <!-- PDF PAGE NAVIGATION -->
 
-                <!-- PDF PAGE NAVIGATION -->
+                    <div class="pdf-page-controls">
 
-                <div class="pdf-page-controls">
-
-                    <button
-                        id="prevPdfPage"
-                        aria-label="Previous PDF page">
-                        ‹
-                    </button>
+                        <button
+                            id="prevPdfPage"
+                            aria-label="Previous PDF page">
+                            ‹
+                        </button>
 
 
-                    <span id="pdfPageNumber">
-                        1 / 1
-                    </span>
+                        <span id="pdfPageNumber">
+                            1 / 1
+                        </span>
 
 
-                    <button
-                        id="nextPdfPage"
-                        aria-label="Next PDF page">
-                        ›
-                    </button>
+                        <button
+                            id="nextPdfPage"
+                            aria-label="Next PDF page">
+                            ›
+                        </button>
 
-                </div>
-
-
-                <!-- PDF ZOOM -->
-
-                <div class="pdf-zoom-controls">
-
-                    <button
-                        id="zoomOut"
-                        aria-label="Zoom out">
-                        −
-                    </button>
+                    </div>
 
 
-                    <button
-                        id="zoomReset"
-                        aria-label="Reset zoom">
-                        100%
-                    </button>
+                    <!-- PDF ZOOM -->
+
+                    <div class="pdf-zoom-controls">
+
+                        <button
+                            id="zoomOut"
+                            aria-label="Zoom out">
+                            −
+                        </button>
 
 
-                    <button
-                        id="zoomIn"
-                        aria-label="Zoom in">
-                        +
-                    </button>
+                        <button
+                            id="zoomReset"
+                            aria-label="Reset zoom">
+                            100%
+                        </button>
+
+
+                        <button
+                            id="zoomIn"
+                            aria-label="Zoom in">
+                            +
+                        </button>
+
+                    </div>
 
                 </div>
 
             </div>
 
-        </div>
-
-    `;
+        `;
 
 
-    /* =================================================
-       PDF ELEMENTS
-    ================================================= */
+        /* =================================================
+           PDF ELEMENTS
+        ================================================= */
 
-    const canvas =
-        document.getElementById(
-            "pdfCanvas"
-        );
-
-
-    const canvasContext =
-        canvas.getContext("2d");
-
-
-    const prevPdfPage =
-        document.getElementById(
-            "prevPdfPage"
-        );
-
-
-    const nextPdfPage =
-        document.getElementById(
-            "nextPdfPage"
-        );
-
-
-    const pdfPageNumber =
-        document.getElementById(
-            "pdfPageNumber"
-        );
-
-
-    const zoomOut =
-        document.getElementById(
-            "zoomOut"
-        );
-
-
-    const zoomReset =
-        document.getElementById(
-            "zoomReset"
-        );
-
-
-    const zoomIn =
-        document.getElementById(
-            "zoomIn"
-        );
-
-
-    /* =================================================
-       CHAPTER DATA
-    ================================================= */
-
-    const chapters =
-        Array.from(
-            {
-                length: story.chapters
-            },
-            (_, i) => {
-
-                const num =
-                    i + 1;
-
-
-                return {
-
-                    title:
-                        `${story.title}: Chapter ${num}`,
-
-                    pdf:
-                        `./Asset/NovelFiles/${storyKey}/${storyKey}_pdf/ch${num}.pdf`,
-
-                    audio:
-                        `./Asset/NovelFiles/${storyKey}/${storyKey}_mp3/ch${num}.mp3`
-
-                };
-
-            }
-        );
-
-
-    /* =================================================
-       READING PROGRESS
-    ================================================= */
-
-    const storageKey =
-        "progress_" + storyKey;
-
-
-    let currentChapter =
-        parseInt(
-            localStorage.getItem(
-                storageKey
-            )
-        ) || 0;
-
-
-    /* =================================================
-       PDF STATE
-    ================================================= */
-
-    let currentPDF =
-        null;
-
-
-    let currentPDFPage =
-        1;
-
-
-    let rendering =
-        false;
-
-
-    let pendingPage =
-        null;
-
-
-    /* =================================================
-       PDF ZOOM
-    ================================================= */
-
-    let zoomLevel =
-        1;
-
-
-    const zoomStep =
-        0.15;
-
-
-    const minZoom =
-        0.7;
-
-
-    const maxZoom =
-        3;
-
-
-    /* =================================================
-       UPDATE ZOOM DISPLAY
-    ================================================= */
-
-    function updateZoomDisplay() {
-
-        zoomReset.textContent =
-            `${Math.round(
-                zoomLevel * 100
-            )}%`;
-
-    }
-
-
-    /* =================================================
-       UPDATE INTERACTION CONTENT ID
-    ================================================= */
-
-    function updateInteractionContent(
-        chapterIndex
-    ) {
-
-        if (!interactionContainer) {
-            return;
-        }
-
-
-        const interaction =
-            interactionContainer.querySelector(
-                ".digi-interactions"
+        const canvas =
+            document.getElementById(
+                "pdfCanvas"
             );
 
 
-        if (!interaction) {
-            return;
-        }
+        const canvasContext =
+            canvas.getContext("2d");
 
 
-        const chapterNumber =
-            chapterIndex + 1;
-
-
-        const contentId =
-            `${storyKey}-chapter-${chapterNumber}`;
-
-
-        interaction.dataset.contentId =
-            contentId;
-
-
-        interaction.dataset.contentType =
-            "novel";
-
-
-        console.log(
-            "Interaction content ID:",
-            contentId
-        );
-
-    }
-
-
-    /* =================================================
-       RENDER PDF PAGE
-    ================================================= */
-
-    async function renderPDFPage(
-        pageNumber
-    ) {
-
-        if (!currentPDF) {
-            return;
-        }
-
-
-        /* ---------------------------------------------
-           PREVENT DOUBLE RENDER
-        --------------------------------------------- */
-
-        if (rendering) {
-
-            pendingPage =
-                pageNumber;
-
-            return;
-
-        }
-
-
-        rendering =
-            true;
-
-
-        try {
-
-            const page =
-                await currentPDF.getPage(
-                    pageNumber
-                );
-
-
-            /* -----------------------------------------
-               VIEWER WIDTH
-            ----------------------------------------- */
-
-            const viewer =
-                document.querySelector(
-                    ".pdf-viewer"
-                );
-
-
-            const availableWidth =
-                viewer.clientWidth;
-
-
-            /* -----------------------------------------
-               PAGE SIZE
-            ----------------------------------------- */
-
-            const baseViewport =
-                page.getViewport({
-                    scale: 1
-                });
-
-
-            const scale =
-                (
-                    availableWidth /
-                    baseViewport.width
-                ) * zoomLevel;
-
-
-            const viewport =
-                page.getViewport({
-                    scale
-                });
-
-
-            /* -----------------------------------------
-               HIGH DPI
-            ----------------------------------------- */
-
-            const pixelRatio =
-                window.devicePixelRatio ||
-                1;
-
-
-            canvas.width =
-                Math.floor(
-                    viewport.width *
-                    pixelRatio
-                );
-
-
-            canvas.height =
-                Math.floor(
-                    viewport.height *
-                    pixelRatio
-                );
-
-
-            canvas.style.width =
-                `${viewport.width}px`;
-
-
-            canvas.style.height =
-                `${viewport.height}px`;
-
-
-            canvasContext.setTransform(
-                pixelRatio,
-                0,
-                0,
-                pixelRatio,
-                0,
-                0
+        const prevPdfPage =
+            document.getElementById(
+                "prevPdfPage"
             );
 
 
-            /* -----------------------------------------
-               RENDER
-            ----------------------------------------- */
-
-            await page.render({
-
-                canvasContext:
-                    canvasContext,
-
-                viewport:
-                    viewport
-
-            }).promise;
-
-
-            /* -----------------------------------------
-               UPDATE PAGE NUMBER
-            ----------------------------------------- */
-
-            currentPDFPage =
-                pageNumber;
-
-
-            pdfPageNumber.textContent =
-                `${currentPDFPage} / ${currentPDF.numPages}`;
-
-
-            /* -----------------------------------------
-               BUTTON STATES
-            ----------------------------------------- */
-
-            prevPdfPage.disabled =
-                currentPDFPage <= 1;
-
-
-            nextPdfPage.disabled =
-                currentPDFPage >=
-                currentPDF.numPages;
-
-
-        } catch (error) {
-
-            console.error(
-                "PDF page rendering error:",
-                error
+        const nextPdfPage =
+            document.getElementById(
+                "nextPdfPage"
             );
 
-        }
+
+        const pdfPageNumber =
+            document.getElementById(
+                "pdfPageNumber"
+            );
 
 
-        rendering =
+        const zoomOut =
+            document.getElementById(
+                "zoomOut"
+            );
+
+
+        const zoomReset =
+            document.getElementById(
+                "zoomReset"
+            );
+
+
+        const zoomIn =
+            document.getElementById(
+                "zoomIn"
+            );
+
+
+        /* =================================================
+           CHAPTER DATA
+        ================================================= */
+
+        const chapters =
+            Array.from(
+                {
+                    length:
+                        story.chapters
+                },
+
+                (_, i) => {
+
+                    const num =
+                        i + 1;
+
+
+                    return {
+
+                        number:
+                            num,
+
+                        title:
+                            `${story.title}: Chapter ${num}`,
+
+                        pdf:
+                            `./Asset/NovelFiles/${storyKey}/${storyKey}_pdf/ch${num}.pdf`,
+
+                        audio:
+                            `./Asset/NovelFiles/${storyKey}/${storyKey}_mp3/ch${num}.mp3`
+
+                    };
+
+                }
+            );
+
+
+        /* =================================================
+           READING PROGRESS
+        ================================================= */
+
+        const storageKey =
+            "progress_" +
+            storyKey;
+
+
+        let currentChapter =
+            parseInt(
+                localStorage.getItem(
+                    storageKey
+                )
+            ) || 0;
+
+
+        /* =================================================
+           PDF STATE
+        ================================================= */
+
+        let currentPDF =
+            null;
+
+
+        let currentPDFPage =
+            1;
+
+
+        let rendering =
             false;
 
 
-        /* ---------------------------------------------
-           RENDER PENDING PAGE
-        --------------------------------------------- */
+        let pendingPage =
+            null;
 
-        if (
-            pendingPage !== null
+
+        /* =================================================
+           PDF ZOOM
+        ================================================= */
+
+        let zoomLevel =
+            1;
+
+
+        const zoomStep =
+            0.15;
+
+
+        const minZoom =
+            0.7;
+
+
+        const maxZoom =
+            3;
+
+
+        /* =================================================
+           UPDATE ZOOM DISPLAY
+        ================================================= */
+
+        function updateZoomDisplay() {
+
+            zoomReset.textContent =
+                `${Math.round(
+                    zoomLevel * 100
+                )}%`;
+
+        }
+
+
+        /* =================================================
+           UPDATE INTERACTION CONTENT
+        ================================================= */
+
+        function updateInteractionContent(
+            chapterIndex
         ) {
 
-            const nextPage =
-                pendingPage;
+            if (!interactionContainer) {
+
+                return;
+
+            }
 
 
-            pendingPage =
-                null;
+            const interaction =
+                interactionContainer.querySelector(
+                    ".digi-interactions"
+                );
 
 
-            renderPDFPage(
-                nextPage
+            if (!interaction) {
+
+                console.warn(
+                    "Interaction component not found."
+                );
+
+
+                return;
+
+            }
+
+
+            const chapterNumber =
+                chapterIndex + 1;
+
+
+            /*
+             * Example:
+             *
+             * novel-storyname-chapter-1
+             */
+
+            const contentId =
+                `${storyKey}-chapter-${chapterNumber}`;
+
+
+            interaction.dataset.contentId =
+                contentId;
+
+
+            interaction.dataset.contentType =
+                "novel";
+
+
+            console.log(
+                "Interaction content ID:",
+                contentId
             );
 
         }
 
-    }
+
+        /* =================================================
+           RENDER PDF PAGE
+        ================================================= */
+
+        async function renderPDFPage(
+            pageNumber
+        ) {
+
+            if (!currentPDF) {
+
+                return;
+
+            }
 
 
-    /* =================================================
-       LOAD PDF
-    ================================================= */
+            /* ---------------------------------------------
+               PREVENT DOUBLE RENDER
+            --------------------------------------------- */
 
-    async function loadPDF(
-        pdfPath
-    ) {
+            if (rendering) {
 
-        try {
-
-            console.log(
-                "Loading PDF:",
-                pdfPath
-            );
+                pendingPage =
+                    pageNumber;
 
 
-            currentPDF =
-                await getDocument({
+                return;
 
-                    url:
-                        pdfPath
+            }
+
+
+            rendering =
+                true;
+
+
+            try {
+
+                const page =
+                    await currentPDF.getPage(
+                        pageNumber
+                    );
+
+
+                /* -----------------------------------------
+                   VIEWER
+                ----------------------------------------- */
+
+                const viewer =
+                    document.querySelector(
+                        ".pdf-viewer"
+                    );
+
+
+                const availableWidth =
+                    viewer.clientWidth;
+
+
+                /* -----------------------------------------
+                   BASE PAGE SIZE
+                ----------------------------------------- */
+
+                const baseViewport =
+                    page.getViewport({
+                        scale: 1
+                    });
+
+
+                const scale =
+                    (
+                        availableWidth /
+                        baseViewport.width
+                    ) *
+                    zoomLevel;
+
+
+                const viewport =
+                    page.getViewport({
+                        scale
+                    });
+
+
+                /* -----------------------------------------
+                   HIGH DPI
+                ----------------------------------------- */
+
+                const pixelRatio =
+                    window.devicePixelRatio ||
+                    1;
+
+
+                canvas.width =
+                    Math.floor(
+                        viewport.width *
+                        pixelRatio
+                    );
+
+
+                canvas.height =
+                    Math.floor(
+                        viewport.height *
+                        pixelRatio
+                    );
+
+
+                canvas.style.width =
+                    `${viewport.width}px`;
+
+
+                canvas.style.height =
+                    `${viewport.height}px`;
+
+
+                canvasContext.setTransform(
+                    pixelRatio,
+                    0,
+                    0,
+                    pixelRatio,
+                    0,
+                    0
+                );
+
+
+                /* -----------------------------------------
+                   RENDER
+                ----------------------------------------- */
+
+                await page.render({
+
+                    canvasContext:
+                        canvasContext,
+
+                    viewport:
+                        viewport
 
                 }).promise;
 
 
-            console.log(
-                `PDF loaded: ${currentPDF.numPages} page(s)`
-            );
+                /* -----------------------------------------
+                   UPDATE PAGE NUMBER
+                ----------------------------------------- */
+
+                currentPDFPage =
+                    pageNumber;
 
 
-            currentPDFPage =
-                1;
+                pdfPageNumber.textContent =
+                    `${currentPDFPage} / ${currentPDF.numPages}`;
 
 
-            pdfPageNumber.textContent =
-                `1 / ${currentPDF.numPages}`;
+                /* -----------------------------------------
+                   BUTTON STATES
+                ----------------------------------------- */
+
+                prevPdfPage.disabled =
+                    currentPDFPage <= 1;
 
 
-            await renderPDFPage(
-                1
-            );
+                nextPdfPage.disabled =
+                    currentPDFPage >=
+                    currentPDF.numPages;
 
 
-        } catch (error) {
+            } catch (error) {
 
-            console.error(
-                "PDF loading error:",
-                error
-            );
+                console.error(
+                    "PDF page rendering error:",
+                    error
+                );
 
-
-            currentPDF =
-                null;
+            }
 
 
-            contentEl.innerHTML = `
+            rendering =
+                false;
 
-                <div class="pdf-error">
 
-                    <p>
-                        Sorry, this chapter
-                        could not be loaded.
-                    </p>
+            /* ---------------------------------------------
+               RENDER PENDING PAGE
+            --------------------------------------------- */
 
-                </div>
+            if (
+                pendingPage !== null
+            ) {
 
-            `;
+                const nextPage =
+                    pendingPage;
+
+
+                pendingPage =
+                    null;
+
+
+                renderPDFPage(
+                    nextPage
+                );
+
+            }
 
         }
 
-    }
 
+        /* =================================================
+           LOAD PDF
+        ================================================= */
 
-    /* =================================================
-       LOAD CHAPTER
-    ================================================= */
-
-    async function loadChapter(
-        chapterIndex
-    ) {
-
-        if (
-            chapterIndex < 0 ||
-            chapterIndex >= chapters.length
+        async function loadPDF(
+            pdfPath
         ) {
 
-            return;
+            try {
 
-        }
-
-
-        const chapter =
-            chapters[
-                chapterIndex
-            ];
-
-
-        currentChapter =
-            chapterIndex;
-
-
-        /* ---------------------------------------------
-           TITLE
-        --------------------------------------------- */
-
-        titleEl.textContent =
-            chapter.title;
-
-
-        /* ---------------------------------------------
-           RESET ZOOM
-        --------------------------------------------- */
-
-        zoomLevel =
-            1;
-
-
-        updateZoomDisplay();
-
-
-        /* ---------------------------------------------
-           UPDATE INTERACTION ID
-        --------------------------------------------- */
-
-        updateInteractionContent(
-            currentChapter
-        );
-
-
-        /* ---------------------------------------------
-           PDF
-        --------------------------------------------- */
-
-        await loadPDF(
-            chapter.pdf
-        );
-
-
-        /* ---------------------------------------------
-           AUDIO
-        --------------------------------------------- */
-
-        if (audioEl) {
-
-            console.log(
-                "Loading audio:",
-                chapter.audio
-            );
-
-
-            audioEl.src =
-                chapter.audio;
-
-
-            audioEl.load();
-
-        }
-
-
-        /* ---------------------------------------------
-           SAVE PROGRESS
-        --------------------------------------------- */
-
-        localStorage.setItem(
-            storageKey,
-            currentChapter
-        );
-
-
-        /* ---------------------------------------------
-           CHAPTER BUTTONS
-        --------------------------------------------- */
-
-        if (prevChapterBtn) {
-
-            prevChapterBtn.disabled =
-                currentChapter === 0;
-
-        }
-
-
-        if (nextChapterBtn) {
-
-            nextChapterBtn.disabled =
-                currentChapter ===
-                chapters.length - 1;
-
-        }
-
-
-        /* ---------------------------------------------
-           SCROLL TO READER
-        --------------------------------------------- */
-
-        window.scrollTo({
-
-            top: 0,
-
-            behavior: "smooth"
-
-        });
-
-    }
-
-
-    /* =================================================
-       PDF PREVIOUS PAGE
-    ================================================= */
-
-    prevPdfPage.addEventListener(
-        "click",
-        () => {
-
-            if (
-                currentPDFPage > 1
-            ) {
-
-                renderPDFPage(
-                    currentPDFPage - 1
+                console.log(
+                    "Loading PDF:",
+                    pdfPath
                 );
+
+
+                currentPDF =
+                    await getDocument({
+
+                        url:
+                            pdfPath
+
+                    }).promise;
+
+
+                console.log(
+                    `PDF loaded: ${currentPDF.numPages} page(s)`
+                );
+
+
+                currentPDFPage =
+                    1;
+
+
+                pdfPageNumber.textContent =
+                    `1 / ${currentPDF.numPages}`;
+
+
+                await renderPDFPage(
+                    1
+                );
+
+
+            } catch (error) {
+
+                console.error(
+                    "PDF loading error:",
+                    error
+                );
+
+
+                currentPDF =
+                    null;
+
+
+                contentEl.innerHTML = `
+
+                    <div class="pdf-error">
+
+                        <p>
+                            Sorry, this chapter
+                            could not be loaded.
+                        </p>
+
+                    </div>
+
+                `;
 
             }
 
         }
-    );
 
 
-    /* =================================================
-       PDF NEXT PAGE
-    ================================================= */
+        /* =================================================
+           LOAD CHAPTER
+        ================================================= */
 
-    nextPdfPage.addEventListener(
-        "click",
-        () => {
+        async function loadChapter(
+            chapterIndex
+        ) {
 
             if (
-                currentPDF &&
-                currentPDFPage <
-                currentPDF.numPages
+                chapterIndex < 0 ||
+                chapterIndex >= chapters.length
             ) {
 
-                renderPDFPage(
-                    currentPDFPage + 1
-                );
+                return;
 
             }
 
-        }
-    );
+
+            const chapter =
+                chapters[
+                    chapterIndex
+                ];
 
 
-    /* =================================================
-       PDF ZOOM OUT
-    ================================================= */
-
-    zoomOut.addEventListener(
-        "click",
-        () => {
-
-            zoomLevel =
-                Math.max(
-                    minZoom,
-                    zoomLevel -
-                    zoomStep
-                );
+            currentChapter =
+                chapterIndex;
 
 
-            updateZoomDisplay();
+            /* ---------------------------------------------
+               TITLE
+            --------------------------------------------- */
+
+            titleEl.textContent =
+                chapter.title;
 
 
-            renderPDFPage(
-                currentPDFPage
-            );
-
-        }
-    );
-
-
-    /* =================================================
-       PDF ZOOM IN
-    ================================================= */
-
-    zoomIn.addEventListener(
-        "click",
-        () => {
-
-            zoomLevel =
-                Math.min(
-                    maxZoom,
-                    zoomLevel +
-                    zoomStep
-                );
-
-
-            updateZoomDisplay();
-
-
-            renderPDFPage(
-                currentPDFPage
-            );
-
-        }
-    );
-
-
-    /* =================================================
-       PDF ZOOM RESET
-    ================================================= */
-
-    zoomReset.addEventListener(
-        "click",
-        () => {
+            /* ---------------------------------------------
+               RESET ZOOM
+            --------------------------------------------- */
 
             zoomLevel =
                 1;
@@ -950,57 +790,267 @@ document.addEventListener("DOMContentLoaded", () => {
             updateZoomDisplay();
 
 
-            renderPDFPage(
-                currentPDFPage
-            );
+            /* ---------------------------------------------
+               UPDATE INTERACTION ID
+            --------------------------------------------- */
 
-        }
-    );
-
-
-    /* =================================================
-       PREVIOUS CHAPTER
-    ================================================= */
-
-    prevChapterBtn?.addEventListener(
-        "click",
-        () => {
-
-            loadChapter(
-                currentChapter - 1
-            );
-
-        }
-    );
-
-
-    /* =================================================
-       NEXT CHAPTER
-    ================================================= */
-
-    nextChapterBtn?.addEventListener(
-        "click",
-        () => {
-
-            loadChapter(
-                currentChapter + 1
-            );
-
-        }
-    );
-
-
-    /* =================================================
-       START READER
-    ================================================= */
-
-    loadInteractions()
-        .then(() => {
-
-            loadChapter(
+            updateInteractionContent(
                 currentChapter
             );
 
-        });
 
-});
+            /* ---------------------------------------------
+               INITIALIZE INTERACTIONS
+            --------------------------------------------- */
+
+            initializeInteractions();
+
+
+            /* ---------------------------------------------
+               PDF
+            --------------------------------------------- */
+
+            await loadPDF(
+                chapter.pdf
+            );
+
+
+            /* ---------------------------------------------
+               AUDIO
+            --------------------------------------------- */
+
+            if (audioEl) {
+
+                console.log(
+                    "Loading audio:",
+                    chapter.audio
+                );
+
+
+                audioEl.src =
+                    chapter.audio;
+
+
+                audioEl.load();
+
+            }
+
+
+            /* ---------------------------------------------
+               SAVE PROGRESS
+            --------------------------------------------- */
+
+            localStorage.setItem(
+                storageKey,
+                currentChapter
+            );
+
+
+            /* ---------------------------------------------
+               CHAPTER BUTTONS
+            --------------------------------------------- */
+
+            if (prevChapterBtn) {
+
+                prevChapterBtn.disabled =
+                    currentChapter === 0;
+
+            }
+
+
+            if (nextChapterBtn) {
+
+                nextChapterBtn.disabled =
+                    currentChapter ===
+                    chapters.length - 1;
+
+            }
+
+
+            /* ---------------------------------------------
+               SCROLL TO READER
+            --------------------------------------------- */
+
+            window.scrollTo({
+
+                top: 0,
+
+                behavior: "smooth"
+
+            });
+
+        }
+
+
+        /* =================================================
+           PDF PREVIOUS PAGE
+        ================================================= */
+
+        prevPdfPage.addEventListener(
+            "click",
+            () => {
+
+                if (
+                    currentPDFPage > 1
+                ) {
+
+                    renderPDFPage(
+                        currentPDFPage - 1
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =================================================
+           PDF NEXT PAGE
+        ================================================= */
+
+        nextPdfPage.addEventListener(
+            "click",
+            () => {
+
+                if (
+                    currentPDF &&
+                    currentPDFPage <
+                    currentPDF.numPages
+                ) {
+
+                    renderPDFPage(
+                        currentPDFPage + 1
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =================================================
+           PDF ZOOM OUT
+        ================================================= */
+
+        zoomOut.addEventListener(
+            "click",
+            () => {
+
+                zoomLevel =
+                    Math.max(
+                        minZoom,
+                        zoomLevel -
+                        zoomStep
+                    );
+
+
+                updateZoomDisplay();
+
+
+                renderPDFPage(
+                    currentPDFPage
+                );
+
+            }
+        );
+
+
+        /* =================================================
+           PDF ZOOM IN
+        ================================================= */
+
+        zoomIn.addEventListener(
+            "click",
+            () => {
+
+                zoomLevel =
+                    Math.min(
+                        maxZoom,
+                        zoomLevel +
+                        zoomStep
+                    );
+
+
+                updateZoomDisplay();
+
+
+                renderPDFPage(
+                    currentPDFPage
+                );
+
+            }
+        );
+
+
+        /* =================================================
+           PDF ZOOM RESET
+        ================================================= */
+
+        zoomReset.addEventListener(
+            "click",
+            () => {
+
+                zoomLevel =
+                    1;
+
+
+                updateZoomDisplay();
+
+
+                renderPDFPage(
+                    currentPDFPage
+                );
+
+            }
+        );
+
+
+        /* =================================================
+           PREVIOUS CHAPTER
+        ================================================= */
+
+        prevChapterBtn?.addEventListener(
+            "click",
+            () => {
+
+                loadChapter(
+                    currentChapter - 1
+                );
+
+            }
+        );
+
+
+        /* =================================================
+           NEXT CHAPTER
+        ================================================= */
+
+        nextChapterBtn?.addEventListener(
+            "click",
+            () => {
+
+                loadChapter(
+                    currentChapter + 1
+                );
+
+            }
+        );
+
+
+        /* =================================================
+           START READER
+        ================================================= */
+
+        loadInteractions()
+            .then(
+                () => {
+
+                    loadChapter(
+                        currentChapter
+                    );
+
+                }
+            );
+
+    }
+);
