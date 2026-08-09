@@ -3350,3 +3350,46 @@ h6 {
         animation-iteration-count: 1 !important;
         transition-duration: .01ms !important;
     }
+@media (max-width: 768px) {
+
+    .music-app {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: static;
+
+        order: 2;
+
+        width: 100%;
+        height: auto;
+
+        margin: 30px 0 100px;
+
+        padding: 20px;
+
+        border-right: none;
+        border-top: 1px solid rgba(214,179,106,.16);
+    }
+
+    .music-content {
+        order: 1;
+
+        width: 100%;
+        margin-left: 0;
+
+        padding: 25px 16px 170px;
+    }
+
+    .sidebar nav {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .sidebar-card {
+        margin-bottom: 15px;
+    }
+
+}
