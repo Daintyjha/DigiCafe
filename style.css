@@ -2991,7 +2991,102 @@ h6 {
     }
 }
 
+/* =====================================================
+   CURRENTLY PLAYING SONG
+===================================================== */
 
+.song-card.is-current,
+.song-row.is-current {
+    border-color: var(--gold);
+    box-shadow:
+        0 0 0 1px rgba(214, 179, 106, 0.25),
+        0 0 20px rgba(214, 179, 106, 0.18);
+
+    background: rgba(214, 179, 106, 0.08);
+
+    transition:
+        background 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+
+/* Song title */
+
+.song-card.is-current h3,
+.song-row.is-current .song-title {
+    color: var(--gold);
+}
+
+
+/* Playing indicator */
+
+.song-card.is-current .play-song,
+.song-row.is-current .play {
+    color: var(--gold);
+}
+
+
+/* =====================================================
+   EQUALIZER INDICATOR
+===================================================== */
+
+.playing-indicator {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 3px;
+    height: 16px;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+
+.playing-indicator span {
+    width: 3px;
+    height: 5px;
+    background: var(--gold);
+    border-radius: 3px;
+
+    animation:
+        musicBars 0.8s ease-in-out infinite alternate;
+}
+
+
+.playing-indicator span:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.playing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.playing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+
+@keyframes musicBars {
+
+    from {
+        height: 4px;
+    }
+
+    to {
+        height: 16px;
+    }
+
+}
+
+
+/* =====================================================
+   PAUSED STATE
+===================================================== */
+
+.song-card.is-current.paused,
+.song-row.is-current.paused {
+    box-shadow:
+        0 0 0 1px rgba(214, 179, 106, 0.15);
+}
 /* =========================================================
    20. ACCESSIBILITY / MOTION
 ========================================================= */
