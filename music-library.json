@@ -205,5 +205,149 @@
 "category": "Night Atmosphere",
 "file": "Asset/audio/Stream.mp3",
 "dateAdded": "2026-07-17"
-}
+},
+  {
+"id": 23,
+"title": "Agar Wood",
+"artist": "DaintyJha",
+"album": "PsyChill Collection",
+"category": "PsyChill ",
+"file": "Asset/MusicFiles/PsyChill/Agar Wood.mp3",
+"dateAdded": "2026-08-09"
+},
+
+   {
+"id": 24,
+"title": "Basakan Spring",
+"artist": "DaintyJha",
+"album": "PsyChill Collection",
+"category": "PsyChill ",
+"file": "Asset/MusicFiles/PsyChill/Basakan Spring.mp3",
+"dateAdded": "2026-08-09"
+},
+   {
+"id": 25,
+"title": "Camel Peak",
+"artist": "DaintyJha",
+"album": "PsyChill Collection",
+"category": "PsyChill ",
+"file": "Asset/MusicFiles/PsyChill/Camel Peak.mp3",
+"dateAdded": "2026-08-09"
+},
+   {
+"id": 26,
+"title": "Crystal Cave",
+"artist": "DaintyJha",
+"album": "PsyChill Collection",
+"category": "PsyChill ",
+"file": "Asset/MusicFiles/PsyChill/Crystal Cave.mp3",
+"dateAdded": "2026-08-09"
+},
+   {
+"id": 27,
+"title": "Hanging Bridge",
+"artist": "DaintyJha",
+"album": "PsyChill Collection",
+"category": "PsyChill ",
+"file": "Asset/MusicFiles/PsyChill/Hanging Bridge.mp3",
+"dateAdded": "2026-08-09"
+},
+  {
+"id": 28,
+"title": "Highland Resort",
+"artist": "DaintyJha",
+"album": "PsyChill Collection",
+"category": "PsyChill ",
+"file": "Asset/MusicFiles/PsyChill/Highland Resort.mp3",
+"dateAdded": "2026-08-09"
+},
+  {
+"id": 29,
+"title": "Langub",
+"artist": "DaintyJha",
+"album": "PsyChill Collection",
+"category": "PsyChill ",
+"file": "Asset/MusicFiles/PsyChill/Langub.mp3",
+"dateAdded": "2026-08-09"
+},
+  {
+"id": 30,
+"title": "Luyang",
+"artist": "DaintyJha",
+"album": "PsyChill Collection",
+"category": "PsyChill ",
+"file": "Asset/MusicFiles/PsyChill/Luyang.mp3",
+"dateAdded": "2026-08-09"
+},
+  {
+"id": 31,
+"title": "Mabinay Spring",
+"artist": "DaintyJha",
+"album": "PsyChill Collection",
+"category": "PsyChill ",
+"file": "Asset/MusicFiles/PsyChill/Mabinay Spring.mp3",
+"dateAdded": "2026-08-09"
+},
+  {
+"id": 32,
+"title": "Namangyan River",
+"artist": "DaintyJha",
+"album": "PsyChill Collection",
+"category": "PsyChill ",
+"file": "Asset/MusicFiles/PsyChill/Namangyan River.mp3",
+"dateAdded": "2026-08-09"
+},
+  {
+"id": 33,
+"title": "Niludhan Falls",
+"artist": "DaintyJha",
+"album": "PsyChill Collection",
+"category": "PsyChill ",
+"file": "Asset/MusicFiles/PsyChill/Niludhan Falls.mp3",
+"dateAdded": "2026-08-09"
+},
+  {
+"id": 34,
+"title": "Odloman Cave",
+"artist": "DaintyJha",
+"album": "PsyChill Collection",
+"category": "PsyChill ",
+"file": "Asset/MusicFiles/PsyChill/Odloman Cave.mp3",
+"dateAdded": "2026-08-09"
+},
+  {
+"id": 35,
+"title": "Pinayun-an Peak",
+"artist": "DaintyJha",
+"album": "PsyChill Collection",
+"category": "PsyChill ",
+"file": "Asset/MusicFiles/PsyChill/Pinayun-an Peak.mp3",
+"dateAdded": "2026-08-09"
+},
+ "id": 36,
+"title": "Love in the Air",
+"artist": "DaintyJha",
+"album": "DancePop Collection",
+"category": "DancePop ",
+"file": "Asset/MusicFiles/DancePop/Love in the Air.mp3",
+"dateAdded": "2026-08-09"
+}, 
+  },
+ "id": 37,
+"title": "No Signal",
+"artist": "DaintyJha",
+"album": "DancePop Collection",
+"category": "DancePop ",
+"file": "Asset/MusicFiles/DancePop/No Signal(1).mp3",
+"dateAdded": "2026-08-09"
+},
+  },
+ "id": 38,
+"title": "We Were Young",
+"artist": "DaintyJha",
+"album": "DancePop Collection",
+"category": "DancePop ",
+"file": "Asset/MusicFiles/DancePop/We Were Young.mp3",
+"dateAdded": "2026-08-09"
+},
 ]
