@@ -1,5 +1,9 @@
 /* =====================================================
    DIGICAFE SINGLE-PAGE PDF + AUDIO READER
+   Supports:
+   - Novels
+   - Blog
+   - Discussion
 ===================================================== */
 
 import {
@@ -28,9 +32,8 @@ document.addEventListener(
     "DOMContentLoaded",
     () => {
 
-
         /* =================================================
-           GET STORY
+           GET CONTENT
         ================================================= */
 
         const storyKey =
@@ -44,7 +47,7 @@ document.addEventListener(
 
 
         /* =================================================
-           STORY NOT FOUND
+           CONTENT NOT FOUND
         ================================================= */
 
         if (!story) {
@@ -58,13 +61,13 @@ document.addEventListener(
             if (titleEl) {
 
                 titleEl.textContent =
-                    "Story not found";
+                    "Content not found";
 
             }
 
 
             console.error(
-                "Missing story:",
+                "Missing content:",
                 storyKey
             );
 
@@ -72,6 +75,14 @@ document.addEventListener(
             return;
 
         }
+
+
+        /* =================================================
+           DETERMINE CONTENT TYPE
+        ================================================= */
+
+        const contentType =
+            story.type || "novel";
 
 
         /* =================================================
@@ -96,9 +107,33 @@ document.addEventListener(
             );
 
 
+        const audioContainer =
+            document.getElementById(
+                "audioContainer"
+            );
+
+
+        const readerNote =
+            document.getElementById(
+                "readerNote"
+            );
+
+
         const interactionContainer =
             document.getElementById(
                 "interactionContainer"
+            );
+
+
+        const publishedDate =
+            document.getElementById(
+                "publishedDate"
+            );
+
+
+        const chapterNavigation =
+            document.getElementById(
+                "chapterNavigation"
             );
 
 
@@ -112,6 +147,74 @@ document.addEventListener(
             document.getElementById(
                 "nextChapter"
             );
+
+
+        /* =================================================
+           CONTENT TYPE UI
+        ================================================= */
+
+        if (
+            contentType === "blog" ||
+            contentType === "discussion"
+        ) {
+
+            /* Hide novel-only elements */
+
+            if (audioContainer) {
+
+                audioContainer.style.display =
+                    "none";
+
+            }
+
+
+            if (readerNote) {
+
+                readerNote.style.display =
+                    "none";
+
+            }
+
+
+            if (chapterNavigation) {
+
+                chapterNavigation.style.display =
+                    "none";
+
+            }
+
+
+            /* Show publication date */
+
+            if (
+                publishedDate &&
+                story.published
+            ) {
+
+                const date =
+                    new Date(
+                        story.published +
+                        "T00:00:00"
+                    );
+
+
+                publishedDate.textContent =
+                    `Published ${date.toLocaleDateString(
+                        "en-US",
+                        {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric"
+                        }
+                    )}`;
+
+
+                publishedDate.style.display =
+                    "block";
+
+            }
+
+        }
 
 
         /* =================================================
@@ -190,9 +293,6 @@ document.addEventListener(
 
                 <div class="pdf-controls">
 
-
-                    <!-- PDF PAGE NAVIGATION -->
-
                     <div class="pdf-page-controls">
 
                         <button
@@ -215,8 +315,6 @@ document.addEventListener(
 
                     </div>
 
-
-                    <!-- PDF ZOOM -->
 
                     <div class="pdf-zoom-controls">
 
@@ -303,37 +401,44 @@ document.addEventListener(
            CHAPTER DATA
         ================================================= */
 
-        const chapters =
-            Array.from(
-                {
-                    length:
-                        story.chapters
-                },
-
-                (_, i) => {
-
-                    const num =
-                        i + 1;
+        let chapters = [];
 
 
-                    return {
+        if (contentType === "novel") {
 
-                        number:
-                            num,
+            chapters =
+                Array.from(
+                    {
+                        length:
+                            story.chapters
+                    },
 
-                        title:
-                            `${story.title}: Chapter ${num}`,
+                    (_, i) => {
 
-                        pdf:
-                            `./Asset/NovelFiles/${storyKey}/${storyKey}_pdf/ch${num}.pdf`,
+                        const num =
+                            i + 1;
 
-                        audio:
-                            `./Asset/NovelFiles/${storyKey}/${storyKey}_mp3/ch${num}.mp3`
 
-                    };
+                        return {
 
-                }
-            );
+                            number:
+                                num,
+
+                            title:
+                                `${story.title}: Chapter ${num}`,
+
+                            pdf:
+                                `./Asset/NovelFiles/${storyKey}/${storyKey}_pdf/ch${num}.pdf`,
+
+                            audio:
+                                `./Asset/NovelFiles/${storyKey}/${storyKey}_mp3/ch${num}.mp3`
+
+                        };
+
+                    }
+                );
+
+        }
 
 
         /* =================================================
@@ -412,7 +517,7 @@ document.addEventListener(
         ================================================= */
 
         function updateInteractionContent(
-            chapterIndex
+            chapterIndex = 0
         ) {
 
             if (!interactionContainer) {
@@ -440,18 +545,20 @@ document.addEventListener(
             }
 
 
-            const chapterNumber =
-                chapterIndex + 1;
+            let contentId =
+                storyKey;
 
 
-            /*
-             * Example:
-             *
-             * novel-storyname-chapter-1
-             */
+            if (contentType === "novel") {
 
-            const contentId =
-                `${storyKey}-chapter-${chapterNumber}`;
+                const chapterNumber =
+                    chapterIndex + 1;
+
+
+                contentId =
+                    `${storyKey}-chapter-${chapterNumber}`;
+
+            }
 
 
             interaction.dataset.contentId =
@@ -459,7 +566,7 @@ document.addEventListener(
 
 
             interaction.dataset.contentType =
-                "novel";
+                contentType;
 
 
             console.log(
@@ -485,10 +592,6 @@ document.addEventListener(
             }
 
 
-            /* ---------------------------------------------
-               PREVENT DOUBLE RENDER
-            --------------------------------------------- */
-
             if (rendering) {
 
                 pendingPage =
@@ -512,10 +615,6 @@ document.addEventListener(
                     );
 
 
-                /* -----------------------------------------
-                   VIEWER
-                ----------------------------------------- */
-
                 const viewer =
                     document.querySelector(
                         ".pdf-viewer"
@@ -525,10 +624,6 @@ document.addEventListener(
                 const availableWidth =
                     viewer.clientWidth;
 
-
-                /* -----------------------------------------
-                   BASE PAGE SIZE
-                ----------------------------------------- */
 
                 const baseViewport =
                     page.getViewport({
@@ -549,10 +644,6 @@ document.addEventListener(
                         scale
                     });
 
-
-                /* -----------------------------------------
-                   HIGH DPI
-                ----------------------------------------- */
 
                 const pixelRatio =
                     window.devicePixelRatio ||
@@ -591,10 +682,6 @@ document.addEventListener(
                 );
 
 
-                /* -----------------------------------------
-                   RENDER
-                ----------------------------------------- */
-
                 await page.render({
 
                     canvasContext:
@@ -606,10 +693,6 @@ document.addEventListener(
                 }).promise;
 
 
-                /* -----------------------------------------
-                   UPDATE PAGE NUMBER
-                ----------------------------------------- */
-
                 currentPDFPage =
                     pageNumber;
 
@@ -617,10 +700,6 @@ document.addEventListener(
                 pdfPageNumber.textContent =
                     `${currentPDFPage} / ${currentPDF.numPages}`;
 
-
-                /* -----------------------------------------
-                   BUTTON STATES
-                ----------------------------------------- */
 
                 prevPdfPage.disabled =
                     currentPDFPage <= 1;
@@ -644,10 +723,6 @@ document.addEventListener(
             rendering =
                 false;
 
-
-            /* ---------------------------------------------
-               RENDER PENDING PAGE
-            --------------------------------------------- */
 
             if (
                 pendingPage !== null
@@ -730,7 +805,7 @@ document.addEventListener(
                     <div class="pdf-error">
 
                         <p>
-                            Sorry, this chapter
+                            Sorry, this content
                             could not be loaded.
                         </p>
 
@@ -744,7 +819,7 @@ document.addEventListener(
 
 
         /* =================================================
-           LOAD CHAPTER
+           LOAD NOVEL CHAPTER
         ================================================= */
 
         async function loadChapter(
@@ -771,17 +846,9 @@ document.addEventListener(
                 chapterIndex;
 
 
-            /* ---------------------------------------------
-               TITLE
-            --------------------------------------------- */
-
             titleEl.textContent =
                 chapter.title;
 
-
-            /* ---------------------------------------------
-               RESET ZOOM
-            --------------------------------------------- */
 
             zoomLevel =
                 1;
@@ -790,42 +857,20 @@ document.addEventListener(
             updateZoomDisplay();
 
 
-            /* ---------------------------------------------
-               UPDATE INTERACTION ID
-            --------------------------------------------- */
-
             updateInteractionContent(
                 currentChapter
             );
 
 
-            /* ---------------------------------------------
-               INITIALIZE INTERACTIONS
-            --------------------------------------------- */
-
             initializeInteractions();
 
-
-            /* ---------------------------------------------
-               PDF
-            --------------------------------------------- */
 
             await loadPDF(
                 chapter.pdf
             );
 
 
-            /* ---------------------------------------------
-               AUDIO
-            --------------------------------------------- */
-
             if (audioEl) {
-
-                console.log(
-                    "Loading audio:",
-                    chapter.audio
-                );
-
 
                 audioEl.src =
                     chapter.audio;
@@ -833,22 +878,15 @@ document.addEventListener(
 
                 audioEl.load();
 
+
             }
 
-
-            /* ---------------------------------------------
-               SAVE PROGRESS
-            --------------------------------------------- */
 
             localStorage.setItem(
                 storageKey,
                 currentChapter
             );
 
-
-            /* ---------------------------------------------
-               CHAPTER BUTTONS
-            --------------------------------------------- */
 
             if (prevChapterBtn) {
 
@@ -867,9 +905,40 @@ document.addEventListener(
             }
 
 
-            /* ---------------------------------------------
-               SCROLL TO READER
-            --------------------------------------------- */
+            window.scrollTo({
+
+                top: 0,
+
+                behavior: "smooth"
+
+            });
+
+        }
+
+
+        /* =================================================
+           LOAD BLOG / DISCUSSION
+        ================================================= */
+
+        async function loadSingleContent() {
+
+            titleEl.textContent =
+                story.title;
+
+
+            updateZoomDisplay();
+
+
+            updateInteractionContent();
+
+
+            initializeInteractions();
+
+
+            await loadPDF(
+                story.pdf
+            );
+
 
             window.scrollTo({
 
@@ -1045,9 +1114,19 @@ document.addEventListener(
             .then(
                 () => {
 
-                    loadChapter(
-                        currentChapter
-                    );
+                    if (
+                        contentType === "novel"
+                    ) {
+
+                        loadChapter(
+                            currentChapter
+                        );
+
+                    } else {
+
+                        loadSingleContent();
+
+                    }
 
                 }
             );

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,7 +11,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Novels | DigiCafe</title>
+    <title>DigiCafe Reader</title>
 
     <link
         rel="stylesheet"
@@ -29,10 +30,47 @@
 
     <section class="book-page">
 
+
+        <!-- =================================================
+             CONTENT TITLE
+        ================================================== -->
+
         <h4 id="chapterTitle">
             Loading...
         </h4>
 
+
+        <!-- =================================================
+             PUBLICATION DATE
+        ================================================== -->
+
+        <p
+            id="publishedDate"
+            class="published-date"
+            style="display: none;"
+        ></p>
+
+
+        <!-- =================================================
+             AUDIO PLAYER
+        ================================================== -->
+
+        <div
+            class="audio-bottom"
+            id="audioContainer"
+        >
+
+            <audio
+                id="chapterAudio"
+                controls>
+            </audio>
+
+        </div>
+
+
+        <!-- =================================================
+             PDF CONTENT
+        ================================================== -->
 
         <div id="chapterContent">
 
@@ -41,11 +79,19 @@
         </div>
 
 
-        <div class="book-nav">
+        <!-- =================================================
+             CHAPTER NAVIGATION
+        ================================================== -->
+
+        <div
+            class="book-nav"
+            id="chapterNavigation"
+        >
 
             <button id="prevChapter">
                 ⬅ Previous
             </button>
+
 
             <button id="nextChapter">
                 Next ➡
@@ -55,7 +101,7 @@
 
 
         <!-- =================================================
-             DIGICAFE INTERACTION PLACEHOLDER
+             DIGICAFE INTERACTION
         ================================================== -->
 
         <div id="interactionContainer"></div>
@@ -64,17 +110,14 @@
     </section>
 
 
-    <div class="audio-bottom">
+    <!-- =====================================================
+         READER NOTE
+    ====================================================== -->
 
-        <audio
-            id="chapterAudio"
-            controls>
-        </audio>
-
-    </div>
-
-
-    <div class="reader-note">
+    <div
+        class="reader-note"
+        id="readerNote"
+    >
 
         <p>
             <i>
@@ -87,39 +130,59 @@
     </div>
 
 
+    <!-- =====================================================
+         READER NAVIGATION
+    ====================================================== -->
+
     <div class="reader-nav">
 
         <a href="library.html">
             ⬅ Library
         </a>
 
+
         <a href="romance.html">
             ⬅ Romance
         </a>
 
+
         <a href="comedy.html">
             ⬅ Comedy
         </a>
+
 
         <a href="scifi.html">
             ⬅ Sci-Fi
         </a>
 
     </div>
-    
+
+
 </main>
 
 
+<!-- =====================================================
+     SCRIPTS
+====================================================== -->
+
 <script src="stories.js"></script>
+
 
 <script
     type="module"
     src="reader.js">
 </script>
 
-<script src="control-panel.js"></script>
 
-<script src="script.js"></script>
+<script
+    src="control-panel.js">
+</script>
+
+
+<script
+    src="script.js">
+</script>
+
 
 </body>
 
