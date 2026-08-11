@@ -1,3 +1,4 @@
+
 console.log("☕ DigiCafe Shell Loaded");
 
 
@@ -29,6 +30,69 @@ const pages = {
 
 
 /* =====================================================
+   READER MODULE STATE
+
+   Reader JS is an ES module.
+   We load it only when the Reader room is opened.
+
+   IMPORTANT:
+   If your reader JavaScript file has another name,
+   change "./reader.js" below.
+===================================================== */
+
+let readerModuleLoaded = false;
+
+let readerModuleLoading = null;
+
+
+async function loadReaderModule() {
+
+    if (readerModuleLoaded) {
+
+        return;
+
+    }
+
+
+    if (readerModuleLoading) {
+
+        await readerModuleLoading;
+
+        return;
+
+    }
+
+
+    readerModuleLoading =
+        import("./reader.js")
+            .then(() => {
+
+                readerModuleLoaded =
+                    true;
+
+                console.log(
+                    "📖 Reader module loaded."
+                );
+
+            })
+            .catch(error => {
+
+                console.error(
+                    "❌ Could not load reader.js:",
+                    error
+                );
+
+                throw error;
+
+            });
+
+
+    await readerModuleLoading;
+
+}
+
+
+/* =====================================================
    START DIGICAFE
 ===================================================== */
 
@@ -36,7 +100,9 @@ document.addEventListener(
     "DOMContentLoaded",
     async () => {
 
-        console.log("☕ Starting DigiCafe shell...");
+        console.log(
+            "☕ Starting DigiCafe shell..."
+        );
 
 
         /* =================================================
@@ -69,10 +135,6 @@ document.addEventListener(
 
         /* =================================================
            INITIALIZE GLOBAL MUSIC PLAYER
-
-           IMPORTANT:
-           music-player.html MUST already exist
-           before music-player.js is initialized.
         ================================================= */
 
         if (
@@ -100,6 +162,26 @@ document.addEventListener(
         ================================================= */
 
         initNavbar();
+
+
+        /* =================================================
+           INITIALIZE GLOBAL ROOM NAVIGATION
+
+           IMPORTANT:
+
+           We use EVENT DELEGATION here.
+
+           This means links created later inside:
+           - romance.html
+           - comedy.html
+           - scifi.html
+           - library.html
+           - reader.html
+
+           will still work.
+        ================================================= */
+
+        initGlobalNavigation();
 
 
         /* =================================================
@@ -202,6 +284,14 @@ async function loadInitialPage() {
         params.get("page");
 
 
+    const story =
+        params.get("story");
+
+
+    const chapter =
+        params.get("chapter");
+
+
     if (!page) {
 
         page = "home";
@@ -216,9 +306,29 @@ async function loadInitialPage() {
     }
 
 
+    console.log(
+        "🌐 Initial page:",
+        page
+    );
+
+
+    console.log(
+        "📚 Initial story:",
+        story
+    );
+
+
+    console.log(
+        "📖 Initial chapter:",
+        chapter
+    );
+
+
     await navigateTo(
         page,
-        false
+        false,
+        story,
+        chapter
     );
 
 }
@@ -231,7 +341,8 @@ async function loadInitialPage() {
 async function navigateTo(
     page,
     updateHistory = true,
-    story = null
+    story = null,
+    chapter = null
 ) {
 
     /* =================================================
@@ -239,6 +350,10 @@ async function navigateTo(
     ================================================= */
 
     if (!pages[page]) {
+
+        console.warn(
+            `⚠️ Unknown page "${page}". Returning home.`
+        );
 
         page = "home";
 
@@ -267,6 +382,10 @@ async function navigateTo(
 
 
     try {
+
+        /* =================================================
+           SHOW LOADING STATE
+        ================================================= */
 
         content.classList.add(
             "page-loading"
@@ -298,29 +417,35 @@ async function navigateTo(
 
         /* =================================================
            INSERT ROOM
+
+           IMPORTANT:
+           Only insert ONCE.
         ================================================= */
 
         content.innerHTML =
             html;
-content.innerHTML =
-    html;
 
 
-/* =================================================
-   STORE STORY FOR READER
-================================================= */
+        /* =================================================
+           STORE CURRENT READER STORY
+        ================================================= */
 
-if (page === "reader" && story) {
+        if (page === "reader") {
 
-    window.currentReaderStory =
-        story;
+            window.currentReaderStory =
+                story;
 
-}
+        } else {
+
+            window.currentReaderStory =
+                null;
+
+        }
 
 
-content.classList.remove(
-    "page-loading"
-);
+        /* =================================================
+           REMOVE LOADING STATE
+        ================================================= */
 
         content.classList.remove(
             "page-loading"
@@ -333,30 +458,73 @@ content.classList.remove(
 
         if (updateHistory) {
 
-             let url;
+            let url;
 
-if (page === "home") {
 
-    url = "index.html";
+            if (page === "home") {
 
-} else if (
-    page === "reader" &&
-    story
-) {
+                url =
+                    "index.html";
 
-    url =
-        `index.html?page=reader&story=${encodeURIComponent(story)}`;
+            }
 
-} else {
 
-    url =
-        `index.html?page=${page}`;
+            else if (page === "reader") {
 
-}
+                const params =
+                    new URLSearchParams();
+
+
+                params.set(
+                    "page",
+                    "reader"
+                );
+
+
+                if (story) {
+
+                    params.set(
+                        "story",
+                        story
+                    );
+
+                }
+
+
+                if (chapter) {
+
+                    params.set(
+                        "chapter",
+                        chapter
+                    );
+
+                }
+
+
+                url =
+                    `index.html?${params.toString()}`;
+
+            }
+
+
+            else {
+
+                url =
+                    `index.html?page=${encodeURIComponent(
+                        page
+                    )}`;
+
+            }
+
 
             window.history.pushState(
                 {
-                    page: page
+                    page: page,
+
+                    story: story,
+
+                    chapter: chapter
+
                 },
                 "",
                 url
@@ -388,128 +556,236 @@ if (page === "home") {
         document.body.dataset.beshyPage =
             page;
 
-/* =================================================
-   ROOM INITIALIZATION
-================================================= */
 
-switch (page) {
-
-    case "home":
-
-        if (
-            typeof window.initWelcome ===
-            "function"
-        ) {
-
-            window.initWelcome();
-
-        }
-
-        break;
-
-
-    case "music":
-
-        if (
-            typeof window.initMusicLounge ===
-            "function"
-        ) {
-
-            await window.initMusicLounge();
-
-        }
-
-        break;
-
-
-    case "library":
-
-        if (
-            typeof window.initLibrary ===
-            "function"
-        ) {
-
-            window.initLibrary();
-
-        }
-
-        break;
-
-
-    case "romance":
-
-        console.log("💗 Opening Romance");
-
-        break;
-
-
-    case "comedy":
-
-        console.log("😂 Opening Comedy");
-
-        break;
-
-
-    case "scifi":
-
-        console.log("🚀 Opening Sci-Fi");
-
-        break;
-
-
-    case "reader":
-
-        console.log(
-            "📖 Opening Reader:",
-            story
-        );
-
-        if (
-            typeof window.initReader ===
-            "function"
-        ) {
-
-            await window.initReader(
-                story
-            );
-
-        }
-
-        break;
-
-
-    case "about":
-
-        if (
-            typeof window.initAbout ===
-            "function"
-        ) {
-
-            window.initAbout();
-
-        }
-
-        break;
-
-
-    case "account":
-
-        if (
-            typeof window.initAccount ===
-            "function"
-        ) {
-
-            window.initAccount();
-
-        }
-
-        break;
-
-}
         /* =================================================
-           UPDATE PLAYER INDICATORS
+           ROOM INITIALIZATION
+        ================================================= */
 
-           Music cards may have just been created.
+        switch (page) {
+
+
+            /* =============================================
+               HOME
+            ============================================= */
+
+            case "home":
+
+                if (
+                    typeof window.initWelcome ===
+                    "function"
+                ) {
+
+                    window.initWelcome();
+
+                }
+
+                break;
+
+
+            /* =============================================
+               MUSIC
+            ============================================= */
+
+            case "music":
+
+                if (
+                    typeof window.initMusicLounge ===
+                    "function"
+                ) {
+
+                    await window.initMusicLounge();
+
+                }
+
+                break;
+
+
+            /* =============================================
+               LIBRARY
+            ============================================= */
+
+            case "library":
+
+                if (
+                    typeof window.initLibrary ===
+                    "function"
+                ) {
+
+                    await window.initLibrary();
+
+                }
+
+                break;
+
+
+            /* =============================================
+               ROMANCE
+            ============================================= */
+
+            case "romance":
+
+                console.log(
+                    "💗 Opening Romance"
+                );
+
+                break;
+
+
+            /* =============================================
+               COMEDY
+            ============================================= */
+
+            case "comedy":
+
+                console.log(
+                    "😂 Opening Comedy"
+                );
+
+                break;
+
+
+            /* =============================================
+               SCI-FI
+            ============================================= */
+
+            case "scifi":
+
+                console.log(
+                    "🚀 Opening Sci-Fi"
+                );
+
+                break;
+
+
+            /* =============================================
+               READER
+            ============================================= */
+
+            case "reader":
+
+                console.log(
+                    "📖 Opening Reader"
+                );
+
+
+                console.log(
+                    "📚 Story:",
+                    story
+                );
+
+
+                console.log(
+                    "📖 Chapter:",
+                    chapter
+                );
+
+
+                /* -----------------------------------------
+                   LOAD READER MODULE
+                ----------------------------------------- */
+
+                await loadReaderModule();
+
+
+                /* -----------------------------------------
+                   INITIALIZE READER
+                ----------------------------------------- */
+
+                if (
+                    typeof window.initReader ===
+                    "function"
+                ) {
+
+                    let chapterNumber =
+                        null;
+
+
+                    if (
+                        chapter !== null &&
+                        chapter !== undefined &&
+                        chapter !== ""
+                    ) {
+
+                        const parsedChapter =
+                            parseInt(
+                                chapter,
+                                10
+                            );
+
+
+                        if (
+                            Number.isInteger(
+                                parsedChapter
+                            )
+                        ) {
+
+                            chapterNumber =
+                                parsedChapter;
+
+                        }
+
+                    }
+
+
+                    await window.initReader(
+                        story,
+                        chapterNumber
+                    );
+
+                } else {
+
+                    console.error(
+                        "❌ initReader() was not found after loading reader.js."
+                    );
+
+                }
+
+                break;
+
+
+            /* =============================================
+               ABOUT
+            ============================================= */
+
+            case "about":
+
+                if (
+                    typeof window.initAbout ===
+                    "function"
+                ) {
+
+                    window.initAbout();
+
+                }
+
+                break;
+
+
+            /* =============================================
+               ACCOUNT
+            ============================================= */
+
+            case "account":
+
+                if (
+                    typeof window.initAccount ===
+                    "function"
+                ) {
+
+                    window.initAccount();
+
+                }
+
+                break;
+
+        }
+
+
+        /* =================================================
+           UPDATE MUSIC PLAYER UI
+
+           Music cards may have been created
+           by the room.
         ================================================= */
 
         if (
@@ -553,11 +829,148 @@ switch (page) {
                     DigiCafe couldn't open this room.
                 </p>
 
+                <p>
+                    ${error.message}
+                </p>
+
             </section>
 
         `;
 
     }
+
+}
+
+
+/* =====================================================
+   GLOBAL NAVIGATION
+   -----------------------------------------------------
+   IMPORTANT:
+
+   This uses EVENT DELEGATION.
+
+   Do NOT attach click listeners individually
+   to room links because room HTML is loaded
+   dynamically after the shell starts.
+===================================================== */
+
+function initGlobalNavigation() {
+
+    document.addEventListener(
+        "click",
+        event => {
+
+            /* ---------------------------------------------
+               Find the nearest navigation element
+            --------------------------------------------- */
+
+            const link =
+                event.target.closest(
+                    "[data-page]"
+                );
+
+
+            if (!link) {
+
+                return;
+
+            }
+
+
+            /* ---------------------------------------------
+               Ignore modified clicks
+
+               This allows:
+               Ctrl + Click
+               Cmd + Click
+               Shift + Click
+               Middle-click
+               to behave normally.
+            --------------------------------------------- */
+
+            if (
+                event.ctrlKey ||
+                event.metaKey ||
+                event.shiftKey ||
+                event.altKey ||
+                event.button !== 0
+            ) {
+
+                return;
+
+            }
+
+
+            /* ---------------------------------------------
+               Get page
+            --------------------------------------------- */
+
+            const page =
+                link.dataset.page;
+
+
+            if (!page) {
+
+                return;
+
+            }
+
+
+            /* ---------------------------------------------
+               Get story
+            --------------------------------------------- */
+
+            const story =
+                link.dataset.story ||
+                null;
+
+
+            /* ---------------------------------------------
+               Get chapter
+            --------------------------------------------- */
+
+            const chapter =
+                link.dataset.chapter ||
+                null;
+
+
+            /* ---------------------------------------------
+               Prevent normal browser navigation
+
+               DigiCafe will load the room instead.
+            --------------------------------------------- */
+
+            event.preventDefault();
+
+
+            console.log(
+                "🔗 DigiCafe navigation:",
+                {
+                    page,
+                    story,
+                    chapter
+                }
+            );
+
+
+            /* ---------------------------------------------
+               Navigate
+            --------------------------------------------- */
+
+            navigateTo(
+                page,
+                true,
+                story,
+                chapter
+            );
+
+        }
+    );
+
+
+    console.log(
+        "☕ Global navigation initialized."
+    );
 
 }
 
@@ -634,47 +1047,6 @@ function initNavbar() {
     );
 
 
-    /* =================================================
-       NAVIGATION LINKS
-    ================================================= */
-
-    document
-    .querySelectorAll(
-       ".navbar__links, .library-room-link, [data-page]"
-        )
-        .forEach(
-            link => {
-
-                link.addEventListener(
-                    "click",
-                    event => {
-
-                        const page =
-                            link.dataset.page;
-const story =
-    link.dataset.story || null;
-
-                        if (!page) {
-
-                            return;
-
-                        }
-
-
-                        event.preventDefault();
-
-
-                        navigateTo(
-                            page
-                        );
-
-                    }
-                );
-
-            }
-        );
-
-
     console.log(
         "☕ Navbar initialized."
     );
@@ -692,7 +1064,7 @@ function highlightActiveLink(
 
     document
         .querySelectorAll(
-            ".navbar__links"
+            "[data-page]"
         )
         .forEach(
             link => {
@@ -771,19 +1143,59 @@ function closeMobileMenu() {
 
 window.addEventListener(
     "popstate",
-    event => {
+    async event => {
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        /* ---------------------------------------------
+           Get page
+        --------------------------------------------- */
 
         const page =
             event.state?.page ||
-            new URLSearchParams(
-                window.location.search
-            ).get("page") ||
+            params.get("page") ||
             "home";
 
 
-        navigateTo(
+        /* ---------------------------------------------
+           Get story
+        --------------------------------------------- */
+
+        const story =
+            event.state?.story ||
+            params.get("story") ||
+            null;
+
+
+        /* ---------------------------------------------
+           Get chapter
+        --------------------------------------------- */
+
+        const chapter =
+            event.state?.chapter ||
+            params.get("chapter") ||
+            null;
+
+
+        console.log(
+            "↩️ Browser navigation:",
+            {
+                page,
+                story,
+                chapter
+            }
+        );
+
+
+        await navigateTo(
             page,
-            false
+            false,
+            story,
+            chapter
         );
 
     }
@@ -796,3 +1208,4 @@ window.addEventListener(
 
 window.navigateTo =
     navigateTo;
+

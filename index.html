@@ -163,13 +163,26 @@
      - room pages
 ========================== -->
 
+<!-- =========================
+     DIGICAFE SHELL
+========================== -->
+
 <script src="script.js"></script>
 
 
 <!-- =========================
-     GLOBAL MUSIC PLAYER LOGIC
+     STORY DATABASE
 
-     Loaded after the shell.
+     Must load before reader.js
+     because reader.js uses
+     window.STORIES.
+========================== -->
+
+<script src="stories.js"></script>
+
+
+<!-- =========================
+     GLOBAL MUSIC PLAYER LOGIC
 ========================== -->
 
 <script src="music-player.js"></script>
@@ -183,6 +196,18 @@
 
 
 <!-- =========================
+     READER
+
+     Reader is an ES module.
+========================== -->
+
+<script
+    type="module"
+    src="reader.js"
+></script>
+
+
+<!-- =========================
      BESHY
 ========================== -->
 
@@ -190,8 +215,6 @@
     type="module"
     src="Beshy/beshy.js"
 ></script>
-
-
 </body>
 
 </html>

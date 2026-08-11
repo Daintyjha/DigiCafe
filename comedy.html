@@ -1,74 +1,127 @@
-<!DOCTYPE html>
-<html lang="en">
+<!-- =====================================================
+     DIGICAFE COMEDY ROOM
+     This is a ROOM loaded inside index.html.
 
-<head>
-  <meta charset="UTF-8">
-  <title>Comedy</title>
-  <link rel="stylesheet" href="style.css">
-</head>
+     Do NOT include:
+     - html
+     - head
+     - body
+     - navbar
+     - footer
+     - Beshy
+     - global music player
+     - scripts
+===================================================== -->
 
-<body>
-
-  <div id="navbar"></div>
-
-  <main class="story-layout">
+<section class="story-layout">
 
     <h3>📚 Library</h3>
 
+
     <section class="stories">
 
-      <h1>😂 Comedy</h1>
+        <h1>😂 Comedy</h1>
 
-      <div class="story-card">
 
-        <img src="Asset/photo/Me_Myself_and_Mia.png" alt="Me, Myself, and Mia">
+        <!-- =================================================
+             ME, MYSELF, AND MIA
+        ================================================== -->
 
-        <div class="story-content">
+        <div class="story-card">
 
-          <a href="reader.html?story=Me_Myself_and_Mia" class="story-link">
-            <h3>Me, Myself, and Mia 📖</h3>
-          </a>
+            <img
+                src="Asset/photo/Me_Myself_and_Mia.png"
+                alt="Me, Myself, and Mia"
+            >
 
-          <p>
-            She graduated at forty.
-            <br>
-            Late, broke, and completely unprepared for adult life.
-            <br>
-            Good thing she has Mia—her best friend who always has opinions,
-            advice, and questionable life strategies.
-            <br>
-            The only issue?
-            <br>
-            Nobody else seems to know Mia exists.
-          </p>
+
+            <div class="story-content">
+
+                <a
+                    href="#"
+                    class="story-link"
+                    data-page="reader"
+                    data-story="Me_Myself_and_Mia"
+                >
+
+                    <h3>
+                        Me, Myself, and Mia 📖
+                    </h3>
+
+                </a>
+
+
+                <p>
+                    She graduated at forty.
+
+                    <br>
+
+                    Late, broke, and completely unprepared
+                    for adult life.
+
+                    <br>
+
+                    Good thing she has Mia—her best friend
+                    who always has opinions, advice, and
+                    questionable life strategies.
+
+                    <br>
+
+                    The only issue?
+
+                    <br>
+
+                    Nobody else seems to know Mia exists.
+                </p>
+
+            </div>
 
         </div>
 
-      </div>
-
     </section>
+
+
+    <!-- =================================================
+         STORY NAVIGATION
+    ================================================== -->
 
     <aside class="story-nav">
 
-      <a href="library.html">← Back to Library</a>
+        <a
+            href="#"
+            data-page="library"
+        >
+            ← Back to Library
+        </a>
 
-      <h4>Genres</h4>
 
-      <a href="romance.html">💗 Romance</a>
-      <a href="comedy.html">😂 Comedy</a>
-      <a href="scifi.html">🚀 Sci-Fi</a>
+        <h4>Genres</h4>
+
+
+        <a
+            href="#"
+            data-page="romance"
+        >
+            💗 Romance
+        </a>
+
+
+        <a
+            href="#"
+            data-page="comedy"
+        >
+            😂 Comedy
+        </a>
+
+
+        <a
+            href="#"
+            data-page="scifi"
+        >
+            🚀 Sci-Fi
+        </a>
 
     </aside>
 
-  </main>
+</section>
 
-  <div id="footer"></div>
-
-  <div id="beshy-container"></div>
-
-  <script type="module" src="Beshy/beshy.js"></script>
-  <script src="script.js"></script>
-
-</body>
-
-</html>
