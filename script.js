@@ -33,11 +33,7 @@ const pages = {
    READER MODULE STATE
 
    Reader JS is an ES module.
-   We load it only when the Reader room is opened.
-
-   IMPORTANT:
-   If your reader JavaScript file has another name,
-   change "./reader.js" below.
+   It is loaded only when the Reader room opens.
 ===================================================== */
 
 let readerModuleLoaded = false;
@@ -166,19 +162,6 @@ document.addEventListener(
 
         /* =================================================
            INITIALIZE GLOBAL ROOM NAVIGATION
-
-           IMPORTANT:
-
-           We use EVENT DELEGATION here.
-
-           This means links created later inside:
-           - romance.html
-           - comedy.html
-           - scifi.html
-           - library.html
-           - reader.html
-
-           will still work.
         ================================================= */
 
         initGlobalNavigation();
@@ -335,6 +318,438 @@ async function loadInitialPage() {
 
 
 /* =====================================================
+   LIBRARY CONTENT RENDERER
+   -----------------------------------------------------
+   Blog and Discussion content come from stories.js.
+
+   stories.js creates:
+
+       window.STORIES
+
+   This function reads the entries and creates
+   clickable links inside:
+
+       #blogList
+       #discussionList
+===================================================== */
+
+window.initLibrary = async function () {
+
+    console.log(
+        "📚 Initializing DigiCafe Library..."
+    );
+
+
+    const blogList =
+        document.getElementById(
+            "blogList"
+        );
+
+
+    const discussionList =
+        document.getElementById(
+            "discussionList"
+        );
+
+
+    /* =================================================
+       CHECK STORY DATABASE
+    ================================================= */
+
+    if (
+        !window.STORIES
+    ) {
+
+        console.error(
+            "❌ window.STORIES is not available."
+        );
+
+
+        if (blogList) {
+
+            blogList.innerHTML = `
+                <p class="library-empty">
+                    Blog content could not be loaded.
+                </p>
+            `;
+
+        }
+
+
+        if (discussionList) {
+
+            discussionList.innerHTML = `
+                <p class="library-empty">
+                    Discussion content could not be loaded.
+                </p>
+            `;
+
+        }
+
+
+        return;
+
+    }
+
+
+    /* =================================================
+       CLEAR EXISTING CONTENT
+    ================================================= */
+
+    if (blogList) {
+
+        blogList.innerHTML = "";
+
+    }
+
+
+    if (discussionList) {
+
+        discussionList.innerHTML = "";
+
+    }
+
+
+    /* =================================================
+       TRACK CONTENT
+    ================================================= */
+
+    let blogCount =
+        0;
+
+
+    let discussionCount =
+        0;
+
+
+    /* =================================================
+       LOOP THROUGH STORIES
+    ================================================= */
+
+    Object.entries(
+        window.STORIES
+    ).forEach(
+        ([storyKey, story]) => {
+
+            if (!story) {
+
+                return;
+
+            }
+
+
+            const contentType =
+                story.type || "novel";
+
+
+            /* =========================================
+               BLOG
+            ========================================= */
+
+            if (
+                contentType === "blog" &&
+                blogList
+            ) {
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "library-content-item";
+
+
+                const link =
+                    document.createElement(
+                        "a"
+                    );
+
+
+                link.href =
+                    "#";
+
+
+                link.className =
+                    "library-content-link";
+
+
+                link.dataset.page =
+                    "reader";
+
+
+                link.dataset.story =
+                    storyKey;
+
+
+                link.innerHTML = `
+
+                    <span class="content-icon">
+                        📝
+                    </span>
+
+                    <span class="content-info">
+
+                        <strong>
+                            ${escapeHTML(
+                                story.title ||
+                                storyKey
+                            )}
+                        </strong>
+
+                        ${
+                            story.published
+                                ? `
+                                    <small>
+                                        Published ${formatPublishedDate(
+                                            story.published
+                                        )}
+                                    </small>
+                                  `
+                                : ""
+                        }
+
+                    </span>
+
+                `;
+
+
+                item.appendChild(
+                    link
+                );
+
+
+                blogList.appendChild(
+                    item
+                );
+
+
+                blogCount++;
+
+            }
+
+
+            /* =========================================
+               DISCUSSION
+            ========================================= */
+
+            if (
+                contentType === "discussion" &&
+                discussionList
+            ) {
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "library-content-item";
+
+
+                const link =
+                    document.createElement(
+                        "a"
+                    );
+
+
+                link.href =
+                    "#";
+
+
+                link.className =
+                    "library-content-link";
+
+
+                link.dataset.page =
+                    "reader";
+
+
+                link.dataset.story =
+                    storyKey;
+
+
+                link.innerHTML = `
+
+                    <span class="content-icon">
+                        💬
+                    </span>
+
+                    <span class="content-info">
+
+                        <strong>
+                            ${escapeHTML(
+                                story.title ||
+                                storyKey
+                            )}
+                        </strong>
+
+                        ${
+                            story.published
+                                ? `
+                                    <small>
+                                        Published ${formatPublishedDate(
+                                            story.published
+                                        )}
+                                    </small>
+                                  `
+                                : ""
+                        }
+
+                    </span>
+
+                `;
+
+
+                item.appendChild(
+                    link
+                );
+
+
+                discussionList.appendChild(
+                    item
+                );
+
+
+                discussionCount++;
+
+            }
+
+        }
+    );
+
+
+    /* =================================================
+       EMPTY STATES
+    ================================================= */
+
+    if (
+        blogList &&
+        blogCount === 0
+    ) {
+
+        blogList.innerHTML = `
+
+            <p class="library-empty">
+                No blog posts yet.
+            </p>
+
+        `;
+
+    }
+
+
+    if (
+        discussionList &&
+        discussionCount === 0
+    ) {
+
+        discussionList.innerHTML = `
+
+            <p class="library-empty">
+                No discussions yet.
+            </p>
+
+        `;
+
+    }
+
+
+    console.log(
+        "📝 Blog posts:",
+        blogCount
+    );
+
+
+    console.log(
+        "💬 Discussions:",
+        discussionCount
+    );
+
+
+    console.log(
+        "📚 DigiCafe Library ready."
+    );
+
+};
+
+
+/* =====================================================
+   ESCAPE HTML
+   -----------------------------------------------------
+   Prevents story titles from being interpreted
+   as HTML when inserted into the Library.
+===================================================== */
+
+function escapeHTML(
+    value
+) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        String(
+            value
+        );
+
+
+    return div.innerHTML;
+
+}
+
+
+/* =====================================================
+   FORMAT PUBLISHED DATE
+===================================================== */
+
+function formatPublishedDate(
+    dateString
+) {
+
+    if (!dateString) {
+
+        return "";
+
+    }
+
+
+    const date =
+        new Date(
+            dateString +
+            "T00:00:00"
+        );
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return dateString;
+
+    }
+
+
+    return date.toLocaleDateString(
+        "en-US",
+        {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        }
+    );
+
+}
+
+
+/* =====================================================
    NAVIGATION
 ===================================================== */
 
@@ -417,9 +832,6 @@ async function navigateTo(
 
         /* =================================================
            INSERT ROOM
-
-           IMPORTANT:
-           Only insert ONCE.
         ================================================= */
 
         content.innerHTML =
@@ -430,7 +842,9 @@ async function navigateTo(
            STORE CURRENT READER STORY
         ================================================= */
 
-        if (page === "reader") {
+        if (
+            page === "reader"
+        ) {
 
             window.currentReaderStory =
                 story;
@@ -461,7 +875,9 @@ async function navigateTo(
             let url;
 
 
-            if (page === "home") {
+            if (
+                page === "home"
+            ) {
 
                 url =
                     "index.html";
@@ -469,7 +885,9 @@ async function navigateTo(
             }
 
 
-            else if (page === "reader") {
+            else if (
+                page === "reader"
+            ) {
 
                 const params =
                     new URLSearchParams();
@@ -612,6 +1030,12 @@ async function navigateTo(
                 ) {
 
                     await window.initLibrary();
+
+                } else {
+
+                    console.error(
+                        "❌ initLibrary() was not found."
+                    );
 
                 }
 
@@ -783,9 +1207,6 @@ async function navigateTo(
 
         /* =================================================
            UPDATE MUSIC PLAYER UI
-
-           Music cards may have been created
-           by the room.
         ================================================= */
 
         if (
@@ -830,7 +1251,9 @@ async function navigateTo(
                 </p>
 
                 <p>
-                    ${error.message}
+                    ${escapeHTML(
+                        error.message
+                    )}
                 </p>
 
             </section>
@@ -845,13 +1268,8 @@ async function navigateTo(
 /* =====================================================
    GLOBAL NAVIGATION
    -----------------------------------------------------
-   IMPORTANT:
-
-   This uses EVENT DELEGATION.
-
-   Do NOT attach click listeners individually
-   to room links because room HTML is loaded
-   dynamically after the shell starts.
+   EVENT DELEGATION means links created later
+   inside dynamically loaded rooms will still work.
 ===================================================== */
 
 function initGlobalNavigation() {
@@ -861,7 +1279,7 @@ function initGlobalNavigation() {
         event => {
 
             /* ---------------------------------------------
-               Find the nearest navigation element
+               Find nearest navigation element
             --------------------------------------------- */
 
             const link =
@@ -879,13 +1297,6 @@ function initGlobalNavigation() {
 
             /* ---------------------------------------------
                Ignore modified clicks
-
-               This allows:
-               Ctrl + Click
-               Cmd + Click
-               Shift + Click
-               Middle-click
-               to behave normally.
             --------------------------------------------- */
 
             if (
@@ -936,8 +1347,6 @@ function initGlobalNavigation() {
 
             /* ---------------------------------------------
                Prevent normal browser navigation
-
-               DigiCafe will load the room instead.
             --------------------------------------------- */
 
             event.preventDefault();
