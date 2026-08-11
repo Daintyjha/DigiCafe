@@ -39,7 +39,7 @@ window.STORIES = {
   And_Then_Theres_Beshy: {
     title: "And Then There's Beshy",
     type: "blog",
-    published: "2026-08-10",
+    published: "2026-08-09",
     pdf: "./Asset/NonFiction/Blog/and-then-theres-beshy.pdf"
   },
 
@@ -51,7 +51,7 @@ window.STORIES = {
   What_Did_You_Want_to_Be_When_You_Were_Younger: {
     title: "What Did You Want to Be When You Were Younger?",
     type: "discussion",
-    published: "2026-08-10",
+    published: "2026-08-08",
     pdf: "./Asset/NonFiction/Discussion/what-did-you-want-to-be-when-you-were-younger.pdf"
   }
 
