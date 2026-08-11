@@ -1,4 +1,3 @@
-
 console.log("☕ DigiCafe Shell Loaded");
 
 
@@ -84,6 +83,119 @@ async function loadReaderModule() {
 
 
     await readerModuleLoading;
+
+}
+
+
+/* =====================================================
+   MUSIC LOUNGE MODULE STATE
+
+   music.html is loaded dynamically with innerHTML.
+
+   Because scripts inside dynamically inserted HTML
+   do not execute normally, music.js must be loaded
+   manually by the DigiCafe shell.
+
+   It is loaded only once, when the Music Lounge opens.
+===================================================== */
+
+let musicModuleLoaded = false;
+
+let musicModuleLoading = null;
+
+
+async function loadMusicModule() {
+
+    /* =================================================
+       ALREADY LOADED
+    ================================================= */
+
+    if (musicModuleLoaded) {
+
+        return;
+
+    }
+
+
+    /* =================================================
+       CURRENTLY LOADING
+    ================================================= */
+
+    if (musicModuleLoading) {
+
+        await musicModuleLoading;
+
+        return;
+
+    }
+
+
+    /* =================================================
+       LOAD MUSIC.JS
+    ================================================= */
+
+    musicModuleLoading =
+        new Promise(
+            (resolve, reject) => {
+
+                const script =
+                    document.createElement(
+                        "script"
+                    );
+
+
+                script.src =
+                    "music.js";
+
+
+                script.async =
+                    false;
+
+
+                script.onload =
+                    () => {
+
+                        musicModuleLoaded =
+                            true;
+
+
+                        console.log(
+                            "🎵 Music Lounge module loaded."
+                        );
+
+
+                        resolve();
+
+                    };
+
+
+                script.onerror =
+                    error => {
+
+                        console.error(
+                            "❌ Could not load music.js:",
+                            error
+                        );
+
+
+                        reject(
+                            new Error(
+                                "Could not load music.js"
+                            )
+                        );
+
+                    };
+
+
+                document.body.appendChild(
+                    script
+                );
+
+            }
+        );
+
+
+    await musicModuleLoading;
 
 }
 
@@ -678,9 +790,6 @@ window.initLibrary = async function () {
 
 /* =====================================================
    ESCAPE HTML
-   -----------------------------------------------------
-   Prevents story titles from being interpreted
-   as HTML when inserted into the Library.
 ===================================================== */
 
 function escapeHTML(
@@ -1006,12 +1115,47 @@ async function navigateTo(
 
             case "music":
 
+                console.log(
+                    "🎵 Opening Music Lounge..."
+                );
+
+
+                /* -----------------------------------------
+                   Load music.js
+                ----------------------------------------- */
+
+                try {
+
+                    await loadMusicModule();
+
+                } catch (error) {
+
+                    console.error(
+                        "❌ Music Lounge module failed:",
+                        error
+                    );
+
+                    break;
+
+                }
+
+
+                /* -----------------------------------------
+                   Initialize Music Lounge
+                ----------------------------------------- */
+
                 if (
                     typeof window.initMusicLounge ===
                     "function"
                 ) {
 
                     await window.initMusicLounge();
+
+                } else {
+
+                    console.error(
+                        "❌ initMusicLounge() was not found."
+                    );
 
                 }
 
@@ -1268,7 +1412,7 @@ async function navigateTo(
 /* =====================================================
    GLOBAL NAVIGATION
    -----------------------------------------------------
-   EVENT DELEGATION means links created later
+   Event delegation means links created later
    inside dynamically loaded rooms will still work.
 ===================================================== */
 
@@ -1617,4 +1761,3 @@ window.addEventListener(
 
 window.navigateTo =
     navigateTo;
-
