@@ -302,7 +302,25 @@ async function navigateTo(
 
         content.innerHTML =
             html;
+content.innerHTML =
+    html;
 
+
+/* =================================================
+   STORE STORY FOR READER
+================================================= */
+
+if (page === "reader" && story) {
+
+    window.currentReaderStory =
+        story;
+
+}
+
+
+content.classList.remove(
+    "page-loading"
+);
 
         content.classList.remove(
             "page-loading"
@@ -370,85 +388,124 @@ if (page === "home") {
         document.body.dataset.beshyPage =
             page;
 
+/* =================================================
+   ROOM INITIALIZATION
+================================================= */
 
-        /* =================================================
-           ROOM INITIALIZATION
-        ================================================= */
+switch (page) {
 
-        switch (page) {
+    case "home":
 
-            case "home":
+        if (
+            typeof window.initWelcome ===
+            "function"
+        ) {
 
-                if (
-                    typeof window.initWelcome ===
-                    "function"
-                ) {
-
-                    window.initWelcome();
-
-                }
-
-                break;
-
-
-            case "music":
-
-                if (
-                    typeof window.initMusicLounge ===
-                    "function"
-                ) {
-
-                    await window.initMusicLounge();
-
-                }
-
-                break;
-
-
-            case "library":
-
-                if (
-                    typeof window.initLibrary ===
-                    "function"
-                ) {
-
-                    window.initLibrary();
-
-                }
-
-                break;
-
-
-            case "about":
-
-                if (
-                    typeof window.initAbout ===
-                    "function"
-                ) {
-
-                    window.initAbout();
-
-                }
-
-                break;
-
-
-            case "account":
-
-                if (
-                    typeof window.initAccount ===
-                    "function"
-                ) {
-
-                    window.initAccount();
-
-                }
-
-                break;
+            window.initWelcome();
 
         }
 
+        break;
 
+
+    case "music":
+
+        if (
+            typeof window.initMusicLounge ===
+            "function"
+        ) {
+
+            await window.initMusicLounge();
+
+        }
+
+        break;
+
+
+    case "library":
+
+        if (
+            typeof window.initLibrary ===
+            "function"
+        ) {
+
+            window.initLibrary();
+
+        }
+
+        break;
+
+
+    case "romance":
+
+        console.log("💗 Opening Romance");
+
+        break;
+
+
+    case "comedy":
+
+        console.log("😂 Opening Comedy");
+
+        break;
+
+
+    case "scifi":
+
+        console.log("🚀 Opening Sci-Fi");
+
+        break;
+
+
+    case "reader":
+
+        console.log(
+            "📖 Opening Reader:",
+            story
+        );
+
+        if (
+            typeof window.initReader ===
+            "function"
+        ) {
+
+            await window.initReader(
+                story
+            );
+
+        }
+
+        break;
+
+
+    case "about":
+
+        if (
+            typeof window.initAbout ===
+            "function"
+        ) {
+
+            window.initAbout();
+
+        }
+
+        break;
+
+
+    case "account":
+
+        if (
+            typeof window.initAccount ===
+            "function"
+        ) {
+
+            window.initAccount();
+
+        }
+
+        break;
+
+}
         /* =================================================
            UPDATE PLAYER INDICATORS
 
