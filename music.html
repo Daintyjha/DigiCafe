@@ -34,7 +34,6 @@
 
 </head>
 <body>
-<div id="navbar"></div>
 <div class="music-app">
 
 <!-- ================= SIDEBAR ================= -->
@@ -217,79 +216,6 @@ streaming platform.
 Every listen helps independent music grow.
 </p></section>
 </main>
-<!-- ================= FIXED PLAYER ================= -->
-
-<footer class="player">
-
-<div class="now-playing">
-
-  <div class="now-playing-info">
-
-    <h3 id="trackTitle">
-      Nothing playing
-    </h3>
-
-
-
-    <small id="playbackSource">
-      Select a song to begin
-    </small>
-
-  </div>
-
-</div>
-<div class="controls">
-
-    <div class="player-actions">
-<button id="favoriteBtn">
-♡
-</button>
-</div>
-<button id="prevBtn">
-⏮
-</button>
-<button id="playBtn">
-▶
-</button>
-<button id="nextBtn">
-⏭
-</button>
-<button id="shuffleBtn">
-🔀
-</button>
-</div>
-<div class="progress">
-<span id="currentTime">
-0:00
-</span>
-<input
-type="range"
-id="progressBar"
-min="0"
-max="100"
-value="0">
-<span id="duration">
-0:00
-</span>
-</div>
-<div class="volume">
-🔊
-<input
-type="range"
-id="volumeSlider"
-min="0"
-max="1"
-step="0.01"
-value="1">
-</div>
-<audio
-  id="audioPlayer"
-  preload="metadata">
-</audio>
-</footer><script src="script.js"></script>
-
-<script src="music.js"defer ></script>
-<div id="beshy-container"></div>
-<script type="module" src="Beshy/beshy.js"></script>
 </body>
+<script src="music.js"></script>
 </html>

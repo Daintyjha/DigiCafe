@@ -1,237 +1,197 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
+<meta charset="UTF-8">
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- PAGE TITLE -->
-    <title>DigiCafe | A Cozy Digital Café for Music, Stories & Creativity</title>
-
-    <!-- SEO META -->
-    <meta name="description" content="Welcome to DigiCafe, a cozy digital café created by DaintyJha. Explore original music, relaxing soundscapes, audiobooks, stories, and creative experiences designed for quiet moments and imagination.">
-
-    <meta name="author" content="DaintyJha">
-
-    <meta name="robots" content="index, follow">
-
-
-    <!-- SOCIAL MEDIA PREVIEW -->
-    <meta property="og:title" content="DigiCafe | A Cozy Digital Café">
-
-    <meta property="og:description" content="A peaceful online café for music, stories, and creative escapes created by DaintyJha.">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="images/digicafe-preview.jpg">
-    <!-- MOBILE BROWSER COLOR -->
-    <meta name="theme-color" content="#f5efe6">
-    <!-- GOOGLE FONT -->
-    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@300;400;600&display=swap" rel="stylesheet">
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
-</head>
-
-
-<body data-beshy-page="lobby">
-
-<!-- NAVIGATION LOADS HERE -->
-<div id="navbar"></div>
-<main class="cafe-home">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
 <!-- =========================
-     DIGICAFE ENTRANCE
+     PAGE TITLE
 ========================== -->
 
-<div id="welcome-screen">
+<title>
+    DigiCafe | A Cozy Digital Café
+</title>
 
-    <div class="entrance-stars"></div>
 
-    <div class="welcome-title">
-        WELCOME
-    </div>
+<!-- =========================
+     SEO
+========================== -->
 
-    <div class="cafe-entrance">
+<meta
+    name="description"
+    content="Welcome to DigiCafe, a cozy digital café created by DaintyJha. Explore original music, stories, audiobooks, and creative experiences."
+>
 
-        <!-- Café sign -->
-        <div class="cafe-sign">
-            ☕ DigiCafe
-        </div>
+<meta
+    name="author"
+    content="DaintyJha"
+>
 
-        <!-- Windows -->
-        <div class="cafe-window left"></div>
-        <div class="cafe-window right"></div>
+<meta
+    name="robots"
+    content="index, follow"
+>
 
-        <!-- Door -->
-        <button id="enter-btn" class="cafe-door" aria-label="Enter DigiCafe">
 
-            <span class="door-content">
+<!-- =========================
+     SOCIAL MEDIA PREVIEW
+========================== -->
 
-                <span class="door-icon">
-                    ✦
-                </span>
+<meta
+    property="og:title"
+    content="DigiCafe | A Cozy Digital Café"
+>
 
-                <span class="door-text">
-                    Enter
-                </span>
+<meta
+    property="og:description"
+    content="A peaceful online café for music, stories, and creative escapes created by DaintyJha."
+>
 
-            </span>
+<meta
+    property="og:type"
+    content="website"
+>
 
-            <span class="door-handle"></span>
+<meta
+    property="og:image"
+    content="images/digicafe-preview.jpg"
+>
 
-        </button>
 
-    </div>
+<!-- =========================
+     MOBILE BROWSER COLOR
+========================== -->
 
-    <div class="welcome-tagline">
+<meta
+    name="theme-color"
+    content="#f5efe6"
+>
 
-        Your little place on the internet
 
-        <span>
-            Stories · Music · Creativity
-        </span>
+<!-- =========================
+     GOOGLE FONT
+========================== -->
 
-    </div>
+<link
+    href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@300;400;600&display=swap"
+    rel="stylesheet"
+>
 
-</div>
 
+<!-- =========================
+     CSS
+========================== -->
 
-    <!-- =========================
-         MAIN WEBSITE
-    ========================== -->
+<link
+    rel="stylesheet"
+    href="style.css"
+>
 
-    <div id="cafe">
+<link
+    rel="icon"
+    href="favicon.ico"
+>
+```
 
+</head>
 
+<body data-beshy-page="home">
 
-        <!-- HERO -->
+```
+<!-- =========================
+     GLOBAL NAVBAR
+========================== -->
 
-        <section class="hero">
+<div id="navbar"></div>
 
-            <h1> Welcome to DigiCafe</h1>
 
-            <p class="subtitle">
-                A cozy digital café for listening, reading, and relaxing.
-            </p>
+<!-- =========================
+     PAGE CONTENT
 
-            <p class="intro">
-                Leave the noise behind and enter a quiet corner of the internet
-                filled with music, stories, imagination, and moments of calm.
-            </p>
+     Room pages are loaded here.
 
-            <p class="status">
-                ☁️ Currently serving:
-                soft sounds, gentle stories, and creative thoughts.
-            </p>
+     DO NOT put navbar,
+     footer, or music player
+     inside the room files.
+========================== -->
 
-        </section>
+<main id="page-content"></main>
 
 
+<!-- =========================
+     GLOBAL MUSIC PLAYER
 
-        <!-- MAIN ROOMS -->
+     music-player.html is loaded
+     into this container by script.js.
 
-        <section class="card-grid">
+     It stays outside #page-content
+     so the audio survives navigation.
+========================== -->
 
-            <a href="music.html" class="cafe-card">
+<div id="music-player"></div>
 
-                <h2>🎵 Music Lounge</h2>
 
-                <p>
-                    Discover original songs, ambient sounds,
-                    playlists, and relaxing audio experiences.
-                </p>
+<!-- =========================
+     GLOBAL FOOTER
+========================== -->
 
-                <span>
-                    Enter →
-                </span>
-
-            </a>
-
-
-
-            <a href="library.html" class="cafe-card">
-
-                <h2>📚 Story Library</h2>
-
-                <p>
-                    Explore original fiction,
-                    audiobooks,
-                    and immersive stories.
-                </p>
-
-                <span>
-                    Enter →
-                </span>
-
-            </a>
-
-
-
-            <a href="about.html" class="cafe-card">
-
-                <h2>☕ About DigiCafe</h2>
-
-                <p>
-                    Meet the creator behind the café
-                    and discover the vision that inspired it.
-                </p>
-
-                <span>
-                    Learn More →
-                </span>
-
-            </a>
-
-        </section>
-
-
-
-        <!-- FEATURE -->
-
-        <section class="feature">
-
-            <h2>✨ Featured Experience</h2>
-
-            <p>
-                Enter DigiCafe Radio—a continuous stream of carefully crafted
-                sounds designed for relaxing, studying, creating,
-                or simply taking a peaceful moment for yourself.
-            </p>
-
-            <a class="feature-button" href="music.html">
-
-                ▶ Start Listening
-
-            </a>
-
-        </section>
-
-
-
-        <!-- QUOTE -->
-
-        <section class="quote">
-
-            <p>
-                "Some places are built to make you hurry.
-                DigiCafe was created to help you slow down."
-            </p>
-
-        </section>
-
-
-
-        <!-- BESHY -->
-
-        <div id="beshy-container"></div>
-
-    </div>
-
-</main>
 <div id="footer"></div>
-<!-- SCRIPTS -->
-<script src="control-panel.js"></script>
+
+
+<!-- =========================
+     GLOBAL BESHY
+========================== -->
+
+<div id="beshy-container"></div>
+
+
+<!-- =========================
+     DIGICAFE SHELL
+
+     This must load FIRST.
+
+     It loads:
+     - navbar.html
+     - music-player.html
+     - footer.html
+     - room pages
+========================== -->
+
 <script src="script.js"></script>
-    <script src="welcome.js"></script>
-<script type="module" src="Beshy/beshy.js"></script>
+
+
+<!-- =========================
+     GLOBAL MUSIC PLAYER LOGIC
+
+     Loaded after the shell.
+========================== -->
+
+<script src="music-player.js"></script>
+
+
+<!-- =========================
+     WELCOME SCREEN
+========================== -->
+
+<script src="welcome.js"></script>
+
+
+<!-- =========================
+     BESHY
+========================== -->
+
+<script
+    type="module"
+    src="Beshy/beshy.js"
+></script>
+
+
 </body>
+
 </html>

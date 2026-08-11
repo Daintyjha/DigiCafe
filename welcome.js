@@ -1,88 +1,148 @@
-document.addEventListener("DOMContentLoaded", () => {
-
-    const welcome = document.getElementById("welcome-screen");
-    const cafe = document.getElementById("cafe");
-    const enterBtn = document.getElementById("enter-btn");
-
-    if (!welcome || !cafe || !enterBtn) return;
+console.log("☕ DigiCafe Welcome Loaded");
 
 
-    /* =====================================================
-       CHECK IF VISITOR ALREADY ENTERED
-    ===================================================== */
+/* =====================================================
+   DIGICAFE WELCOME / ENTRANCE
+===================================================== */
 
-    const hasVisited = sessionStorage.getItem("digicafeVisited");
+window.initWelcome = function () {
+
+    const welcome =
+        document.getElementById(
+            "welcome-screen"
+        );
+
+    const cafe =
+        document.getElementById(
+            "cafe"
+        );
+
+    const enterBtn =
+        document.getElementById(
+            "enter-btn"
+        );
 
 
-    /* =====================================================
-       RETURNING VISITOR
-    ===================================================== */
+    /* =================================================
+       CHECK ELEMENTS
+    ================================================= */
 
-    if (hasVisited) {
-
-        welcome.style.display = "none";
-        cafe.style.opacity = "1";
+    if (
+        !welcome ||
+        !cafe ||
+        !enterBtn
+    ) {
 
         return;
+
     }
 
 
-    /* =====================================================
+    /* =================================================
+       CHECK IF VISITOR ALREADY ENTERED
+    ================================================= */
+
+    const hasVisited =
+        sessionStorage.getItem(
+            "digicafeVisited"
+        );
+
+
+    /* =================================================
+       RETURNING VISITOR
+    ================================================= */
+
+    if (hasVisited) {
+
+        welcome.style.display =
+            "none";
+
+        cafe.style.opacity =
+            "1";
+
+        return;
+
+    }
+
+
+    /* =================================================
        FIRST VISIT
-    ===================================================== */
+    ================================================= */
 
-    cafe.style.opacity = "0";
+    cafe.style.opacity =
+        "0";
 
 
-    /* =====================================================
+    /* =================================================
        ENTER THE CAFÉ
-    ===================================================== */
+    ================================================= */
 
-    enterBtn.addEventListener("click", () => {
+    enterBtn.addEventListener(
+        "click",
+        () => {
 
-        /* Prevent double-clicking */
-        enterBtn.disabled = true;
+            /* Prevent double-clicking */
 
-
-        /* Remember that the visitor entered */
-        sessionStorage.setItem("digicafeVisited", "true");
-
-
-        /* Start the café entrance animation */
-        welcome.classList.add("door-opening");
+            enterBtn.disabled =
+                true;
 
 
-        /*
-         * Give the door a moment to open
-         * before revealing the Lobby.
-         */
-        setTimeout(() => {
+            /* Remember visitor */
 
-            cafe.style.opacity = "1";
-
-        }, 700);
+            sessionStorage.setItem(
+                "digicafeVisited",
+                "true"
+            );
 
 
-        /*
-         * Fade the entrance away.
-         */
-        setTimeout(() => {
+            /* Start entrance animation */
 
-            welcome.classList.add("exit");
-
-        }, 850);
+            welcome.classList.add(
+                "door-opening"
+            );
 
 
-        /*
-         * Remove the entrance completely
-         * after the animation finishes.
-         */
-        setTimeout(() => {
+            /* Reveal café */
 
-            welcome.style.display = "none";
+            setTimeout(
+                () => {
 
-        }, 1500);
+                    cafe.style.opacity =
+                        "1";
 
-    });
+                },
+                700
+            );
 
-});
+
+            /* Fade entrance */
+
+            setTimeout(
+                () => {
+
+                    welcome.classList.add(
+                        "exit"
+                    );
+
+                },
+                850
+            );
+
+
+            /* Remove entrance */
+
+            setTimeout(
+                () => {
+
+                    welcome.style.display =
+                        "none";
+
+                },
+                1500
+            );
+
+        }
+    );
+
+};
+

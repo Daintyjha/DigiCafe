@@ -1,35 +1,18 @@
+<!-- =====================================================
+     DIGICAFE READER
+     This is a ROOM loaded inside index.html.
 
-<!DOCTYPE html>
-<html lang="en">
+     Do NOT include:
+     - navbar
+     - footer
+     - Beshy
+     - global music player
+     - scripts
+===================================================== -->
 
-<head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>DigiCafe Reader</title>
-
-    <link
-        rel="stylesheet"
-        href="style.css"
-    >
-
-</head>
-
-
-<body>
-
-<div id="navbar"></div>
-
-
-<main class="book-layout">
+<section class="book-layout">
 
     <section class="book-page">
-
 
         <!-- =================================================
              CONTENT TITLE
@@ -38,6 +21,30 @@
         <h4 id="chapterTitle">
             Loading...
         </h4>
+
+
+        <!-- =================================================
+             CHAPTER SELECTOR
+        ================================================== -->
+
+        <div
+            class="chapter-selector"
+            id="chapterSelector"
+        >
+
+            <label for="chapterSelect">
+                Chapter
+            </label>
+
+            <select id="chapterSelect">
+
+                <option value="">
+                    Select chapter
+                </option>
+
+            </select>
+
+        </div>
 
 
         <!-- =================================================
@@ -52,7 +59,7 @@
 
 
         <!-- =================================================
-             AUDIO PLAYER
+             CHAPTER AUDIO
         ================================================== -->
 
         <div
@@ -88,12 +95,18 @@
             id="chapterNavigation"
         >
 
-            <button id="prevChapter">
+            <button
+                id="prevChapter"
+                type="button"
+            >
                 ⬅ Previous
             </button>
 
 
-            <button id="nextChapter">
+            <button
+                id="nextChapter"
+                type="button"
+            >
                 Next ➡
             </button>
 
@@ -105,7 +118,6 @@
         ================================================== -->
 
         <div id="interactionContainer"></div>
-
 
     </section>
 
@@ -136,54 +148,37 @@
 
     <div class="reader-nav">
 
-        <a href="library.html">
+        <a
+            href="index.html?page=library"
+            data-page="library"
+        >
             ⬅ Library
         </a>
 
 
-        <a href="romance.html">
+        <a
+            href="index.html?page=romance"
+            data-page="romance"
+        >
             ⬅ Romance
         </a>
 
 
-        <a href="comedy.html">
+        <a
+            href="index.html?page=comedy"
+            data-page="comedy"
+        >
             ⬅ Comedy
         </a>
 
 
-        <a href="scifi.html">
+        <a
+            href="index.html?page=scifi"
+            data-page="scifi"
+        >
             ⬅ Sci-Fi
         </a>
 
     </div>
 
-
-</main>
-
-
-<!-- =====================================================
-     SCRIPTS
-====================================================== -->
-
-<script src="stories.js"></script>
-
-
-<script
-    type="module"
-    src="reader.js">
-</script>
-
-
-<script
-    src="control-panel.js">
-</script>
-
-
-<script
-    src="script.js">
-</script>
-
-
-</body>
-
-</html>
+</section>

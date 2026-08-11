@@ -1,75 +1,118 @@
-<!DOCTYPE html>
-<html lang="en">
+<!-- =====================================================
+     DIGICAFE ROMANCE ROOM
+     Loaded inside index.html
 
-<head>
-  <meta charset="UTF-8">
-  <title>Romance - DaintyHub</title>
-  <link rel="stylesheet" href="style.css">
-</head>
+     Do NOT include:
+     - <!DOCTYPE html>
+     - <html>
+     - <head>
+     - <body>
+     - navbar
+     - footer
+     - music player
+     - Beshy
+     - scripts
+====================================================== -->
 
-<body>
-
-  <div id="navbar"></div>
-
-  <main class="story-layout">
+<section class="story-layout">
 
     <h3>📚 Library</h3>
 
+
     <section class="stories">
 
-      <h1>💗 Romance</h1>
+        <h1>💗 Romance</h1>
 
-      <div class="story-card">
 
-        <img src="Asset/photo/Between Two Shores.png" alt="Between Two Shores">
+        <div class="story-card">
 
-        <div class="story-content">
+            <img
+                src="Asset/photo/Between Two Shores.png"
+                alt="Between Two Shores"
+            >
 
-          <a href="reader.html?story=Between_Two_Shores" class="story-link">
-            <h3>Between Two Shores 📖</h3>
-          </a>
 
-          <p>
-            She was never meant to matter in his world.
-            He was never meant to stay in hers.
-            <br><br>
+            <div class="story-content">
 
-            But between silence, routine, and a single mistake that changes everything—
-            they find themselves standing on the edge of something neither of them can walk away from.
-            <br><br>
+                <a
+                    href="#"
+                    class="story-link"
+                    data-page="reader"
+                    data-story="Between_Two_Shores"
+                >
 
-            Between Two Shores is a slow-burn romance about control, resistance,
-            and the moment love becomes impossible to ignore.
-          </p>
+                    <h3>
+                        Between Two Shores 📖
+                    </h3>
+
+                </a>
+
+
+                <p>
+                    She was never meant to matter in his world.
+                    He was never meant to stay in hers.
+
+                    <br><br>
+
+                    But between silence, routine, and a single
+                    mistake that changes everything—they find
+                    themselves standing on the edge of something
+                    neither of them can walk away from.
+
+                    <br><br>
+
+                    Between Two Shores is a slow-burn romance
+                    about control, resistance, and the moment
+                    love becomes impossible to ignore.
+                </p>
+
+            </div>
 
         </div>
 
-      </div>
-
     </section>
+
+
+    <!-- =================================================
+         STORY NAVIGATION
+    ================================================== -->
 
     <aside class="story-nav">
 
-      <a href="library.html">← Back to Library</a>
+        <a
+            href="#"
+            data-page="library"
+        >
+            ← Back to Library
+        </a>
 
-      <h4>Genres</h4>
 
-      <a href="romance.html">💗 Romance</a>
-      <a href="comedy.html">😂 Comedy</a>
-      <a href="scifi.html">🚀 Sci-Fi</a>
+        <h4>Genres</h4>
+
+
+        <a
+            href="#"
+            data-page="romance"
+        >
+            💗 Romance
+        </a>
+
+
+        <a
+            href="#"
+            data-page="comedy"
+        >
+            😂 Comedy
+        </a>
+
+
+        <a
+            href="#"
+            data-page="scifi"
+        >
+            🚀 Sci-Fi
+        </a>
 
     </aside>
 
-  </main>
-
-  <div id="footer"></div>
-
-  <div id="beshy-container"></div>
-
-  <script type="module" src="Beshy/beshy.js"></script>
-  <script src="control-panel.js"></script>
-  <script src="script.js"></script>
-
-</body>
-
-</html>
+</section>
