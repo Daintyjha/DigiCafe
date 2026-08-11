@@ -61,18 +61,37 @@
         <!-- =================================================
              CHAPTER AUDIO
         ================================================== -->
+<!-- =================================================
+     OPTIONAL CHAPTER AUDIO
+================================================== -->
 
-        <div
-            class="audio-bottom"
-            id="audioContainer"
-        >
+<div
+    class="audio-toggle"
+    id="audioContainer"
+>
 
-            <audio
-                id="chapterAudio"
-                controls>
-            </audio>
+    <button
+        id="audioToggle"
+        type="button"
+        aria-label="Listen to this chapter"
+        title="Listen to this chapter"
+    >
+        🎧
+    </button>
 
-        </div>
+    <div
+        class="audio-player-mini"
+        id="audioPlayerMini"
+    >
+
+        <audio
+            id="chapterAudio"
+            controls>
+        </audio>
+
+    </div>
+
+</div>
 
 
         <!-- =================================================
@@ -122,26 +141,7 @@
     </section>
 
 
-    <!-- =====================================================
-         READER NOTE
-    ====================================================== -->
-
-    <div
-        class="reader-note"
-        id="readerNote"
-    >
-
-        <p>
-            <i>
-                You’ll find a small 🎧 icon at the bottom right
-                of the screen—tap it to turn on ambient background
-                sound while reading.
-            </i>
-        </p>
-
-    </div>
-
-
+    
     <!-- =====================================================
          READER NAVIGATION
     ====================================================== -->

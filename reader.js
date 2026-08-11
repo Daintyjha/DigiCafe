@@ -1,27 +1,3 @@
-/* =====================================================
-   DIGICAFE READER
-   -----------------------------------------------------
-   Reader is now a ROOM inside index.html.
-
-   It does NOT:
-   - load navbar
-   - load footer
-   - load Beshy
-   - create the global music player
-   - redirect to reader.html
-
-   It DOES:
-   - load novels
-   - load blog/discussion content
-   - render PDF files
-   - play chapter audio
-   - save reading progress
-   - handle chapters
-   - handle PDF zoom
-   - handle PDF page navigation
-   - load DigiCafe interactions
-===================================================== */
-
 import {
     getDocument,
     GlobalWorkerOptions
@@ -145,7 +121,15 @@ window.initReader = async function (
             "chapterAudio"
         );
 
+const audioToggle =
+    document.getElementById(
+        "audioToggle"
+    );
 
+const audioPlayerMini =
+    document.getElementById(
+        "audioPlayerMini"
+    );
     const audioContainer =
         document.getElementById(
             "audioContainer"
@@ -403,6 +387,18 @@ window.initReader = async function (
 
     /* =====================================================
        CREATE PDF VIEWER
+       -----------------------------------------------------
+       IMPORTANT:
+
+       The PDF viewer contains BOTH:
+
+       1. Small + / − zoom controls
+       2. PDF page navigation
+
+       This works for:
+       - Novels
+       - Blog posts
+       - Discussions
     ===================================================== */
 
     if (!contentEl) {
@@ -420,11 +416,41 @@ window.initReader = async function (
 
         <div class="pdf-viewer">
 
+            <!-- PDF PAGE -->
+
             <canvas
                 id="pdfCanvas"
                 class="pdf-page">
             </canvas>
 
+
+            <!-- SIMPLE ZOOM -->
+
+            <div class="pdf-zoom-controls">
+
+                <button
+                    id="zoomOut"
+                    type="button"
+                    aria-label="Zoom out"
+                    title="Zoom out"
+                >
+                    −
+                </button>
+
+
+                <button
+                    id="zoomIn"
+                    type="button"
+                    aria-label="Zoom in"
+                    title="Zoom in"
+                >
+                    +
+                </button>
+
+            </div>
+
+
+            <!-- PDF PAGE NAVIGATION -->
 
             <div class="pdf-controls">
 
@@ -433,7 +459,9 @@ window.initReader = async function (
                     <button
                         id="prevPdfPage"
                         type="button"
-                        aria-label="Previous PDF page">
+                        aria-label="Previous PDF page"
+                        title="Previous page"
+                    >
                         ‹
                     </button>
 
@@ -446,36 +474,10 @@ window.initReader = async function (
                     <button
                         id="nextPdfPage"
                         type="button"
-                        aria-label="Next PDF page">
+                        aria-label="Next PDF page"
+                        title="Next page"
+                    >
                         ›
-                    </button>
-
-                </div>
-
-
-                <div class="pdf-zoom-controls">
-
-                    <button
-                        id="zoomOut"
-                        type="button"
-                        aria-label="Zoom out">
-                        −
-                    </button>
-
-
-                    <button
-                        id="zoomReset"
-                        type="button"
-                        aria-label="Reset zoom">
-                        100%
-                    </button>
-
-
-                    <button
-                        id="zoomIn"
-                        type="button"
-                        aria-label="Zoom in">
-                        +
                     </button>
 
                 </div>
@@ -522,12 +524,6 @@ window.initReader = async function (
     const zoomOut =
         document.getElementById(
             "zoomOut"
-        );
-
-
-    const zoomReset =
-        document.getElementById(
-            "zoomReset"
         );
 
 
@@ -777,23 +773,6 @@ window.initReader = async function (
         3;
 
 
-    function updateZoomDisplay() {
-
-        if (!zoomReset) {
-
-            return;
-
-        }
-
-
-        zoomReset.textContent =
-            `${Math.round(
-                zoomLevel * 100
-            )}%`;
-
-    }
-
-
     /* =====================================================
        UPDATE INTERACTION CONTENT
     ===================================================== */
@@ -866,6 +845,34 @@ window.initReader = async function (
 
         }
 
+
+        /* ---------------------------------------------
+           KEEP PAGE NUMBER VALID
+        --------------------------------------------- */
+
+        if (
+            pageNumber < 1
+        ) {
+
+            pageNumber = 1;
+
+        }
+
+
+        if (
+            pageNumber >
+            currentPDF.numPages
+        ) {
+
+            pageNumber =
+                currentPDF.numPages;
+
+        }
+
+
+        /* ---------------------------------------------
+           PREVENT DOUBLE RENDER
+        --------------------------------------------- */
 
         if (rendering) {
 
@@ -976,6 +983,10 @@ window.initReader = async function (
                 pageNumber;
 
 
+            /* -----------------------------------------
+               PAGE NUMBER
+            ----------------------------------------- */
+
             if (pdfPageNumber) {
 
                 pdfPageNumber.textContent =
@@ -984,6 +995,10 @@ window.initReader = async function (
             }
 
 
+            /* -----------------------------------------
+               PREVIOUS PAGE BUTTON
+            ----------------------------------------- */
+
             if (prevPdfPage) {
 
                 prevPdfPage.disabled =
@@ -991,6 +1006,10 @@ window.initReader = async function (
 
             }
 
+
+            /* -----------------------------------------
+               NEXT PAGE BUTTON
+            ----------------------------------------- */
 
             if (nextPdfPage) {
 
@@ -1014,6 +1033,10 @@ window.initReader = async function (
 
         }
 
+
+        /* ---------------------------------------------
+           RENDER REQUESTED PAGE AFTER CURRENT RENDER
+        --------------------------------------------- */
 
         if (
             pendingPage !== null
@@ -1067,10 +1090,34 @@ window.initReader = async function (
                 1;
 
 
+            /* -----------------------------------------
+               INITIAL PAGE DISPLAY
+            ----------------------------------------- */
+
             if (pdfPageNumber) {
 
                 pdfPageNumber.textContent =
                     `1 / ${currentPDF.numPages}`;
+
+            }
+
+
+            /* -----------------------------------------
+               BUTTON STATES
+            ----------------------------------------- */
+
+            if (prevPdfPage) {
+
+                prevPdfPage.disabled =
+                    true;
+
+            }
+
+
+            if (nextPdfPage) {
+
+                nextPdfPage.disabled =
+                    currentPDF.numPages <= 1;
 
             }
 
@@ -1111,10 +1158,6 @@ window.initReader = async function (
 
     /* =====================================================
        UPDATE READER URL
-       -----------------------------------------------------
-       IMPORTANT:
-
-       We now stay inside index.html.
     ===================================================== */
 
     function updateReaderURL(
@@ -1242,11 +1285,35 @@ window.initReader = async function (
         zoomLevel =
             1;
 
+/* =====================================================
+   CHAPTER AUDIO TOGGLE
+===================================================== */
 
-        updateZoomDisplay();
+audioToggle?.addEventListener(
+    "click",
+    () => {
+
+        if (!audioEl) {
+
+            return;
+
+        }
 
 
-        /* ---------------------------------------------
+        if (
+            audioPlayerMini
+        ) {
+
+            audioPlayerMini.classList.toggle(
+                "is-visible"
+            );
+
+        }
+
+    }
+);
+        /*
+        ---------------------------------------------
            INTERACTION
         --------------------------------------------- */
 
@@ -1335,7 +1402,7 @@ window.initReader = async function (
 
 
         /* ---------------------------------------------
-           SCROLL
+           SCROLL TO TOP
         --------------------------------------------- */
 
         window.scrollTo({
@@ -1348,6 +1415,16 @@ window.initReader = async function (
 
     /* =====================================================
        LOAD BLOG / DISCUSSION
+       -----------------------------------------------------
+       IMPORTANT:
+
+       Blog and Discussion are ALSO PDFs.
+
+       loadPDF() automatically handles:
+       - Page 1
+       - Page 2
+       - Page 3
+       - etc.
     ===================================================== */
 
     async function loadSingleContent() {
@@ -1360,13 +1437,36 @@ window.initReader = async function (
         }
 
 
-        updateZoomDisplay();
-
-
         updateInteractionContent();
 
 
         initializeInteractions();
+
+
+        if (!story.pdf) {
+
+            console.error(
+                "❌ No PDF assigned to:",
+                storyKey
+            );
+
+
+            contentEl.innerHTML = `
+
+                <div class="pdf-error">
+
+                    <p>
+                        This content does not have
+                        a PDF file yet.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
 
 
         await loadPDF(
@@ -1391,6 +1491,7 @@ window.initReader = async function (
         () => {
 
             if (
+                currentPDF &&
                 currentPDFPage > 1
             ) {
 
@@ -1444,9 +1545,6 @@ window.initReader = async function (
                 );
 
 
-            updateZoomDisplay();
-
-
             renderPDFPage(
                 currentPDFPage
             );
@@ -1469,32 +1567,6 @@ window.initReader = async function (
                     zoomLevel +
                     zoomStep
                 );
-
-
-            updateZoomDisplay();
-
-
-            renderPDFPage(
-                currentPDFPage
-            );
-
-        }
-    );
-
-
-    /* =====================================================
-       ZOOM RESET
-    ===================================================== */
-
-    zoomReset?.addEventListener(
-        "click",
-        () => {
-
-            zoomLevel =
-                1;
-
-
-            updateZoomDisplay();
 
 
             renderPDFPage(

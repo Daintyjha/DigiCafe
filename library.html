@@ -1,100 +1,273 @@
 <!-- =====================================================
      DIGICAFE LIBRARY
      This is a ROOM loaded inside index.html.
-     Do NOT include navbar, footer, Beshy, or scripts here.
+
+     Do NOT include:
+     - navbar
+     - footer
+     - Beshy
+     - global music player
+     - scripts
 ====================================================== -->
 
 <section class="library">
+<!-- =================================================
+     LIBRARY HEADER
+================================================== -->
 
-    <h1>📚 DigiCafe Library</h1>
+<header class="library-header">
+
+    <span class="library-eyebrow">
+        THE DIGICAFE LIBRARY
+    </span>
+
+    <h1>
+        📚 A Quiet Corner
+    </h1>
 
     <p class="library-intro">
-        A quiet corner for stories, imagination,
-        and thoughtful conversations.
+        Stories, thoughts, conversations,
+        and little pieces of life gathered
+        here at the café.
     </p>
 
+</header>
 
-    <!-- =================================================
-         FICTION
-    ================================================== -->
 
-    <section class="library-section">
+<!-- =================================================
+     FICTION
+================================================== -->
 
-        <h2>📖 Fiction</h2>
+<section class="library-section fiction-section">
 
-        <ul class="book-list">
+    <div class="library-section-heading">
 
-            <li>
-                <a
-    href="index.html?page=romance"
-    class="library-room-link"
-    data-page="romance"
->
-    Romance
-</a>
-            </li>
+        <div>
 
-            <li>
-                <a
-                    href="index.html?page=comedy"
-                    class="library-room-link"
-                    data-page="comedy"
-                >
+            <span class="section-eyebrow">
+                FICTION
+            </span>
+
+            <h2>
+                📖 Stories to Get Lost In
+            </h2>
+
+        </div>
+
+        <span class="section-decoration">
+            ✦
+        </span>
+
+    </div>
+
+
+    <div class="fiction-grid">
+
+        <a
+            href="index.html?page=romance"
+            class="fiction-card"
+            data-page="romance"
+        >
+
+            <span class="fiction-card-icon">
+                💗
+            </span>
+
+            <span class="fiction-card-content">
+
+                <strong>
+                    Romance
+                </strong>
+
+                <small>
+                    Love, longing & unexpected
+                    connections.
+                </small>
+
+            </span>
+
+            <span class="fiction-card-arrow">
+                →
+            </span>
+
+        </a>
+
+
+        <a
+            href="index.html?page=comedy"
+            class="fiction-card"
+            data-page="comedy"
+        >
+
+            <span class="fiction-card-icon">
+                😂
+            </span>
+
+            <span class="fiction-card-content">
+
+                <strong>
                     Comedy
-                </a>
-            </li>
+                </strong>
 
-            <li>
-                <a
-                    href="index.html?page=scifi"
-                    class="library-room-link"
-                    data-page="scifi"
-                >
+                <small>
+                    Stories for when life needs
+                    a little laughter.
+                </small>
+
+            </span>
+
+            <span class="fiction-card-arrow">
+                →
+            </span>
+
+        </a>
+
+
+        <a
+            href="index.html?page=scifi"
+            class="fiction-card"
+            data-page="scifi"
+        >
+
+            <span class="fiction-card-icon">
+                🚀
+            </span>
+
+            <span class="fiction-card-content">
+
+                <strong>
                     Sci-Fi
-                </a>
-            </li>
+                </strong>
 
-        </ul>
+                <small>
+                    Strange worlds, impossible
+                    ideas & adventures.
+                </small>
 
-    </section>
+            </span>
+
+            <span class="fiction-card-arrow">
+                →
+            </span>
+
+        </a>
+
+    </div>
+
+</section>
 
 
-    <!-- =================================================
-         NON-FICTION
-    ================================================== -->
+<!-- =================================================
+     NON-FICTION
+================================================== -->
 
-    <section class="library-section">
+<section class="library-section nonfiction-section">
 
-        <h2>☕ Non-Fiction</h2>
+    <div class="library-section-heading">
+
+        <div>
+
+            <span class="section-eyebrow">
+                FROM THE CAFÉ
+            </span>
+
+            <h2>
+                ☕ Thoughts & Conversations
+            </h2>
+
+        </div>
+
+        <span class="section-decoration">
+            ✦
+        </span>
+
+    </div>
 
 
-        <!-- BLOG -->
+    <div class="nonfiction-grid">
 
-        <div class="nonfiction-category">
 
-            <h3>📝 Blog</h3>
+        <!-- =========================================
+             BLOG
+        ========================================== -->
+
+        <article class="nonfiction-category blog-category">
+
+            <div class="category-header">
+
+                <div class="category-icon">
+                    📝
+                </div>
+
+                <div>
+
+                    <span class="category-label">
+                        BLOG
+                    </span>
+
+                    <h3>
+                        Café Notes
+                    </h3>
+
+                    <p>
+                        Little thoughts, stories,
+                        updates and things worth sharing.
+                    </p>
+
+                </div>
+
+            </div>
+
 
             <div
                 id="blogList"
-                class="content-list">
+                class="content-list"
+            ></div>
+
+        </article>
+
+
+        <!-- =========================================
+             DISCUSSION
+        ========================================== -->
+
+        <article class="nonfiction-category discussion-category">
+
+            <div class="category-header">
+
+                <div class="category-icon">
+                    💬
+                </div>
+
+                <div>
+
+                    <span class="category-label">
+                        DISCUSSION
+                    </span>
+
+                    <h3>
+                        Café Conversations
+                    </h3>
+
+                    <p>
+                        Questions, ideas and conversations
+                        from around the café.
+                    </p>
+
+                </div>
+
             </div>
 
-        </div>
-
-
-        <!-- DISCUSSION -->
-
-        <div class="nonfiction-category">
-
-            <h3>💬 Discussion</h3>
 
             <div
                 id="discussionList"
-                class="content-list">
-            </div>
+                class="content-list"
+            ></div>
 
-        </div>
+        </article>
 
-    </section>
+    </div>
+
+</section>
 
 </section>
