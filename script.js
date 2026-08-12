@@ -234,11 +234,10 @@ document.addEventListener(
             "music-player.html"
         );
 
-
-        await loadComponent(
-            "beshy-container",
-            "beshy.html"
-        );
+        );await loadComponent(
+    "beshy-container",
+    "Beshy/beshy.html"
+);
 
 
         /* =================================================
