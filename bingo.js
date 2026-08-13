@@ -1,674 +1,858 @@
 /* =========================================================
-DIGICAFE BINGO
-COMPLETE PLAYABLE ENGINE
-========================
+   DIGICAFE BINGO
+   ---------------------------------------------------------
+   COMPLETE BINGO ENGINE
+   ---------------------------------------------------------
 
-## POWER-UP DESIGN
+   FEATURES
+   ---------------------------------------------------------
+   • 1–4 Bingo cards
+   • 10 credits per card
+   • Shared café credits
+   • Manual number calling
+   • Automatic number calling
+   • Manual Daub
+   • Auto-Daub
+   • Free center space
+   • Called number history
+   • Bingo detection
+   • New Game
+   • Play Again
 
-1 successful daub = +1 XP
-3 XP = coffee cup full
-Full cup = ONE RANDOM power-up
-Only that power-up can be used
-Using it empties the cup
-5-second cooldown
-No XP during cooldown
-After cooldown, brewing starts again
-
-## POWER-UPS
-
-🍀 Lucky Daub
-Marks ONE currently called number.
-
-⚡ Number Boost
-Temporarily highlights all called numbers.
-
-✨ Double Daub
-Next successful daub gives 2 XP.
-
-## AUTO-DAUB
-
-Called numbers are automatically marked.
-Auto-daubed numbers also generate XP.
+   POWER-UP SYSTEM
+   ---------------------------------------------------------
+   • 3 successful daubs = 1 random power-up
+   • ONLY ONE power-up is available per charge
+   • Power-up must be used before another one can load
+   • Coffee cup visually fills from 0 → 3
+   • Lucky Daub
+   • Number Boost
+   • Double Daub
+   • 5-second cooldown after use
+   • No XP collected during cooldown
+   • Auto-Daub also earns XP
 ========================================================= */
 
+
 /* =========================================================
-01. CONFIG
+   01. CONFIGURATION
 ========================================================= */
 
 const bingoConfig = {
 
+    defaultCards: 1,
 
-defaultCards: 1,
+    minimumCards: 1,
 
-minimumCards: 1,
+    maximumCards: 4,
 
-maximumCards: 4,
+    pricePerCard: 10,
 
-pricePerCard: 10,
+    drawInterval: 2200,
 
-totalNumbers: 75,
+    totalNumbers: 75,
 
-rows: 5,
+    rows: 5,
 
-columns: 5,
+    columns: 5,
 
-drawInterval: 2200,
+    xpPerPowerUp: 3,
 
-xpPerPowerUp: 3,
-
-powerUpCooldown: 5,
-
-numberBoostDuration: 5000
+    powerUpCooldown: 5
 
 };
 
+
 /* =========================================================
-02. STATE
+   02. GAME STATE
 ========================================================= */
 
 const bingoGame = {
 
-initialized: false,
+    initialized: false,
 
-playing: false,
+    playing: false,
 
-gameOver: false,
+    gameOver: false,
 
-autoCalling: false,
+    autoCalling: false,
 
-autoTimer: null,
+    autoTimer: null,
 
-cards: 1,
+    cards: 1,
 
-boards: [],
+    boards: [],
 
-calledNumbers: [],
+    calledNumbers: [],
 
-currentNumber: null,
+    currentNumber: null,
 
-winningCard: null,
+    winningCard: null,
 
-creditsPaid: 0,
+    creditsPaid: 0,
 
-wins: 0,
 
-autoDaub: false,
+    /* -----------------------------------------------------
+       DAUB MODE
+    ----------------------------------------------------- */
 
-daubXP: 0,
+    autoDaub: false,
 
-availablePowerUp: null,
 
-powerUpCooldown: false,
+    /* -----------------------------------------------------
+       DOUBLE DAUB
+       -----------------------------------------------------
+       When active, the next successful normal daub
+       counts as two XP instead of one.
+    ----------------------------------------------------- */
 
-powerUpCooldownTimer: null,
+    doubleDaubActive: false,
 
-powerUpCooldownRemaining: 0,
 
-doubleDaubActive: false,
+    /* -----------------------------------------------------
+       POWER-UP XP
+       ----------------------------------------------------- */
 
-numberBoostTimer: null
+    daubXP: 0,
+
+
+    /* -----------------------------------------------------
+       RANDOM POWER-UP
+       -----------------------------------------------------
+       null = charging
+       "lucky-daub"
+       "number-boost"
+       "double-daub"
+    ----------------------------------------------------- */
+
+    powerUpReady: false,
+
+    activePowerUp: null,
+
+
+    /* -----------------------------------------------------
+       POWER-UP COOLDOWN
+    ----------------------------------------------------- */
+
+    powerUpCooldown: false,
+
+    powerUpCooldownTimer: null,
+
+    powerUpCooldownRemaining: 0,
+
+
+    /* -----------------------------------------------------
+       NUMBER BOOST
+    ----------------------------------------------------- */
+
+    numberBoostActive: false
 
 };
 
+
 /* =========================================================
-03. ELEMENTS
+   03. ELEMENT REFERENCES
 ========================================================= */
 
 let bingoElements = {};
 
+
 /* =========================================================
-04. CREDIT SYSTEM
+   04. CREDIT SYSTEM
 ========================================================= */
 
 const bingoCredits = {
 
-storageKeys: [
-    "cafeCredits",
-    "digiCafeCredits",
-    "digicafeCredits",
-    "slotCredits"
-],
+    storageKeys: [
+
+        "cafeCredits",
+
+        "digiCafeCredits",
+
+        "digicafeCredits",
+
+        "slotCredits"
+
+    ],
 
 
-getBalance() {
-
-    if (
-        window.cafeSlots &&
-        typeof window.cafeSlots.balance === "number"
-    ) {
-        return window.cafeSlots.balance;
-    }
-
-    if (
-        window.cafeSlots &&
-        typeof window.cafeSlots.credits === "number"
-    ) {
-        return window.cafeSlots.credits;
-    }
-
-    if (
-        typeof window.cafeCredits === "number"
-    ) {
-        return window.cafeCredits;
-    }
-
-    if (
-        typeof window.digiCafeCredits === "number"
-    ) {
-        return window.digiCafeCredits;
-    }
-
-    if (
-        typeof window.slotCredits === "number"
-    ) {
-        return window.slotCredits;
-    }
-
-    for (
-        const key of this.storageKeys
-    ) {
-
-        const value =
-            localStorage.getItem(key);
+    getBalance() {
 
         if (
-            value !== null &&
-            !Number.isNaN(Number(value))
+            window.cafeSlots &&
+            typeof window.cafeSlots.balance === "number"
         ) {
-            return Number(value);
+
+            return window.cafeSlots.balance;
+
         }
 
-    }
 
-    localStorage.setItem(
-        "cafeCredits",
-        "100"
-    );
+        if (
+            window.cafeSlots &&
+            typeof window.cafeSlots.credits === "number"
+        ) {
 
-    return 100;
+            return window.cafeSlots.credits;
 
-},
+        }
 
 
-setBalance(amount) {
+        if (
+            typeof window.cafeCredits === "number"
+        ) {
 
-    amount = Math.max(
-        0,
-        Math.floor(
-            Number(amount) || 0
-        )
-    );
+            return window.cafeCredits;
 
-    if (
-        window.cafeSlots &&
-        typeof window.cafeSlots.balance === "number"
-    ) {
-        window.cafeSlots.balance = amount;
-    }
+        }
 
-    if (
-        window.cafeSlots &&
-        typeof window.cafeSlots.credits === "number"
-    ) {
-        window.cafeSlots.credits = amount;
-    }
 
-    if (
-        typeof window.cafeCredits === "number"
-    ) {
-        window.cafeCredits = amount;
-    }
+        if (
+            typeof window.digiCafeCredits === "number"
+        ) {
 
-    if (
-        typeof window.digiCafeCredits === "number"
-    ) {
-        window.digiCafeCredits = amount;
-    }
+            return window.digiCafeCredits;
 
-    if (
-        typeof window.slotCredits === "number"
-    ) {
-        window.slotCredits = amount;
-    }
+        }
 
-    localStorage.setItem(
-        "cafeCredits",
-        String(amount)
-    );
 
-    window.dispatchEvent(
-        new CustomEvent(
-            "cafeCreditsChanged",
-            {
-                detail: {
-                    balance: amount
-                }
+        if (
+            typeof window.slotCredits === "number"
+        ) {
+
+            return window.slotCredits;
+
+        }
+
+
+        for (
+            const key of this.storageKeys
+        ) {
+
+            const value =
+                localStorage.getItem(key);
+
+
+            if (
+                value !== null &&
+                !isNaN(Number(value))
+            ) {
+
+                return Number(value);
+
             }
-        )
+
+        }
+
+
+        localStorage.setItem(
+            "cafeCredits",
+            "100"
+        );
+
+
+        return 100;
+
+    },
+
+
+    setBalance(amount) {
+
+        amount =
+            Math.max(
+                0,
+                Math.floor(
+                    Number(amount) || 0
+                )
+            );
+
+
+        if (
+            window.cafeSlots &&
+            typeof window.cafeSlots.balance === "number"
+        ) {
+
+            window.cafeSlots.balance =
+                amount;
+
+        }
+
+
+        if (
+            window.cafeSlots &&
+            typeof window.cafeSlots.credits === "number"
+        ) {
+
+            window.cafeSlots.credits =
+                amount;
+
+        }
+
+
+        if (
+            typeof window.cafeCredits === "number"
+        ) {
+
+            window.cafeCredits =
+                amount;
+
+        }
+
+
+        if (
+            typeof window.digiCafeCredits === "number"
+        ) {
+
+            window.digiCafeCredits =
+                amount;
+
+        }
+
+
+        if (
+            typeof window.slotCredits === "number"
+        ) {
+
+            window.slotCredits =
+                amount;
+
+        }
+
+
+        localStorage.setItem(
+            "cafeCredits",
+            String(amount)
+        );
+
+
+        window.dispatchEvent(
+            new CustomEvent(
+                "cafeCreditsChanged",
+                {
+                    detail: {
+                        balance: amount
+                    }
+                }
+            )
+        );
+
+
+        return amount;
+
+    },
+
+
+    spend(amount) {
+
+        const balance =
+            this.getBalance();
+
+
+        if (
+            balance < amount
+        ) {
+
+            return false;
+
+        }
+
+
+        this.setBalance(
+            balance - amount
+        );
+
+
+        return true;
+
+    }
+
+};
+
+
+/* =========================================================
+   05. PRICE
+========================================================= */
+
+function getBingoPrice() {
+
+    return (
+        bingoGame.cards *
+        bingoConfig.pricePerCard
     );
 
-    return amount;
-
-},
+}
 
 
-spend(amount) {
+/* =========================================================
+   06. CREDIT DISPLAY
+========================================================= */
+
+function updateBingoCreditDisplay() {
 
     const balance =
-        this.getBalance();
+        bingoCredits.getBalance();
+
+
+    document
+        .querySelectorAll(
+            "[data-bingo-credit-balance]"
+        )
+        .forEach(
+            element => {
+
+                element.textContent =
+                    balance;
+
+            }
+        );
+
+
+    document
+        .querySelectorAll(
+            "[data-bingo-price]"
+        )
+        .forEach(
+            element => {
+
+                element.textContent =
+                    getBingoPrice();
+
+            }
+        );
+
+
+    document
+        .querySelectorAll(
+            "[data-card-price]"
+        )
+        .forEach(
+            element => {
+
+                const button =
+                    element.closest(
+                        "[data-card-count]"
+                    );
+
+
+                if (!button) {
+
+                    return;
+
+                }
+
+
+                const count =
+                    Number(
+                        button.dataset.cardCount
+                    );
+
+
+                element.textContent =
+                    `${count * bingoConfig.pricePerCard} credits`;
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   07. ELEMENT SETUP
+========================================================= */
+
+function setupBingoElements() {
+
+    bingoElements = {
+
+        room:
+            document.getElementById(
+                "bingoGame"
+            ),
+
+        cards:
+            document.getElementById(
+                "bingoCards"
+            ),
+
+        cardOptions:
+            document.querySelectorAll(
+                ".bingo-card-option"
+            ),
+
+        cardCountLabel:
+            document.getElementById(
+                "bingoCardCountLabel"
+            ),
+
+        currentLetter:
+            document.getElementById(
+                "bingoCurrentLetter"
+            ),
+
+        currentNumber:
+            document.getElementById(
+                "bingoCurrentNumber"
+            ),
+
+        result:
+            document.getElementById(
+                "bingoResult"
+            ),
+
+        callNumber:
+            document.getElementById(
+                "bingoCallNumber"
+            ),
+
+        autoCall:
+            document.getElementById(
+                "bingoAutoCall"
+            ),
+
+        newGame:
+            document.getElementById(
+                "bingoNewGame"
+            ),
+
+        calledNumbers:
+            document.getElementById(
+                "bingoCalledNumbers"
+            ),
+
+        calledTotal:
+            document.getElementById(
+                "bingoCalledTotal"
+            ),
+
+        calledCount:
+            document.getElementById(
+                "bingoCalledCount"
+            ),
+
+        remainingCount:
+            document.getElementById(
+                "bingoRemainingCount"
+            ),
+
+        wins:
+            document.getElementById(
+                "bingoWins"
+            ),
+
+        win:
+            document.getElementById(
+                "bingoWin"
+            ),
+
+        winMessage:
+            document.getElementById(
+                "bingoWinMessage"
+            ),
+
+        finalCards:
+            document.getElementById(
+                "bingoFinalCards"
+            ),
+
+        finalCalled:
+            document.getElementById(
+                "bingoFinalCalled"
+            ),
+
+        playAgain:
+            document.getElementById(
+                "bingoPlayAgain"
+            ),
+
+
+        /* -------------------------------------------------
+           DAUB BUTTONS
+        ------------------------------------------------- */
+
+        daubOptions:
+            document.querySelectorAll(
+                ".bingo-daub-option"
+            ),
+
+
+        /* -------------------------------------------------
+           POWER-UP
+        ------------------------------------------------- */
+
+        powerupMeter:
+            document.querySelector(
+                ".bingo-powerup-meter"
+            ),
+
+        powerupProgress:
+            document.getElementById(
+                "bingoPowerupProgress"
+            ),
+
+        powerupXP:
+            document.getElementById(
+                "bingoPowerupXP"
+            ),
+
+        powerupTimer:
+            document.getElementById(
+                "bingoPowerupTimer"
+            ),
+
+        powerupStatus:
+            document.getElementById(
+                "bingoPowerupStatus"
+            ),
+
+        powerupStatusTitle:
+            document.getElementById(
+                "bingoPowerupStatusTitle"
+            ),
+
+        powerupStatusText:
+            document.getElementById(
+                "bingoPowerupStatusText"
+            ),
+
+        powerupOptions:
+            document.querySelectorAll(
+                ".bingo-powerup-option"
+            ),
+
+        powerupCooldown:
+            document.getElementById(
+                "bingoPowerupCooldown"
+            ),
+
+        powerupCooldownTime:
+            document.getElementById(
+                "bingoPowerupCooldownTime"
+            )
+
+    };
+
 
     if (
-        balance < amount
+        !bingoElements.room
     ) {
+
         return false;
+
     }
 
-    this.setBalance(
-        balance - amount
-    );
+
+    if (
+        !bingoElements.cards
+    ) {
+
+        console.error(
+            "🎱 Bingo: #bingoCards is missing."
+        );
+
+        return false;
+
+    }
+
 
     return true;
 
 }
 
-};
 
 /* =========================================================
-05. PRICE / CREDIT DISPLAY
-========================================================= */
-
-function getBingoPrice() {
-return (
-    bingoGame.cards *
-    bingoConfig.pricePerCard
-);
-
-}
-
-function updateBingoCreditDisplay() {
-
-const balance =
-    bingoCredits.getBalance();
-
-
-document
-    .querySelectorAll(
-        "[data-bingo-credit-balance]"
-    )
-    .forEach(
-        element => {
-
-            element.textContent =
-                balance;
-
-        }
-    );
-
-
-document
-    .querySelectorAll(
-        "[data-card-price]"
-    )
-    .forEach(
-        element => {
-
-            const option =
-                element.closest(
-                    "[data-card-count]"
-                );
-
-            if (!option) {
-                return;
-            }
-
-            const count =
-                Number(
-                    option.dataset.cardCount
-                );
-
-            element.textContent =
-                `${count * bingoConfig.pricePerCard} credits`;
-
-        }
-    );
-
-}
-
-/* =========================================================
-06. ELEMENT SETUP
-========================================================= */
-
-function setupBingoElements() {
-
-bingoElements = {
-
-    room:
-        document.getElementById(
-            "bingoGame"
-        ),
-
-    cards:
-        document.getElementById(
-            "bingoCards"
-        ),
-
-    cardOptions:
-        document.querySelectorAll(
-            ".bingo-card-option"
-        ),
-
-    daubOptions:
-        document.querySelectorAll(
-            ".bingo-daub-option"
-        ),
-
-    cardCountLabel:
-        document.getElementById(
-            "bingoCardCountLabel"
-        ),
-
-    currentLetter:
-        document.getElementById(
-            "bingoCurrentLetter"
-        ),
-
-    currentNumber:
-        document.getElementById(
-            "bingoCurrentNumber"
-        ),
-
-    result:
-        document.getElementById(
-            "bingoResult"
-        ),
-
-    callNumber:
-        document.getElementById(
-            "bingoCallNumber"
-        ),
-
-    autoCall:
-        document.getElementById(
-            "bingoAutoCall"
-        ),
-
-    newGame:
-        document.getElementById(
-            "bingoNewGame"
-        ),
-
-    calledNumbers:
-        document.getElementById(
-            "bingoCalledNumbers"
-        ),
-
-    calledTotal:
-        document.getElementById(
-            "bingoCalledTotal"
-        ),
-
-    calledCount:
-        document.getElementById(
-            "bingoCalledCount"
-        ),
-
-    remainingCount:
-        document.getElementById(
-            "bingoRemainingCount"
-        ),
-
-    wins:
-        document.getElementById(
-            "bingoWins"
-        ),
-
-    win:
-        document.getElementById(
-            "bingoWin"
-        ),
-
-    winMessage:
-        document.getElementById(
-            "bingoWinMessage"
-        ),
-
-    finalCards:
-        document.getElementById(
-            "bingoFinalCards"
-        ),
-
-    finalCalled:
-        document.getElementById(
-            "bingoFinalCalled"
-        ),
-
-    playAgain:
-        document.getElementById(
-            "bingoPlayAgain"
-        ),
-
-    powerUpXP:
-        document.getElementById(
-            "bingoPowerupXP"
-        ),
-
-    powerUpXPText:
-        document.getElementById(
-            "bingoPowerupXPText"
-        ),
-
-    coffeeFill:
-        document.getElementById(
-            "bingoCoffeeFill"
-        ),
-
-    powerUpTimer:
-        document.getElementById(
-            "bingoPowerupTimer"
-        ),
-
-    powerUpStatus:
-        document.getElementById(
-            "bingoPowerupStatus"
-        ),
-
-    powerUpStatusIcon:
-        document.getElementById(
-            "bingoPowerupStatusIcon"
-        ),
-
-    powerUpStatusTitle:
-        document.getElementById(
-            "bingoPowerupStatusTitle"
-        ),
-
-    powerUpStatusText:
-        document.getElementById(
-            "bingoPowerupStatusText"
-        ),
-
-    powerUpButtons:
-        document.querySelectorAll(
-            ".bingo-powerup-option"
-        ),
-
-    powerUpCooldown:
-        document.getElementById(
-            "bingoPowerupCooldown"
-        ),
-
-    powerUpCooldownTime:
-        document.getElementById(
-            "bingoPowerupCooldownTime"
-        )
-
-};
-
-
-return Boolean(
-    bingoElements.cards
-);
-
-}
-
-/* =========================================================
-07. RANDOM / SHUFFLE
+   08. RANDOM NUMBER
 ========================================================= */
 
 function randomBingoNumber(
-min,
-max
+    min,
+    max
 ) {
 
-return Math.floor(
-    Math.random() *
-    (max - min + 1)
-) + min;
+    return Math.floor(
+        Math.random() *
+        (
+            max - min + 1
+        )
+    ) + min;
 
 }
 
-function shuffleBingoArray(
-array
-) {
-
-const result =
-    [...array];
-
-for (
-    let i = result.length - 1;
-    i > 0;
-    i--
-) {
-
-    const j =
-        Math.floor(
-            Math.random() *
-            (i + 1)
-        );
-
-    [
-        result[i],
-        result[j]
-    ] = [
-        result[j],
-        result[i]
-    ];
-
-}
-
-return result;
-}
 
 /* =========================================================
-08. BINGO LETTER
+   09. SHUFFLE
 ========================================================= */
 
-function getBingoLetter(
-number
+function shuffleBingoArray(
+    array
 ) {
 
-if (number >= 1 && number <= 15) {
-    return "B";
+    const result =
+        [...array];
+
+
+    for (
+        let i = result.length - 1;
+        i > 0;
+        i--
+    ) {
+
+        const j =
+            Math.floor(
+                Math.random() *
+                (i + 1)
+            );
+
+
+        [
+            result[i],
+            result[j]
+        ] =
+        [
+            result[j],
+            result[i]
+        ];
+
+    }
+
+
+    return result;
+
 }
 
-if (number >= 16 && number <= 30) {
-    return "I";
-}
-
-if (number >= 31 && number <= 45) {
-    return "N";
-}
-
-if (number >= 46 && number <= 60) {
-    return "G";
-}
-
-if (number >= 61 && number <= 75) {
-    return "O";
-}
-
-return "";
-
-}
 
 /* =========================================================
-09. CREATE COLUMN
+   10. BINGO LETTER
+========================================================= */
+
+function getBingoLetter(number) {
+
+    if (
+        number >= 1 &&
+        number <= 15
+    ) {
+
+        return "B";
+
+    }
+
+
+    if (
+        number >= 16 &&
+        number <= 30
+    ) {
+
+        return "I";
+
+    }
+
+
+    if (
+        number >= 31 &&
+        number <= 45
+    ) {
+
+        return "N";
+
+    }
+
+
+    if (
+        number >= 46 &&
+        number <= 60
+    ) {
+
+        return "G";
+
+    }
+
+
+    if (
+        number >= 61 &&
+        number <= 75
+    ) {
+
+        return "O";
+
+    }
+
+
+    return "";
+
+}
+
+
+/* =========================================================
+   11. CREATE COLUMN
 ========================================================= */
 
 function createBingoColumn(
-column
+    column
 ) {
 
-const ranges = [
-    [1, 15],
-    [16, 30],
-    [31, 45],
-    [46, 60],
-    [61, 75]
-];
+    const ranges = [
 
-const [
-    min,
-    max
-] = ranges[column];
+        [1, 15],
 
-const numbers = [];
+        [16, 30],
 
-for (
-    let number = min;
-    number <= max;
-    number++
-) {
-    numbers.push(number);
-}
+        [31, 45],
 
-return shuffleBingoArray(
-    numbers
-).slice(0, 5);
-}
+        [46, 60],
 
-/* =========================================================
-10. CREATE CARD
-========================================================= */
+        [61, 75]
 
-function createBingoCard() {
-const card = {
-
-    numbers: [],
-
-    marked: []
-
-};
+    ];
 
 
-const columns = [];
+    const [
+        min,
+        max
+    ] =
+        ranges[column];
 
-for (
-    let column = 0;
-    column < 5;
-    column++
-) {
 
-    columns.push(
-        createBingoColumn(
-            column
-        )
+    const numbers = [];
+
+
+    for (
+        let number = min;
+        number <= max;
+        number++
+    ) {
+
+        numbers.push(
+            number
+        );
+
+    }
+
+
+    return shuffleBingoArray(
+        numbers
+    ).slice(
+        0,
+        5
     );
 
 }
 
 
-for (
-    let row = 0;
-    row < 5;
-    row++
-) {
+/* =========================================================
+   12. CREATE CARD
+========================================================= */
 
-    const numbers =
-        [];
+function createBingoCard() {
 
-    const marked =
-        [];
+    const card = {
+
+        numbers: [],
+
+        marked: []
+
+    };
+
+
+    const columns = [];
 
 
     for (
@@ -677,610 +861,683 @@ for (
         column++
     ) {
 
-        if (
-            row === 2 &&
-            column === 2
-        ) {
-
-            numbers.push(
-                "FREE"
-            );
-
-            marked.push(
-                true
-            );
-
-        }
-
-        else {
-
-            numbers.push(
-                columns[column][row]
-            );
-
-            marked.push(
-                false
-            );
-
-        }
+        columns.push(
+            createBingoColumn(
+                column
+            )
+        );
 
     }
 
 
-    card.numbers.push(
-        numbers
-    );
+    for (
+        let row = 0;
+        row < 5;
+        row++
+    ) {
 
-    card.marked.push(
-        marked
-    );
+        const numberRow = [];
+
+        const markedRow = [];
+
+
+        for (
+            let column = 0;
+            column < 5;
+            column++
+        ) {
+
+            if (
+                row === 2 &&
+                column === 2
+            ) {
+
+                numberRow.push(
+                    "FREE"
+                );
+
+                markedRow.push(
+                    true
+                );
+
+            }
+
+            else {
+
+                numberRow.push(
+                    columns[column][row]
+                );
+
+                markedRow.push(
+                    false
+                );
+
+            }
+
+        }
+
+
+        card.numbers.push(
+            numberRow
+        );
+
+
+        card.marked.push(
+            markedRow
+        );
+
+    }
+
+
+    return card;
 
 }
 
-
-return card;
-
-}
 
 /* =========================================================
-11. CREATE BOARDS
+   13. CREATE BOARDS
 ========================================================= */
 
 function createBingoBoards() {
 
-bingoGame.boards = [];
+    bingoGame.boards = [];
 
-for (
-    let i = 0;
-    i < bingoGame.cards;
-    i++
-) {
 
-    bingoGame.boards.push(
-        createBingoCard()
-    );
+    for (
+        let i = 0;
+        i < bingoGame.cards;
+        i++
+    ) {
+
+        bingoGame.boards.push(
+            createBingoCard()
+        );
+
+    }
 
 }
 
-}
 
 /* =========================================================
-12. RENDER BOARDS
+   14. RENDER BOARDS
 ========================================================= */
 
 function renderBingoBoards() {
 
-const container =
-    bingoElements.cards;
-
-if (!container) {
-    return;
-}
-
-container.innerHTML = "";
+    const container =
+        bingoElements.cards;
 
 
-bingoGame.boards.forEach(
-    (
-        card,
-        cardIndex
-    ) => {
+    if (!container) {
 
-        const cardElement =
-            document.createElement(
-                "article"
-            );
-
-        cardElement.className =
-            "bingo-card";
-
-        cardElement.dataset.card =
-            cardIndex;
-
-
-        const title =
-            document.createElement(
-                "h3"
-            );
-
-        title.textContent =
-            `Bingo Card ${cardIndex + 1}`;
-
-
-        const grid =
-            document.createElement(
-                "div"
-            );
-
-        grid.className =
-            "bingo-grid";
-
-
-        [
-            "B",
-            "I",
-            "N",
-            "G",
-            "O"
-        ].forEach(
-            letter => {
-
-                const header =
-                    document.createElement(
-                        "div"
-                    );
-
-                header.className =
-                    "bingo-cell bingo-header";
-
-                header.textContent =
-                    letter;
-
-                grid.appendChild(
-                    header
-                );
-
-            }
+        console.error(
+            "🎱 Bingo cards container missing."
         );
 
+        return;
 
-        for (
-            let row = 0;
-            row < 5;
-            row++
-        ) {
-
-            for (
-                let column = 0;
-                column < 5;
-                column++
-            ) {
-
-                const value =
-                    card.numbers[row][column];
+    }
 
 
-                const cell =
-                    document.createElement(
-                        "button"
+    container.innerHTML = "";
+
+
+    const letters = [
+        "B",
+        "I",
+        "N",
+        "G",
+        "O"
+    ];
+
+
+    bingoGame.boards.forEach(
+        (
+            card,
+            cardIndex
+        ) => {
+
+            const cardElement =
+                document.createElement(
+                    "article"
+                );
+
+
+            cardElement.className =
+                "bingo-card";
+
+
+            cardElement.dataset.card =
+                cardIndex;
+
+
+            const title =
+                document.createElement(
+                    "h3"
+                );
+
+
+            title.textContent =
+                `Bingo Card ${cardIndex + 1}`;
+
+
+            cardElement.appendChild(
+                title
+            );
+
+
+            const grid =
+                document.createElement(
+                    "div"
+                );
+
+
+            grid.className =
+                "bingo-grid";
+
+
+            letters.forEach(
+                letter => {
+
+                    const header =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    header.className =
+                        "bingo-cell bingo-header";
+
+
+                    header.textContent =
+                        letter;
+
+
+                    grid.appendChild(
+                        header
                     );
 
-                cell.type =
-                    "button";
-
-                cell.className =
-                    "bingo-cell";
-
-                cell.textContent =
-                    value;
-
-                cell.dataset.card =
-                    cardIndex;
-
-                cell.dataset.row =
-                    row;
-
-                cell.dataset.column =
-                    column;
-
-                cell.dataset.number =
-                    value;
+                }
+            );
 
 
-                if (
-                    value === "FREE"
+            for (
+                let row = 0;
+                row < 5;
+                row++
+            ) {
+
+                for (
+                    let column = 0;
+                    column < 5;
+                    column++
                 ) {
 
-                    cell.classList.add(
-                        "free",
-                        "marked"
+                    const value =
+                        card.numbers[row][column];
+
+
+                    const cell =
+                        document.createElement(
+                            "button"
+                        );
+
+
+                    cell.type =
+                        "button";
+
+
+                    cell.className =
+                        "bingo-cell";
+
+
+                    cell.textContent =
+                        value;
+
+
+                    cell.dataset.card =
+                        cardIndex;
+
+
+                    cell.dataset.row =
+                        row;
+
+
+                    cell.dataset.column =
+                        column;
+
+
+                    cell.dataset.number =
+                        value;
+
+
+                    if (
+                        value === "FREE"
+                    ) {
+
+                        cell.classList.add(
+                            "free"
+                        );
+
+                        cell.classList.add(
+                            "marked"
+                        );
+
+                    }
+
+
+                    cell.addEventListener(
+                        "click",
+                        () => {
+
+                            markBingoCell(
+                                cardIndex,
+                                row,
+                                column,
+                                "manual"
+                            );
+
+                        }
+                    );
+
+
+                    grid.appendChild(
+                        cell
                     );
 
                 }
 
-
-                cell.addEventListener(
-                    "click",
-                    () => {
-
-                        markBingoCell(
-                            cardIndex,
-                            row,
-                            column,
-                            "manual"
-                        );
-
-                    }
-                );
-
-
-                grid.appendChild(
-                    cell
-                );
-
             }
+
+
+            cardElement.appendChild(
+                grid
+            );
+
+
+            container.appendChild(
+                cardElement
+            );
+
+        }
+    );
+
+
+    highlightCalledNumberOnCards();
+
+    updateCardCountLabel();
+
+}
+
+
+/* =========================================================
+   15. CARD COUNT
+========================================================= */
+
+function updateCardCountLabel() {
+
+    if (
+        !bingoElements.cardCountLabel
+    ) {
+
+        return;
+
+    }
+
+
+    bingoElements.cardCountLabel.textContent =
+        `${bingoGame.cards} ${
+            bingoGame.cards === 1
+                ? "CARD"
+                : "CARDS"
+        }`;
+
+}
+
+
+/* =========================================================
+   16. CARD SELECTION UI
+========================================================= */
+
+function updateCardSelectionUI() {
+
+    bingoElements.cardOptions.forEach(
+        button => {
+
+            const count =
+                Number(
+                    button.dataset.cardCount
+                );
+
+
+            const selected =
+                count === bingoGame.cards;
+
+
+            button.classList.toggle(
+                "active",
+                selected
+            );
+
+
+            button.setAttribute(
+                "aria-pressed",
+                selected
+                    ? "true"
+                    : "false"
+            );
+
+        }
+    );
+
+
+    updateCardCountLabel();
+
+    updateBingoCreditDisplay();
+
+}
+
+
+/* =========================================================
+   17. NORMALIZE CARD COUNT
+========================================================= */
+
+function normalizeCardCount(
+    value
+) {
+
+    const number =
+        Number(value);
+
+
+    return Math.min(
+        bingoConfig.maximumCards,
+        Math.max(
+            bingoConfig.minimumCards,
+            number || 1
+        )
+    );
+
+}
+
+
+/* =========================================================
+   18. SELECT CARD COUNT
+========================================================= */
+
+function selectBingoCardCount(
+    count
+) {
+
+    if (
+        bingoGame.playing
+    ) {
+
+        showBingoResult(
+            "Start a new game before changing the number of cards."
+        );
+
+        return;
+
+    }
+
+
+    bingoGame.cards =
+        normalizeCardCount(
+            count
+        );
+
+
+    updateCardSelectionUI();
+
+    newBingoGame();
+
+}
+
+
+/* =========================================================
+   19. DAUB MODE
+========================================================= */
+
+function setBingoDaubMode(
+    mode
+) {
+
+    bingoGame.autoDaub =
+        mode === "auto";
+
+
+    bingoElements.daubOptions.forEach(
+        button => {
+
+            const active =
+                button.dataset.daubMode ===
+                mode;
+
+
+            button.classList.toggle(
+                "active",
+                active
+            );
+
+
+            button.setAttribute(
+                "aria-pressed",
+                active
+                    ? "true"
+                    : "false"
+            );
+
+        }
+    );
+
+
+    if (
+        bingoGame.autoDaub &&
+        bingoGame.playing
+    ) {
+
+        autoDaubCalledNumbers();
+
+    }
+
+
+    showBingoResult(
+        bingoGame.autoDaub
+            ? "✨ Auto-Daub ON — called numbers will be marked automatically."
+            : "✋ Manual Daub ON — tap your called numbers yourself."
+    );
+
+}
+
+
+/* =========================================================
+   20. MARK CELL
+========================================================= */
+
+function markBingoCell(
+    cardIndex,
+    row,
+    column,
+    source = "manual"
+) {
+
+    if (
+        !bingoGame.playing ||
+        bingoGame.gameOver
+    ) {
+
+        return false;
+
+    }
+
+
+    const card =
+        bingoGame.boards[
+            cardIndex
+        ];
+
+
+    if (!card) {
+
+        return false;
+
+    }
+
+
+    const number =
+        card.numbers[row][column];
+
+
+    if (
+        number === "FREE"
+    ) {
+
+        return false;
+
+    }
+
+
+    if (
+        !bingoGame.calledNumbers.includes(
+            number
+        )
+    ) {
+
+        if (
+            source === "manual"
+        ) {
+
+            showBingoResult(
+                `${getBingoLetter(number)}${number} has not been called yet.`
+            );
 
         }
 
 
-        cardElement.appendChild(
-            title
-        );
-
-        cardElement.appendChild(
-            grid
-        );
-
-        container.appendChild(
-            cardElement
-        );
+        return false;
 
     }
-);
 
 
-updateCalledHighlights();
+    if (
+        card.marked[row][column]
+    ) {
 
-}
-
-/* =========================================================
-13. CARD COUNT
-========================================================= */
-
-function normalizeCardCount(
-value
-) {
-
-const number =
-    Number(value);
-
-return Math.min(
-    bingoConfig.maximumCards,
-    Math.max(
-        bingoConfig.minimumCards,
-        Math.floor(
-            number || 1
-        )
-    )
-);
-
-}
-
-function updateCardCountLabel() {
-
-if (
-    !bingoElements.cardCountLabel
-) {
-    return;
-}
-
-bingoElements.cardCountLabel.textContent =
-    `${bingoGame.cards} ${
-        bingoGame.cards === 1
-            ? "CARD"
-            : "CARDS"
-    }`;
-
-}
-
-function updateCardSelectionUI() {
-bingoElements.cardOptions.forEach(
-    button => {
-
-        const count =
-            Number(
-                button.dataset.cardCount
-            );
-
-        const selected =
-            count === bingoGame.cards;
-
-        button.classList.toggle(
-            "active",
-            selected
-        );
-
-        button.setAttribute(
-            "aria-pressed",
-            selected
-                ? "true"
-                : "false"
-        );
+        return false;
 
     }
-);
 
-updateCardCountLabel();
 
-updateBingoCreditDisplay();
+    card.marked[row][column] =
+        true;
 
-}
 
-/* =========================================================
-14. SELECT CARDS
-========================================================= */
-
-function selectBingoCardCount(
-count
-) {
-
-if (
-    bingoGame.playing
-) {
-
-    showBingoResult(
-        "Start a new game before changing cards."
+    updateBingoCellVisual(
+        cardIndex,
+        row,
+        column
     );
 
-    return;
 
-}
+    /*
+     * Successful daub.
+     */
 
-bingoGame.cards =
-    normalizeCardCount(
-        count
-    );
-
-newBingoGame();
-
-}
-
-/* =========================================================
-15. DAUB MODE
-========================================================= */
-
-function setBingoDaubMode(
-mode
-) {
-
-bingoGame.autoDaub =
-    mode === "auto";
+    let xpAmount = 1;
 
 
-bingoElements.daubOptions.forEach(
-    button => {
+    if (
+        bingoGame.doubleDaubActive
+    ) {
 
-        const active =
-            button.dataset.daubMode === mode;
+        xpAmount = 2;
 
-        button.classList.toggle(
-            "active",
-            active
-        );
-
-        button.setAttribute(
-            "aria-pressed",
-            active
-                ? "true"
-                : "false"
-        );
+        bingoGame.doubleDaubActive =
+            false;
 
     }
-);
 
 
-if (
-    bingoGame.autoDaub &&
-    bingoGame.playing
-) {
+    addDaubXP(
+        xpAmount
+    );
 
-    autoDaubCalledNumbers();
-
-}
-
-
-showBingoResult(
-    bingoGame.autoDaub
-        ? "✨ Auto-Daub ON — called numbers will be marked automatically."
-        : "Manual Daub ON — tap your called numbers yourself."
-);
- 
-
-}
-
-function toggleBingoAutoDaub() {
-
- 
-setBingoDaubMode(
-    bingoGame.autoDaub
-        ? "manual"
-        : "auto"
-);
- 
-
-}
-
-/* =========================================================
-16. MARK CELL
-========================================================= */
-
-function markBingoCell(
-cardIndex,
-row,
-column,
-source = "manual"
-) {
-
- 
-if (
-    !bingoGame.playing ||
-    bingoGame.gameOver
-) {
-    return false;
-}
-
-
-const card =
-    bingoGame.boards[cardIndex];
-
-if (!card) {
-    return false;
-}
-
-
-const number =
-    card.numbers[row][column];
-
-
-if (
-    number === "FREE"
-) {
-    return false;
-}
-
-
-if (
-    card.marked[row][column]
-) {
-    return false;
-}
-
-
-if (
-    !bingoGame.calledNumbers.includes(
-        number
-    )
-) {
 
     if (
         source === "manual"
     ) {
 
         showBingoResult(
-            `${getBingoLetter(number)}${number} has not been called yet.`
+            `Marked ${getBingoLetter(number)}${number}. +${xpAmount} XP ⚡`
         );
 
     }
 
-    return false;
 
-}
-
-
-card.marked[row][column] =
-    true;
-
-
-updateBingoCellVisual(
-    cardIndex,
-    row,
-    column
-);
-
-
-/*
- * DOUBLE DAUB
- */
-
-let xp =
-    1;
-
-
-if (
-    bingoGame.doubleDaubActive
-) {
-
-    xp = 2;
-
-    bingoGame.doubleDaubActive =
-        false;
-
-    showBingoResult(
-        "✨ Double Daub activated! +2 XP"
+    checkBingo(
+        cardIndex
     );
 
-}
 
-
-addDaubXP(
-    xp
-);
-
-
-if (
-    source === "manual" &&
-    !bingoGame.gameOver
-) {
-
-    showBingoResult(
-        `Marked ${getBingoLetter(number)}${number}. +${xp} XP ☕`
-    );
+    return true;
 
 }
 
-
-checkBingo(
-    cardIndex
-);
-
-
-return true;
- 
-
-}
 
 /* =========================================================
-17. CELL VISUAL
+   21. CELL VISUAL
 ========================================================= */
 
 function updateBingoCellVisual(
-cardIndex,
-row,
-column
+    cardIndex,
+    row,
+    column
 ) {
 
- 
-const cell =
-    document.querySelector(
-        `.bingo-cell[data-card="${cardIndex}"][data-row="${row}"][data-column="${column}"]`
+    const cell =
+        document.querySelector(
+            `.bingo-cell[data-card="${cardIndex}"][data-row="${row}"][data-column="${column}"]`
+        );
+
+
+    if (!cell) {
+
+        return;
+
+    }
+
+
+    const card =
+        bingoGame.boards[
+            cardIndex
+        ];
+
+
+    cell.classList.toggle(
+        "marked",
+        Boolean(
+            card.marked[row][column]
+        )
     );
 
-if (!cell) {
-    return;
 }
 
-const card =
-    bingoGame.boards[cardIndex];
-
-cell.classList.toggle(
-    "marked",
-    Boolean(
-        card.marked[row][column]
-    )
-);
- 
-
-}
 
 /* =========================================================
-18. AUTO DAUB
+   22. AUTO DAUB
 ========================================================= */
 
 function autoDaubCalledNumbers() {
 
- 
-if (
-    !bingoGame.playing ||
-    bingoGame.gameOver
-) {
-    return;
-}
+    if (
+        !bingoGame.playing ||
+        bingoGame.gameOver
+    ) {
 
+        return;
 
-let changed = true;
-
-
-/*
- * Keep scanning because Double Daub
- * and power-up effects can alter XP.
- */
-
-while (
-    changed &&
-    !bingoGame.gameOver
-) {
-
-    changed = false;
+    }
 
 
     for (
@@ -1314,7 +1571,9 @@ while (
                 if (
                     number === "FREE"
                 ) {
+
                     continue;
+
                 }
 
 
@@ -1325,20 +1584,12 @@ while (
                     !card.marked[row][column]
                 ) {
 
-                    const marked =
-                        markBingoCell(
-                            cardIndex,
-                            row,
-                            column,
-                            "auto"
-                        );
-
-
-                    if (marked) {
-
-                        changed = true;
-
-                    }
+                    markBingoCell(
+                        cardIndex,
+                        row,
+                        column,
+                        "auto"
+                    );
 
 
                     if (
@@ -1358,59 +1609,30 @@ while (
     }
 
 }
- 
 
-}
 
 /* =========================================================
-19. BINGO CHECK
+   23. CHECK BINGO
 ========================================================= */
 
 function checkBingo(
-cardIndex
+    cardIndex
 ) {
 
- 
-const card =
-    bingoGame.boards[cardIndex];
-
-if (!card) {
-    return false;
-}
+    const card =
+        bingoGame.boards[
+            cardIndex
+        ];
 
 
-for (
-    let row = 0;
-    row < 5;
-    row++
-) {
+    if (!card) {
 
-    if (
-        card.marked[row].every(
-            Boolean
-        )
-    ) {
-
-        winBingo(
-            cardIndex,
-            `row ${row + 1}`
-        );
-
-        return true;
+        return false;
 
     }
 
-}
 
-
-for (
-    let column = 0;
-    column < 5;
-    column++
-) {
-
-    let complete =
-        true;
+    /* ROWS */
 
     for (
         let row = 0;
@@ -1419,659 +1641,641 @@ for (
     ) {
 
         if (
-            !card.marked[row][column]
+            card.marked[row].every(
+                Boolean
+            )
         ) {
 
-            complete =
-                false;
+            winBingo(
+                cardIndex,
+                `row ${row + 1}`
+            );
 
-            break;
+            return true;
 
         }
 
     }
 
-    if (complete) {
+
+    /* COLUMNS */
+
+    for (
+        let column = 0;
+        column < 5;
+        column++
+    ) {
+
+        let complete =
+            true;
+
+
+        for (
+            let row = 0;
+            row < 5;
+            row++
+        ) {
+
+            if (
+                !card.marked[row][column]
+            ) {
+
+                complete =
+                    false;
+
+                break;
+
+            }
+
+        }
+
+
+        if (complete) {
+
+            winBingo(
+                cardIndex,
+                `column ${column + 1}`
+            );
+
+            return true;
+
+        }
+
+    }
+
+
+    /* DIAGONAL */
+
+    let diagonalOne =
+        true;
+
+
+    let diagonalTwo =
+        true;
+
+
+    for (
+        let i = 0;
+        i < 5;
+        i++
+    ) {
+
+        if (
+            !card.marked[i][i]
+        ) {
+
+            diagonalOne =
+                false;
+
+        }
+
+
+        if (
+            !card.marked[i][4 - i]
+        ) {
+
+            diagonalTwo =
+                false;
+
+        }
+
+    }
+
+
+    if (
+        diagonalOne ||
+        diagonalTwo
+    ) {
 
         winBingo(
             cardIndex,
-            `column ${column + 1}`
+            "diagonal"
         );
 
         return true;
 
     }
 
-}
 
-
-let diagonalOne =
-    true;
-
-let diagonalTwo =
-    true;
-
-
-for (
-    let i = 0;
-    i < 5;
-    i++
-) {
-
-    if (
-        !card.marked[i][i]
-    ) {
-
-        diagonalOne =
-            false;
-
-    }
-
-    if (
-        !card.marked[i][4 - i]
-    ) {
-
-        diagonalTwo =
-            false;
-
-    }
+    return false;
 
 }
 
-
-if (diagonalOne) {
-
-    winBingo(
-        cardIndex,
-        "diagonal"
-    );
-
-    return true;
-
-}
-
-
-if (diagonalTwo) {
-
-    winBingo(
-        cardIndex,
-        "diagonal"
-    );
-
-    return true;
-
-}
-
-
-return false;
- 
-
-}
 
 /* =========================================================
-20. COFFEE XP
+   24. ADD XP
 ========================================================= */
 
 function addDaubXP(
-amount = 1
+    amount = 1
 ) {
 
- 
-/*
- * Never gather XP during cooldown.
- */
+    /*
+     * No XP while cooldown is active.
+     */
 
-if (
-    bingoGame.powerUpCooldown ||
-    !bingoGame.playing ||
-    bingoGame.gameOver
-) {
-    return;
+    if (
+        bingoGame.powerUpCooldown
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        !bingoGame.playing ||
+        bingoGame.gameOver
+    ) {
+
+        return;
+
+    }
+
+
+    /*
+     * If a power-up is already waiting,
+     * XP must not continue accumulating.
+     */
+
+    if (
+        bingoGame.powerUpReady
+    ) {
+
+        return;
+
+    }
+
+
+    bingoGame.daubXP =
+        Math.min(
+            bingoConfig.xpPerPowerUp,
+            bingoGame.daubXP + amount
+        );
+
+
+    updatePowerUpUI();
+
+
+    if (
+        bingoGame.daubXP >=
+        bingoConfig.xpPerPowerUp
+    ) {
+
+        chargeRandomPowerUp();
+
+    }
+
 }
 
-
-/*
- * A power-up is waiting.
- * The coffee cup stays full until
- * that power-up is used.
- */
-
-if (
-    bingoGame.availablePowerUp
-) {
-    return;
-}
-
-
-bingoGame.daubXP +=
-    amount;
-
-
-bingoGame.daubXP =
-    Math.min(
-        bingoConfig.xpPerPowerUp,
-        bingoGame.daubXP
-    );
-
-
-/*
- * Full cup!
- */
-
-if (
-    bingoGame.daubXP >=
-    bingoConfig.xpPerPowerUp
-) {
-
-    brewRandomPowerUp();
-
-}
-
-
-updatePowerUpUI();
- 
-
-}
 
 /* =========================================================
-21. RANDOM POWER-UP
+   25. RANDOM POWER-UP
 ========================================================= */
 
-const bingoPowerUps = [
+function chargeRandomPowerUp() {
 
- 
-"lucky-daub",
+    if (
+        bingoGame.powerUpReady
+    ) {
 
-"number-boost",
+        return;
 
-"double-daub"
- 
-
-];
-
-function brewRandomPowerUp() {
-
- 
-if (
-    bingoGame.availablePowerUp ||
-    bingoGame.powerUpCooldown
-) {
-    return;
-}
+    }
 
 
-const index =
-    Math.floor(
-        Math.random() *
-        bingoPowerUps.length
+    const powerUps = [
+
+        "lucky-daub",
+
+        "number-boost",
+
+        "double-daub"
+
+    ];
+
+
+    const randomIndex =
+        Math.floor(
+            Math.random() *
+            powerUps.length
+        );
+
+
+    bingoGame.activePowerUp =
+        powerUps[
+            randomIndex
+        ];
+
+
+    bingoGame.powerUpReady =
+        true;
+
+
+    updatePowerUpUI();
+
+
+    const names = {
+
+        "lucky-daub":
+            "🍀 Lucky Daub",
+
+        "number-boost":
+            "⚡ Number Boost",
+
+        "double-daub":
+            "✨ Double Daub"
+
+    };
+
+
+    showBingoResult(
+        `🎉 ${names[bingoGame.activePowerUp]} is ready!`
     );
 
-
-bingoGame.availablePowerUp =
-    bingoPowerUps[index];
-
-
-bingoGame.daubXP =
-    bingoConfig.xpPerPowerUp;
-
-
-updatePowerUpUI();
-
-
-const name =
-    getPowerUpName(
-        bingoGame.availablePowerUp
-    );
-
-
-showBingoResult(
-    `☕ Coffee brewed! You received ${name}!`
-);
- 
-
 }
 
-/* =========================================================
-22. POWER-UP NAME
-========================================================= */
-
-function getPowerUpName(
-powerUp
-) {
-
- 
-const names = {
-
-    "lucky-daub":
-        "🍀 Lucky Daub",
-
-    "number-boost":
-        "⚡ Number Boost",
-
-    "double-daub":
-        "✨ Double Daub"
-
-};
-
-
-return (
-    names[powerUp] ||
-    "Mystery Power-Up"
-);
- 
-
-}
 
 /* =========================================================
-23. POWER-UP UI
+   26. POWER-UP UI
 ========================================================= */
 
 function updatePowerUpUI() {
 
- 
-const required =
-    bingoConfig.xpPerPowerUp;
+    const xp =
+        bingoGame.daubXP;
 
 
-const xp =
-    bingoGame.daubXP;
+    const maxXP =
+        bingoConfig.xpPerPowerUp;
 
 
-const progress =
-    Math.min(
-        100,
+    const progress =
         (
             xp /
-            required
-        ) * 100
-    );
+            maxXP
+        ) * 100;
 
 
-/*
- * COFFEE FILL
- */
-
-if (
-    bingoElements.coffeeFill
-) {
-
-    bingoElements.coffeeFill.style.height =
-        `${progress}%`;
-
-}
-
-
-/*
- * XP TEXT
- */
-
-if (
-    bingoElements.powerUpXP
-) {
-
-    bingoElements.powerUpXP.textContent =
-        `${xp} / ${required}`;
-
-}
-
-
-if (
-    bingoElements.powerUpXPText
-) {
+    /*
+     * XP text
+     */
 
     if (
-        bingoGame.powerUpCooldown
+        bingoElements.powerupXP
     ) {
 
-        bingoElements.powerUpXPText.textContent =
-            "The coffee machine is cooling down...";
+        bingoElements.powerupXP.textContent =
+            bingoGame.powerUpReady
+                ? "FULL"
+                : `${xp} / ${maxXP}`;
 
     }
 
-    else if (
-        bingoGame.availablePowerUp
-    ) {
 
-        bingoElements.powerUpXPText.textContent =
-            "Your coffee is full!";
-
-    }
-
-    else {
-
-        bingoElements.powerUpXPText.textContent =
-            `${required - xp} more successful daub${
-                required - xp === 1
-                    ? ""
-                    : "s"
-            } to brew a power-up.`;
-
-    }
-
-}
-
-
-/*
- * TIMER
- */
-
-if (
-    bingoElements.powerUpTimer
-) {
+    /*
+     * Progress bar
+     */
 
     if (
-        bingoGame.powerUpCooldown
+        bingoElements.powerupProgress
     ) {
 
-        bingoElements.powerUpTimer.textContent =
-            `COOLDOWN ${bingoGame.powerUpCooldownRemaining}s`;
+        bingoElements.powerupProgress.style.width =
+            `${progress}%`;
 
     }
 
-    else if (
-        bingoGame.availablePowerUp
+
+    if (
+        bingoElements.powerupMeter
     ) {
 
-        bingoElements.powerUpTimer.textContent =
-            "POWER-UP READY";
-
-    }
-
-    else {
-
-        bingoElements.powerUpTimer.textContent =
-            "BREWING";
-
-    }
-
-}
-
-
-/*
- * STATUS
- */
-
-if (
-    bingoGame.powerUpCooldown
-) {
-
-    setPowerUpStatus(
-        "⏳",
-        "Coffee machine cooling",
-        "XP collection resumes when the cooldown ends."
-    );
-
-}
-
-else if (
-    bingoGame.availablePowerUp
-) {
-
-    setPowerUpStatus(
-        getPowerUpIcon(
-            bingoGame.availablePowerUp
-        ),
-        `${getPowerUpName(bingoGame.availablePowerUp)} ready!`,
-        "This is your power-up for this coffee load."
-    );
-
-}
-
-else {
-
-    setPowerUpStatus(
-        "☕",
-        "Coffee is brewing",
-        "Daub 3 called numbers to receive a random power-up."
-    );
-
-}
-
-
-/*
- * POWER-UP BUTTONS
- */
-
-bingoElements.powerUpButtons.forEach(
-    button => {
-
-        const type =
-            button.dataset.powerup;
-
-        const selected =
-            type ===
-            bingoGame.availablePowerUp;
-
-
-        button.classList.toggle(
-            "selected",
-            selected
+        bingoElements.powerupMeter.setAttribute(
+            "aria-valuenow",
+            xp
         );
 
-
-        const usable =
-            bingoGame.playing &&
-            !bingoGame.gameOver &&
-            !bingoGame.powerUpCooldown &&
-            selected;
+    }
 
 
-        button.disabled =
-            !usable;
+    /*
+     * Timer
+     */
 
+    if (
+        bingoElements.powerupTimer
+    ) {
 
-        const label =
-            button.querySelector(
-                "[data-powerup-ready]"
-            );
+        if (
+            bingoGame.powerUpCooldown
+        ) {
 
+            bingoElements.powerupTimer.textContent =
+                `COOLDOWN ${bingoGame.powerUpCooldownRemaining}s`;
 
-        if (label) {
+        }
 
-            if (
-                selected
-            ) {
+        else if (
+            bingoGame.powerUpReady
+        ) {
 
-                label.textContent =
-                    "READY";
+            bingoElements.powerupTimer.textContent =
+                "POWER-UP READY";
 
-            }
+        }
 
-            else {
+        else {
 
-                label.textContent =
-                    "LOCKED";
-
-            }
+            bingoElements.powerupTimer.textContent =
+                "READY IN —";
 
         }
 
     }
-);
 
 
-/*
- * COOLDOWN DISPLAY
- */
+    /*
+     * Status
+     */
 
-if (
-    bingoElements.powerUpCooldown
-) {
+    if (
+        bingoElements.powerupStatusTitle &&
+        bingoElements.powerupStatusText
+    ) {
 
-    bingoElements.powerUpCooldown.hidden =
-        !bingoGame.powerUpCooldown;
+        if (
+            bingoGame.powerUpCooldown
+        ) {
 
-}
+            bingoElements.powerupStatusTitle.textContent =
+                "Power-up cooldown";
 
-if (
-    bingoElements.powerUpCooldownTime
-) {
 
-    bingoElements.powerUpCooldownTime.textContent =
-        bingoGame.powerUpCooldownRemaining;
+            bingoElements.powerupStatusText.textContent =
+                `Wait ${bingoGame.powerUpCooldownRemaining} seconds before charging again.`;
 
-}
- 
+        }
 
-}
+        else if (
+            bingoGame.powerUpReady
+        ) {
 
-function setPowerUpStatus(
-icon,
-title,
-text
-) {
+            const names = {
 
- 
-if (
-    bingoElements.powerUpStatusIcon
-) {
+                "lucky-daub":
+                    "🍀 Lucky Daub",
 
-    bingoElements.powerUpStatusIcon.textContent =
-        icon;
+                "number-boost":
+                    "⚡ Number Boost",
 
-}
+                "double-daub":
+                    "✨ Double Daub"
 
-if (
-    bingoElements.powerUpStatusTitle
-) {
+            };
 
-    bingoElements.powerUpStatusTitle.textContent =
-        title;
 
-}
+            bingoElements.powerupStatusTitle.textContent =
+                `${names[bingoGame.activePowerUp]} ready!`;
 
-if (
-    bingoElements.powerUpStatusText
-) {
 
-    bingoElements.powerUpStatusText.textContent =
-        text;
+            bingoElements.powerupStatusText.textContent =
+                "Use your power-up before charging the next one.";
 
-}
- 
+        }
 
-}
+        else {
 
-function getPowerUpIcon(
-powerUp
-) {
+            bingoElements.powerupStatusTitle.textContent =
+                "Power-up charging";
 
- 
-const icons = {
 
-    "lucky-daub": "🍀",
+            bingoElements.powerupStatusText.textContent =
+                `Daub ${maxXP - xp} more called number${
+                    maxXP - xp === 1
+                        ? ""
+                        : "s"
+                } to fill your coffee cup.`;
 
-    "number-boost": "⚡",
+        }
 
-    "double-daub": "✨"
+    }
 
-};
 
-return (
-    icons[powerUp] ||
-    "☕"
-);
- 
+    updatePowerUpButtons();
 
 }
+
 
 /* =========================================================
-24. CONSUME RANDOM POWER-UP
+   27. POWER-UP BUTTONS
 ========================================================= */
 
-function consumeSelectedPowerUp(
-expectedPowerUp
-) {
+function updatePowerUpButtons() {
 
- 
-if (
-    !bingoGame.playing ||
-    bingoGame.gameOver
-) {
-    return false;
-}
+    bingoElements.powerupOptions.forEach(
+        button => {
+
+            const type =
+                button.dataset.powerup;
 
 
-if (
-    bingoGame.powerUpCooldown
-) {
+            const isActive =
+                bingoGame.powerUpReady &&
+                bingoGame.activePowerUp === type;
 
-    showBingoResult(
-        `⏳ Power-up cooling down for ${bingoGame.powerUpCooldownRemaining}s.`
+
+            const available =
+                isActive &&
+                bingoGame.playing &&
+                !bingoGame.gameOver &&
+                !bingoGame.powerUpCooldown;
+
+
+            button.disabled =
+                !available;
+
+
+            button.classList.toggle(
+                "active",
+                isActive
+            );
+
+
+            const status =
+                button.querySelector(
+                    "[data-powerup-ready]"
+                );
+
+
+            if (status) {
+
+                if (
+                    isActive
+                ) {
+
+                    status.textContent =
+                        "READY";
+
+                }
+
+                else {
+
+                    status.textContent =
+                        bingoGame.powerUpReady
+                            ? "LOCKED"
+                            : "CHARGING";
+
+                }
+
+            }
+
+        }
     );
 
-    return false;
-
 }
 
-
-if (
-    bingoGame.availablePowerUp !==
-    expectedPowerUp
-) {
-
-    showBingoResult(
-        "☕ That power-up is not the one brewed for this load."
-    );
-
-    return false;
-
-}
-
-
-/*
- * IMPORTANT:
- *
- * The cup empties immediately.
- * No second power-up can be used from
- * the same XP load.
- */
-
-bingoGame.availablePowerUp =
-    null;
-
-
-bingoGame.daubXP =
-    0;
-
-
-updatePowerUpUI();
-
-
-return true;
- 
-
-}
 
 /* =========================================================
-25. LUCKY DAUB
+   28. USE SELECTED POWER-UP
+========================================================= */
+
+function useBingoPowerUp(
+    type
+) {
+
+    if (
+        !bingoGame.playing ||
+        bingoGame.gameOver
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        bingoGame.powerUpCooldown
+    ) {
+
+        showBingoResult(
+            `🧊 Power-up cooling down: ${bingoGame.powerUpCooldownRemaining}s`
+        );
+
+        return;
+
+    }
+
+
+    if (
+        !bingoGame.powerUpReady
+    ) {
+
+        showBingoResult(
+            "☕ Fill the coffee cup first."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        bingoGame.activePowerUp !== type
+    ) {
+
+        return;
+
+    }
+
+
+    let success =
+        false;
+
+
+    switch (type) {
+
+        case "lucky-daub":
+
+            success =
+                useLuckyDaub();
+
+            break;
+
+
+        case "number-boost":
+
+            success =
+                useNumberBoost();
+
+            break;
+
+
+        case "double-daub":
+
+            success =
+                useDoubleDaub();
+
+            break;
+
+    }
+
+
+    if (
+        success
+    ) {
+
+        consumeLoadedPowerUp();
+
+        startPowerUpCooldown();
+
+    }
+
+}
+
+
+/* =========================================================
+   29. CONSUME POWER-UP
+========================================================= */
+
+function consumeLoadedPowerUp() {
+
+    bingoGame.powerUpReady =
+        false;
+
+
+    bingoGame.activePowerUp =
+        null;
+
+
+    bingoGame.daubXP =
+        0;
+
+
+    updatePowerUpUI();
+
+}
+
+
+/* =========================================================
+   30. LUCKY DAUB
+   ---------------------------------------------------------
+   Marks ONE currently called number on ONE card.
 ========================================================= */
 
 function useLuckyDaub() {
 
- 
-if (
-    !consumeSelectedPowerUp(
-        "lucky-daub"
-    )
-) {
-    return;
-}
+    for (
+        let cardIndex = 0;
+        cardIndex < bingoGame.boards.length;
+        cardIndex++
+    ) {
 
+        const card =
+            bingoGame.boards[
+                cardIndex
+            ];
 
-/*
- * Find ONE random valid called number
- * across all cards.
- */
-
-const candidates = [];
-
-
-bingoGame.boards.forEach(
-    (
-        card,
-        cardIndex
-    ) => {
 
         for (
             let row = 0;
@@ -2097,11 +2301,28 @@ bingoGame.boards.forEach(
                     !card.marked[row][column]
                 ) {
 
-                    candidates.push({
+                    card.marked[row][column] =
+                        true;
+
+
+                    updateBingoCellVisual(
                         cardIndex,
                         row,
                         column
-                    });
+                    );
+
+
+                    checkBingo(
+                        cardIndex
+                    );
+
+
+                    showBingoResult(
+                        `🍀 Lucky Daub marked ${getBingoLetter(number)}${number}!`
+                    );
+
+
+                    return true;
 
                 }
 
@@ -2110,151 +2331,59 @@ bingoGame.boards.forEach(
         }
 
     }
-);
 
-
-if (
-    candidates.length === 0
-) {
 
     showBingoResult(
-        "🍀 Lucky Daub had no called number to mark."
+        "🍀 Lucky Daub could not find a new called number."
     );
 
-    startPowerUpCooldown();
 
-    return;
-
-}
-
-
-const selected =
-    candidates[
-        Math.floor(
-            Math.random() *
-            candidates.length
-        )
-    ];
-
-
-/*
- * Power-up daub does NOT create XP.
- */
-
-const card =
-    bingoGame.boards[
-        selected.cardIndex
-    ];
-
-
-card.marked[
-    selected.row
-][
-    selected.column
-] = true;
-
-
-updateBingoCellVisual(
-    selected.cardIndex,
-    selected.row,
-    selected.column
-);
-
-
-showBingoResult(
-    `🍀 Lucky Daub marked ${getBingoLetter(
-        card.numbers[
-            selected.row
-        ][
-            selected.column
-        ]
-    )}${card.numbers[
-        selected.row
-    ][
-        selected.column
-    ]}!`
-);
-
-
-checkBingo(
-    selected.cardIndex
-);
-
-
-if (
-    !bingoGame.gameOver
-) {
-
-    startPowerUpCooldown();
+    return false;
 
 }
- 
 
-}
 
 /* =========================================================
-26. NUMBER BOOST
+   31. NUMBER BOOST
+   ---------------------------------------------------------
+   Highlights all currently called numbers on cards.
 ========================================================= */
 
 function useNumberBoost() {
 
- 
-if (
-    !consumeSelectedPowerUp(
-        "number-boost"
-    )
-) {
-    return;
-}
+    bingoGame.numberBoostActive =
+        true;
 
 
-document
-    .querySelectorAll(
-        ".bingo-cell[data-number]"
-    )
-    .forEach(
-        cell => {
+    highlightCalledNumberOnCards();
 
-            const number =
-                Number(
-                    cell.dataset.number
-                );
 
-            if (
-                bingoGame.calledNumbers.includes(
-                    number
-                )
-            ) {
+    document
+        .querySelectorAll(
+            ".bingo-cell.called"
+        )
+        .forEach(
+            cell => {
 
                 cell.classList.add(
                     "number-boost"
                 );
 
             }
+        );
 
-        }
+
+    showBingoResult(
+        "⚡ Number Boost activated! Called numbers are highlighted."
     );
 
 
-showBingoResult(
-    "⚡ Number Boost activated! Called numbers are glowing."
-);
-
-
-if (
-    bingoGame.numberBoostTimer
-) {
-
-    clearTimeout(
-        bingoGame.numberBoostTimer
-    );
-
-}
-
-
-bingoGame.numberBoostTimer =
     setTimeout(
         () => {
+
+            bingoGame.numberBoostActive =
+                false;
+
 
             document
                 .querySelectorAll(
@@ -2271,1409 +2400,1496 @@ bingoGame.numberBoostTimer =
                 );
 
         },
-        bingoConfig.numberBoostDuration
+        5000
     );
 
 
-startPowerUpCooldown();
- 
+    return true;
 
 }
 
+
 /* =========================================================
-27. DOUBLE DAUB
+   32. DOUBLE DAUB
 ========================================================= */
 
 function useDoubleDaub() {
 
- 
-if (
-    !consumeSelectedPowerUp(
-        "double-daub"
-    )
-) {
-    return;
-}
+    bingoGame.doubleDaubActive =
+        true;
 
 
-bingoGame.doubleDaubActive =
-    true;
+    showBingoResult(
+        "✨ Double Daub ready! Your next successful daub gives 2 XP."
+    );
 
 
-showBingoResult(
-    "✨ Double Daub ready! Your next successful daub gives 2 XP."
-);
-
-
-startPowerUpCooldown();
- 
+    return true;
 
 }
+
 
 /* =========================================================
-28. COOLDOWN
+   33. COOLDOWN
 ========================================================= */
 
 function startPowerUpCooldown() {
 
- 
-if (
-    bingoGame.powerUpCooldownTimer
-) {
-
-    clearInterval(
+    if (
         bingoGame.powerUpCooldownTimer
-    );
+    ) {
 
-}
+        clearInterval(
+            bingoGame.powerUpCooldownTimer
+        );
 
-
-bingoGame.powerUpCooldown =
-    true;
-
-
-bingoGame.powerUpCooldownRemaining =
-    bingoConfig.powerUpCooldown;
+    }
 
 
-updatePowerUpUI();
+    bingoGame.powerUpCooldown =
+        true;
 
 
-bingoGame.powerUpCooldownTimer =
-    setInterval(
-        () => {
-
-            bingoGame.powerUpCooldownRemaining--;
-
-            updatePowerUpUI();
+    bingoGame.powerUpCooldownRemaining =
+        bingoConfig.powerUpCooldown;
 
 
-            if (
-                bingoGame.powerUpCooldownRemaining <=
-                0
-            ) {
-
-                clearInterval(
-                    bingoGame.powerUpCooldownTimer
-                );
+    updatePowerUpUI();
 
 
-                bingoGame.powerUpCooldownTimer =
-                    null;
+    bingoGame.powerUpCooldownTimer =
+        setInterval(
+            () => {
 
-
-                bingoGame.powerUpCooldown =
-                    false;
-
-
-                bingoGame.powerUpCooldownRemaining =
-                    0;
-
-
-                /*
-                 * Double Daub cannot survive
-                 * the cooldown.
-                 */
-
-                bingoGame.doubleDaubActive =
-                    false;
+                bingoGame.powerUpCooldownRemaining--;
 
 
                 updatePowerUpUI();
 
 
-                showBingoResult(
-                    "☕ Coffee machine ready. Start brewing your next power-up!"
-                );
+                if (
+                    bingoGame.powerUpCooldownRemaining <=
+                    0
+                ) {
 
-            }
+                    clearInterval(
+                        bingoGame.powerUpCooldownTimer
+                    );
 
-        },
-        1000
-    );
- 
+
+                    bingoGame.powerUpCooldownTimer =
+                        null;
+
+
+                    bingoGame.powerUpCooldown =
+                        false;
+
+
+                    bingoGame.powerUpCooldownRemaining =
+                        0;
+
+
+                    updatePowerUpUI();
+
+
+                    showBingoResult(
+                        "☕ Your coffee cup is ready to start filling again."
+                    );
+
+                }
+
+            },
+            1000
+        );
 
 }
+
 
 /* =========================================================
-29. WIN
-========================================================= */
-
-function winBingo(
-cardIndex,
-pattern
-) {
-
- 
-if (
-    bingoGame.gameOver
-) {
-    return;
-}
-
-
-bingoGame.gameOver =
-    true;
-
-
-bingoGame.playing =
-    false;
-
-
-bingoGame.winningCard =
-    cardIndex;
-
-
-bingoGame.wins++;
-
-
-stopBingoAutoCall();
-
-
-if (
-    bingoElements.wins
-) {
-
-    bingoElements.wins.textContent =
-        bingoGame.wins;
-
-}
-
-
-const cardElement =
-    document.querySelector(
-        `.bingo-card[data-card="${cardIndex}"]`
-    );
-
-
-if (cardElement) {
-
-    cardElement.classList.add(
-        "bingo-winner"
-    );
-
-}
-
-
-const message =
-    `🎉 BINGO! Card ${cardIndex + 1} completed a ${pattern}!`;
-
-
-showBingoResult(
-    message
-);
-
-
-if (
-    bingoElements.win
-) {
-
-    bingoElements.win.hidden =
-        false;
-
-}
-
-
-if (
-    bingoElements.winMessage
-) {
-
-    bingoElements.winMessage.textContent =
-        `You got BINGO on Card ${
-            cardIndex + 1
-        } with a ${pattern}. Nicely played, besh! ☕`;
-
-}
-
-
-if (
-    bingoElements.finalCards
-) {
-
-    bingoElements.finalCards.textContent =
-        bingoGame.cards;
-
-}
-
-
-if (
-    bingoElements.finalCalled
-) {
-
-    bingoElements.finalCalled.textContent =
-        bingoGame.calledNumbers.length;
-
-}
-
-
-updateCallButtons();
-
-updatePowerUpUI();
- 
-
-}
-
-/* =========================================================
-30. DRAW NUMBER
+   34. DRAW NUMBER
 ========================================================= */
 
 function drawBingoNumber() {
 
- 
-if (
-    !bingoGame.playing ||
-    bingoGame.gameOver
-) {
-    return null;
-}
+    if (
+        !bingoGame.playing ||
+        bingoGame.gameOver
+    ) {
+
+        return null;
+
+    }
 
 
-if (
-    bingoGame.calledNumbers.length >=
-    bingoConfig.totalNumbers
-) {
+    if (
+        bingoGame.calledNumbers.length >=
+        bingoConfig.totalNumbers
+    ) {
 
-    stopBingoAutoCall();
-
-    showBingoResult(
-        "All 75 numbers have been called."
-    );
-
-    return null;
-
-}
+        stopBingoAutoCall();
 
 
-let number;
-
-
-do {
-
-    number =
-        randomBingoNumber(
-            1,
-            75
+        showBingoResult(
+            "All 75 numbers have been called."
         );
 
-} while (
-    bingoGame.calledNumbers.includes(
-        number
-    )
-);
+
+        return null;
+
+    }
 
 
-bingoGame.calledNumbers.push(
-    number
-);
+    let number;
 
 
-bingoGame.currentNumber =
-    number;
+    do {
 
+        number =
+            randomBingoNumber(
+                1,
+                75
+            );
 
-renderCurrentNumber();
+    }
 
-renderCalledNumbers();
-
-updateCalledHighlights();
-
-
-/*
- * AUTO DAUB
- */
-
-if (
-    bingoGame.autoDaub
-) {
-
-    autoDaubCalledNumbers();
-
-}
-
-
-updateCallButtons();
-
-
-if (
-    !bingoGame.gameOver
-) {
-
-    showBingoResult(
-        `${getBingoLetter(number)}${number} called!`
+    while (
+        bingoGame.calledNumbers.includes(
+            number
+        )
     );
 
+
+    bingoGame.calledNumbers.push(
+        number
+    );
+
+
+    bingoGame.currentNumber =
+        number;
+
+
+    renderCurrentNumber();
+
+    renderCalledNumbers();
+
+    highlightCalledNumberOnCards();
+
+
+    /*
+     * AUTO-DAUB
+     */
+
+    if (
+        bingoGame.autoDaub
+    ) {
+
+        autoDaubCalledNumbers();
+
+    }
+
+
+    updateGameStats();
+
+    updateCallButtons();
+
+
+    if (
+        !bingoGame.gameOver
+    ) {
+
+        showBingoResult(
+            `${getBingoLetter(number)}${number} called!`
+        );
+
+    }
+
+
+    return number;
+
 }
 
-
-return number;
- 
-
-}
 
 /* =========================================================
-31. CURRENT NUMBER
+   35. CURRENT NUMBER
 ========================================================= */
 
 function renderCurrentNumber() {
 
- 
-if (
-    bingoGame.currentNumber === null
-) {
+    if (
+        bingoGame.currentNumber === null
+    ) {
+
+        if (
+            bingoElements.currentNumber
+        ) {
+
+            bingoElements.currentNumber.textContent =
+                "—";
+
+        }
+
+
+        if (
+            bingoElements.currentLetter
+        ) {
+
+            bingoElements.currentLetter.textContent =
+                "READY";
+
+        }
+
+
+        return;
+
+    }
+
+
+    const number =
+        bingoGame.currentNumber;
+
 
     if (
         bingoElements.currentLetter
     ) {
+
         bingoElements.currentLetter.textContent =
-            "READY";
+            getBingoLetter(number);
+
     }
+
 
     if (
         bingoElements.currentNumber
     ) {
+
         bingoElements.currentNumber.textContent =
-            "—";
+            number;
+
     }
 
-    return;
-
 }
 
-
-const number =
-    bingoGame.currentNumber;
-
-
-if (
-    bingoElements.currentLetter
-) {
-
-    bingoElements.currentLetter.textContent =
-        getBingoLetter(number);
-
-}
-
-
-if (
-    bingoElements.currentNumber
-) {
-
-    bingoElements.currentNumber.textContent =
-        number;
-
-}
- 
-
-}
 
 /* =========================================================
-32. CALLED NUMBERS
+   36. CALLED NUMBERS
 ========================================================= */
 
 function renderCalledNumbers() {
 
- 
-const container =
-    bingoElements.calledNumbers;
-
-if (!container) {
-    return;
-}
+    const container =
+        bingoElements.calledNumbers;
 
 
-container.innerHTML = "";
+    if (!container) {
+
+        return;
+
+    }
 
 
-if (
-    bingoGame.calledNumbers.length === 0
-) {
+    container.innerHTML = "";
 
-    const empty =
-        document.createElement(
-            "span"
+
+    if (
+        bingoGame.calledNumbers.length === 0
+    ) {
+
+        const empty =
+            document.createElement(
+                "span"
+            );
+
+
+        empty.className =
+            "bingo-no-numbers";
+
+
+        empty.textContent =
+            "No numbers called yet.";
+
+
+        container.appendChild(
+            empty
         );
 
-    empty.className =
-        "bingo-no-numbers";
+    }
 
-    empty.textContent =
-        "No numbers called yet.";
+    else {
 
-    container.appendChild(
-        empty
-    );
+        [
+            ...bingoGame.calledNumbers
+        ]
+        .reverse()
+        .forEach(
+            number => {
 
-}
+                const item =
+                    document.createElement(
+                        "span"
+                    );
 
-else {
 
-    [
-        ...bingoGame.calledNumbers
-    ]
-    .reverse()
-    .forEach(
-        number => {
+                item.className =
+                    "bingo-called-number";
 
-            const item =
-                document.createElement(
-                    "span"
+
+                item.dataset.number =
+                    number;
+
+
+                item.textContent =
+                    `${getBingoLetter(number)}${number}`;
+
+
+                container.appendChild(
+                    item
                 );
 
-            item.className =
-                "bingo-called-number";
+            }
+        );
 
-            item.dataset.number =
-                number;
-
-            item.textContent =
-                `${getBingoLetter(number)}${number}`;
-
-            container.appendChild(
-                item
-            );
-
-        }
-    );
-
-}
+    }
 
 
-if (
-    bingoElements.calledTotal
-) {
+    if (
+        bingoElements.calledTotal
+    ) {
 
-    bingoElements.calledTotal.textContent =
-        bingoGame.calledNumbers.length;
+        bingoElements.calledTotal.textContent =
+            bingoGame.calledNumbers.length;
+
+    }
 
 }
 
-
-if (
-    bingoElements.calledCount
-) {
-
-    bingoElements.calledCount.textContent =
-        bingoGame.calledNumbers.length;
-
-}
-
-
-if (
-    bingoElements.remainingCount
-) {
-
-    bingoElements.remainingCount.textContent =
-        bingoConfig.totalNumbers -
-        bingoGame.calledNumbers.length;
-
-}
- 
-
-}
 
 /* =========================================================
-33. CALLED HIGHLIGHTS
+   37. HIGHLIGHT CALLED NUMBERS
 ========================================================= */
 
-function updateCalledHighlights() {
+function highlightCalledNumberOnCards() {
 
- 
-document
-    .querySelectorAll(
-        ".bingo-cell[data-number]"
-    )
-    .forEach(
-        cell => {
+    document
+        .querySelectorAll(
+            ".bingo-cell[data-number]"
+        )
+        .forEach(
+            cell => {
 
-            const value =
-                cell.dataset.number;
+                const value =
+                    cell.dataset.number;
 
 
-            if (
-                value === "FREE"
-            ) {
-                return;
+                if (
+                    value === "FREE"
+                ) {
+
+                    return;
+
+                }
+
+
+                const number =
+                    Number(value);
+
+
+                cell.classList.toggle(
+                    "called",
+                    bingoGame.calledNumbers.includes(
+                        number
+                    )
+                );
+
+
+                cell.classList.toggle(
+                    "number-boost",
+                    bingoGame.numberBoostActive &&
+                    bingoGame.calledNumbers.includes(
+                        number
+                    )
+                );
+
             }
-
-
-            const number =
-                Number(value);
-
-
-            cell.classList.toggle(
-                "called",
-                bingoGame.calledNumbers.includes(
-                    number
-                )
-            );
-
-        }
-    );
- 
+        );
 
 }
 
+
 /* =========================================================
-34. START GAME
+   38. GAME STATS
+========================================================= */
+
+function updateGameStats() {
+
+    if (
+        bingoElements.calledCount
+    ) {
+
+        bingoElements.calledCount.textContent =
+            bingoGame.calledNumbers.length;
+
+    }
+
+
+    if (
+        bingoElements.remainingCount
+    ) {
+
+        bingoElements.remainingCount.textContent =
+            bingoConfig.totalNumbers -
+            bingoGame.calledNumbers.length;
+
+    }
+
+}
+
+
+/* =========================================================
+   39. START GAME
 ========================================================= */
 
 function startBingoGame() {
 
- 
-if (
-    bingoGame.gameOver
-) {
-    return false;
-}
+    if (
+        bingoGame.playing
+    ) {
+
+        return true;
+
+    }
 
 
-if (
-    bingoGame.playing
-) {
+    if (
+        bingoGame.gameOver
+    ) {
+
+        return false;
+
+    }
+
+
+    const price =
+        getBingoPrice();
+
+
+    const balance =
+        bingoCredits.getBalance();
+
+
+    if (
+        balance < price
+    ) {
+
+        showBingoResult(
+            `💳 You need ${price} credits. You have ${balance}.`
+        );
+
+
+        return false;
+
+    }
+
+
+    if (
+        !bingoCredits.spend(
+            price
+        )
+    ) {
+
+        showBingoResult(
+            "💳 Not enough café credits."
+        );
+
+
+        return false;
+
+    }
+
+
+    bingoGame.creditsPaid =
+        price;
+
+
+    bingoGame.playing =
+        true;
+
+
+    bingoGame.gameOver =
+        false;
+
+
+    updateBingoCreditDisplay();
+
+
+    showBingoResult(
+        `🎱 Game started! ${price} credits used. Good luck!`
+    );
+
+
+    updateCallButtons();
+
+
+    /*
+     * First number is called immediately.
+     */
+
+    drawBingoNumber();
+
+
     return true;
-}
-
-
-const price =
-    getBingoPrice();
-
-
-const balance =
-    bingoCredits.getBalance();
-
-
-if (
-    balance < price
-) {
-
-    showBingoResult(
-        `💳 You need ${price} credits to play. You have ${balance}.`
-    );
-
-    return false;
 
 }
 
-
-if (
-    !bingoCredits.spend(price)
-) {
-
-    showBingoResult(
-        "💳 Not enough credits to start Bingo."
-    );
-
-    return false;
-
-}
-
-
-bingoGame.creditsPaid =
-    price;
-
-bingoGame.playing =
-    true;
-
-bingoGame.gameOver =
-    false;
-
-
-/*
- * First number is called immediately.
- */
-
-showBingoResult(
-    `🎱 Game started! ${price} credits used. Good luck!`
-);
-
-
-updateBingoCreditDisplay();
-
-updateCallButtons();
-
-updatePowerUpUI();
-
-
-drawBingoNumber();
-
-
-return true;
- 
-
-}
 
 /* =========================================================
-35. MANUAL CALL
+   40. MANUAL CALL
 ========================================================= */
 
 function manualBingoCall() {
 
- 
-if (
-    bingoGame.autoCalling
-) {
-    return;
+    if (
+        bingoGame.gameOver
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        bingoGame.autoCalling
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        !bingoGame.playing
+    ) {
+
+        startBingoGame();
+
+        return;
+
+    }
+
+
+    drawBingoNumber();
+
 }
 
-
-if (
-    !bingoGame.playing
-) {
-
-    startBingoGame();
-
-    return;
-
-}
-
-
-drawBingoNumber();
- 
-
-}
 
 /* =========================================================
-36. AUTO CALL
+   41. AUTO CALL
 ========================================================= */
 
 function startBingoAutoCall() {
 
- 
-if (
-    bingoGame.gameOver
-) {
-    return;
+    if (
+        bingoGame.gameOver
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        !bingoGame.playing
+    ) {
+
+        if (
+            !startBingoGame()
+        ) {
+
+            return;
+
+        }
+
+    }
+
+
+    if (
+        bingoGame.autoCalling
+    ) {
+
+        return;
+
+    }
+
+
+    bingoGame.autoCalling =
+        true;
+
+
+    bingoGame.autoTimer =
+        setInterval(
+            () => {
+
+                if (
+                    !bingoGame.playing ||
+                    bingoGame.gameOver
+                ) {
+
+                    stopBingoAutoCall();
+
+                    return;
+
+                }
+
+
+                drawBingoNumber();
+
+            },
+            bingoConfig.drawInterval
+        );
+
+
+    updateCallButtons();
+
+
+    showBingoResult(
+        "↻ Auto Call is running."
+    );
+
 }
 
 
-if (
-    !bingoGame.playing
-) {
+/* =========================================================
+   42. STOP AUTO CALL
+========================================================= */
+
+function stopBingoAutoCall() {
 
     if (
-        !startBingoGame()
+        bingoGame.autoTimer
     ) {
+
+        clearInterval(
+            bingoGame.autoTimer
+        );
+
+    }
+
+
+    bingoGame.autoTimer =
+        null;
+
+
+    bingoGame.autoCalling =
+        false;
+
+
+    updateCallButtons();
+
+}
+
+
+/* =========================================================
+   43. TOGGLE AUTO CALL
+========================================================= */
+
+function toggleBingoAutoCall() {
+
+    if (
+        bingoGame.autoCalling
+    ) {
+
+        stopBingoAutoCall();
+
+
+        showBingoResult(
+            "Auto Call stopped."
+        );
+
         return;
+
+    }
+
+
+    startBingoAutoCall();
+
+}
+
+
+/* =========================================================
+   44. UPDATE CALL BUTTONS
+========================================================= */
+
+function updateCallButtons() {
+
+    if (
+        bingoElements.callNumber
+    ) {
+
+        bingoElements.callNumber.disabled =
+            bingoGame.gameOver ||
+            bingoGame.autoCalling;
+
+    }
+
+
+    if (
+        bingoElements.autoCall
+    ) {
+
+        bingoElements.autoCall.disabled =
+            bingoGame.gameOver;
+
+
+        bingoElements.autoCall.setAttribute(
+            "aria-pressed",
+            bingoGame.autoCalling
+                ? "true"
+                : "false"
+        );
+
+
+        const spans =
+            bingoElements.autoCall.querySelectorAll(
+                "span"
+            );
+
+
+        if (
+            spans.length >= 2
+        ) {
+
+            spans[1].textContent =
+                bingoGame.autoCalling
+                    ? "STOP AUTO CALL"
+                    : "AUTO CALL";
+
+        }
+
     }
 
 }
 
 
-if (
-    bingoGame.autoCalling
+/* =========================================================
+   45. RESULT
+========================================================= */
+
+function showBingoResult(
+    message
 ) {
-    return;
+
+    if (
+        bingoElements.result
+    ) {
+
+        bingoElements.result.textContent =
+            message;
+
+    }
+
 }
 
 
-bingoGame.autoCalling =
-    true;
+/* =========================================================
+   46. WIN
+========================================================= */
+
+function winBingo(
+    cardIndex,
+    pattern
+) {
+
+    if (
+        bingoGame.gameOver
+    ) {
+
+        return;
+
+    }
 
 
-bingoGame.autoTimer =
-    setInterval(
-        () => {
+    bingoGame.gameOver =
+        true;
+
+
+    bingoGame.playing =
+        false;
+
+
+    bingoGame.winningCard =
+        cardIndex;
+
+
+    stopBingoAutoCall();
+
+
+    const cardElement =
+        document.querySelector(
+            `.bingo-card[data-card="${cardIndex}"]`
+        );
+
+
+    if (cardElement) {
+
+        cardElement.classList.add(
+            "bingo-winner"
+        );
+
+    }
+
+
+    if (
+        bingoElements.wins
+    ) {
+
+        const currentWins =
+            Number(
+                bingoElements.wins.textContent
+            ) || 0;
+
+
+        bingoElements.wins.textContent =
+            currentWins + 1;
+
+    }
+
+
+    if (
+        bingoElements.winMessage
+    ) {
+
+        bingoElements.winMessage.textContent =
+            `You got BINGO on Card ${
+                cardIndex + 1
+            } with a ${pattern}. Nicely played, besh! ☕`;
+
+    }
+
+
+    if (
+        bingoElements.finalCards
+    ) {
+
+        bingoElements.finalCards.textContent =
+            bingoGame.cards;
+
+    }
+
+
+    if (
+        bingoElements.finalCalled
+    ) {
+
+        bingoElements.finalCalled.textContent =
+            bingoGame.calledNumbers.length;
+
+    }
+
+
+    if (
+        bingoElements.win
+    ) {
+
+        bingoElements.win.hidden =
+            false;
+
+    }
+
+
+    showBingoResult(
+        `🎉 BINGO! Card ${cardIndex + 1} completed a ${pattern}!`
+    );
+
+
+    updateCallButtons();
+
+    updatePowerUpUI();
+
+}
+
+
+/* =========================================================
+   47. NEW GAME
+========================================================= */
+
+function newBingoGame() {
+
+    stopBingoAutoCall();
+
+
+    if (
+        bingoGame.powerUpCooldownTimer
+    ) {
+
+        clearInterval(
+            bingoGame.powerUpCooldownTimer
+        );
+
+    }
+
+
+    bingoGame.powerUpCooldownTimer =
+        null;
+
+
+    bingoGame.powerUpCooldown =
+        false;
+
+
+    bingoGame.powerUpCooldownRemaining =
+        0;
+
+
+    bingoGame.playing =
+        false;
+
+
+    bingoGame.gameOver =
+        false;
+
+
+    bingoGame.boards =
+        [];
+
+
+    bingoGame.calledNumbers =
+        [];
+
+
+    bingoGame.currentNumber =
+        null;
+
+
+    bingoGame.winningCard =
+        null;
+
+
+    bingoGame.creditsPaid =
+        0;
+
+
+    /*
+     * Reset power-up.
+     */
+
+    bingoGame.daubXP =
+        0;
+
+
+    bingoGame.powerUpReady =
+        false;
+
+
+    bingoGame.activePowerUp =
+        null;
+
+
+    bingoGame.doubleDaubActive =
+        false;
+
+
+    bingoGame.numberBoostActive =
+        false;
+
+
+    if (
+        bingoElements.win
+    ) {
+
+        bingoElements.win.hidden =
+            true;
+
+    }
+
+
+    createBingoBoards();
+
+    renderBingoBoards();
+
+    renderCurrentNumber();
+
+    renderCalledNumbers();
+
+    updateGameStats();
+
+    updateCardSelectionUI();
+
+    updatePowerUpUI();
+
+    updateCallButtons();
+
+
+    showBingoResult(
+        `${bingoGame.cards} ${
+            bingoGame.cards === 1
+                ? "card"
+                : "cards"
+        } ready — ${getBingoPrice()} credits to play.`
+    );
+
+}
+
+
+/* =========================================================
+   48. PLAY AGAIN
+========================================================= */
+
+function playBingoAgain() {
+
+    newBingoGame();
+
+    startBingoGame();
+
+}
+
+
+/* =========================================================
+   49. EVENT SETUP
+========================================================= */
+
+function setupBingoEvents() {
+
+    /* CARD SELECTION */
+
+    bingoElements.cardOptions.forEach(
+        button => {
 
             if (
-                !bingoGame.playing ||
-                bingoGame.gameOver
+                button.dataset.bingoBound ===
+                "true"
             ) {
-
-                stopBingoAutoCall();
 
                 return;
 
             }
 
 
-            drawBingoNumber();
+            button.dataset.bingoBound =
+                "true";
 
-        },
-        bingoConfig.drawInterval
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    selectBingoCardCount(
+                        button.dataset.cardCount
+                    );
+
+                }
+            );
+
+        }
     );
 
 
-updateCallButtons();
+    /* DAUB MODE */
+
+    bingoElements.daubOptions.forEach(
+        button => {
+
+            if (
+                button.dataset.bingoBound ===
+                "true"
+            ) {
+
+                return;
+
+            }
 
 
-showBingoResult(
-    "↻ Auto Call is running. Good luck! 🎱"
-);
- 
-
-}
-
-function stopBingoAutoCall() {
-
- 
-if (
-    bingoGame.autoTimer
-) {
-
-    clearInterval(
-        bingoGame.autoTimer
-    );
-
-}
+            button.dataset.bingoBound =
+                "true";
 
 
-bingoGame.autoTimer =
-    null;
+            button.addEventListener(
+                "click",
+                () => {
 
+                    setBingoDaubMode(
+                        button.dataset.daubMode
+                    );
 
-bingoGame.autoCalling =
-    false;
+                }
+            );
 
-
-updateCallButtons();
- 
-
-}
-
-function toggleBingoAutoCall() {
-
- 
-if (
-    bingoGame.autoCalling
-) {
-
-    stopBingoAutoCall();
-
-    showBingoResult(
-        "Auto Call stopped."
-    );
-
-    return;
-
-}
-
-
-startBingoAutoCall();
- 
-
-}
-
-/* =========================================================
-37. CALL BUTTON UI
-========================================================= */
-
-function updateCallButtons() {
-
- 
-if (
-    bingoElements.callNumber
-) {
-
-    bingoElements.callNumber.disabled =
-        bingoGame.gameOver ||
-        bingoGame.autoCalling;
-
-}
-
-
-if (
-    bingoElements.autoCall
-) {
-
-    bingoElements.autoCall.disabled =
-        bingoGame.gameOver;
-
-
-    bingoElements.autoCall.setAttribute(
-        "aria-pressed",
-        bingoGame.autoCalling
-            ? "true"
-            : "false"
+        }
     );
 
 
-    const spans =
-        bingoElements.autoCall.querySelectorAll(
-            "span"
-        );
-
+    /* CALL NUMBER */
 
     if (
-        spans.length >= 2
+        bingoElements.callNumber &&
+        bingoElements.callNumber.dataset.bingoBound !==
+        "true"
     ) {
 
-        spans[1].textContent =
-            bingoGame.autoCalling
-                ? "STOP AUTO CALL"
-                : "AUTO CALL";
+        bingoElements.callNumber.dataset.bingoBound =
+            "true";
 
-    }
 
-}
-
-
-if (
-    bingoElements.newGame
-) {
-
-    bingoElements.newGame.disabled =
-        false;
-
-}
- 
-
-}
-
-/* =========================================================
-38. RESULT
-========================================================= */
-
-function showBingoResult(
-message
-) {
-
- 
-if (
-    bingoElements.result
-) {
-
-    bingoElements.result.textContent =
-        message;
-
-}
- 
-
-}
-
-/* =========================================================
-39. NEW GAME
-========================================================= */
-
-function newBingoGame() {
-
- 
-stopBingoAutoCall();
-
-
-if (
-    bingoGame.powerUpCooldownTimer
-) {
-
-    clearInterval(
-        bingoGame.powerUpCooldownTimer
-    );
-
-}
-
-
-if (
-    bingoGame.numberBoostTimer
-) {
-
-    clearTimeout(
-        bingoGame.numberBoostTimer
-    );
-
-}
-
-
-bingoGame.powerUpCooldownTimer =
-    null;
-
-bingoGame.numberBoostTimer =
-    null;
-
-bingoGame.powerUpCooldown =
-    false;
-
-bingoGame.powerUpCooldownRemaining =
-    0;
-
-bingoGame.availablePowerUp =
-    null;
-
-bingoGame.doubleDaubActive =
-    false;
-
-bingoGame.daubXP =
-    0;
-
-bingoGame.playing =
-    false;
-
-bingoGame.gameOver =
-    false;
-
-bingoGame.boards =
-    [];
-
-bingoGame.calledNumbers =
-    [];
-
-bingoGame.currentNumber =
-    null;
-
-bingoGame.winningCard =
-    null;
-
-bingoGame.creditsPaid =
-    0;
-
-
-if (
-    bingoElements.win
-) {
-
-    bingoElements.win.hidden =
-        true;
-
-}
-
-
-createBingoBoards();
-
-renderBingoBoards();
-
-renderCurrentNumber();
-
-renderCalledNumbers();
-
-updateCardSelectionUI();
-
-updatePowerUpUI();
-
-updateCallButtons();
-
-
-showBingoResult(
-    `${bingoGame.cards} ${
-        bingoGame.cards === 1
-            ? "card"
-            : "cards"
-    } ready — ${
-        getBingoPrice()
-    } credits to play.`
-);
- 
-
-}
-
-/* =========================================================
-40. PLAY AGAIN
-========================================================= */
-
-function playBingoAgain() {
-
- 
-newBingoGame();
-
-startBingoGame();
- 
-
-}
-
-/* =========================================================
-41. EVENTS
-========================================================= */
-
-function setupBingoEvents() {
-
- 
-/*
- * CARD OPTIONS
- */
-
-bingoElements.cardOptions.forEach(
-    button => {
-
-        button.addEventListener(
+        bingoElements.callNumber.addEventListener(
             "click",
-            () => {
-
-                selectBingoCardCount(
-                    button.dataset.cardCount
-                );
-
-            }
+            manualBingoCall
         );
 
     }
-);
 
 
-/*
- * DAUB OPTIONS
- */
+    /* AUTO CALL */
 
-bingoElements.daubOptions.forEach(
-    button => {
+    if (
+        bingoElements.autoCall &&
+        bingoElements.autoCall.dataset.bingoBound !==
+        "true"
+    ) {
 
-        button.addEventListener(
+        bingoElements.autoCall.dataset.bingoBound =
+            "true";
+
+
+        bingoElements.autoCall.addEventListener(
             "click",
-            () => {
-
-                setBingoDaubMode(
-                    button.dataset.daubMode
-                );
-
-            }
+            toggleBingoAutoCall
         );
 
     }
-);
 
 
-/*
- * CALL
- */
+    /* POWER-UPS */
 
-if (
-    bingoElements.callNumber
-) {
+    bingoElements.powerupOptions.forEach(
+        button => {
 
-    bingoElements.callNumber.addEventListener(
-        "click",
-        manualBingoCall
-    );
+            if (
+                button.dataset.bingoBound ===
+                "true"
+            ) {
 
-}
-
-
-/*
- * AUTO CALL
- */
-
-if (
-    bingoElements.autoCall
-) {
-
-    bingoElements.autoCall.addEventListener(
-        "click",
-        toggleBingoAutoCall
-    );
-
-}
-
-
-/*
- * NEW GAME
- */
-
-if (
-    bingoElements.newGame
-) {
-
-    bingoElements.newGame.addEventListener(
-        "click",
-        newBingoGame
-    );
-
-}
-
-
-/*
- * PLAY AGAIN
- */
-
-if (
-    bingoElements.playAgain
-) {
-
-    bingoElements.playAgain.addEventListener(
-        "click",
-        playBingoAgain
-    );
-
-}
-
-
-/*
- * POWER-UPS
- */
-
-bingoElements.powerUpButtons.forEach(
-    button => {
-
-        button.addEventListener(
-            "click",
-            () => {
-
-                const type =
-                    button.dataset.powerup;
-
-
-                if (
-                    type === "lucky-daub"
-                ) {
-
-                    useLuckyDaub();
-
-                }
-
-                else if (
-                    type === "number-boost"
-                ) {
-
-                    useNumberBoost();
-
-                }
-
-                else if (
-                    type === "double-daub"
-                ) {
-
-                    useDoubleDaub();
-
-                }
+                return;
 
             }
+
+
+            button.dataset.bingoBound =
+                "true";
+
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    useBingoPowerUp(
+                        button.dataset.powerup
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+    /* NEW GAME */
+
+    if (
+        bingoElements.newGame &&
+        bingoElements.newGame.dataset.bingoBound !==
+        "true"
+    ) {
+
+        bingoElements.newGame.dataset.bingoBound =
+            "true";
+
+
+        bingoElements.newGame.addEventListener(
+            "click",
+            newBingoGame
         );
 
     }
-);
 
 
-/*
- * CREDIT UPDATE
- */
+    /* PLAY AGAIN */
 
-if (
-    !window.bingoCreditListenerBound
-) {
+    if (
+        bingoElements.playAgain &&
+        bingoElements.playAgain.dataset.bingoBound !==
+        "true"
+    ) {
 
-    window.bingoCreditListenerBound =
-        true;
+        bingoElements.playAgain.dataset.bingoBound =
+            "true";
 
 
-    window.addEventListener(
-        "cafeCreditsChanged",
-        updateBingoCreditDisplay
-    );
+        bingoElements.playAgain.addEventListener(
+            "click",
+            playBingoAgain
+        );
+
+    }
+
+
+    /* CREDIT UPDATE */
+
+    if (
+        !window.bingoCreditListenerBound
+    ) {
+
+        window.bingoCreditListenerBound =
+            true;
+
+
+        window.addEventListener(
+            "cafeCreditsChanged",
+            updateBingoCreditDisplay
+        );
+
+    }
 
 }
- 
 
-}
 
 /* =========================================================
-42. INIT
+   50. INITIALIZE
 ========================================================= */
 
 function initBingo() {
 
- 
-const room =
-    document.getElementById(
-        "bingoGame"
+    const room =
+        document.getElementById(
+            "bingoGame"
+        );
+
+
+    if (!room) {
+
+        console.warn(
+            "🎱 Bingo room not found."
+        );
+
+        return false;
+
+    }
+
+
+    if (
+        bingoGame.initialized
+    ) {
+
+        /*
+         * IMPORTANT:
+         * Re-render cards if another component
+         * has cleared the Bingo room.
+         */
+
+        if (
+            bingoElements.cards &&
+            bingoElements.cards.children.length === 0 &&
+            bingoGame.boards.length > 0
+        ) {
+
+            renderBingoBoards();
+
+        }
+
+
+        updateBingoCreditDisplay();
+
+        updatePowerUpUI();
+
+        updateCallButtons();
+
+        return true;
+
+    }
+
+
+    console.log(
+        "🎱 Initializing DigiCafe Bingo..."
     );
 
 
-if (!room) {
+    if (
+        !setupBingoElements()
+    ) {
 
-    console.warn(
-        "🎱 Bingo room not found."
-    );
+        return false;
 
-    return false;
-
-}
+    }
 
 
-if (
-    bingoGame.initialized
-) {
+    bingoGame.cards =
+        normalizeCardCount(
+            bingoConfig.defaultCards
+        );
+
+
+    setupBingoEvents();
+
+    newBingoGame();
+
+
+    bingoGame.initialized =
+        true;
+
 
     updateBingoCreditDisplay();
 
     updatePowerUpUI();
 
+    updateCallButtons();
+
+
+    console.log(
+        "🎱 DigiCafe Bingo ready."
+    );
+
+
     return true;
 
 }
 
 
-console.log(
-    "🎱 Initializing DigiCafe Bingo..."
-);
-
-
-if (
-    !setupBingoElements()
-) {
-
-    console.error(
-        "🎱 Bingo elements could not be initialized."
-    );
-
-    return false;
-
-}
-
-
-bingoGame.cards =
-    bingoConfig.defaultCards;
-
-
-setupBingoEvents();
-
-newBingoGame();
-
-
-bingoGame.initialized =
-    true;
-
-
-updateBingoCreditDisplay();
-
-updatePowerUpUI();
-
-
-console.log(
-    "🎱 DigiCafe Bingo ready."
-);
-
-
-return true;
- 
-
-}
-
 /* =========================================================
-43. RESET
+   51. RESET
 ========================================================= */
 
 function resetBingoInitialization() {
 
- 
-stopBingoAutoCall();
+    stopBingoAutoCall();
 
 
-if (
-    bingoGame.powerUpCooldownTimer
-) {
-
-    clearInterval(
+    if (
         bingoGame.powerUpCooldownTimer
-    );
+    ) {
+
+        clearInterval(
+            bingoGame.powerUpCooldownTimer
+        );
+
+    }
+
+
+    bingoGame.initialized =
+        false;
+
+
+    bingoGame.playing =
+        false;
+
+
+    bingoGame.gameOver =
+        false;
+
+
+    bingoGame.boards =
+        [];
+
+
+    bingoGame.calledNumbers =
+        [];
+
+
+    bingoGame.currentNumber =
+        null;
+
+
+    bingoGame.winningCard =
+        null;
+
+
+    bingoGame.creditsPaid =
+        0;
+
+
+    bingoGame.daubXP =
+        0;
+
+
+    bingoGame.powerUpReady =
+        false;
+
+
+    bingoGame.activePowerUp =
+        null;
+
+
+    bingoGame.powerUpCooldown =
+        false;
+
+
+    bingoGame.powerUpCooldownTimer =
+        null;
+
+
+    bingoGame.powerUpCooldownRemaining =
+        0;
+
+
+    bingoGame.doubleDaubActive =
+        false;
+
+
+    bingoGame.numberBoostActive =
+        false;
 
 }
 
-
-if (
-    bingoGame.numberBoostTimer
-) {
-
-    clearTimeout(
-        bingoGame.numberBoostTimer
-    );
-
-}
-
-
-bingoGame.initialized =
-    false;
-
-bingoGame.playing =
-    false;
-
-bingoGame.gameOver =
-    false;
-
-bingoGame.autoCalling =
-    false;
-
-bingoGame.boards =
-    [];
-
-bingoGame.calledNumbers =
-    [];
-
-bingoGame.currentNumber =
-    null;
-
-bingoGame.winningCard =
-    null;
-
-bingoGame.creditsPaid =
-    0;
-
-bingoGame.daubXP =
-    0;
-
-bingoGame.availablePowerUp =
-    null;
-
-bingoGame.powerUpCooldown =
-    false;
-
-bingoGame.powerUpCooldownRemaining =
-    0;
-
-bingoGame.powerUpCooldownTimer =
-    null;
-
-bingoGame.doubleDaubActive =
-    false;
-
-bingoGame.numberBoostTimer =
-    null;
- 
-
-}
 
 /* =========================================================
-44. GLOBAL ACCESS
+   52. GLOBAL ACCESS
 ========================================================= */
 
 window.bingoGame =
-bingoGame;
+    bingoGame;
 
 window.bingoCredits =
-bingoCredits;
+    bingoCredits;
 
 window.initBingo =
-initBingo;
+    initBingo;
 
 window.newBingoGame =
-newBingoGame;
+    newBingoGame;
 
 window.startBingoGame =
-startBingoGame;
+    startBingoGame;
 
 window.manualBingoCall =
-manualBingoCall;
+    manualBingoCall;
 
 window.toggleBingoAutoCall =
-toggleBingoAutoCall;
+    toggleBingoAutoCall;
 
 window.startBingoAutoCall =
-startBingoAutoCall;
+    startBingoAutoCall;
 
 window.stopBingoAutoCall =
-stopBingoAutoCall;
+    stopBingoAutoCall;
 
 window.playBingoAgain =
-playBingoAgain;
+    playBingoAgain;
 
 window.selectBingoCardCount =
-selectBingoCardCount;
+    selectBingoCardCount;
 
-window.toggleBingoAutoDaub =
-toggleBingoAutoDaub;
+window.setBingoDaubMode =
+    setBingoDaubMode;
 
-window.useLuckyDaub =
-useLuckyDaub;
-
-window.useNumberBoost =
-useNumberBoost;
-
-window.useDoubleDaub =
-useDoubleDaub;
+window.useBingoPowerUp =
+    useBingoPowerUp;
 
 window.addDaubXP =
-addDaubXP;
+    addDaubXP;
 
 window.updatePowerUpUI =
-updatePowerUpUI;
+    updatePowerUpUI;
 
 window.resetBingoInitialization =
-resetBingoInitialization;
+    resetBingoInitialization;
+
 
 console.log(
-"🎱 DigiCafe Bingo complete engine loaded."
+    "🎱 DigiCafe Bingo — complete engine loaded."
 );
