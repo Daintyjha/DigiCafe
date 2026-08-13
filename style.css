@@ -9788,3 +9788,2985 @@ button.bingo-cell:active {
     }
 
 }
+
+/* =========================================================
+   DIGICAFE CHESS
+   ---------------------------------------------------------
+   Chess Room CSS
+   • DigiCafe navy / gold aesthetic
+   • Compact game-room layout
+   • Responsive chessboard
+   • Desktop / tablet / mobile
+   • Touch-friendly squares
+   • Game status
+   • Controls
+   • Move history
+   • Selected / legal / capture states
+   • Check / last-move states
+========================================================= */
+
+
+/* =========================================================
+   01. CHESS ROOM
+========================================================= */
+
+.chess-room {
+
+    width:
+        min(
+            calc(100% - 32px),
+            1180px
+        );
+
+    margin:
+        0 auto;
+
+    padding:
+        28px 0 60px;
+
+    box-sizing:
+        border-box;
+
+    color:
+        var(--text, #172033);
+
+}
+
+
+/* =========================================================
+   02. CHESS HEADER
+========================================================= */
+
+.chess-header {
+
+    text-align:
+        center;
+
+    margin-bottom:
+        22px;
+
+}
+
+
+.chess-header h1,
+.chess-header h2 {
+
+    margin:
+        0;
+
+}
+
+
+.chess-header h1 {
+
+    font-family:
+        "DM Serif Display",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            2rem,
+            4vw,
+            3rem
+        );
+
+    line-height:
+        1.1;
+
+    color:
+        var(--navy-dark, #071426);
+
+}
+
+
+.chess-header p {
+
+    max-width:
+        620px;
+
+    margin:
+        8px auto 0;
+
+    color:
+        var(--text-soft, #667085);
+
+    font-size:
+        0.95rem;
+
+    line-height:
+        1.6;
+
+}
+
+
+/* =========================================================
+   03. CHESS PANEL
+========================================================= */
+
+.chess-panel {
+
+    width:
+        100%;
+
+    padding:
+        22px;
+
+    box-sizing:
+        border-box;
+
+    background:
+        var(--card, #ffffff);
+
+    border:
+        1px solid
+        var(--border, #dfe6ef);
+
+    border-radius:
+        var(--radius, 22px);
+
+    box-shadow:
+        0 10px 30px
+        rgba(
+            7,
+            20,
+            38,
+            0.07
+        );
+
+}
+
+
+/* =========================================================
+   04. MAIN CHESS LAYOUT
+========================================================= */
+
+.chess-layout {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        minmax(
+            320px,
+            680px
+        )
+        minmax(
+            220px,
+            320px
+        );
+
+    justify-content:
+        center;
+
+    align-items:
+        start;
+
+    gap:
+        28px;
+
+}
+
+
+/* =========================================================
+   05. BOARD AREA
+========================================================= */
+
+.chess-board-area {
+
+    width:
+        100%;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+}
+
+
+/* =========================================================
+   06. PLAYER / TURN STATUS
+========================================================= */
+
+.chess-player-status {
+
+    width:
+        100%;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        12px;
+
+    margin-bottom:
+        10px;
+
+    padding:
+        10px 14px;
+
+    box-sizing:
+        border-box;
+
+    border:
+        1px solid
+        var(--border, #dfe6ef);
+
+    border-radius:
+        12px;
+
+    background:
+        var(--background, #f4f7fb);
+
+}
+
+
+.chess-player-status strong {
+
+    color:
+        var(--navy-dark, #071426);
+
+    font-size:
+        0.85rem;
+
+}
+
+
+.chess-player-status span {
+
+    color:
+        var(--text-soft, #667085);
+
+    font-size:
+        0.75rem;
+
+    font-weight:
+        700;
+
+}
+
+
+/* =========================================================
+   07. CHESS BOARD
+========================================================= */
+
+.chess-board {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            8,
+            1fr
+        );
+
+    grid-template-rows:
+        repeat(
+            8,
+            1fr
+        );
+
+    width:
+        min(
+            100%,
+            680px
+        );
+
+    aspect-ratio:
+        1 / 1;
+
+    overflow:
+        hidden;
+
+    border:
+        8px solid
+        var(--navy-dark, #071426);
+
+    border-radius:
+        10px;
+
+    box-sizing:
+        border-box;
+
+    background:
+        var(--navy-dark, #071426);
+
+    box-shadow:
+        0 14px 35px
+        rgba(
+            7,
+            20,
+            38,
+            0.18
+        );
+
+}
+
+
+/* =========================================================
+   08. CHESS SQUARE
+========================================================= */
+
+.chess-square {
+
+    position:
+        relative;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+    padding:
+        0;
+
+    border:
+        none;
+
+    border-radius:
+        0;
+
+    font-family:
+        inherit;
+
+    cursor:
+        pointer;
+
+    box-sizing:
+        border-box;
+
+    transition:
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+
+}
+
+
+/* =========================================================
+   09. LIGHT SQUARE
+========================================================= */
+
+.chess-square.light {
+
+    background:
+        #f0dfbd;
+
+}
+
+
+/* =========================================================
+   10. DARK SQUARE
+========================================================= */
+
+.chess-square.dark {
+
+    background:
+        #49637c;
+
+}
+
+
+/* =========================================================
+   11. CHESS PIECES
+========================================================= */
+
+.chess-piece {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    width:
+        86%;
+
+    height:
+        86%;
+
+    font-family:
+        "Arial Unicode MS",
+        "Segoe UI Symbol",
+        "Noto Sans Symbols 2",
+        serif;
+
+    font-size:
+        clamp(
+            2rem,
+            7vw,
+            4.6rem
+        );
+
+    line-height:
+        1;
+
+    user-select:
+        none;
+
+    pointer-events:
+        none;
+
+    transition:
+        transform 0.15s ease;
+
+}
+
+
+/* =========================================================
+   12. WHITE PIECES
+========================================================= */
+
+.chess-piece.white {
+
+    color:
+        #ffffff;
+
+    text-shadow:
+        0 2px 2px
+        rgba(
+            0,
+            0,
+            0,
+            0.45
+        );
+
+}
+
+
+/* =========================================================
+   13. BLACK PIECES
+========================================================= */
+
+.chess-piece.black {
+
+    color:
+        #111827;
+
+    text-shadow:
+        0 1px 1px
+        rgba(
+            255,
+            255,
+            255,
+            0.15
+        );
+
+}
+
+
+/* =========================================================
+   14. SELECTED SQUARE
+========================================================= */
+
+.chess-square.selected {
+
+    box-shadow:
+        inset 0 0 0 4px
+        var(--gold, #d6b36a);
+
+}
+
+
+/* =========================================================
+   15. LAST MOVE
+========================================================= */
+
+.chess-square.last-move {
+
+    box-shadow:
+        inset 0 0 0 999px
+        rgba(
+            214,
+            179,
+            106,
+            0.20
+        );
+
+}
+
+
+/* =========================================================
+   16. LEGAL MOVE
+========================================================= */
+
+.chess-square.legal-move::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    width:
+        22%;
+
+    aspect-ratio:
+        1 / 1;
+
+    border-radius:
+        50%;
+
+    background:
+        rgba(
+            7,
+            20,
+            38,
+            0.30
+        );
+
+    pointer-events:
+        none;
+
+}
+
+
+/* =========================================================
+   17. LEGAL CAPTURE
+========================================================= */
+
+.chess-square.legal-capture::after {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        8%;
+
+    border:
+        4px solid
+        rgba(
+            214,
+            179,
+            106,
+            0.85
+        );
+
+    border-radius:
+        50%;
+
+    pointer-events:
+        none;
+
+}
+
+
+/* =========================================================
+   18. KING IN CHECK
+========================================================= */
+
+.chess-square.in-check {
+
+    box-shadow:
+        inset 0 0 0 5px
+        rgba(
+            170,
+            50,
+            50,
+            0.85
+        ),
+        inset 0 0 25px
+        rgba(
+            170,
+            50,
+            50,
+            0.30
+        );
+
+}
+
+
+/* =========================================================
+   19. SQUARE HOVER
+========================================================= */
+
+.chess-square:hover {
+
+    filter:
+        brightness(1.06);
+
+}
+
+
+.chess-square:active {
+
+    filter:
+        brightness(0.96);
+
+}
+
+
+/* =========================================================
+   20. CHESS SIDE PANEL
+========================================================= */
+
+.chess-side-panel {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        16px;
+
+}
+
+
+/* =========================================================
+   21. SIDE PANEL CARDS
+========================================================= */
+
+.chess-info-card {
+
+    padding:
+        16px;
+
+    box-sizing:
+        border-box;
+
+    background:
+        var(--background, #f4f7fb);
+
+    border:
+        1px solid
+        var(--border, #dfe6ef);
+
+    border-radius:
+        16px;
+
+}
+
+
+.chess-info-card h3 {
+
+    margin:
+        0 0 8px;
+
+    font-family:
+        "DM Serif Display",
+        Georgia,
+        serif;
+
+    font-size:
+        1.2rem;
+
+    font-weight:
+        400;
+
+    color:
+        var(--navy-dark, #071426);
+
+}
+
+
+.chess-info-card p {
+
+    margin:
+        0;
+
+    color:
+        var(--text-soft, #667085);
+
+    font-size:
+        0.82rem;
+
+    line-height:
+        1.5;
+
+}
+
+
+/* =========================================================
+   22. GAME STATUS
+========================================================= */
+
+.chess-status {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    min-height:
+        48px;
+
+    padding:
+        10px 14px;
+
+    box-sizing:
+        border-box;
+
+    border-radius:
+        12px;
+
+    background:
+        var(--navy-dark, #071426);
+
+    color:
+        #ffffff;
+
+    text-align:
+        center;
+
+    font-size:
+        0.82rem;
+
+    font-weight:
+        700;
+
+    line-height:
+        1.4;
+
+}
+
+
+/* =========================================================
+   23. STATUS — CHECK
+========================================================= */
+
+.chess-status.check {
+
+    background:
+        #8f4a4a;
+
+}
+
+
+/* =========================================================
+   24. STATUS — GAME OVER
+========================================================= */
+
+.chess-status.game-over {
+
+    background:
+        var(--gold, #d6b36a);
+
+    color:
+        var(--navy-dark, #071426);
+
+}
+
+
+/* =========================================================
+   25. CHESS CONTROLS
+========================================================= */
+
+.chess-controls {
+
+    display:
+        flex;
+
+    flex-wrap:
+        wrap;
+
+    justify-content:
+        center;
+
+    gap:
+        8px;
+
+    margin-top:
+        14px;
+
+}
+
+
+.chess-controls button {
+
+    min-height:
+        42px;
+
+    padding:
+        0 16px;
+
+    border:
+        1px solid
+        var(--border, #dfe6ef);
+
+    border-radius:
+        10px;
+
+    background:
+        #ffffff;
+
+    color:
+        var(--navy-dark, #071426);
+
+    font-family:
+        inherit;
+
+    font-size:
+        0.75rem;
+
+    font-weight:
+        800;
+
+    cursor:
+        pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.chess-controls button:hover {
+
+    border-color:
+        var(--gold, #d6b36a);
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+.chess-controls button:active {
+
+    transform:
+        translateY(0);
+
+}
+
+
+/* =========================================================
+   26. PRIMARY CONTROL
+========================================================= */
+
+.chess-controls .primary {
+
+    background:
+        var(--navy-dark, #071426);
+
+    border-color:
+        var(--navy-dark, #071426);
+
+    color:
+        #ffffff;
+
+}
+
+
+.chess-controls .primary:hover {
+
+    background:
+        var(--navy, #0d2038);
+
+}
+
+
+/* =========================================================
+   27. DISABLED CONTROLS
+========================================================= */
+
+.chess-controls button:disabled {
+
+    opacity:
+        0.45;
+
+    cursor:
+        not-allowed;
+
+    transform:
+        none;
+
+}
+
+
+/* =========================================================
+   28. MOVE HISTORY
+========================================================= */
+
+.chess-move-history {
+
+    max-height:
+        250px;
+
+    overflow-y:
+        auto;
+
+    padding:
+        8px;
+
+    border:
+        1px solid
+        var(--border, #dfe6ef);
+
+    border-radius:
+        12px;
+
+    background:
+        #ffffff;
+
+}
+
+
+.chess-move-history:empty::before {
+
+    content:
+        "No moves yet.";
+
+    display:
+        block;
+
+    padding:
+        12px;
+
+    color:
+        var(--text-soft, #667085);
+
+    font-size:
+        0.78rem;
+
+    font-style:
+        italic;
+
+    text-align:
+        center;
+
+}
+
+
+/* =========================================================
+   29. MOVE HISTORY ROW
+========================================================= */
+
+.chess-move {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        32px
+        1fr
+        1fr;
+
+    gap:
+        6px;
+
+    padding:
+        7px 6px;
+
+    border-bottom:
+        1px solid
+        var(--border, #dfe6ef);
+
+    font-size:
+        0.76rem;
+
+}
+
+
+.chess-move:last-child {
+
+    border-bottom:
+        none;
+
+}
+
+
+.chess-move-number {
+
+    color:
+        var(--text-soft, #667085);
+
+    font-weight:
+        700;
+
+}
+
+
+.chess-move-white,
+.chess-move-black {
+
+    color:
+        var(--navy-dark, #071426);
+
+    font-weight:
+        700;
+
+}
+
+
+/* =========================================================
+   30. CAPTURED PIECES
+========================================================= */
+
+.chess-captured {
+
+    display:
+        flex;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        3px;
+
+    min-height:
+        24px;
+
+}
+
+
+.chess-captured-piece {
+
+    font-family:
+        "Segoe UI Symbol",
+        "Noto Sans Symbols 2",
+        serif;
+
+    font-size:
+        1rem;
+
+    line-height:
+        1;
+
+}
+
+
+/* =========================================================
+   31. BOARD COORDINATES
+========================================================= */
+
+.chess-coordinate {
+
+    position:
+        absolute;
+
+    z-index:
+        2;
+
+    font-size:
+        0.62rem;
+
+    font-weight:
+        800;
+
+    pointer-events:
+        none;
+
+    opacity:
+        0.65;
+
+}
+
+
+.chess-coordinate.rank {
+
+    top:
+        3px;
+
+    left:
+        4px;
+
+}
+
+
+.chess-coordinate.file {
+
+    right:
+        4px;
+
+    bottom:
+        3px;
+
+}
+
+
+/* =========================================================
+   32. PROMOTION PANEL
+========================================================= */
+
+.chess-promotion {
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    z-index:
+        20;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    padding:
+        20px;
+
+    background:
+        rgba(
+            7,
+            20,
+            38,
+            0.72
+        );
+
+    backdrop-filter:
+        blur(4px);
+
+}
+
+
+.chess-promotion[hidden] {
+
+    display:
+        none;
+
+}
+
+
+.chess-promotion-box {
+
+    width:
+        min(
+            100%,
+            360px
+        );
+
+    padding:
+        20px;
+
+    background:
+        #ffffff;
+
+    border:
+        1px solid
+        var(--gold, #d6b36a);
+
+    border-radius:
+        18px;
+
+    text-align:
+        center;
+
+    box-shadow:
+        0 18px 40px
+        rgba(
+            0,
+            0,
+            0,
+            0.25
+        );
+
+}
+
+
+.chess-promotion-box h3 {
+
+    margin:
+        0 0 14px;
+
+    font-family:
+        "DM Serif Display",
+        Georgia,
+        serif;
+
+    font-size:
+        1.35rem;
+
+    font-weight:
+        400;
+
+    color:
+        var(--navy-dark, #071426);
+
+}
+
+
+.chess-promotion-options {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            1fr
+        );
+
+    gap:
+        8px;
+
+}
+
+
+.chess-promotion-options button {
+
+    aspect-ratio:
+        1;
+
+    border:
+        1px solid
+        var(--border, #dfe6ef);
+
+    border-radius:
+        12px;
+
+    background:
+        var(--background, #f4f7fb);
+
+    cursor:
+        pointer;
+
+    font-size:
+        2rem;
+
+}
+
+
+.chess-promotion-options button:hover {
+
+    border-color:
+        var(--gold, #d6b36a);
+
+    background:
+        rgba(
+            214,
+            179,
+            106,
+            0.12
+        );
+
+}
+
+
+/* =========================================================
+   33. RESPONSIVE — TABLET
+========================================================= */
+
+@media (
+    max-width: 900px
+) {
+
+    .chess-room {
+
+        width:
+            min(
+                calc(100% - 24px),
+                760px
+            );
+
+        padding-top:
+            22px;
+
+    }
+
+
+    .chess-panel {
+
+        padding:
+            16px;
+
+    }
+
+
+    .chess-layout {
+
+        grid-template-columns:
+            1fr;
+
+        gap:
+            18px;
+
+    }
+
+
+    .chess-board {
+
+        width:
+            min(
+                100%,
+                620px
+            );
+
+    }
+
+
+    .chess-side-panel {
+
+        width:
+            min(
+                100%,
+                620px
+            );
+
+        margin:
+            0 auto;
+
+        display:
+            grid;
+
+        grid-template-columns:
+            repeat(
+                2,
+                1fr
+            );
+
+    }
+
+
+    .chess-side-panel
+    .chess-controls {
+
+        grid-column:
+            1 / -1;
+
+    }
+
+}
+
+
+/* =========================================================
+   34. RESPONSIVE — MOBILE
+========================================================= */
+
+@media (
+    max-width: 600px
+) {
+
+    .chess-room {
+
+        width:
+            calc(100% - 16px);
+
+        padding:
+            16px 0 40px;
+
+    }
+
+
+    .chess-header {
+
+        margin-bottom:
+            14px;
+
+    }
+
+
+    .chess-header h1 {
+
+        font-size:
+            2rem;
+
+    }
+
+
+    .chess-header p {
+
+        font-size:
+            0.82rem;
+
+    }
+
+
+    .chess-panel {
+
+        padding:
+            10px;
+
+        border-radius:
+            16px;
+
+    }
+
+
+    .chess-layout {
+
+        gap:
+            12px;
+
+    }
+
+
+    .chess-board {
+
+        width:
+            100%;
+
+        border-width:
+            5px;
+
+        border-radius:
+            7px;
+
+    }
+
+
+    .chess-piece {
+
+        font-size:
+            clamp(
+                1.7rem,
+                10vw,
+                3.2rem
+            );
+
+    }
+
+
+    .chess-square.selected {
+
+        box-shadow:
+            inset 0 0 0 3px
+            var(--gold, #d6b36a);
+
+    }
+
+
+    .chess-square.in-check {
+
+        box-shadow:
+            inset 0 0 0 3px
+            rgba(
+                170,
+                50,
+                50,
+                0.85
+            );
+
+    }
+
+
+    .chess-square.legal-capture::after {
+
+        border-width:
+            3px;
+
+    }
+
+
+    .chess-player-status {
+
+        padding:
+            8px 10px;
+
+    }
+
+
+    .chess-side-panel {
+
+        display:
+            flex;
+
+        width:
+            100%;
+
+    }
+
+
+    .chess-info-card {
+
+        padding:
+            13px;
+
+    }
+
+
+    .chess-controls {
+
+        width:
+            100%;
+
+        gap:
+            6px;
+
+    }
+
+
+    .chess-controls button {
+
+        flex:
+            1 1
+            calc(
+                50% - 6px
+            );
+
+        min-height:
+            40px;
+
+        padding:
+            0 9px;
+
+        font-size:
+            0.68rem;
+
+    }
+
+
+    .chess-move-history {
+
+        max-height:
+            180px;
+
+    }
+
+
+    .chess-move {
+
+        grid-template-columns:
+            28px
+            1fr
+            1fr;
+
+        font-size:
+            0.7rem;
+
+    }
+
+
+    .chess-coordinate {
+
+        font-size:
+            0.5rem;
+
+    }
+
+}
+
+
+/* =========================================================
+   35. VERY SMALL PHONES
+========================================================= */
+
+@media (
+    max-width: 380px
+) {
+
+    .chess-room {
+
+        width:
+            calc(100% - 10px);
+
+        padding-top:
+            12px;
+
+    }
+
+
+    .chess-panel {
+
+        padding:
+            7px;
+
+    }
+
+
+    .chess-board {
+
+        border-width:
+            4px;
+
+    }
+
+
+    .chess-piece {
+
+        font-size:
+            clamp(
+                1.45rem,
+                10vw,
+                2.6rem
+            );
+
+    }
+
+
+    .chess-controls button {
+
+        min-height:
+            38px;
+
+        font-size:
+            0.62rem;
+
+    }
+
+
+    .chess-status {
+
+        min-height:
+            42px;
+
+        padding:
+            8px;
+
+        font-size:
+            0.72rem;
+
+    }
+
+
+    .chess-info-card {
+
+        padding:
+            11px;
+
+    }
+
+
+    .chess-info-card h3 {
+
+        font-size:
+            1rem;
+
+    }
+
+}
+
+
+/* =========================================================
+   36. TOUCH DEVICES
+========================================================= */
+
+@media (
+    hover: none
+) {
+
+    .chess-square:hover {
+
+        filter:
+            none;
+
+    }
+
+
+    .chess-controls button:hover {
+
+        transform:
+            none;
+
+    }
+
+}
+
+
+/* =========================================================
+   37. REDUCED MOTION
+========================================================= */
+
+@media (
+    prefers-reduced-motion: reduce
+) {
+
+    .chess-square,
+    .chess-piece,
+    .chess-controls button {
+
+        transition:
+            none;
+
+    }
+
+}
+/* =========================================================
+   DIGICAFE DAMA
+   ---------------------------------------------------------
+   Dama / Checkers Game Room
+========================================================= */
+
+
+/* =========================================================
+   01. DAMA ROOM
+========================================================= */
+
+.dama-room {
+
+    width: min(
+        calc(100% - 32px),
+        1050px
+    );
+
+    margin: 0 auto;
+
+    padding: 30px 0 60px;
+
+    box-sizing: border-box;
+
+}
+
+
+/* =========================================================
+   02. DAMA HEADER
+========================================================= */
+
+.dama-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    margin-bottom: 28px;
+
+    padding: 22px 24px;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.08),
+            rgba(255,255,255,0.025)
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,0.10);
+
+    box-shadow:
+        0 12px 35px
+        rgba(0,0,0,0.22);
+
+}
+
+
+.dama-header-icon {
+
+    width: 58px;
+
+    height: 58px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 16px;
+
+    background:
+        rgba(255,255,255,0.08);
+
+    font-size: 30px;
+
+}
+
+
+.dama-header h1 {
+
+    margin: 0 0 6px;
+
+    font-size: clamp(
+        1.7rem,
+        4vw,
+        2.4rem
+    );
+
+    line-height: 1.1;
+
+}
+
+
+.dama-header p {
+
+    margin: 0;
+
+    opacity: 0.68;
+
+    font-size: 0.95rem;
+
+}
+
+
+/* =========================================================
+   03. DAMA PANEL
+========================================================= */
+
+.dama-panel {
+
+    width: 100%;
+
+    padding: 24px;
+
+    box-sizing: border-box;
+
+    border-radius: 24px;
+
+    background:
+        rgba(255,255,255,0.035);
+
+    border:
+        1px solid
+        rgba(255,255,255,0.08);
+
+    box-shadow:
+        0 20px 50px
+        rgba(0,0,0,0.25);
+
+}
+
+
+/* =========================================================
+   04. STATUS
+========================================================= */
+
+.dama-status {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 24px;
+
+    padding: 14px 18px;
+
+    border-radius: 14px;
+
+    background:
+        rgba(0,0,0,0.18);
+
+}
+
+
+.dama-turn {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+
+.dama-status-label {
+
+    font-size: 0.7rem;
+
+    letter-spacing: 0.12em;
+
+    opacity: 0.55;
+
+}
+
+
+.dama-turn strong {
+
+    font-size: 0.9rem;
+
+}
+
+
+.dama-status-message {
+
+    font-size: 0.9rem;
+
+    opacity: 0.75;
+
+    text-align: right;
+
+}
+
+
+/* =========================================================
+   05. GAME AREA
+========================================================= */
+
+.dama-game-area {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 18px;
+
+}
+
+
+/* =========================================================
+   06. PLAYER
+========================================================= */
+
+.dama-player {
+
+    width: min(
+        100%,
+        560px
+    );
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 12px 16px;
+
+    box-sizing: border-box;
+
+    border-radius: 14px;
+
+    background:
+        rgba(255,255,255,0.035);
+
+    border:
+        1px solid
+        rgba(255,255,255,0.06);
+
+}
+
+
+.dama-player-piece {
+
+    width: 40px;
+
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    font-size: 28px;
+
+    background:
+        rgba(255,255,255,0.08);
+
+}
+
+
+.dama-player-info {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+
+}
+
+
+.dama-player-label {
+
+    font-size: 0.65rem;
+
+    letter-spacing: 0.14em;
+
+    opacity: 0.5;
+
+}
+
+
+.dama-player-info strong {
+
+    font-size: 0.95rem;
+
+}
+
+
+/* =========================================================
+   07. DAMA BOARD
+========================================================= */
+
+.dama-board {
+
+    width: min(
+        88vw,
+        560px
+    );
+
+    aspect-ratio: 1 / 1;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(8, 1fr);
+
+    grid-template-rows:
+        repeat(8, 1fr);
+
+    overflow: hidden;
+
+    border-radius: 16px;
+
+    border:
+        6px solid
+        rgba(255,255,255,0.08);
+
+    box-shadow:
+        0 20px 45px
+        rgba(0,0,0,0.38);
+
+}
+
+
+/* =========================================================
+   08. BOARD SQUARES
+========================================================= */
+
+.dama-square {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0;
+
+    margin: 0;
+
+    border: 0;
+
+    cursor: pointer;
+
+    transition:
+        filter 0.15s ease,
+        transform 0.15s ease;
+
+}
+
+
+.dama-square.light {
+
+    background:
+        #d8c3a5;
+
+}
+
+
+.dama-square.dark {
+
+    background:
+        #76523c;
+
+}
+
+
+.dama-square:hover {
+
+    filter:
+        brightness(1.08);
+
+}
+
+
+/* =========================================================
+   09. DAMA PIECES
+========================================================= */
+
+.dama-piece {
+
+    width: 72%;
+
+    height: 72%;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
+
+    z-index: 2;
+
+    font-size: 0;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+
+}
+
+
+.dama-piece-white {
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #ffffff,
+            #e7e7e7 55%,
+            #bcbcbc
+        );
+
+    border:
+        3px solid
+        rgba(0,0,0,0.22);
+
+    box-shadow:
+        inset 0 3px 4px
+        rgba(255,255,255,0.8),
+
+        0 5px 8px
+        rgba(0,0,0,0.35);
+
+}
+
+
+.dama-piece-black {
+
+    background:
+        radial-gradient(
+            circle at 35% 30%,
+            #555555,
+            #242424 55%,
+            #090909
+        );
+
+    border:
+        3px solid
+        rgba(255,255,255,0.12);
+
+    box-shadow:
+        inset 0 3px 4px
+        rgba(255,255,255,0.12),
+
+        0 5px 8px
+        rgba(0,0,0,0.45);
+
+}
+
+
+/* =========================================================
+   10. KING PIECES
+========================================================= */
+
+.dama-piece.king::after {
+
+    content:
+        "♛";
+
+    font-size:
+        clamp(
+            16px,
+            4vw,
+            28px
+        );
+
+    line-height: 1;
+
+}
+
+
+.dama-piece-white.king::after {
+
+    color:
+        #6d573d;
+
+    text-shadow:
+        0 1px 1px
+        rgba(255,255,255,0.7);
+
+}
+
+
+.dama-piece-black.king::after {
+
+    color:
+        #e2d2bd;
+
+    text-shadow:
+        0 1px 2px
+        rgba(0,0,0,0.8);
+
+}
+
+
+/* =========================================================
+   11. SELECTED SQUARE
+========================================================= */
+
+.dama-square.selected {
+
+    box-shadow:
+        inset 0 0 0 4px
+        rgba(255,255,255,0.75);
+
+}
+
+
+.dama-square.selected .dama-piece {
+
+    transform:
+        scale(1.08);
+
+}
+
+
+/* =========================================================
+   12. LEGAL MOVE
+========================================================= */
+
+.dama-square.legal-move::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 22%;
+
+    height: 22%;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,0.58);
+
+    box-shadow:
+        0 0 12px
+        rgba(255,255,255,0.25);
+
+    z-index: 3;
+
+}
+
+
+/* =========================================================
+   13. CAPTURE MOVE
+========================================================= */
+
+.dama-square.capture-move::after {
+
+    width: 72%;
+
+    height: 72%;
+
+    background:
+        transparent;
+
+    border:
+        4px solid
+        rgba(255,255,255,0.65);
+
+    box-sizing:
+        border-box;
+
+}
+
+
+/* =========================================================
+   14. LAST MOVE
+========================================================= */
+
+.dama-square.last-move {
+
+    box-shadow:
+        inset 0 0 0 4px
+        rgba(240,195,120,0.55);
+
+}
+
+
+/* =========================================================
+   15. CAPTURED PIECES
+========================================================= */
+
+.dama-captured {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 18px;
+
+    margin-top: 24px;
+
+}
+
+
+.dama-captured-group {
+
+    min-width: 0;
+
+    padding: 14px;
+
+    border-radius: 14px;
+
+    background:
+        rgba(0,0,0,0.16);
+
+}
+
+
+.dama-captured-label {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 0.7rem;
+
+    letter-spacing: 0.08em;
+
+    opacity: 0.55;
+
+}
+
+
+.dama-captured-pieces {
+
+    min-height: 28px;
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 5px;
+
+}
+
+
+.dama-captured-piece {
+
+    width: 24px;
+
+    height: 24px;
+
+    border-radius: 50%;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 0;
+
+}
+
+
+.dama-captured-piece.dama-piece-white {
+
+    background:
+        #e7e7e7;
+
+}
+
+
+.dama-captured-piece.dama-piece-black {
+
+    background:
+        #222;
+
+}
+
+
+/* =========================================================
+   16. CONTROLS
+========================================================= */
+
+.dama-controls {
+
+    display: flex;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-top: 24px;
+
+}
+
+
+.dama-button {
+
+    min-height: 44px;
+
+    padding: 10px 18px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    border: 1px solid
+        rgba(255,255,255,0.10);
+
+    border-radius: 12px;
+
+    background:
+        rgba(255,255,255,0.055);
+
+    color: inherit;
+
+    font: inherit;
+
+    font-size: 0.78rem;
+
+    letter-spacing: 0.05em;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        transform 0.15s ease,
+        opacity 0.15s ease;
+
+}
+
+
+.dama-button:hover:not(:disabled) {
+
+    background:
+        rgba(255,255,255,0.10);
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+.dama-button:disabled {
+
+    opacity: 0.35;
+
+    cursor:
+        not-allowed;
+
+}
+
+
+.dama-button-primary {
+
+    background:
+        rgba(255,255,255,0.12);
+
+}
+
+
+.dama-button-danger {
+
+    background:
+        rgba(150,50,50,0.20);
+
+}
+
+
+/* =========================================================
+   17. MOVE HISTORY
+========================================================= */
+
+.dama-history {
+
+    margin-top: 28px;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    background:
+        rgba(0,0,0,0.16);
+
+}
+
+
+.dama-history-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 14px 18px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,0.06);
+
+}
+
+
+.dama-history-header h2 {
+
+    margin: 0;
+
+    font-size: 1rem;
+
+}
+
+
+.dama-history-header span {
+
+    font-size: 0.72rem;
+
+    opacity: 0.5;
+
+}
+
+
+.dama-move-list {
+
+    max-height: 240px;
+
+    overflow-y: auto;
+
+}
+
+
+.dama-move-row {
+
+    display: grid;
+
+    grid-template-columns:
+        45px 1fr 1fr;
+
+    gap: 10px;
+
+    padding: 9px 18px;
+
+    font-size: 0.82rem;
+
+}
+
+
+.dama-move-row:nth-child(even) {
+
+    background:
+        rgba(255,255,255,0.025);
+
+}
+
+
+.dama-move-number {
+
+    opacity: 0.4;
+
+}
+
+
+.dama-move-white,
+.dama-move-black {
+
+    font-weight: 500;
+
+}
+
+
+.dama-history-empty {
+
+    padding: 25px 18px;
+
+    text-align: center;
+
+    opacity: 0.45;
+
+    font-size: 0.85rem;
+
+}
+
+
+/* =========================================================
+   18. GAME RESULT
+========================================================= */
+
+.dama-result {
+
+    margin-top: 24px;
+
+    padding: 30px 20px;
+
+    text-align: center;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.08),
+            rgba(255,255,255,0.025)
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,0.10);
+
+}
+
+
+.dama-result-icon {
+
+    font-size: 42px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.dama-result h2 {
+
+    margin: 0 0 8px;
+
+    font-size: 1.4rem;
+
+}
+
+
+.dama-result p {
+
+    margin: 0;
+
+    opacity: 0.65;
+
+}
+
+
+.dama-result-details {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 50px;
+
+    margin: 24px 0;
+
+}
+
+
+.dama-result-detail {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+}
+
+
+.dama-result-detail strong {
+
+    font-size: 1.2rem;
+
+}
+
+
+.dama-result-detail span {
+
+    font-size: 0.65rem;
+
+    letter-spacing: 0.1em;
+
+    opacity: 0.45;
+
+}
+
+
+/* =========================================================
+   19. FOCUS ACCESSIBILITY
+========================================================= */
+
+.dama-square:focus-visible,
+.dama-button:focus-visible {
+
+    outline:
+        3px solid
+        rgba(255,255,255,0.75);
+
+    outline-offset:
+        2px;
+
+}
+
+
+/* =========================================================
+   20. TABLET
+========================================================= */
+
+@media (
+    max-width: 700px
+) {
+
+    .dama-room {
+
+        width:
+            min(
+                calc(100% - 20px),
+                600px
+            );
+
+        padding-top: 18px;
+
+    }
+
+
+    .dama-panel {
+
+        padding: 16px;
+
+        border-radius: 18px;
+
+    }
+
+
+    .dama-header {
+
+        padding: 18px;
+
+        border-radius: 18px;
+
+    }
+
+
+    .dama-board {
+
+        width:
+            min(
+                92vw,
+                520px
+            );
+
+    }
+
+
+    .dama-captured {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+
+
+/* =========================================================
+   21. MOBILE
+========================================================= */
+
+@media (
+    max-width: 480px
+) {
+
+    .dama-room {
+
+        width:
+            calc(100% - 12px);
+
+        padding:
+            10px 0 35px;
+
+    }
+
+
+    .dama-header {
+
+        gap: 12px;
+
+        padding: 14px;
+
+        margin-bottom: 14px;
+
+    }
+
+
+    .dama-header-icon {
+
+        width: 46px;
+
+        height: 46px;
+
+        border-radius: 13px;
+
+        font-size: 24px;
+
+    }
+
+
+    .dama-header h1 {
+
+        font-size: 1.45rem;
+
+    }
+
+
+    .dama-header p {
+
+        font-size: 0.8rem;
+
+    }
+
+
+    .dama-status {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 8px;
+
+        margin-bottom: 14px;
+
+    }
+
+
+    .dama-status-message {
+
+        text-align: left;
+
+    }
+
+
+    .dama-player {
+
+        padding: 9px 12px;
+
+    }
+
+
+    .dama-player-piece {
+
+        width: 34px;
+
+        height: 34px;
+
+        font-size: 23px;
+
+    }
+
+
+    .dama-board {
+
+        width:
+            min(
+                94vw,
+                430px
+            );
+
+        border-width:
+            4px;
+
+        border-radius:
+            10px;
+
+    }
+
+
+    .dama-piece {
+
+        width: 70%;
+
+        height: 70%;
+
+    }
+
+
+    .dama-square.capture-move::after {
+
+        border-width:
+            3px;
+
+    }
+
+
+    .dama-controls {
+
+        display: grid;
+
+        grid-template-columns:
+            1fr 1fr;
+
+    }
+
+
+    .dama-button {
+
+        width: 100%;
+
+    }
+
+
+    .dama-button-danger {
+
+        grid-column:
+            1 / -1;
+
+    }
+
+
+    .dama-result-details {
+
+        gap: 30px;
+
+    }
+
+}
+
+
+/* =========================================================
+   22. REDUCED MOTION
+========================================================= */
+
+@media (
+    prefers-reduced-motion: reduce
+) {
+
+    .dama-square,
+    .dama-piece,
+    .dama-button {
+
+        transition:
+            none;
+
+    }
+
+}

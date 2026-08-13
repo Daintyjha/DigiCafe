@@ -883,7 +883,6 @@ function generateCafeSlotsLoss() {
 
     let results;
 
-
     do {
 
         results = [
@@ -898,12 +897,19 @@ function generateCafeSlotsLoss() {
 
     }
 
+    /*
+        A losing result must contain
+        NO pair and NO triple.
+    */
+
     while (
-        results.every(
-            item =>
-                item.symbol ===
-                results[0].symbol
-        )
+
+        results[0].symbol === results[1].symbol ||
+
+        results[0].symbol === results[2].symbol ||
+
+        results[1].symbol === results[2].symbol
+
     );
 
 
@@ -919,7 +925,14 @@ function generateCafeSlotsLoss() {
 function generateCafeSlotsResult() {
 
     /*
-        60% chance of a win.
+        TRUE 30% OVERALL WIN CHANCE.
+
+        30% = winning result
+        70% = complete loss
+
+        Winning results can be:
+        • Triple match
+        • Pair match
     */
 
     const shouldWin =
@@ -927,8 +940,27 @@ function generateCafeSlotsResult() {
         cafeSlotsConfig.winChance;
 
 
+    if (!shouldWin) {
+
+        return generateCafeSlotsLoss();
+
+    }
+
+
+    /*
+        For a winning spin:
+
+        70% of winning spins
+        = triple
+
+        30% of winning spins
+        = pair
+
+        This keeps the big wins rarer.
+    */
+
     if (
-        shouldWin
+        Math.random() < 0.70
     ) {
 
         return generateCafeSlotsWin();
@@ -936,10 +968,49 @@ function generateCafeSlotsResult() {
     }
 
 
-    return generateCafeSlotsLoss();
+    /*
+        Generate a pair.
+    */
+
+    const winningSymbol =
+        randomCafeSlotSymbol();
+
+
+    let otherSymbol;
+
+    do {
+
+        otherSymbol =
+            randomCafeSlotSymbol();
+
+    }
+
+    while (
+        otherSymbol.symbol ===
+        winningSymbol.symbol
+    );
+
+
+    const pairPosition =
+        Math.floor(
+            Math.random() * 3
+        );
+
+
+    const results = [
+        otherSymbol,
+        otherSymbol,
+        otherSymbol
+    ];
+
+
+    results[pairPosition] =
+        winningSymbol;
+
+
+    return results;
 
 }
-
 
 /* =========================================================
    19. SPIN REEL

@@ -1395,7 +1395,8 @@
 
 </section>
 
-
+</div>
+</section>
 
 <!-- =================================================
      BINGO CALLER
@@ -1754,96 +1755,712 @@
 
 </div>
 
+<!-- =========================================================
+     DIGICAFE CHESS
+     ---------------------------------------------------------
+     Local 2-player chess room.
+========================================================= -->
 
-    <!-- =================================================
-         CHESS
-    ================================================== -->
+<section
+    id="chessGame"
+    class="game-room chess-room"
+    data-game-room="chess"
+    hidden
+    aria-labelledby="chessTitle"
+>
 
-    <section
-        id="chessGame"
-        class="game-room"
-        data-game-room="chess"
-        hidden
-    >
+    <!-- =====================================================
+         01. CHESS HEADER
+    ====================================================== -->
 
-        <div class="game-room-header">
+    <header class="chess-header">
 
-            <button
-                class="game-secondary-button"
-                type="button"
-                data-back-to-games
-            >
-                ← Back to Games
-            </button>
+        <div class="chess-header-icon" aria-hidden="true">
+            ♟
+        </div>
+
+        <div class="chess-header-content">
+
+            <h1 id="chessTitle">
+                DigiCafe Chess
+            </h1>
+
+            <p>
+                Take a seat, make your move,
+                and enjoy a quiet game.
+            </p>
+
+        </div>
+
+    </header>
 
 
-            <div>
+    <!-- =====================================================
+         02. CHESS GAME PANEL
+    ====================================================== -->
 
-                <span class="game-eyebrow">
-                    DIGICAFE CHESS TABLE
+    <section class="chess-panel">
+
+
+        <!-- =================================================
+             03. GAME STATUS
+        ================================================== -->
+
+        <div
+            class="chess-status"
+            aria-live="polite"
+        >
+
+            <div class="chess-turn">
+
+                <span class="chess-status-label">
+                    TURN
                 </span>
 
-                <h2>
-                    Chess
-                </h2>
+                <strong id="chessTurn">
+                    WHITE
+                </strong>
+
+            </div>
+
+
+            <div class="chess-status-message">
+
+                <span id="chessStatus">
+                    White to move.
+                </span>
 
             </div>
 
         </div>
 
 
-        <div
-            id="chessBoard"
-            class="game-board"
-        ></div>
+        <!-- =================================================
+             04. GAME AREA
+        ================================================== -->
 
-    </section>
-
+        <div class="chess-game-area">
 
 
-    <!-- =================================================
-         DAMA
-    ================================================== -->
+            <!-- =============================================
+                 BLACK PLAYER
+            ============================================== -->
 
-    <section
-        id="damaGame"
-        class="game-room"
-        data-game-room="dama"
-        hidden
-    >
+            <div class="chess-player chess-player-black">
 
-        <div class="game-room-header">
+                <div
+                    class="chess-player-piece"
+                    aria-hidden="true"
+                >
+                    ♟
+                </div>
 
-            <button
-                class="game-secondary-button"
-                type="button"
-                data-back-to-games
+                <div class="chess-player-info">
+
+                    <span class="chess-player-label">
+                        BLACK
+                    </span>
+
+                    <strong id="chessBlackPlayer">
+                        DigiCafe
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- =============================================
+                 CHESS BOARD
+            ============================================== -->
+
+            <div
+                id="chessBoard"
+                class="chess-board"
+                role="grid"
+                aria-label="Chess board"
             >
-                ← Back to Games
-            </button>
+                <!-- JavaScript creates the 64 squares -->
+            </div>
 
 
-            <div>
+            <!-- =============================================
+                 WHITE PLAYER
+            ============================================== -->
 
-                <span class="game-eyebrow">
-                    DIGICAFE • DAMA
-                </span>
+            <div class="chess-player chess-player-white">
 
-                <h2>
-                    Dama
-                </h2>
+                <div
+                    class="chess-player-piece"
+                    aria-hidden="true"
+                >
+                    ♙
+                </div>
+
+                <div class="chess-player-info">
+
+                    <span class="chess-player-label">
+                        WHITE
+                    </span>
+
+                    <strong id="chessWhitePlayer">
+                        You
+                    </strong>
+
+                </div>
 
             </div>
 
         </div>
 
 
-        <div
-            id="damaBoard"
-            class="game-board"
-        ></div>
+        <!-- =================================================
+             05. CAPTURED PIECES
+        ================================================== -->
+
+        <section class="chess-captured">
+
+            <div class="chess-captured-group">
+
+                <span class="chess-captured-label">
+                    Captured by White
+                </span>
+
+                <div
+                    id="chessCapturedWhite"
+                    class="chess-captured-pieces"
+                    aria-label="Pieces captured by White"
+                ></div>
+
+            </div>
+
+
+            <div class="chess-captured-group">
+
+                <span class="chess-captured-label">
+                    Captured by Black
+                </span>
+
+                <div
+                    id="chessCapturedBlack"
+                    class="chess-captured-pieces"
+                    aria-label="Pieces captured by Black"
+                ></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             06. CONTROLS
+        ================================================== -->
+
+        <div class="chess-controls">
+
+            <button
+                type="button"
+                id="chessNewGame"
+                class="chess-button chess-button-primary"
+            >
+                <span aria-hidden="true">↻</span>
+                NEW GAME
+            </button>
+
+
+            <button
+                type="button"
+                id="chessUndo"
+                class="chess-button"
+                disabled
+            >
+                <span aria-hidden="true">↶</span>
+                UNDO
+            </button>
+
+
+            <button
+                type="button"
+                id="chessResign"
+                class="chess-button chess-button-danger"
+            >
+                <span aria-hidden="true">⚑</span>
+                RESIGN
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             07. MOVE HISTORY
+        ================================================== -->
+
+        <section class="chess-history">
+
+            <div class="chess-history-header">
+
+                <h2>
+                    Move History
+                </h2>
+
+                <span id="chessMoveCount">
+                    0 moves
+                </span>
+
+            </div>
+
+
+            <div
+                id="chessMoveHistory"
+                class="chess-move-list"
+                aria-live="polite"
+            >
+
+                <div class="chess-history-empty">
+                    No moves yet.
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             08. GAME RESULT
+        ================================================== -->
+
+        <section
+            id="chessResult"
+            class="chess-result"
+            hidden
+        >
+
+            <div
+                class="chess-result-icon"
+                aria-hidden="true"
+            >
+                ♛
+            </div>
+
+
+            <h2 id="chessResultTitle">
+                CHECKMATE
+            </h2>
+
+
+            <p id="chessResultMessage">
+                White wins the game.
+            </p>
+
+
+            <div class="chess-result-details">
+
+                <div class="chess-result-detail">
+
+                    <strong id="chessResultMoves">
+                        0
+                    </strong>
+
+                    <span>
+                        MOVES
+                    </span>
+
+                </div>
+
+
+                <div class="chess-result-detail">
+
+                    <strong id="chessResultWinner">
+                        WHITE
+                    </strong>
+
+                    <span>
+                        WINNER
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="chessPlayAgain"
+                class="chess-button chess-button-primary"
+            >
+                PLAY AGAIN
+            </button>
+
+        </section>
 
     </section>
 
+</section>
+
+<!-- =========================================================
+     DIGICAFE DAMA
+     ---------------------------------------------------------
+     Dama / Checkers Game Room
+
+     JavaScript will control:
+     • Board generation
+     • Piece movement
+     • Turn management
+     • Captures
+     • Mandatory captures
+     • Multiple jumps
+     • King promotion
+     • Move history
+     • Undo
+     • New game
+     • Resign
+     • Play again
+========================================================= -->
+
+
+<section
+    id="damaGame"
+    class="game-room dama-room"
+    data-game-room="dama"
+    hidden
+    aria-labelledby="damaTitle"
+>
+
+
+    <!-- =====================================================
+         01. DAMA HEADER
+    ====================================================== -->
+
+    <header class="dama-header">
+
+        <div class="dama-header-icon">
+            🀄
+        </div>
+
+        <div>
+
+            <h1 id="damaTitle">
+                DigiCafe Dama
+            </h1>
+
+            <p>
+                Take a seat, plan your move,
+                and enjoy a quiet game.
+            </p>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         02. DAMA GAME PANEL
+    ====================================================== -->
+
+    <section class="dama-panel">
+
+
+        <!-- =================================================
+             03. GAME STATUS
+        ================================================== -->
+
+        <div
+            class="dama-status"
+            aria-live="polite"
+        >
+
+            <div class="dama-turn">
+
+                <span class="dama-status-label">
+                    TURN
+                </span>
+
+                <strong id="damaTurn">
+                    WHITE
+                </strong>
+
+            </div>
+
+
+            <div class="dama-status-message">
+
+                <span id="damaStatus">
+                    White to move.
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             04. DAMA GAME AREA
+        ================================================== -->
+
+        <div class="dama-game-area">
+
+
+            <!-- =============================================
+                 05. BLACK PLAYER
+            ============================================== -->
+
+            <div class="dama-player dama-player-black">
+
+                <div class="dama-player-piece">
+                    ●
+                </div>
+
+                <div class="dama-player-info">
+
+                    <span class="dama-player-label">
+                        BLACK
+                    </span>
+
+                    <strong id="damaBlackPlayer">
+                        DigiCafe
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =============================================
+                 06. BOARD
+            ============================================== -->
+
+            <div
+                id="damaBoard"
+                class="dama-board"
+                role="grid"
+                aria-label="Dama board"
+            >
+
+                <!--
+                    JavaScript will generate
+                    the 64 board squares here.
+                -->
+
+            </div>
+
+
+
+            <!-- =============================================
+                 07. WHITE PLAYER
+            ============================================== -->
+
+            <div class="dama-player dama-player-white">
+
+                <div class="dama-player-piece">
+                    ○
+                </div>
+
+                <div class="dama-player-info">
+
+                    <span class="dama-player-label">
+                        WHITE
+                    </span>
+
+                    <strong id="damaWhitePlayer">
+                        You
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- =================================================
+             08. CAPTURED PIECES
+        ================================================== -->
+
+        <section class="dama-captured">
+
+            <div class="dama-captured-group">
+
+                <span class="dama-captured-label">
+                    Captured by White
+                </span>
+
+                <div
+                    id="damaCapturedWhite"
+                    class="dama-captured-pieces"
+                    aria-label="Pieces captured by White"
+                >
+                </div>
+
+            </div>
+
+
+            <div class="dama-captured-group">
+
+                <span class="dama-captured-label">
+                    Captured by Black
+                </span>
+
+                <div
+                    id="damaCapturedBlack"
+                    class="dama-captured-pieces"
+                    aria-label="Pieces captured by Black"
+                >
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             09. CONTROLS
+        ================================================== -->
+
+        <div class="dama-controls">
+
+            <button
+                type="button"
+                id="damaNewGame"
+                class="dama-button dama-button-primary"
+            >
+                <span aria-hidden="true">↻</span>
+                NEW GAME
+            </button>
+
+
+            <button
+                type="button"
+                id="damaUndo"
+                class="dama-button"
+                disabled
+            >
+                <span aria-hidden="true">↶</span>
+                UNDO
+            </button>
+
+
+            <button
+                type="button"
+                id="damaResign"
+                class="dama-button dama-button-danger"
+            >
+                <span aria-hidden="true">⚑</span>
+                RESIGN
+            </button>
+
+        </div>
+
+
+
+        <!-- =================================================
+             10. MOVE HISTORY
+        ================================================== -->
+
+        <section class="dama-history">
+
+            <div class="dama-history-header">
+
+                <h2>
+                    Move History
+                </h2>
+
+                <span id="damaMoveCount">
+                    0 moves
+                </span>
+
+            </div>
+
+
+            <div
+                id="damaMoveHistory"
+                class="dama-move-list"
+                aria-live="polite"
+            >
+
+                <div class="dama-history-empty">
+                    No moves yet.
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             11. GAME RESULT
+        ================================================== -->
+
+        <section
+            id="damaResult"
+            class="dama-result"
+            hidden
+        >
+
+            <div class="dama-result-icon">
+                🏆
+            </div>
+
+
+            <h2 id="damaResultTitle">
+                GAME OVER
+            </h2>
+
+
+            <p id="damaResultMessage">
+                White wins the game.
+            </p>
+
+
+            <div class="dama-result-details">
+
+
+                <div class="dama-result-detail">
+
+                    <strong id="damaResultMoves">
+                        0
+                    </strong>
+
+                    <span>
+                        MOVES
+                    </span>
+
+                </div>
+
+
+                <div class="dama-result-detail">
+
+                    <strong id="damaResultWinner">
+                        WHITE
+                    </strong>
+
+                    <span>
+                        WINNER
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+            <button
+                type="button"
+                id="damaPlayAgain"
+                class="dama-button dama-button-primary"
+            >
+                PLAY AGAIN
+            </button>
+
+        </section>
+
+
+    </section>
 
 </section>
