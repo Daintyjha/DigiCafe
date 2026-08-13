@@ -1074,19 +1074,19 @@ showBingoResult(
         ? "✨ Auto-Daub ON — called numbers will be marked automatically."
         : "Manual Daub ON — tap your called numbers yourself."
 );
-```
+ 
 
 }
 
 function toggleBingoAutoDaub() {
 
-```
+ 
 setBingoDaubMode(
     bingoGame.autoDaub
         ? "manual"
         : "auto"
 );
-```
+ 
 
 }
 
@@ -1101,7 +1101,7 @@ column,
 source = "manual"
 ) {
 
-```
+ 
 if (
     !bingoGame.playing ||
     bingoGame.gameOver
@@ -1215,7 +1215,7 @@ checkBingo(
 
 
 return true;
-```
+ 
 
 }
 
@@ -1229,7 +1229,7 @@ row,
 column
 ) {
 
-```
+ 
 const cell =
     document.querySelector(
         `.bingo-cell[data-card="${cardIndex}"][data-row="${row}"][data-column="${column}"]`
@@ -1248,7 +1248,7 @@ cell.classList.toggle(
         card.marked[row][column]
     )
 );
-```
+ 
 
 }
 
@@ -1258,7 +1258,7 @@ cell.classList.toggle(
 
 function autoDaubCalledNumbers() {
 
-```
+ 
 if (
     !bingoGame.playing ||
     bingoGame.gameOver
@@ -1358,7 +1358,7 @@ while (
     }
 
 }
-```
+ 
 
 }
 
@@ -1370,7 +1370,7 @@ function checkBingo(
 cardIndex
 ) {
 
-```
+ 
 const card =
     bingoGame.boards[cardIndex];
 
@@ -1504,7 +1504,7 @@ if (diagonalTwo) {
 
 
 return false;
-```
+ 
 
 }
 
@@ -1516,7 +1516,7 @@ function addDaubXP(
 amount = 1
 ) {
 
-```
+ 
 /*
  * Never gather XP during cooldown.
  */
@@ -1569,7 +1569,7 @@ if (
 
 
 updatePowerUpUI();
-```
+ 
 
 }
 
@@ -1579,19 +1579,19 @@ updatePowerUpUI();
 
 const bingoPowerUps = [
 
-```
+ 
 "lucky-daub",
 
 "number-boost",
 
 "double-daub"
-```
+ 
 
 ];
 
 function brewRandomPowerUp() {
 
-```
+ 
 if (
     bingoGame.availablePowerUp ||
     bingoGame.powerUpCooldown
@@ -1627,7 +1627,7 @@ const name =
 showBingoResult(
     `☕ Coffee brewed! You received ${name}!`
 );
-```
+ 
 
 }
 
@@ -1639,7 +1639,7 @@ function getPowerUpName(
 powerUp
 ) {
 
-```
+ 
 const names = {
 
     "lucky-daub":
@@ -1658,7 +1658,7 @@ return (
     names[powerUp] ||
     "Mystery Power-Up"
 );
-```
+ 
 
 }
 
@@ -1668,7 +1668,7 @@ return (
 
 function updatePowerUpUI() {
 
-```
+ 
 const required =
     bingoConfig.xpPerPowerUp;
 
@@ -1911,7 +1911,7 @@ if (
         bingoGame.powerUpCooldownRemaining;
 
 }
-```
+ 
 
 }
 
@@ -1921,7 +1921,7 @@ title,
 text
 ) {
 
-```
+ 
 if (
     bingoElements.powerUpStatusIcon
 ) {
@@ -1948,7 +1948,7 @@ if (
         text;
 
 }
-```
+ 
 
 }
 
@@ -1956,7 +1956,7 @@ function getPowerUpIcon(
 powerUp
 ) {
 
-```
+ 
 const icons = {
 
     "lucky-daub": "🍀",
@@ -1971,7 +1971,7 @@ return (
     icons[powerUp] ||
     "☕"
 );
-```
+ 
 
 }
 
@@ -1983,7 +1983,7 @@ function consumeSelectedPowerUp(
 expectedPowerUp
 ) {
 
-```
+ 
 if (
     !bingoGame.playing ||
     bingoGame.gameOver
@@ -2039,7 +2039,7 @@ updatePowerUpUI();
 
 
 return true;
-```
+ 
 
 }
 
@@ -2049,7 +2049,7 @@ return true;
 
 function useLuckyDaub() {
 
-```
+ 
 if (
     !consumeSelectedPowerUp(
         "lucky-daub"
@@ -2188,7 +2188,7 @@ if (
     startPowerUpCooldown();
 
 }
-```
+ 
 
 }
 
@@ -2198,7 +2198,7 @@ if (
 
 function useNumberBoost() {
 
-```
+ 
 if (
     !consumeSelectedPowerUp(
         "number-boost"
@@ -2276,7 +2276,7 @@ bingoGame.numberBoostTimer =
 
 
 startPowerUpCooldown();
-```
+ 
 
 }
 
@@ -2286,7 +2286,7 @@ startPowerUpCooldown();
 
 function useDoubleDaub() {
 
-```
+ 
 if (
     !consumeSelectedPowerUp(
         "double-daub"
@@ -2306,7 +2306,7 @@ showBingoResult(
 
 
 startPowerUpCooldown();
-```
+ 
 
 }
 
@@ -2316,7 +2316,7 @@ startPowerUpCooldown();
 
 function startPowerUpCooldown() {
 
-```
+ 
 if (
     bingoGame.powerUpCooldownTimer
 ) {
@@ -2391,7 +2391,7 @@ bingoGame.powerUpCooldownTimer =
         },
         1000
     );
-```
+ 
 
 }
 
@@ -2404,7 +2404,7 @@ cardIndex,
 pattern
 ) {
 
-```
+ 
 if (
     bingoGame.gameOver
 ) {
@@ -2509,7 +2509,7 @@ if (
 updateCallButtons();
 
 updatePowerUpUI();
-```
+ 
 
 }
 
@@ -2519,7 +2519,7 @@ updatePowerUpUI();
 
 function drawBingoNumber() {
 
-```
+ 
 if (
     !bingoGame.playing ||
     bingoGame.gameOver
@@ -2606,7 +2606,7 @@ if (
 
 
 return number;
-```
+ 
 
 }
 
@@ -2616,7 +2616,7 @@ return number;
 
 function renderCurrentNumber() {
 
-```
+ 
 if (
     bingoGame.currentNumber === null
 ) {
@@ -2662,7 +2662,7 @@ if (
         number;
 
 }
-```
+ 
 
 }
 
@@ -2672,7 +2672,7 @@ if (
 
 function renderCalledNumbers() {
 
-```
+ 
 const container =
     bingoElements.calledNumbers;
 
@@ -2767,7 +2767,7 @@ if (
         bingoGame.calledNumbers.length;
 
 }
-```
+ 
 
 }
 
@@ -2777,7 +2777,7 @@ if (
 
 function updateCalledHighlights() {
 
-```
+ 
 document
     .querySelectorAll(
         ".bingo-cell[data-number]"
@@ -2809,7 +2809,7 @@ document
 
         }
     );
-```
+ 
 
 }
 
@@ -2819,7 +2819,7 @@ document
 
 function startBingoGame() {
 
-```
+ 
 if (
     bingoGame.gameOver
 ) {
@@ -2898,7 +2898,7 @@ drawBingoNumber();
 
 
 return true;
-```
+ 
 
 }
 
@@ -2908,7 +2908,7 @@ return true;
 
 function manualBingoCall() {
 
-```
+ 
 if (
     bingoGame.autoCalling
 ) {
@@ -2928,7 +2928,7 @@ if (
 
 
 drawBingoNumber();
-```
+ 
 
 }
 
@@ -2938,7 +2938,7 @@ drawBingoNumber();
 
 function startBingoAutoCall() {
 
-```
+ 
 if (
     bingoGame.gameOver
 ) {
@@ -2999,13 +2999,13 @@ updateCallButtons();
 showBingoResult(
     "↻ Auto Call is running. Good luck! 🎱"
 );
-```
+ 
 
 }
 
 function stopBingoAutoCall() {
 
-```
+ 
 if (
     bingoGame.autoTimer
 ) {
@@ -3026,13 +3026,13 @@ bingoGame.autoCalling =
 
 
 updateCallButtons();
-```
+ 
 
 }
 
 function toggleBingoAutoCall() {
 
-```
+ 
 if (
     bingoGame.autoCalling
 ) {
@@ -3049,7 +3049,7 @@ if (
 
 
 startBingoAutoCall();
-```
+ 
 
 }
 
@@ -3059,7 +3059,7 @@ startBingoAutoCall();
 
 function updateCallButtons() {
 
-```
+ 
 if (
     bingoElements.callNumber
 ) {
@@ -3115,7 +3115,7 @@ if (
         false;
 
 }
-```
+ 
 
 }
 
@@ -3127,7 +3127,7 @@ function showBingoResult(
 message
 ) {
 
-```
+ 
 if (
     bingoElements.result
 ) {
@@ -3136,7 +3136,7 @@ if (
         message;
 
 }
-```
+ 
 
 }
 
@@ -3146,7 +3146,7 @@ if (
 
 function newBingoGame() {
 
-```
+ 
 stopBingoAutoCall();
 
 
@@ -3249,7 +3249,7 @@ showBingoResult(
         getBingoPrice()
     } credits to play.`
 );
-```
+ 
 
 }
 
@@ -3259,11 +3259,11 @@ showBingoResult(
 
 function playBingoAgain() {
 
-```
+ 
 newBingoGame();
 
 startBingoGame();
-```
+ 
 
 }
 
@@ -3273,7 +3273,7 @@ startBingoGame();
 
 function setupBingoEvents() {
 
-```
+ 
 /*
  * CARD OPTIONS
  */
@@ -3446,7 +3446,7 @@ if (
     );
 
 }
-```
+ 
 
 }
 
@@ -3456,7 +3456,7 @@ if (
 
 function initBingo() {
 
-```
+ 
 const room =
     document.getElementById(
         "bingoGame"
@@ -3529,7 +3529,7 @@ console.log(
 
 
 return true;
-```
+ 
 
 }
 
@@ -3539,7 +3539,7 @@ return true;
 
 function resetBingoInitialization() {
 
-```
+ 
 stopBingoAutoCall();
 
 
@@ -3612,7 +3612,7 @@ bingoGame.doubleDaubActive =
 
 bingoGame.numberBoostTimer =
     null;
-```
+ 
 
 }
 
