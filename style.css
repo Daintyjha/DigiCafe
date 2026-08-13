@@ -4849,3 +4849,3336 @@ html {
     }
 
 }
+/* =========================================================
+   DIGICAFE PLAYROOM
+   PLAYFUL CAFÉ THEME
+========================================================= */
+
+
+/* =========================================================
+   01. MAIN ROOM
+========================================================= */
+
+.playroom {
+    position: relative;
+
+    width: min(calc(100% - 28px), 1180px);
+
+    margin: 0 auto;
+
+    padding: 35px 0 80px;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   02. FLOATING DECOR
+========================================================= */
+
+.playroom-decor {
+    position: absolute;
+
+    pointer-events: none;
+
+    user-select: none;
+
+    opacity: 0.16;
+
+    z-index: 0;
+}
+
+.decor-coffee {
+    top: 95px;
+    left: 2%;
+
+    font-size: 2.5rem;
+
+    transform: rotate(-14deg);
+
+    animation: playroomFloat 5s ease-in-out infinite;
+}
+
+.decor-card {
+    top: 240px;
+    right: 3%;
+
+    font-size: 2rem;
+
+    transform: rotate(18deg);
+
+    animation: playroomFloat 6s ease-in-out infinite reverse;
+}
+
+.decor-dice {
+    top: 520px;
+    left: 1%;
+
+    font-size: 1.8rem;
+
+    transform: rotate(-8deg);
+
+    animation: playroomFloat 7s ease-in-out infinite;
+}
+
+.decor-star {
+    top: 600px;
+    right: 2%;
+
+    font-size: 2rem;
+
+    animation: playroomTwinkle 3s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   03. HEADER
+========================================================= */
+
+.playroom-header {
+    position: relative;
+
+    z-index: 2;
+
+    text-align: center;
+
+    padding:
+        25px
+        15px
+        45px;
+}
+
+
+/* =========================================================
+   04. OPEN SIGN
+========================================================= */
+
+.playroom-sign {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    margin-bottom: 18px;
+
+    padding: 7px 14px;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.035);
+
+    font-size: 0.62rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.17em;
+
+    opacity: 0.65;
+}
+
+.playroom-sign-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: currentColor;
+
+    animation: playroomPulse 2s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   05. TITLE
+========================================================= */
+
+.playroom-title-wrap {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 18px;
+}
+
+.playroom-title-wrap h1 {
+    margin: 0;
+
+    font-size: clamp(2.7rem, 8vw, 5rem);
+
+    line-height: 0.95;
+
+    letter-spacing: -0.055em;
+}
+
+.playroom-side-doodle {
+    font-size: clamp(1.5rem, 4vw, 2.4rem);
+
+    opacity: 0.35;
+
+    transition:
+        transform 0.3s ease,
+        opacity 0.3s ease;
+}
+
+.doodle-left {
+    transform: rotate(-15deg);
+}
+
+.doodle-right {
+    transform: rotate(15deg);
+}
+
+.playroom-title-wrap:hover .doodle-left {
+    transform:
+        rotate(-25deg)
+        translateY(-5px);
+}
+
+.playroom-title-wrap:hover .doodle-right {
+    transform:
+        rotate(25deg)
+        translateY(-5px);
+}
+
+
+/* =========================================================
+   06. TAGLINE
+========================================================= */
+
+.playroom-tagline {
+    margin: 20px auto 0;
+
+    font-size: clamp(1.05rem, 3vw, 1.35rem);
+
+    line-height: 1.5;
+}
+
+.playroom-tagline strong {
+    font-weight: 800;
+}
+
+.playroom-intro {
+    max-width: 610px;
+
+    margin: 12px auto 0;
+
+    font-size: 0.88rem;
+
+    line-height: 1.75;
+
+    opacity: 0.58;
+}
+
+
+/* =========================================================
+   07. COFFEE NOTE
+========================================================= */
+
+.playroom-coffee-note {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    margin-top: 22px;
+
+    padding: 9px 15px;
+
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.025);
+
+    border: 1px solid rgba(255, 255, 255, 0.06);
+
+    font-size: 0.7rem;
+
+    opacity: 0.6;
+}
+
+.playroom-coffee-note span:first-child {
+    animation:
+        playroomCoffee 3s ease-in-out infinite;
+}
+
+.playroom-coffee-note span:last-child {
+    animation:
+        playroomCoffee 3s ease-in-out 0.4s infinite;
+}
+
+
+/* =========================================================
+   08. GAME LOUNGE
+========================================================= */
+
+.game-lounge {
+    position: relative;
+
+    z-index: 2;
+}
+
+
+/* =========================================================
+   09. LOUNGE HEADING
+========================================================= */
+
+.game-lounge-heading {
+    text-align: center;
+
+    margin-bottom: 30px;
+}
+
+.game-lounge-label {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 9px;
+
+    font-size: 0.62rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.18em;
+
+    opacity: 0.45;
+}
+
+.game-lounge-label span {
+    font-size: 0.75rem;
+
+    opacity: 0.7;
+}
+
+.game-lounge-heading h2 {
+    margin: 0;
+
+    font-size: clamp(1.55rem, 4vw, 2.25rem);
+
+    letter-spacing: -0.035em;
+}
+
+.game-lounge-heading p {
+    margin: 8px 0 0;
+
+    font-size: 0.82rem;
+
+    opacity: 0.52;
+}
+
+
+/* =========================================================
+   10. GAME GRID
+========================================================= */
+
+.game-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+
+/* =========================================================
+   11. GAME CARD
+========================================================= */
+
+.game-card {
+    position: relative;
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-height: 315px;
+
+    padding: 25px;
+
+    overflow: hidden;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.075);
+
+    border-radius: 25px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.06),
+            rgba(255, 255, 255, 0.018)
+        );
+
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.13);
+
+    transform:
+        rotate(0deg);
+
+    transition:
+        transform 0.35s cubic-bezier(.2,.8,.2,1),
+        box-shadow 0.35s ease,
+        border-color 0.35s ease;
+}
+
+
+/* Subtle individual card rotations */
+
+.game-card-solitaire {
+    transform: rotate(-0.5deg);
+}
+
+.game-card-slots {
+    transform: rotate(0.65deg);
+}
+
+.game-card-bingo {
+    transform: rotate(0.35deg);
+}
+
+.game-card-chess {
+    transform: rotate(-0.65deg);
+}
+
+.game-card-dama {
+    transform: rotate(0.5deg);
+}
+
+
+/* Hover */
+
+.game-card:hover {
+    transform:
+        translateY(-8px)
+        rotate(0deg);
+
+    border-color:
+        rgba(255, 255, 255, 0.16);
+
+    box-shadow:
+        0 28px 60px rgba(0, 0, 0, 0.22);
+}
+
+
+/* =========================================================
+   12. CARD DECORATION
+========================================================= */
+
+.game-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 190px;
+    height: 190px;
+
+    top: -105px;
+    right: -75px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.035);
+
+    filter: blur(3px);
+
+    transition:
+        transform 0.5s ease;
+}
+
+.game-card:hover::before {
+    transform: scale(1.35);
+}
+
+
+/* Bottom glow */
+
+.game-card::after {
+    content: "";
+
+    position: absolute;
+
+    left: 25px;
+    right: 25px;
+    bottom: 0;
+
+    height: 3px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+
+    transform:
+        scaleX(0.18);
+
+    transition:
+        transform 0.35s ease;
+}
+
+.game-card:hover::after {
+    transform:
+        scaleX(1);
+}
+
+
+/* =========================================================
+   13. SPARKLE
+========================================================= */
+
+.game-card-sparkle {
+    position: absolute;
+
+    top: 19px;
+    right: 22px;
+
+    font-size: 0.85rem;
+
+    opacity: 0.25;
+
+    animation:
+        playroomTwinkle 3.5s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   14. CARD TOP
+========================================================= */
+
+.game-card-top {
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    margin-bottom: 21px;
+}
+
+.game-card-number {
+    font-size: 0.65rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.12em;
+
+    opacity: 0.25;
+}
+
+
+/* =========================================================
+   15. GAME ICON
+========================================================= */
+
+.game-card-icon {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 64px;
+    height: 64px;
+
+    border-radius: 19px;
+
+    background:
+        rgba(255, 255, 255, 0.055);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.09);
+
+    font-size: 1.8rem;
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.1);
+
+    transition:
+        transform 0.35s ease;
+}
+
+.game-card:hover .game-card-icon {
+    transform:
+        translateY(-4px)
+        rotate(-4deg);
+}
+
+
+/* Individual icon movement */
+
+.game-card-slots:hover .game-card-icon {
+    animation:
+        slotShake 0.5s ease;
+}
+
+.game-card-bingo:hover .game-card-icon {
+    animation:
+        bingoBounce 0.6s ease;
+}
+
+.game-card-chess:hover .game-card-icon {
+    transform:
+        translateY(-5px)
+        rotate(8deg);
+}
+
+.game-card-dama:hover .game-card-icon {
+    transform:
+        translateY(-5px)
+        rotate(-8deg);
+}
+
+
+/* =========================================================
+   16. CARD CONTENT
+========================================================= */
+
+.game-card-content {
+    position: relative;
+
+    z-index: 2;
+
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.game-card-label {
+    margin-bottom: 7px;
+
+    font-size: 0.59rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.17em;
+
+    opacity: 0.43;
+}
+
+.game-card h3 {
+    margin: 0;
+
+    font-size: 1.5rem;
+
+    letter-spacing: -0.035em;
+}
+
+.game-card p {
+    max-width: 430px;
+
+    margin: 10px 0 22px;
+
+    font-size: 0.83rem;
+
+    line-height: 1.7;
+
+    opacity: 0.58;
+}
+
+
+/* =========================================================
+   17. GAME BUTTON
+========================================================= */
+
+.game-button {
+    position: relative;
+
+    z-index: 3;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    width: fit-content;
+
+    margin-top: auto;
+
+    padding: 10px 14px 10px 16px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.1);
+
+    border-radius: 999px;
+
+    background:
+        rgba(255, 255, 255, 0.045);
+
+    color: inherit;
+
+    font: inherit;
+
+    font-size: 0.72rem;
+
+    font-weight: 750;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.game-button:hover {
+    background:
+        rgba(255, 255, 255, 0.1);
+
+    border-color:
+        rgba(255, 255, 255, 0.18);
+
+    transform:
+        translateX(3px);
+}
+
+.game-button-arrow {
+    font-size: 1rem;
+
+    transition:
+        transform 0.25s ease;
+}
+
+.game-button:hover .game-button-arrow {
+    transform:
+        translateX(4px);
+}
+
+
+/* =========================================================
+   18. CARD MOODS
+========================================================= */
+
+.game-card-solitaire {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.06),
+            rgba(75, 95, 115, 0.045)
+        );
+}
+
+.game-card-slots {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.065),
+            rgba(125, 75, 85, 0.05)
+        );
+}
+
+.game-card-bingo {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.06),
+            rgba(75, 105, 85, 0.045)
+        );
+}
+
+.game-card-chess {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.06),
+            rgba(75, 75, 110, 0.05)
+        );
+}
+
+.game-card-dama {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.06),
+            rgba(115, 80, 60, 0.05)
+        );
+}
+
+
+/* =========================================================
+   19. BOTTOM MESSAGE
+========================================================= */
+
+.playroom-bottom {
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 35px;
+}
+
+.playroom-bottom-card {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    max-width: 650px;
+
+    margin: 0 auto;
+
+    padding: 17px 20px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.06);
+
+    border-radius: 20px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+}
+
+.bottom-coffee {
+    flex-shrink: 0;
+
+    font-size: 1.45rem;
+
+    animation:
+        playroomCoffee 4s ease-in-out infinite;
+}
+
+.bottom-label {
+    display: block;
+
+    margin-bottom: 4px;
+
+    font-size: 0.58rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.16em;
+
+    opacity: 0.4;
+}
+
+.playroom-bottom-card p {
+    margin: 0;
+
+    font-size: 0.76rem;
+
+    line-height: 1.55;
+
+    opacity: 0.5;
+}
+
+.bottom-doodle {
+    margin-left: auto;
+
+    font-size: 1.4rem;
+
+    opacity: 0.25;
+
+    transform: rotate(10deg);
+}
+
+
+/* =========================================================
+   20. GAME ROOMS
+========================================================= */
+
+.game-room {
+    position: relative;
+
+    z-index: 5;
+
+    margin-top: 25px;
+
+    padding: 25px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 26px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.2);
+}
+
+.game-room-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 25px;
+}
+
+.game-room-header h2 {
+    margin: 0;
+
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+}
+
+.game-eyebrow {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 0.6rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.16em;
+
+    opacity: 0.45;
+}
+
+.game-secondary-button {
+    flex-shrink: 0;
+
+    padding: 9px 14px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.1);
+
+    border-radius: 999px;
+
+    background:
+        transparent;
+
+    color: inherit;
+
+    font: inherit;
+
+    font-size: 0.7rem;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease;
+}
+
+.game-secondary-button:hover {
+    background:
+        rgba(255, 255, 255, 0.06);
+
+    transform:
+        translateX(-2px);
+}
+
+.game-board {
+    min-height: 400px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border:
+        1px dashed rgba(255, 255, 255, 0.1);
+
+    border-radius: 20px;
+
+    background:
+        rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================================================
+   21. ANIMATIONS
+========================================================= */
+
+@keyframes playroomFloat {
+
+    0%,
+    100% {
+        transform:
+            translateY(0)
+            rotate(-10deg);
+    }
+
+    50% {
+        transform:
+            translateY(-9px)
+            rotate(-5deg);
+    }
+}
+
+
+@keyframes playroomTwinkle {
+
+    0%,
+    100% {
+        opacity: 0.18;
+
+        transform:
+            scale(0.9)
+            rotate(0deg);
+    }
+
+    50% {
+        opacity: 0.45;
+
+        transform:
+            scale(1.15)
+            rotate(15deg);
+    }
+}
+
+
+@keyframes playroomPulse {
+
+    0%,
+    100% {
+        transform: scale(0.8);
+
+        opacity: 0.4;
+    }
+
+    50% {
+        transform: scale(1.25);
+
+        opacity: 1;
+    }
+}
+
+
+@keyframes playroomCoffee {
+
+    0%,
+    100% {
+        transform:
+            translateY(0)
+            rotate(0deg);
+    }
+
+    50% {
+        transform:
+            translateY(-3px)
+            rotate(4deg);
+    }
+}
+
+
+@keyframes slotShake {
+
+    0%,
+    100% {
+        transform: rotate(0);
+    }
+
+    25% {
+        transform: rotate(-5deg);
+    }
+
+    75% {
+        transform: rotate(5deg);
+    }
+}
+
+
+@keyframes bingoBounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    35% {
+        transform: translateY(-8px);
+    }
+
+    65% {
+        transform: translateY(2px);
+    }
+}
+
+
+/* =========================================================
+   22. TABLET
+========================================================= */
+
+@media (max-width: 850px) {
+
+    .game-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .game-card {
+        min-height: 300px;
+    }
+
+}
+
+
+/* =========================================================
+   23. MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    .playroom {
+        width: min(calc(100% - 20px), 1180px);
+
+        padding-top: 20px;
+    }
+
+
+    .playroom-header {
+        padding:
+            20px
+            8px
+            38px;
+    }
+
+
+    .playroom-title-wrap {
+        gap: 10px;
+    }
+
+
+    .playroom-title-wrap h1 {
+        font-size: 3rem;
+    }
+
+
+    .playroom-side-doodle {
+        font-size: 1.35rem;
+    }
+
+
+    .playroom-tagline {
+        font-size: 1rem;
+    }
+
+
+    .playroom-intro {
+        font-size: 0.8rem;
+
+        line-height: 1.7;
+    }
+
+
+    .playroom-coffee-note {
+        max-width: 90%;
+
+        font-size: 0.64rem;
+
+        line-height: 1.4;
+    }
+
+
+    .game-grid {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+
+    .game-card {
+        min-height: 285px;
+
+        padding: 23px;
+
+        border-radius: 22px;
+    }
+
+
+    .game-card-solitaire,
+    .game-card-slots,
+    .game-card-bingo,
+    .game-card-chess,
+    .game-card-dama {
+        transform: rotate(0);
+    }
+
+
+    .game-card:hover {
+        transform:
+            translateY(-5px);
+    }
+
+
+    .game-card-icon {
+        width: 58px;
+        height: 58px;
+
+        font-size: 1.65rem;
+    }
+
+
+    .game-card h3 {
+        font-size: 1.35rem;
+    }
+
+
+    .game-card p {
+        font-size: 0.8rem;
+    }
+
+
+    .game-button {
+        width: 100%;
+    }
+
+
+    .game-room {
+        padding: 20px;
+
+        border-radius: 22px;
+    }
+
+
+    .game-room-header {
+        align-items: flex-start;
+
+        flex-direction: column-reverse;
+    }
+
+
+    .game-secondary-button {
+        align-self: flex-start;
+    }
+
+
+    .game-board {
+        min-height: 320px;
+    }
+
+
+    .playroom-bottom-card {
+        align-items: flex-start;
+
+        padding: 16px;
+    }
+
+
+    .bottom-doodle {
+        display: none;
+    }
+
+
+    .decor-coffee {
+        left: -10px;
+    }
+
+
+    .decor-card {
+        right: -5px;
+    }
+
+
+    .decor-dice {
+        display: none;
+    }
+
+}
+
+
+/* =========================================================
+   24. VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .playroom-title-wrap h1 {
+        font-size: 2.55rem;
+    }
+
+
+    .playroom-side-doodle {
+        display: none;
+    }
+
+
+    .game-card {
+        padding: 20px;
+    }
+
+}
+
+/* =========================================================
+   DIGICAFE SOLITAIRE
+   ========================================================= */
+
+
+/* =========================================================
+   01. SOLITAIRE ROOM
+========================================================= */
+
+.solitaire-room {
+    position: relative;
+
+    overflow: hidden;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.035),
+            rgba(255, 255, 255, 0.012)
+        );
+}
+
+
+/* =========================================================
+   02. HEADER
+========================================================= */
+
+.solitaire-header {
+    align-items: center;
+
+    flex-wrap: wrap;
+}
+
+.solitaire-title {
+    flex: 1;
+
+    min-width: 160px;
+}
+
+.solitaire-title h2 {
+    margin: 0;
+
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+
+    letter-spacing: -0.035em;
+}
+
+
+/* =========================================================
+   03. STATS
+========================================================= */
+
+.solitaire-stats {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.solitaire-stat {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 65px;
+
+    padding: 8px 11px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.07);
+
+    border-radius: 12px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+}
+
+.solitaire-stat span {
+    font-size: 0.5rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.13em;
+
+    opacity: 0.4;
+}
+
+.solitaire-stat strong {
+    margin-top: 2px;
+
+    font-size: 0.82rem;
+
+    font-variant-numeric: tabular-nums;
+}
+
+
+/* =========================================================
+   04. SOLITAIRE TABLE
+========================================================= */
+
+.solitaire-board {
+    position: relative;
+
+    width: 100%;
+
+    min-height: 620px;
+
+    padding: 25px;
+
+    border-radius: 22px;
+
+    background:
+        radial-gradient(
+            circle at 50% 30%,
+            rgba(255, 255, 255, 0.035),
+            transparent 55%
+        ),
+        rgba(0, 0, 0, 0.13);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.055);
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   05. TOP CARD AREA
+========================================================= */
+
+.solitaire-top-row {
+    display: grid;
+
+    grid-template-columns:
+        repeat(7, minmax(70px, 1fr));
+
+    gap: 15px;
+
+    width: 100%;
+}
+
+
+/* Stock */
+
+.solitaire-stock {
+    grid-column: 1;
+
+    position: relative;
+}
+
+
+/* Waste */
+
+.solitaire-waste {
+    grid-column: 2;
+
+    position: relative;
+}
+
+
+/* Foundations */
+
+.solitaire-foundations {
+    grid-column: 4 / 8;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(70px, 1fr));
+
+    gap: 15px;
+}
+
+
+/* =========================================================
+   06. TABLEAU
+========================================================= */
+
+.solitaire-tableau {
+    display: grid;
+
+    grid-template-columns:
+        repeat(7, minmax(70px, 1fr));
+
+    gap: 15px;
+
+    margin-top: 35px;
+
+    width: 100%;
+}
+
+.solitaire-column {
+    position: relative;
+
+    min-height: 400px;
+}
+
+
+/* =========================================================
+   07. CARD SLOT
+========================================================= */
+
+.solitaire-pile {
+    position: relative;
+
+    width: 100%;
+
+    aspect-ratio: 0.715;
+
+    min-height: 90px;
+
+    border-radius: 9px;
+
+    border:
+        1px dashed rgba(255, 255, 255, 0.09);
+
+    background:
+        rgba(255, 255, 255, 0.018);
+
+    box-sizing: border-box;
+}
+
+
+/* Empty tableau slots */
+
+.solitaire-column .solitaire-pile {
+    position: absolute;
+
+    top: 0;
+
+    left: 0;
+}
+
+
+/* Empty foundation */
+
+.solitaire-foundation {
+    position: relative;
+
+    width: 100%;
+
+    aspect-ratio: 0.715;
+
+    border-radius: 9px;
+
+    border:
+        1px dashed rgba(255, 255, 255, 0.1);
+
+    background:
+        rgba(255, 255, 255, 0.018);
+}
+
+
+/* =========================================================
+   08. PLAYING CARD
+========================================================= */
+
+.solitaire-card {
+    position: absolute;
+
+    left: 0;
+
+    width: 100%;
+
+    aspect-ratio: 0.715;
+
+    border-radius: 9px;
+
+    user-select: none;
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+
+/* Face-up card */
+
+.solitaire-card-face {
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+
+    padding: 7px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.97),
+            rgba(230, 230, 230, 0.94)
+        );
+
+    border:
+        1px solid rgba(255, 255, 255, 0.8);
+
+    box-shadow:
+        0 5px 12px rgba(0, 0, 0, 0.18);
+
+    color: #18202a;
+}
+
+
+/* Card hover */
+
+.solitaire-card-face:hover {
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 10px 20px rgba(0, 0, 0, 0.25);
+
+    z-index: 100;
+}
+
+
+/* =========================================================
+   09. CARD BACK
+========================================================= */
+
+.solitaire-card-back {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 6px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(40, 48, 62, 1),
+            rgba(22, 27, 37, 1)
+        );
+
+    border:
+        1px solid rgba(255, 255, 255, 0.16);
+
+    box-shadow:
+        0 5px 12px rgba(0, 0, 0, 0.25);
+
+    cursor: pointer;
+}
+
+.solitaire-card-back::before {
+    content: "";
+
+    width: 100%;
+    height: 100%;
+
+    border-radius: 6px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.13);
+
+    background:
+        repeating-linear-gradient(
+            45deg,
+            transparent 0,
+            transparent 4px,
+            rgba(255, 255, 255, 0.035) 4px,
+            rgba(255, 255, 255, 0.035) 5px
+        );
+}
+
+
+/* =========================================================
+   10. CARD CONTENT
+========================================================= */
+
+.solitaire-card-corner {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-weight: 700;
+
+    line-height: 0.9;
+}
+
+.solitaire-card-rank {
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+}
+
+.solitaire-card-suit {
+    font-size: clamp(0.7rem, 1.3vw, 0.9rem);
+
+    margin-top: 2px;
+}
+
+.solitaire-card-center {
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size: clamp(1.7rem, 4vw, 2.5rem);
+}
+
+
+/* Red suits */
+
+.solitaire-red {
+    color: #a83d4c;
+}
+
+
+/* Black suits */
+
+.solitaire-black {
+    color: #20252d;
+}
+
+
+/* =========================================================
+   11. SELECTED CARD
+========================================================= */
+
+.solitaire-card.selected {
+    transform:
+        translateY(-7px);
+
+    box-shadow:
+        0 0 0 3px rgba(255, 255, 255, 0.3),
+        0 12px 25px rgba(0, 0, 0, 0.28);
+
+    z-index: 200;
+}
+
+
+/* =========================================================
+   12. DRAGGING
+========================================================= */
+
+.solitaire-card.dragging {
+    opacity: 0.8;
+
+    transform:
+        scale(1.04)
+        rotate(1deg);
+
+    cursor: grabbing;
+
+    z-index: 999;
+}
+
+
+/* =========================================================
+   13. CONTROLS
+========================================================= */
+
+.solitaire-controls {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+
+/* /* =========================================================
+   14. WIN SCREEN
+========================================================= */
+
+.solitaire-win {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 25px;
+
+    background:
+        rgba(8, 12, 18, 0.76);
+
+    backdrop-filter:
+        blur(8px);
+
+    -webkit-backdrop-filter:
+        blur(8px);
+}
+
+
+/* =========================================================
+   HIDE WIN SCREEN WHEN NOT ACTIVE
+========================================================= */
+
+.solitaire-win[hidden] {
+    display: none !important;
+}
+
+
+.solitaire-win-card {
+    width: min(100%, 390px);
+
+    padding: 30px;
+
+    text-align: center;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.11);
+
+    border-radius: 25px;
+
+    background:
+        rgba(255, 255, 255, 0.06);
+
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.35);
+
+    animation:
+        solitaireWinIn 0.5s ease both;
+}
+
+.solitaire-win-icon {
+    margin-bottom: 15px;
+
+    font-size: 2rem;
+
+    animation:
+        solitaireWinFloat 2.5s ease-in-out infinite;
+}
+
+.solitaire-win-card h2 {
+    margin: 3px 0 8px;
+
+    font-size: 2rem;
+}
+
+.solitaire-win-card p {
+    margin: 0 auto 20px;
+
+    max-width: 280px;
+
+    font-size: 0.82rem;
+
+    line-height: 1.65;
+
+    opacity: 0.6;
+}
+/* =========================================================
+   15. FINAL STATS
+========================================================= */
+
+.solitaire-final-stats {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+.solitaire-final-stats > div {
+    min-width: 90px;
+
+    padding: 9px 12px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.07);
+
+    border-radius: 12px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+}
+
+.solitaire-final-stats span {
+    display: block;
+
+    font-size: 0.5rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.12em;
+
+    opacity: 0.4;
+}
+
+.solitaire-final-stats strong {
+    display: block;
+
+    margin-top: 3px;
+
+    font-size: 0.85rem;
+
+    font-variant-numeric: tabular-nums;
+}
+
+
+/* =========================================================
+   16. ANIMATIONS
+========================================================= */
+
+@keyframes solitaireWinIn {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(15px)
+            scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+    }
+}
+
+
+@keyframes solitaireWinFloat {
+
+    0%,
+    100% {
+        transform:
+            translateY(0);
+    }
+
+    50% {
+        transform:
+            translateY(-5px);
+    }
+}
+
+
+/* =========================================================
+   17. TABLET
+========================================================= */
+
+@media (max-width: 850px) {
+
+    .solitaire-board {
+        padding: 18px;
+
+        min-height: 550px;
+
+        overflow-x: auto;
+    }
+
+
+    .solitaire-top-row,
+    .solitaire-tableau {
+        min-width: 650px;
+
+        gap: 10px;
+    }
+
+
+    .solitaire-foundations {
+        gap: 10px;
+    }
+
+
+    .solitaire-tableau {
+        margin-top: 25px;
+    }
+
+}
+
+
+/* =========================================================
+   18. MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    .solitaire-room {
+        padding: 18px;
+    }
+
+
+    .solitaire-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+
+    .solitaire-stats {
+        width: 100%;
+    }
+
+
+    .solitaire-stat {
+        flex: 1;
+    }
+
+
+    .solitaire-board {
+        margin:
+            0 -4px;
+
+        padding: 12px;
+
+        border-radius: 17px;
+
+        min-height: 500px;
+    }
+
+
+    .solitaire-top-row,
+    .solitaire-tableau {
+        min-width: 590px;
+
+        gap: 8px;
+    }
+
+
+    .solitaire-tableau {
+        margin-top: 20px;
+    }
+
+
+    .solitaire-controls {
+        flex-wrap: wrap;
+    }
+
+
+    .solitaire-controls .game-button,
+    .solitaire-controls .game-secondary-button {
+        flex: 1;
+    }
+
+}
+
+
+/* =========================================================
+   19. SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .solitaire-room {
+        padding: 14px;
+    }
+
+
+    .solitaire-board {
+        padding: 9px;
+    }
+
+
+    .solitaire-top-row,
+    .solitaire-tableau {
+        min-width: 550px;
+    }
+
+}
+.solitaire-card-dragging {
+    opacity: 0.55;
+    transform: scale(1.03);
+}
+/* =========================================================
+   DIGICAFE CAFÉ SLOTS
+   ---------------------------------------------------------
+   Complete Slots styling
+   Works with the existing Café Slots HTML.
+========================================================= */
+
+
+/* =========================================================
+   01. SLOTS ROOM
+========================================================= */
+
+.cafe-slots-room {
+    width: min(100% - 32px, 1100px);
+    margin: 0 auto;
+    padding: 30px 0 70px;
+}
+
+
+/* =========================================================
+   02. HEADER
+========================================================= */
+
+.cafe-slots-header {
+    position: relative;
+
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 24px;
+
+    margin-bottom: 30px;
+}
+
+
+.cafe-slots-title {
+    text-align: center;
+}
+
+
+.cafe-slots-title .game-eyebrow {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+
+    opacity: .65;
+}
+
+
+.cafe-slots-title h2 {
+    margin: 0;
+
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    line-height: 1.05;
+}
+
+
+.cafe-slots-title p {
+    margin: 10px 0 0;
+
+    opacity: .7;
+}
+
+
+/* =========================================================
+   03. MAIN GAME
+========================================================= */
+
+.cafe-slots-game {
+    width: min(100%, 850px);
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   04. TOP STATS
+========================================================= */
+
+.cafe-slots-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+
+    margin-bottom: 22px;
+}
+
+
+.slots-stat {
+    padding: 16px 18px;
+
+    border-radius: 18px;
+
+    background: var(--card, #ffffff);
+    border: 1px solid var(--border, #dfe6ef);
+
+    text-align: center;
+
+    box-shadow:
+        0 8px 25px rgba(7, 20, 38, .06);
+}
+
+
+.slots-stat-label {
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+
+    color: var(--text-soft, #667085);
+}
+
+
+.slots-stat strong {
+    display: block;
+
+    font-size: 1.35rem;
+
+    color: var(--navy-dark, #071426);
+}
+
+
+/* =========================================================
+   05. SLOT MACHINE
+========================================================= */
+
+.cafe-slot-machine {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 25px 25px 28px;
+
+    border-radius: 30px;
+
+    background:
+        linear-gradient(
+            145deg,
+            var(--navy-dark, #071426),
+            var(--navy, #0d2038)
+        );
+
+    border: 2px solid rgba(214, 179, 106, .45);
+
+    box-shadow:
+        0 25px 60px rgba(7, 20, 38, .25),
+        inset 0 1px 0 rgba(255,255,255,.08);
+
+    color: white;
+}
+
+
+/* =========================================================
+   06. MACHINE TOP
+========================================================= */
+
+.slot-machine-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+
+    margin-bottom: 20px;
+
+    font-size: .78rem;
+    font-weight: 900;
+    letter-spacing: .25em;
+
+    color: var(--gold-light, #f1d89b);
+}
+
+
+.slot-machine-light {
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+
+    background: var(--gold, #d6b36a);
+
+    box-shadow:
+        0 0 10px rgba(214,179,106,.8);
+
+    animation:
+        slotLightPulse 1.2s ease-in-out infinite alternate;
+}
+
+
+.slot-machine-light:last-child {
+    animation-delay: .6s;
+}
+
+
+@keyframes slotLightPulse {
+
+    from {
+        opacity: .45;
+        transform: scale(.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1.15);
+    }
+
+}
+
+
+/* =========================================================
+   07. REEL AREA
+========================================================= */
+
+.slot-reels {
+    position: relative;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 14px;
+
+    padding: 22px;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #111827,
+            #080f1c
+        );
+
+    border: 2px solid rgba(255,255,255,.08);
+
+    box-shadow:
+        inset 0 8px 18px rgba(0,0,0,.35),
+        inset 0 -8px 18px rgba(0,0,0,.3);
+}
+
+
+/* =========================================================
+   08. PAYLINE
+========================================================= */
+
+.slot-payline {
+    position: absolute;
+
+    left: 22px;
+    right: 22px;
+
+    top: 50%;
+
+    height: 3px;
+
+    transform: translateY(-50%);
+
+    z-index: 5;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--gold, #d6b36a),
+            transparent
+        );
+
+    opacity: .7;
+
+    box-shadow:
+        0 0 12px rgba(214,179,106,.6);
+}
+
+
+/* =========================================================
+   09. INDIVIDUAL REEL
+========================================================= */
+
+.slot-reel {
+    position: relative;
+
+    height: 150px;
+
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff,
+            #f1f3f6
+        );
+
+    border: 3px solid rgba(214,179,106,.75);
+
+    box-shadow:
+        inset 0 10px 20px rgba(0,0,0,.08),
+        inset 0 -10px 20px rgba(0,0,0,.08),
+        0 8px 18px rgba(0,0,0,.2);
+
+    color: #111827;
+
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease;
+}
+
+
+/*
+    Slight glass reflection
+*/
+
+.slot-reel::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 2;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            115deg,
+            rgba(255,255,255,.5),
+            transparent 35%,
+            transparent 70%,
+            rgba(255,255,255,.18)
+        );
+
+    opacity: .7;
+}
+
+
+/*
+    Dark top/bottom fade gives the
+    illusion of depth while spinning.
+*/
+
+.slot-reel::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 3;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,.16),
+            transparent 25%,
+            transparent 75%,
+            rgba(0,0,0,.16)
+        );
+}
+
+
+/* =========================================================
+   10. SYMBOL
+========================================================= */
+
+.slot-symbol {
+    position: relative;
+
+    z-index: 1;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    font-size: clamp(3rem, 7vw, 4.6rem);
+
+    line-height: 1;
+
+    user-select: none;
+
+    transform:
+        translateZ(0);
+
+    transition:
+        transform .12s ease,
+        filter .12s ease;
+}
+
+
+/* =========================================================
+   11. SPINNING VISUAL
+========================================================= */
+
+.slot-reel.spinning {
+    transform:
+        scaleY(.98);
+
+    box-shadow:
+        inset 0 0 30px rgba(255,255,255,.12),
+        0 0 18px rgba(214,179,106,.35);
+}
+
+
+.slot-reel.spinning .slot-symbol {
+    filter:
+        blur(2px);
+
+    animation:
+        slotSymbolSpin .11s linear infinite;
+}
+
+
+@keyframes slotSymbolSpin {
+
+    0% {
+        transform:
+            translateY(-5px)
+            scaleY(.96);
+    }
+
+    50% {
+        transform:
+            translateY(5px)
+            scaleY(1.04);
+    }
+
+    100% {
+        transform:
+            translateY(-5px)
+            scaleY(.96);
+    }
+
+}
+
+
+/* =========================================================
+   12. REEL STOP
+========================================================= */
+
+.slot-reel.slot-landed {
+    animation:
+        slotReelLand .28s ease-out;
+}
+
+
+@keyframes slotReelLand {
+
+    0% {
+        transform:
+            scale(1.04)
+            translateY(-5px);
+    }
+
+    45% {
+        transform:
+            scale(.97)
+            translateY(3px);
+    }
+
+    75% {
+        transform:
+            scale(1.015)
+            translateY(-1px);
+    }
+
+    100% {
+        transform:
+            scale(1)
+            translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   13. RESULT
+========================================================= */
+
+.slots-result {
+    min-height: 30px;
+
+    margin: 20px 10px 10px;
+
+    text-align: center;
+
+    font-size: .95rem;
+    font-weight: 700;
+
+    color: rgba(255,255,255,.82);
+
+    transition:
+        color .2s ease,
+        transform .2s ease;
+}
+
+
+.slots-result.win {
+    color: var(--gold-light, #f1d89b);
+
+    transform: scale(1.04);
+}
+
+
+.slots-result.jackpot {
+    color: #fff;
+
+    transform: scale(1.08);
+
+    text-shadow:
+        0 0 10px rgba(241,216,155,.8),
+        0 0 25px rgba(214,179,106,.6);
+
+    animation:
+        jackpotText .7s ease-in-out infinite alternate;
+}
+
+
+.slots-result.lose {
+    color: rgba(255,255,255,.6);
+}
+
+
+@keyframes jackpotText {
+
+    from {
+        opacity: .7;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+
+/* =========================================================
+   14. MACHINE BOTTOM
+========================================================= */
+
+.slot-machine-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 18px;
+
+    margin-top: 12px;
+
+    font-size: .72rem;
+    font-weight: 800;
+
+    letter-spacing: .16em;
+
+    color: rgba(255,255,255,.55);
+}
+
+
+/* =========================================================
+   15. JACKPOT MACHINE
+========================================================= */
+
+.cafe-slot-machine.jackpot {
+    animation:
+        machineJackpot .75s ease-in-out infinite alternate;
+
+    border-color:
+        var(--gold-light, #f1d89b);
+}
+
+
+@keyframes machineJackpot {
+
+    from {
+        box-shadow:
+            0 25px 60px rgba(7,20,38,.25),
+            0 0 15px rgba(214,179,106,.35);
+    }
+
+    to {
+        box-shadow:
+            0 25px 60px rgba(7,20,38,.25),
+            0 0 45px rgba(214,179,106,.8);
+    }
+
+}
+
+
+/* =========================================================
+   16. WINNING REELS
+========================================================= */
+
+.slot-reel.winner {
+    border-color:
+        var(--gold-light, #f1d89b);
+
+    box-shadow:
+        inset 0 0 25px rgba(214,179,106,.18),
+        0 0 25px rgba(214,179,106,.65);
+
+    animation:
+        winningReel .65s ease-in-out infinite alternate;
+}
+
+
+@keyframes winningReel {
+
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.025);
+    }
+
+}
+
+
+/* =========================================================
+   17. CONTROLS
+========================================================= */
+
+.slots-controls {
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        auto
+        auto;
+
+    align-items: end;
+
+    gap: 18px;
+
+    margin-top: 24px;
+}
+
+
+/* =========================================================
+   18. BET CONTROL
+========================================================= */
+
+.bet-control {
+    padding: 12px 16px;
+
+    border-radius: 16px;
+
+    background: var(--card, #ffffff);
+    border: 1px solid var(--border, #dfe6ef);
+}
+
+
+.control-label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: .65rem;
+    font-weight: 900;
+    letter-spacing: .14em;
+
+    color: var(--text-soft, #667085);
+}
+
+
+.bet-buttons {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.bet-buttons button {
+    width: 38px;
+    height: 38px;
+
+    border: 0;
+    border-radius: 10px;
+
+    background:
+        var(--navy, #0d2038);
+
+    color: white;
+
+    font-size: 1.4rem;
+
+    cursor: pointer;
+
+    transition:
+        transform .15s ease,
+        opacity .15s ease;
+}
+
+
+.bet-buttons button:hover:not(:disabled) {
+    transform: translateY(-2px);
+}
+
+
+.bet-buttons button:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+}
+
+
+.bet-buttons strong {
+    min-width: 60px;
+
+    text-align: center;
+
+    font-size: 1.15rem;
+
+    color: var(--navy-dark, #071426);
+}
+
+
+/* =========================================================
+   19. SPIN BUTTON
+========================================================= */
+
+.slots-spin-button {
+    min-width: 150px;
+    min-height: 62px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    border: 0;
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--gold, #d6b36a),
+            var(--gold-light, #f1d89b)
+        );
+
+    color: var(--navy-dark, #071426);
+
+    font-weight: 900;
+    letter-spacing: .1em;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(214,179,106,.25);
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease,
+        opacity .15s ease;
+}
+
+
+.slots-spin-button:hover:not(:disabled) {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 12px 28px rgba(214,179,106,.35);
+}
+
+
+.slots-spin-button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+
+.slots-spin-button:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+
+.spin-icon {
+    font-size: 1.25rem;
+}
+
+
+/* =========================================================
+   20. RESET
+========================================================= */
+
+.slots-reset-button {
+    min-height: 50px;
+
+    padding: 0 20px;
+
+    border-radius: 14px;
+
+    border: 1px solid var(--border, #dfe6ef);
+
+    background: var(--card, #ffffff);
+
+    color: var(--text, #172033);
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform .15s ease,
+        background .15s ease;
+}
+
+
+.slots-reset-button:hover {
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   21. PAYTABLE
+========================================================= */
+
+.slots-paytable {
+    margin-top: 30px;
+
+    padding: 24px;
+
+    border-radius: 22px;
+
+    background: var(--card, #ffffff);
+
+    border: 1px solid var(--border, #dfe6ef);
+
+    box-shadow:
+        0 10px 30px rgba(7,20,38,.06);
+}
+
+
+.paytable-header {
+    text-align: center;
+
+    margin-bottom: 20px;
+}
+
+
+.paytable-header h2 {
+    margin: 0 0 5px;
+
+    font-size: 1.3rem;
+}
+
+
+.paytable-header p {
+    margin: 0;
+
+    font-size: .85rem;
+
+    color: var(--text-soft, #667085);
+}
+
+
+.paytable-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 10px;
+}
+
+
+.pay-item {
+    display: grid;
+
+    grid-template-columns:
+        auto 1fr auto;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 12px;
+
+    border-radius: 13px;
+
+    background:
+        rgba(7,20,38,.035);
+}
+
+
+.pay-item.jackpot {
+    border:
+        1px solid rgba(214,179,106,.5);
+
+    background:
+        rgba(214,179,106,.1);
+}
+
+
+.pay-symbol {
+    font-size: 1.5rem;
+}
+
+
+.pay-name {
+    font-size: .78rem;
+    font-weight: 700;
+}
+
+
+.pay-item strong {
+    font-size: .78rem;
+
+    color: var(--navy, #0d2038);
+}
+
+
+/* =========================================================
+   22. SESSION INFORMATION
+========================================================= */
+
+.slots-session {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 12px;
+
+    margin-top: 18px;
+}
+
+
+.slots-session > div {
+    padding: 16px;
+
+    text-align: center;
+
+    border-radius: 16px;
+
+    background:
+        rgba(7,20,38,.045);
+}
+
+
+.slots-session span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-size: .68rem;
+    font-weight: 800;
+
+    letter-spacing: .08em;
+
+    text-transform: uppercase;
+
+    color: var(--text-soft, #667085);
+}
+
+
+.slots-session strong {
+    font-size: 1.15rem;
+
+    color: var(--navy-dark, #071426);
+}
+
+
+/* =========================================================
+   23. NOTE
+========================================================= */
+
+.slots-note {
+    margin: 20px auto 0;
+
+    max-width: 600px;
+
+    text-align: center;
+
+    font-size: .75rem;
+    line-height: 1.6;
+
+    color: var(--text-soft, #667085);
+}
+
+
+/* =========================================================
+   24. MOBILE
+========================================================= */
+
+@media (max-width: 760px) {
+
+    .cafe-slots-room {
+        width: min(100% - 20px, 600px);
+
+        padding-top: 20px;
+    }
+
+
+    .cafe-slots-header {
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 15px;
+    }
+
+
+    .cafe-slots-header
+    .game-secondary-button {
+        align-self: flex-start;
+    }
+
+
+    .cafe-slots-title {
+        text-align: center;
+    }
+
+
+    .cafe-slots-stats {
+        gap: 8px;
+    }
+
+
+    .slots-stat {
+        padding: 12px 8px;
+    }
+
+
+    .slots-stat-label {
+        font-size: .58rem;
+    }
+
+
+    .slots-stat strong {
+        font-size: 1.05rem;
+    }
+
+
+    .cafe-slot-machine {
+        padding: 18px 12px 22px;
+
+        border-radius: 24px;
+    }
+
+
+    .slot-reels {
+        gap: 7px;
+
+        padding: 12px;
+    }
+
+
+    .slot-reel {
+        height: 105px;
+
+        border-width: 2px;
+
+        border-radius: 13px;
+    }
+
+
+    .slot-symbol {
+        font-size: 2.7rem;
+    }
+
+
+    .slot-payline {
+        left: 12px;
+        right: 12px;
+    }
+
+
+    .slot-machine-bottom {
+        gap: 8px;
+
+        font-size: .58rem;
+        letter-spacing: .1em;
+    }
+
+
+    .slots-controls {
+        grid-template-columns:
+            1fr 1fr;
+
+        gap: 10px;
+    }
+
+
+    .bet-control {
+        grid-column: 1 / -1;
+    }
+
+
+    .slots-spin-button {
+        width: 100%;
+
+        min-width: 0;
+    }
+
+
+    .slots-reset-button {
+        width: 100%;
+    }
+
+
+    .paytable-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .slots-session {
+        grid-template-columns:
+            1fr;
+
+        gap: 8px;
+    }
+
+}
+
+
+/* =========================================================
+   25. SMALL PHONES
+========================================================= */
+
+@media (max-width: 430px) {
+
+    .cafe-slots-room {
+        width: min(100% - 14px, 430px);
+    }
+
+
+    .cafe-slots-stats {
+        grid-template-columns:
+            repeat(3, 1fr);
+    }
+
+
+    .cafe-slot-machine {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+
+    .slot-reels {
+        gap: 5px;
+
+        padding: 9px;
+    }
+
+
+    .slot-reel {
+        height: 90px;
+
+        border-radius: 11px;
+    }
+
+
+    .slot-symbol {
+        font-size: 2.25rem;
+    }
+
+
+    .paytable-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .pay-item {
+        padding: 10px 12px;
+    }
+
+}
+
+
+/* =========================================================
+   26. REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .slot-machine-light,
+    .slot-reel.spinning .slot-symbol,
+    .slot-reel.slot-landed,
+    .slot-reel.winner,
+    .cafe-slot-machine.jackpot,
+    .slots-result.jackpot {
+
+        animation: none !important;
+
+    }
+
+}
+/* =========================================================
+   AUTO SPIN
+========================================================= */
+
+.slots-auto-button {
+    min-height: 50px;
+
+    padding: 0 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    border-radius: 14px;
+
+    border: 1px solid var(--border, #dfe6ef);
+
+    background: var(--card, #ffffff);
+
+    color: var(--navy-dark, #071426);
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform .15s ease,
+        background .15s ease,
+        color .15s ease,
+        box-shadow .15s ease;
+}
+
+.slots-auto-button:hover {
+    transform: translateY(-2px);
+}
+
+.slots-auto-button.active {
+    background:
+        var(--navy, #0d2038);
+
+    color: var(--gold-light, #f1d89b);
+
+    border-color:
+        var(--gold, #d6b36a);
+
+    box-shadow:
+        0 0 18px rgba(214,179,106,.25);
+}
+
+.slots-auto-button.active span:first-child {
+    animation:
+        autoSpinIcon 1s linear infinite;
+}
+
+@keyframes autoSpinIcon {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}

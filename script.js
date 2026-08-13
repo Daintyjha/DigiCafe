@@ -6,23 +6,16 @@ console.log("☕ DigiCafe Shell Loaded");
 ===================================================== */
 
 const pages = {
-
     home: "home.html",
-
     music: "music.html",
-
     library: "library.html",
-
     romance: "romance.html",
-
     comedy: "comedy.html",
-
     scifi: "scifi.html",
-
     reader: "reader.html",
-
     about: "about.html",
-
+    playroom: "playroom.html",
+    cafeSlots: "cafe-slots.html",
     account: "account.html"
 
 };
@@ -945,7 +938,53 @@ async function navigateTo(
         content.innerHTML =
             html;
 
+/* =================================================
+   PLAYROOM GAMES
+================================================= */
 
+if (page === "playroom") {
+
+    setupPlayroomGames();
+
+
+    /* =================================================
+       SOLITAIRE
+    ================================================= */
+
+    if (
+        typeof initSolitaire === "function"
+    ) {
+
+        initSolitaire();
+
+    } else {
+
+        console.warn(
+            "🃏 Solitaire JS is not loaded yet."
+        );
+
+    }
+
+
+    /* =================================================
+       CAFÉ SLOTS
+    ================================================= */
+
+    if (
+        typeof initCafeSlots === "function"
+    ) {
+
+        initCafeSlots();
+
+    } else {
+
+        console.warn(
+            "☕🎰 Café Slots JS is not loaded yet."
+        );
+
+    }
+
+}
         /* =================================================
            STORE CURRENT READER STORY
         ================================================= */
@@ -1760,3 +1799,138 @@ window.addEventListener(
 
 window.navigateTo =
     navigateTo;
+/* =========================================================
+   PLAYROOM GAME NAVIGATION
+========================================================= */
+
+function setupPlayroomGames() {
+
+    document
+        .querySelectorAll("[data-game]")
+        .forEach(button => {
+
+            button.addEventListener("click", () => {
+
+                const gameName =
+                    button.dataset.game;
+
+                openPlayroomGame(gameName);
+
+            });
+
+        });
+
+
+    document
+        .querySelectorAll("[data-back-to-games]")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                closePlayroomGame
+            );
+
+        });
+
+}
+
+
+/* =========================================================
+   OPEN GAME
+========================================================= */
+
+function openPlayroomGame(gameName) {
+
+    document
+        .querySelectorAll(".game-card")
+        .forEach(card => {
+
+            card.style.display = "none";
+
+        });
+
+
+    document
+        .querySelectorAll(".game-room")
+        .forEach(room => {
+
+            room.hidden = true;
+
+        });
+
+
+    const gameRoom =
+        document.querySelector(
+            `[data-game-room="${gameName}"]`
+        );
+
+
+    if (!gameRoom) {
+
+        console.warn(
+            "Game room not found:",
+            gameName
+        );
+
+        return;
+
+    }
+
+
+    gameRoom.hidden = false;
+
+
+    gameRoom.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
+
+    console.log(
+        "🎮 Opened:",
+        gameName
+    );
+
+}
+
+
+/* =========================================================
+   BACK TO PLAYROOM
+========================================================= */
+
+function closePlayroomGame() {
+
+    document
+        .querySelectorAll(".game-room")
+        .forEach(room => {
+
+            room.hidden = true;
+
+        });
+
+
+    document
+        .querySelectorAll(".game-card")
+        .forEach(card => {
+
+            card.style.display = "";
+
+        });
+
+
+    const gameLounge =
+        document.querySelector(
+            ".game-lounge"
+        );
+
+
+    if (gameLounge) {
+
+        gameLounge.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    }
+
+}
