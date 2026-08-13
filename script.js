@@ -192,7 +192,158 @@ async function loadMusicModule() {
 
 }
 
+/* =====================================================
+   PLAYROOM GAME MODULES
+===================================================== */
 
+const gameModules = {};
+
+async function loadGameModule(name, file) {
+
+    if (gameModules[name]) {
+        return;
+    }
+
+    if (gameModules[name + "_loading"]) {
+        await gameModules[name + "_loading"];
+        return;
+    }
+
+    gameModules[name + "_loading"] =
+        new Promise((resolve, reject) => {
+
+            const script =
+                document.createElement("script");
+
+            script.src = file;
+            script.async = false;
+
+            script.onload = () => {
+
+                gameModules[name] = true;
+
+                console.log(
+                    `🎮 ${name} module loaded.`
+                );
+
+                resolve();
+
+            };
+
+            script.onerror = error => {
+
+                console.error(
+                    `❌ Could not load ${file}:`,
+                    error
+                );
+
+                reject(
+                    new Error(
+                        `Could not load ${file}`
+                    )
+                );
+
+            };
+
+            document.body.appendChild(script);
+
+        });
+
+    await gameModules[name + "_loading"];
+}
+
+
+/* =====================================================
+   LOAD PLAYROOM GAMES
+===================================================== */
+
+async function loadPlayroomGameModules() {
+
+    try {
+
+        await loadGameModule(
+            "solitaire",
+            "solitaire.js"
+        );
+
+    } catch (error) {
+
+        console.error(
+            "❌ Solitaire module failed:",
+            error
+        );
+
+    }
+
+
+    try {
+
+        await loadGameModule(
+            "slots",
+            "cafe-slots.js"
+        );
+
+    } catch (error) {
+
+        console.error(
+            "❌ Café Slots module failed:",
+            error
+        );
+
+    }
+
+
+    try {
+
+        await loadGameModule(
+            "bingo",
+            "bingo.js"
+        );
+
+    } catch (error) {
+
+        console.error(
+            "❌ Bingo module failed:",
+            error
+        );
+
+    }
+
+
+    try {
+
+        await loadGameModule(
+            "chess",
+            "chess.js"
+        );
+
+    } catch (error) {
+
+        console.error(
+            "❌ Chess module failed:",
+            error
+        );
+
+    }
+
+
+    try {
+
+        await loadGameModule(
+            "dama",
+            "dama.js"
+        );
+
+    } catch (error) {
+
+        console.error(
+            "❌ Dama module failed:",
+            error
+        );
+
+    }
+
+}
 /* =====================================================
    START DIGICAFE
 ===================================================== */
@@ -940,9 +1091,20 @@ async function navigateTo(
 
 /* =================================================
    PLAYROOM GAMES
+   -------------------------------------------------
+   Universal DigiCafe game initialization
+   -------------------------------------------------
+   Games:
+   • Solitaire
+   • Café Slots
+   • Bingo
+   • Chess
+   • Dama
 ================================================= */
 
 if (page === "playroom") {
+
+    await loadPlayroomGameModules();
 
     setupPlayroomGames();
 
@@ -980,6 +1142,63 @@ if (page === "playroom") {
 
         console.warn(
             "☕🎰 Café Slots JS is not loaded yet."
+        );
+
+    }
+
+
+    /* =================================================
+       BINGO
+    ================================================= */
+
+    if (
+        typeof initBingo === "function"
+    ) {
+
+        initBingo();
+
+    } else {
+
+        console.warn(
+            "🎱 Bingo JS is not loaded yet."
+        );
+
+    }
+
+
+    /* =================================================
+       CHESS
+    ================================================= */
+
+    if (
+        typeof initChess === "function"
+    ) {
+
+        initChess();
+
+    } else {
+
+        console.log(
+            "♟️ Chess JS is not loaded yet."
+        );
+
+    }
+
+
+    /* =================================================
+       DAMA
+    ================================================= */
+
+    if (
+        typeof initDama === "function"
+    ) {
+
+        initDama();
+
+    } else {
+
+        console.log(
+            "🀄 Dama JS is not loaded yet."
         );
 
     }
@@ -1348,7 +1567,142 @@ if (page === "playroom") {
 
                 break;
 
+/* =====================================================
+   PLAYROOM GAME MODULE LOADER
+===================================================== */
 
+const gameModules = {
+
+    solitaire: "solitaire.js",
+    slots: "cafe-slots.js",
+    bingo: "bingo.js",
+    chess: "chess.js",
+    dama: "dama.js"
+
+};
+
+const loadedGameModules = {};
+const loadingGameModules = {};
+
+
+async function loadGameModule(gameName) {
+
+    const file =
+        gameModules[gameName];
+
+    if (!file) {
+
+        console.warn(
+            `🎮 No JS module registered for "${gameName}".`
+        );
+
+        return false;
+
+    }
+
+
+    /* Already loaded */
+
+    if (
+        loadedGameModules[gameName]
+    ) {
+
+        return true;
+
+    }
+
+
+    /* Currently loading */
+
+    if (
+        loadingGameModules[gameName]
+    ) {
+
+        await loadingGameModules[gameName];
+
+        return true;
+
+    }
+
+
+    console.log(
+        `🎮 Loading ${gameName} module...`
+    );
+
+
+    loadingGameModules[gameName] =
+        new Promise(
+            (resolve, reject) => {
+
+                const script =
+                    document.createElement(
+                        "script"
+                    );
+
+
+                script.src =
+                    file;
+
+
+                script.async =
+                    false;
+
+
+                script.onload =
+                    () => {
+
+                        loadedGameModules[gameName] =
+                            true;
+
+                        console.log(
+                            `✅ ${file} loaded.`
+                        );
+
+                        resolve();
+
+                    };
+
+
+                script.onerror =
+                    error => {
+
+                        console.error(
+                            `❌ Could not load ${file}:`,
+                            error
+                        );
+
+                        reject(
+                            new Error(
+                                `Could not load ${file}`
+                            )
+                        );
+
+                    };
+
+
+                document.body.appendChild(
+                    script
+                );
+
+            }
+        );
+
+
+    try {
+
+        await loadingGameModules[gameName];
+
+        return true;
+
+    } catch (error) {
+
+        delete loadingGameModules[gameName];
+
+        return false;
+
+    }
+
+}
             /* =============================================
                ABOUT
             ============================================= */
@@ -1799,38 +2153,155 @@ window.addEventListener(
 
 window.navigateTo =
     navigateTo;
-/* =========================================================
+/* /* =========================================================
    PLAYROOM GAME NAVIGATION
+   ---------------------------------------------------------
+   Universal navigation for all DigiCafe games.
+
+   Supported games:
+   • Solitaire
+   • Café Slots
+   • Bingo
+   • Chess
+   • Dama
+
+   The HTML only needs:
+
+       data-game="game-name"
+
+   and:
+
+       data-game-room="game-name"
+
+   Future games can use the same system.
+========================================================= */
+
+
+/* =========================================================
+   SETUP PLAYROOM GAMES
 ========================================================= */
 
 function setupPlayroomGames() {
 
-    document
+    const playroom =
+        document.querySelector(".playroom");
+
+
+    if (!playroom) {
+
+        console.warn(
+            "🎮 Playroom not found."
+        );
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       GAME BUTTONS
+    ===================================================== */
+
+    playroom
         .querySelectorAll("[data-game]")
         .forEach(button => {
 
-            button.addEventListener("click", () => {
+            /*
+                Prevent duplicate event listeners
+                when the Playroom is loaded again.
+            */
 
-                const gameName =
-                    button.dataset.game;
+            if (
+                button.dataset.gameNavigationBound ===
+                "true"
+            ) {
 
-                openPlayroomGame(gameName);
+                return;
 
-            });
-
-        });
+            }
 
 
-    document
-        .querySelectorAll("[data-back-to-games]")
-        .forEach(button => {
+            button.dataset.gameNavigationBound =
+                "true";
+
 
             button.addEventListener(
                 "click",
-                closePlayroomGame
+                event => {
+
+                    event.preventDefault();
+
+
+                    const gameName =
+                        button.dataset.game;
+
+
+                    if (!gameName) {
+
+                        console.warn(
+                            "🎮 Game button has no data-game:",
+                            button
+                        );
+
+                        return;
+
+                    }
+
+
+                    openPlayroomGame(
+                        gameName
+                    );
+
+                }
             );
 
         });
+
+
+    /* =====================================================
+       BACK TO GAMES BUTTONS
+    ===================================================== */
+
+    playroom
+        .querySelectorAll("[data-back-to-games]")
+        .forEach(button => {
+
+            /*
+                Prevent duplicate listeners.
+            */
+
+            if (
+                button.dataset.backNavigationBound ===
+                "true"
+            ) {
+
+                return;
+
+            }
+
+
+            button.dataset.backNavigationBound =
+                "true";
+
+
+            button.addEventListener(
+                "click",
+                event => {
+
+                    event.preventDefault();
+
+
+                    closePlayroomGame();
+
+                }
+            );
+
+        });
+
+
+    console.log(
+        "🎮 DigiCafe Playroom navigation ready."
+    );
 
 }
 
@@ -1839,28 +2310,61 @@ function setupPlayroomGames() {
    OPEN GAME
 ========================================================= */
 
-function openPlayroomGame(gameName) {
+function openPlayroomGame(
+    gameName
+) {
 
-    document
+    const playroom =
+        document.querySelector(".playroom");
+
+
+    if (!playroom) {
+
+        return;
+
+    }
+
+
+    console.log(
+        "🎮 Opening game:",
+        gameName
+    );
+
+
+    /* =====================================================
+       HIDE GAME CARDS
+    ===================================================== */
+
+    playroom
         .querySelectorAll(".game-card")
         .forEach(card => {
 
-            card.style.display = "none";
+            card.style.display =
+                "none";
 
         });
 
 
-    document
+    /* =====================================================
+       HIDE ALL GAME ROOMS
+    ===================================================== */
+
+    playroom
         .querySelectorAll(".game-room")
         .forEach(room => {
 
-            room.hidden = true;
+            room.hidden =
+                true;
 
         });
 
 
+    /* =====================================================
+       FIND SELECTED GAME ROOM
+    ===================================================== */
+
     const gameRoom =
-        document.querySelector(
+        playroom.querySelector(
             `[data-game-room="${gameName}"]`
         );
 
@@ -1868,17 +2372,173 @@ function openPlayroomGame(gameName) {
     if (!gameRoom) {
 
         console.warn(
-            "Game room not found:",
+            "🎮 Game room not found:",
             gameName
         );
+
+
+        /*
+            Restore cards if the room
+            doesn't exist.
+        */
+
+        playroom
+            .querySelectorAll(".game-card")
+            .forEach(card => {
+
+                card.style.display =
+                    "";
+
+            });
+
 
         return;
 
     }
 
 
-    gameRoom.hidden = false;
+    /* =====================================================
+       SHOW GAME ROOM
+    ===================================================== */
 
+    gameRoom.hidden =
+        false;
+
+
+    /* =====================================================
+       OPTIONAL GAME INITIALIZATION
+       -----------------------------------------------------
+       If the game has an initializer, run it now.
+
+       This means games can safely be opened even
+       when their JS is loaded separately.
+    ===================================================== */
+/* =====================================================
+   LOAD GAME MODULE
+===================================================== */
+
+loadGameModule(gameName)
+    .then(() => {
+
+        /* =================================================
+           INITIALIZE GAME
+        ================================================= */
+
+        switch (gameName) {
+
+            case "solitaire":
+
+                if (
+                    typeof initSolitaire ===
+                    "function"
+                ) {
+
+                    initSolitaire();
+
+                } else {
+
+                    console.error(
+                        "❌ initSolitaire() was not found."
+                    );
+
+                }
+
+                break;
+
+
+            case "slots":
+
+                if (
+                    typeof initCafeSlots ===
+                    "function"
+                ) {
+
+                    initCafeSlots();
+
+                } else {
+
+                    console.error(
+                        "❌ initCafeSlots() was not found."
+                    );
+
+                }
+
+                break;
+
+
+            case "bingo":
+
+                if (
+                    typeof initBingo ===
+                    "function"
+                ) {
+
+                    initBingo();
+
+                } else {
+
+                    console.error(
+                        "❌ initBingo() was not found."
+                    );
+
+                }
+
+                break;
+
+
+            case "chess":
+
+                if (
+                    typeof initChess ===
+                    "function"
+                ) {
+
+                    initChess();
+
+                } else {
+
+                    console.error(
+                        "❌ initChess() was not found."
+                    );
+
+                }
+
+                break;
+
+
+            case "dama":
+
+                if (
+                    typeof initDama ===
+                    "function"
+                ) {
+
+                    initDama();
+
+                } else {
+
+                    console.error(
+                        "❌ initDama() was not found."
+                    );
+
+                }
+
+                break;
+
+        }
+
+    })
+    .catch(error => {
+
+        console.error(
+            `❌ Could not initialize ${gameName}:`,
+            error
+        );
+
+    });
+    /* =====================================================
+       SCROLL TO GAME
+    ===================================================== */
 
     gameRoom.scrollIntoView({
         behavior: "smooth",
@@ -1900,26 +2560,51 @@ function openPlayroomGame(gameName) {
 
 function closePlayroomGame() {
 
-    document
+    const playroom =
+        document.querySelector(".playroom");
+
+
+    if (!playroom) {
+
+        return;
+
+    }
+
+
+    /* =====================================================
+       HIDE ALL GAME ROOMS
+    ===================================================== */
+
+    playroom
         .querySelectorAll(".game-room")
         .forEach(room => {
 
-            room.hidden = true;
+            room.hidden =
+                true;
 
         });
 
 
-    document
+    /* =====================================================
+       SHOW GAME CARDS
+    ===================================================== */
+
+    playroom
         .querySelectorAll(".game-card")
         .forEach(card => {
 
-            card.style.display = "";
+            card.style.display =
+                "";
 
         });
 
 
+    /* =====================================================
+       RETURN TO GAME LOUNGE
+    ===================================================== */
+
     const gameLounge =
-        document.querySelector(
+        playroom.querySelector(
             ".game-lounge"
         );
 
@@ -1932,5 +2617,10 @@ function closePlayroomGame() {
         });
 
     }
+
+
+    console.log(
+        "🎮 Back to Playroom."
+    );
 
 }

@@ -1211,52 +1211,548 @@
 
     </section>
 
+<!-- =================================================
+     DIGICAFE BINGO GAME ROOM
+     -------------------------------------------------
+     This room lives inside playroom.html.
+
+     Supports:
+     • 1 Bingo card
+     • 2 Bingo cards
+     • 3 Bingo cards
+     • 4 Bingo cards
+     • Manual number calling
+     • Auto calling
+     • Multiple-card play
+     • Automatic BINGO detection
+
+     Do NOT include:
+     - navbar
+     - footer
+     - Beshy
+     - global music player
+     - global scripts
+================================================== -->
+
+<section
+    id="bingoGame"
+    class="game-room bingo-room"
+    data-game-room="bingo"
+    hidden
+    aria-labelledby="bingoTitle"
+>
+
+<!-- =================================================
+     HEADER
+================================================== -->
+
+<header class="game-room-header bingo-header">
+
+    <button
+        class="game-secondary-button"
+        type="button"
+        data-back-to-games
+    >
+        ← Back to Games
+    </button>
+
+
+    <div class="bingo-title">
+
+        <span class="game-eyebrow">
+            DIGICAFE SOCIAL TABLE
+        </span>
+
+        <h2 id="bingoTitle">
+            🎱 Bingo
+        </h2>
+
+        <p>
+            Grab your cards and let the numbers roll.
+        </p>
+
+    </div>
 
 
     <!-- =================================================
-         BINGO
+         BINGO STATS
     ================================================== -->
 
-    <section
-        id="bingoGame"
-        class="game-room"
-        data-game-room="bingo"
-        hidden
+    <div class="bingo-stats">
+
+        <div class="bingo-stat">
+
+            <span>
+                CALLED
+            </span>
+
+            <strong id="bingoCalledCount">
+                0
+            </strong>
+
+        </div>
+
+
+        <div class="bingo-stat">
+
+            <span>
+                REMAINING
+            </span>
+
+            <strong id="bingoRemainingCount">
+                75
+            </strong>
+
+        </div>
+
+
+        <div class="bingo-stat">
+
+            <span>
+                WINS
+            </span>
+
+            <strong id="bingoWins">
+                0
+            </strong>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =================================================
+     DIGICAFE BINGO GAME
+================================================== -->
+
+<div class="bingo-game">
+<!-- =================================================
+     CARD SELECTION
+================================================== -->
+
+<section
+    class="bingo-card-selection"
+    aria-label="Choose number of Bingo cards"
+>
+
+    <div class="bingo-selection-heading">
+
+        <span class="game-eyebrow">
+            CHOOSE YOUR TABLE
+        </span>
+
+        <h3>
+            How many cards?
+        </h3>
+
+
+    </div>
+
+
+    <div
+        class="bingo-card-options"
+        role="group"
+        aria-label="Number of Bingo cards"
+    >
+<button
+    type="button"
+    class="bingo-card-option"
+    data-card-count="1"
+>
+    <span>1 CARD</span>
+    <span data-card-price>10 credits</span>
+</button>
+
+<button
+    type="button"
+    class="bingo-card-option"
+    data-card-count="2"
+>
+    <span>2 CARDS</span>
+    <span data-card-price>20 credits</span>
+</button>
+
+<button
+    type="button"
+    class="bingo-card-option"
+    data-card-count="3"
+>
+    <span>3 CARDS</span>
+    <span data-card-price>30 credits</span>
+</button>
+
+<button
+    type="button"
+    class="bingo-card-option"
+    data-card-count="4"
+>
+    <span>4 CARDS</span>
+    <span data-card-price>40 credits</span>
+</button>
+
+</section>
+
+
+
+<!-- =================================================
+     BINGO CALLER
+================================================== -->
+
+<section
+    class="bingo-caller"
+    aria-live="polite"
+    aria-label="Current Bingo number"
+>
+
+    <span class="bingo-caller-label">
+        NUMBER CALLED
+    </span>
+
+
+    <div
+        id="bingoCurrentLetter"
+        class="bingo-current-letter"
+    >
+        READY
+    </div>
+
+
+    <div
+        id="bingoCurrentNumber"
+        class="bingo-current-number"
+    >
+        —
+    </div>
+
+
+    <p
+        id="bingoResult"
+        class="bingo-result"
+    >
+        Choose 3 or 4 cards, then press
+        <strong>CALL NUMBER</strong>.
+    </p>
+
+</section>
+
+
+
+<!-- =================================================
+     BINGO CARDS
+================================================== -->
+
+<section
+    class="bingo-cards-area"
+    aria-label="Your Bingo cards"
+>
+
+    <div class="bingo-cards-heading">
+
+        <span>
+            YOUR BINGO CARDS
+        </span>
+
+        <span id="bingoCardCountLabel">
+            3 CARDS
+        </span>
+
+    </div>
+
+
+    <!--
+        JavaScript creates the cards here.
+    -->
+
+    <div
+        id="bingoCards"
+        class="bingo-cards"
+    ></div>
+
+</section>
+
+
+
+<!-- =================================================
+     CONTROLS
+================================================== -->
+
+<section
+    class="bingo-controls"
+    aria-label="Bingo controls"
+>
+
+    <!-- CALL NUMBER -->
+
+    <button
+        id="bingoCallNumber"
+        class="bingo-call-button"
+        type="button"
     >
 
-        <div class="game-room-header">
+        <span
+            class="bingo-call-icon"
+            aria-hidden="true"
+        >
+            🎱
+        </span>
 
-            <button
-                class="game-secondary-button"
-                type="button"
-                data-back-to-games
-            >
-                ← Back to Games
-            </button>
+        <span>
+            CALL NUMBER
+        </span>
+
+    </button>
+
+
+
+    <!-- AUTO CALL -->
+
+    <button
+        id="bingoAutoCall"
+        class="bingo-auto-button"
+        type="button"
+        aria-pressed="false"
+    >
+
+        <span
+            aria-hidden="true"
+        >
+            ↻
+        </span>
+
+        <span>
+            AUTO CALL
+        </span>
+
+    </button>
+
+
+
+    <!-- NEW GAME -->
+
+    <button
+        id="bingoNewGame"
+        class="bingo-new-button"
+        type="button"
+    >
+
+        <span>
+            NEW GAME
+        </span>
+
+        <span
+            aria-hidden="true"
+        >
+            ↻
+        </span>
+
+    </button>
+
+</section>
+
+
+
+<!-- =================================================
+     CALLED NUMBERS
+================================================== -->
+
+<section
+    class="bingo-called-area"
+    aria-label="Called Bingo numbers"
+>
+
+    <div class="bingo-section-heading">
+
+        <span>
+            NUMBERS CALLED
+        </span>
+
+        <span>
+
+            <strong id="bingoCalledTotal">
+                0
+            </strong>
+
+            / 75
+
+        </span>
+
+    </div>
+
+
+    <div
+        id="bingoCalledNumbers"
+        class="bingo-called-numbers"
+        aria-label="Numbers already called"
+    >
+
+        <span class="bingo-no-numbers">
+            No numbers called yet.
+        </span>
+
+    </div>
+
+</section>
+
+
+
+<!-- =================================================
+     LEGEND
+================================================== -->
+
+<section
+    class="bingo-legend"
+    aria-label="Bingo legend"
+>
+
+    <div class="bingo-legend-item">
+
+        <span
+            class="bingo-legend-dot called"
+            aria-hidden="true"
+        ></span>
+
+        <span>
+            Called
+        </span>
+
+    </div>
+
+
+    <div class="bingo-legend-item">
+
+        <span
+            class="bingo-legend-dot marked"
+            aria-hidden="true"
+        ></span>
+
+        <span>
+            Your number
+        </span>
+
+    </div>
+
+
+    <div class="bingo-legend-item">
+
+        <span
+            class="bingo-legend-dot free"
+            aria-hidden="true"
+        ></span>
+
+        <span>
+            Free space
+        </span>
+
+    </div>
+
+</section>
+
+
+
+<!-- =================================================
+     WIN MESSAGE
+================================================== -->
+
+<section
+    id="bingoWin"
+    class="bingo-win"
+    hidden
+    aria-live="assertive"
+>
+
+    <div class="bingo-win-card">
+
+        <div
+            class="bingo-win-icon"
+            aria-hidden="true"
+        >
+            🎱☕✨
+        </div>
+
+
+        <span class="game-eyebrow">
+            CAFÉ BINGO
+        </span>
+
+
+        <h2>
+            BINGO!
+        </h2>
+
+
+        <p id="bingoWinMessage">
+            You got five in a row!
+            Nicely played, besh. ☕
+        </p>
+
+
+        <div class="bingo-final-stats">
+
+            <div>
+
+                <span>
+                    CARDS PLAYED
+                </span>
+
+                <strong id="bingoFinalCards">
+                    3
+                </strong>
+
+            </div>
 
 
             <div>
 
-                <span class="game-eyebrow">
-                    DIGICAFE BINGO HALL
+                <span>
+                    NUMBERS CALLED
                 </span>
 
-                <h2>
-                    Bingo
-                </h2>
+                <strong id="bingoFinalCalled">
+                    0
+                </strong>
 
             </div>
 
         </div>
 
 
-        <div
-            id="bingoBoard"
-            class="game-board"
-        ></div>
+        <button
+            id="bingoPlayAgain"
+            class="game-button"
+            type="button"
+        >
 
-    </section>
+            <span>
+                Play Again
+            </span>
 
+            <span>
+                ☕
+            </span>
+
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<!-- =================================================
+     NOTE
+================================================== -->
+
+<p class="bingo-note">
+
+    🎱 DigiCafe Bingo is a fictional café game.
+    No real money or prizes are involved.
+
+</p>
+
+</div>
 
 
     <!-- =================================================

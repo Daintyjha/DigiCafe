@@ -8182,3 +8182,1609 @@ html {
     }
 
 }
+/* =========================================================
+   DIGICAFE BINGO
+   ---------------------------------------------------------
+   Complete Bingo Room CSS
+   • Compact game-room layout
+   • 1–4 card selector always visible
+   • Responsive bingo cards
+   • Desktop / tablet / mobile
+   • Multiple-card support
+   • Current number display
+   • Called number history
+   • Win overlay
+   • DigiCafe navy / gold aesthetic
+========================================================= */
+
+
+/* =========================================================
+   01. BINGO ROOM
+========================================================= */
+
+#bingoGame {
+    width: min(
+        calc(100% - 32px),
+        1180px
+    );
+
+    margin: 0 auto;
+
+    padding: 28px 0 60px;
+
+    box-sizing: border-box;
+
+    color: var(--text, #172033);
+}
+
+
+/* =========================================================
+   02. BINGO HEADER
+========================================================= */
+
+.bingo-header {
+    text-align: center;
+
+    margin-bottom: 24px;
+}
+
+
+.bingo-header h1,
+.bingo-header h2 {
+    margin: 0;
+}
+
+
+.bingo-header h1 {
+    font-family:
+        "DM Serif Display",
+        Georgia,
+        serif;
+
+    font-size: clamp(
+        2rem,
+        4vw,
+        3rem
+    );
+
+    line-height: 1.1;
+
+    color:
+        var(--navy-dark, #071426);
+}
+
+
+.bingo-header p {
+    max-width: 620px;
+
+    margin: 8px auto 0;
+
+    color:
+        var(--text-soft, #667085);
+
+    font-size: 0.95rem;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   03. BINGO TOP PANEL
+========================================================= */
+
+.bingo-panel {
+    width: 100%;
+
+    background:
+        var(--card, #ffffff);
+
+    border:
+        1px solid
+        var(--border, #dfe6ef);
+
+    border-radius:
+        var(--radius, 22px);
+
+    box-shadow:
+        0 10px 30px rgba(
+            7,
+            20,
+            38,
+            0.07
+        );
+
+    padding: 20px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   04. CARD SELECTION
+========================================================= */
+
+.bingo-card-selection {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    flex-wrap: nowrap;
+
+    width: 100%;
+
+    margin-bottom: 20px;
+}
+
+
+.bingo-card-selection > * {
+    box-sizing: border-box;
+}
+
+
+.bingo-card-selection-title {
+    flex: 0 0 auto;
+
+    margin-right: 4px;
+
+    font-size: 0.8rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
+
+    color:
+        var(--text-soft, #667085);
+}
+
+
+/* =========================================================
+   05. CARD OPTION BUTTONS
+========================================================= */
+
+.bingo-card-option {
+    flex: 0 1 110px;
+
+    min-width: 72px;
+
+    height: 44px;
+
+    padding: 0 12px;
+
+    border:
+        1px solid
+        var(--border, #dfe6ef);
+
+    border-radius: 12px;
+
+    background:
+        var(--background, #f4f7fb);
+
+    color:
+        var(--text, #172033);
+
+    font-family: inherit;
+
+    font-size: 0.82rem;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.bingo-card-option:hover {
+    border-color:
+        var(--gold, #d6b36a);
+
+    transform:
+        translateY(-1px);
+}
+
+
+.bingo-card-option.active {
+    background:
+        var(--navy-dark, #071426);
+
+    border-color:
+        var(--navy-dark, #071426);
+
+    color:
+        #ffffff;
+
+    box-shadow:
+        0 5px 14px rgba(
+            7,
+            20,
+            38,
+            0.16
+        );
+}
+
+
+.bingo-card-option:focus-visible {
+    outline:
+        3px solid
+        rgba(
+            214,
+            179,
+            106,
+            0.35
+        );
+
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   06. CARD COUNT LABEL
+========================================================= */
+
+#bingoCardCountLabel {
+    text-align: center;
+
+    margin: 0 0 16px;
+
+    font-size: 0.75rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.12em;
+
+    text-transform: uppercase;
+
+    color:
+        var(--gold, #d6b36a);
+}
+
+
+/* =========================================================
+   07. BINGO CARDS CONTAINER
+========================================================= */
+
+#bingoCards {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(
+                280px,
+                410px
+            )
+        );
+
+    justify-content: center;
+
+    align-items: start;
+
+    gap: 20px;
+
+    width: 100%;
+}
+
+
+/* =========================================================
+   08. INDIVIDUAL BINGO CARD
+========================================================= */
+
+.bingo-card {
+    width: 100%;
+
+    max-width: 410px;
+
+    margin: 0 auto;
+
+    padding: 14px;
+
+    box-sizing: border-box;
+
+    background:
+        #ffffff;
+
+    border:
+        1px solid
+        var(--border, #dfe6ef);
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 8px 22px rgba(
+            7,
+            20,
+            38,
+            0.06
+        );
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.bingo-card:hover {
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 12px 28px rgba(
+            7,
+            20,
+            38,
+            0.09
+        );
+}
+
+
+.bingo-card h3 {
+    margin: 0 0 10px;
+
+    text-align: center;
+
+    font-family:
+        "DM Serif Display",
+        Georgia,
+        serif;
+
+    font-size: 1.15rem;
+
+    font-weight: 400;
+
+    color:
+        var(--navy-dark, #071426);
+}
+
+
+/* =========================================================
+   09. BINGO GRID
+========================================================= */
+
+.bingo-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    width: 100%;
+
+    aspect-ratio: 1 / 1;
+
+    gap: 4px;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   10. BINGO CELLS
+========================================================= */
+
+.bingo-cell {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 100%;
+
+    min-width: 0;
+
+    min-height: 0;
+
+    aspect-ratio: 1;
+
+    padding: 0;
+
+    border:
+        1px solid
+        var(--border, #dfe6ef);
+
+    border-radius: 7px;
+
+    background:
+        #f8fafc;
+
+    color:
+        var(--navy-dark, #071426);
+
+    font-family: inherit;
+
+    font-size:
+        clamp(
+            0.78rem,
+            1.8vw,
+            1rem
+        );
+
+    font-weight: 700;
+
+    box-sizing: border-box;
+
+    transition:
+        background 0.18s ease,
+        color 0.18s ease,
+        border-color 0.18s ease,
+        transform 0.15s ease;
+}
+
+
+/* =========================================================
+   11. HEADER CELLS
+========================================================= */
+
+.bingo-cell.bingo-header {
+    border: none;
+
+    background:
+        var(--navy-dark, #071426);
+
+    color:
+        #ffffff;
+
+    font-size:
+        clamp(
+            0.75rem,
+            1.7vw,
+            0.95rem
+        );
+
+    font-weight: 800;
+
+    cursor: default;
+}
+
+
+/* =========================================================
+   12. CLICKABLE NUMBER CELLS
+========================================================= */
+
+button.bingo-cell {
+    cursor: pointer;
+}
+
+
+button.bingo-cell:hover {
+    border-color:
+        var(--gold, #d6b36a);
+
+    transform:
+        scale(1.025);
+}
+
+
+button.bingo-cell:active {
+    transform:
+        scale(0.97);
+}
+
+
+/* =========================================================
+   13. CALLED NUMBERS
+========================================================= */
+
+.bingo-cell.called {
+    border-color:
+        var(--gold, #d6b36a);
+
+    background:
+        rgba(
+            214,
+            179,
+            106,
+            0.12
+        );
+}
+
+
+/* =========================================================
+   14. MARKED NUMBERS
+========================================================= */
+
+.bingo-cell.marked {
+    background:
+        var(--navy, #0d2038);
+
+    border-color:
+        var(--navy, #0d2038);
+
+    color:
+        #ffffff;
+}
+
+
+/* =========================================================
+   15. CALLED + MARKED
+========================================================= */
+
+.bingo-cell.called.marked {
+    background:
+        var(--navy-dark, #071426);
+
+    border-color:
+        var(--gold, #d6b36a);
+
+    box-shadow:
+        inset 0 0 0 2px
+        rgba(
+            214,
+            179,
+            106,
+            0.25
+        );
+}
+
+
+/* =========================================================
+   16. FREE SPACE
+========================================================= */
+
+.bingo-cell.free {
+    background:
+        rgba(
+            214,
+            179,
+            106,
+            0.18
+        );
+
+    border-color:
+        var(--gold, #d6b36a);
+
+    color:
+        var(--navy-dark, #071426);
+
+    font-size:
+        clamp(
+            0.55rem,
+            1.5vw,
+            0.78rem
+        );
+
+    font-weight: 800;
+
+    letter-spacing: 0.04em;
+}
+
+
+/* =========================================================
+   17. CURRENT NUMBER AREA
+========================================================= */
+
+.bingo-current {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin: 20px auto;
+
+    min-height: 90px;
+
+    text-align: center;
+}
+
+
+.bingo-current-letter {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 54px;
+
+    height: 54px;
+
+    border-radius: 50%;
+
+    background:
+        var(--gold, #d6b36a);
+
+    color:
+        var(--navy-dark, #071426);
+
+    font-size: 1.25rem;
+
+    font-weight: 900;
+
+    box-shadow:
+        0 6px 16px rgba(
+            7,
+            20,
+            38,
+            0.12
+        );
+}
+
+
+#bingoCurrentLetter {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 54px;
+
+    height: 54px;
+
+    border-radius: 50%;
+
+    background:
+        var(--gold, #d6b36a);
+
+    color:
+        var(--navy-dark, #071426);
+
+    font-size: 1.2rem;
+
+    font-weight: 900;
+}
+
+
+#bingoCurrentNumber {
+    font-family:
+        "DM Serif Display",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            2.5rem,
+            6vw,
+            4rem
+        );
+
+    line-height: 1;
+
+    color:
+        var(--navy-dark, #071426);
+}
+
+
+/* =========================================================
+   18. RESULT MESSAGE
+========================================================= */
+
+#bingoResult {
+    min-height: 24px;
+
+    margin: 8px auto 18px;
+
+    text-align: center;
+
+    color:
+        var(--text-soft, #667085);
+
+    font-size: 0.9rem;
+
+    font-weight: 600;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   19. GAME CONTROLS
+========================================================= */
+
+.bingo-controls {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+
+    margin: 18px auto;
+}
+
+
+.bingo-controls button {
+    min-height: 44px;
+
+    padding: 0 18px;
+
+    border-radius: 11px;
+
+    font-family: inherit;
+
+    font-size: 0.8rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.03em;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        opacity 0.2s ease;
+}
+
+
+.bingo-controls button:hover:not(:disabled) {
+    transform:
+        translateY(-1px);
+}
+
+
+.bingo-controls button:active:not(:disabled) {
+    transform:
+        translateY(0);
+}
+
+
+.bingo-controls button:disabled {
+    opacity: 0.45;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   20. PRIMARY CALL BUTTON
+========================================================= */
+
+#bingoCallNumber {
+    border:
+        1px solid
+        var(--navy-dark, #071426);
+
+    background:
+        var(--navy-dark, #071426);
+
+    color:
+        #ffffff;
+
+    box-shadow:
+        0 5px 14px rgba(
+            7,
+            20,
+            38,
+            0.14
+        );
+}
+
+
+#bingoCallNumber:hover:not(:disabled) {
+    background:
+        var(--navy, #0d2038);
+}
+
+
+/* =========================================================
+   21. AUTO CALL BUTTON
+========================================================= */
+
+#bingoAutoCall {
+    border:
+        1px solid
+        var(--gold, #d6b36a);
+
+    background:
+        #ffffff;
+
+    color:
+        var(--navy-dark, #071426);
+}
+
+
+#bingoAutoCall[aria-pressed="true"] {
+    background:
+        var(--gold, #d6b36a);
+
+    border-color:
+        var(--gold, #d6b36a);
+
+    color:
+        var(--navy-dark, #071426);
+}
+
+
+/* =========================================================
+   22. NEW GAME BUTTON
+========================================================= */
+
+#bingoNewGame,
+#bingoPlayAgain {
+    border:
+        1px solid
+        var(--border, #dfe6ef);
+
+    background:
+        #ffffff;
+
+    color:
+        var(--navy-dark, #071426);
+}
+
+
+#bingoNewGame:hover,
+#bingoPlayAgain:hover {
+    border-color:
+        var(--gold, #d6b36a);
+}
+
+
+/* =========================================================
+   23. CALLED NUMBER HISTORY
+========================================================= */
+
+.bingo-called-history {
+    margin-top: 24px;
+
+    padding-top: 20px;
+
+    border-top:
+        1px solid
+        var(--border, #dfe6ef);
+}
+
+
+.bingo-called-history h3 {
+    margin: 0 0 12px;
+
+    text-align: center;
+
+    font-size: 0.75rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.1em;
+
+    text-transform: uppercase;
+
+    color:
+        var(--text-soft, #667085);
+}
+
+
+/* =========================================================
+   24. CALLED NUMBER CONTAINER
+========================================================= */
+
+#bingoCalledNumbers {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    flex-wrap: wrap;
+
+    max-height: 130px;
+
+    overflow-y: auto;
+
+    padding: 4px;
+}
+
+
+/* =========================================================
+   25. CALLED NUMBER PILL
+========================================================= */
+
+.bingo-called-number {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-width: 45px;
+
+    height: 32px;
+
+    padding: 0 8px;
+
+    border-radius: 999px;
+
+    background:
+        var(--background, #f4f7fb);
+
+    border:
+        1px solid
+        var(--border, #dfe6ef);
+
+    color:
+        var(--navy-dark, #071426);
+
+    font-size: 0.7rem;
+
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   26. EMPTY CALLED STATE
+========================================================= */
+
+.bingo-no-numbers {
+    color:
+        var(--text-soft, #667085);
+
+    font-size: 0.8rem;
+
+    font-style: italic;
+}
+
+
+/* =========================================================
+   27. CALLED TOTAL
+========================================================= */
+
+#bingoCalledTotal {
+    font-weight: 800;
+
+    color:
+        var(--navy-dark, #071426);
+}
+
+
+/* =========================================================
+   28. WIN STATE
+========================================================= */
+
+.bingo-card.bingo-winner {
+    border-color:
+        var(--gold, #d6b36a);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(
+            214,
+            179,
+            106,
+            0.18
+        ),
+        0 14px 32px rgba(
+            7,
+            20,
+            38,
+            0.12
+        );
+
+    animation:
+        bingoWinnerPulse 1.2s ease-in-out infinite alternate;
+}
+
+
+@keyframes bingoWinnerPulse {
+
+    from {
+        transform:
+            translateY(0);
+    }
+
+    to {
+        transform:
+            translateY(-3px);
+    }
+
+}
+
+
+/* =========================================================
+   29. WIN PANEL
+========================================================= */
+
+#bingoWin {
+    width: min(
+        100%,
+        620px
+    );
+
+    margin: 24px auto 0;
+
+    padding: 24px;
+
+    box-sizing: border-box;
+
+    border:
+        1px solid
+        var(--gold, #d6b36a);
+
+    border-radius: 18px;
+
+    background:
+        rgba(
+            214,
+            179,
+            106,
+            0.09
+        );
+
+    text-align: center;
+
+    box-shadow:
+        0 10px 26px rgba(
+            7,
+            20,
+            38,
+            0.07
+        );
+}
+
+
+#bingoWin[hidden] {
+    display: none;
+}
+
+
+#bingoWin h2 {
+    margin: 0 0 8px;
+
+    font-family:
+        "DM Serif Display",
+        Georgia,
+        serif;
+
+    font-size:
+        clamp(
+            1.6rem,
+            4vw,
+            2.3rem
+        );
+
+    color:
+        var(--navy-dark, #071426);
+}
+
+
+#bingoWinMessage {
+    margin: 0;
+
+    color:
+        var(--text-soft, #667085);
+
+    font-size: 0.9rem;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   30. FINAL GAME DETAILS
+========================================================= */
+
+.bingo-final-details {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 30px;
+
+    margin-top: 18px;
+}
+
+
+.bingo-final-detail {
+    text-align: center;
+}
+
+
+.bingo-final-detail strong {
+    display: block;
+
+    font-size: 1.3rem;
+
+    color:
+        var(--navy-dark, #071426);
+}
+
+
+.bingo-final-detail span {
+    display: block;
+
+    margin-top: 3px;
+
+    font-size: 0.7rem;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.08em;
+
+    color:
+        var(--text-soft, #667085);
+}
+
+
+/* =========================================================
+   31. CREDIT INFORMATION
+========================================================= */
+
+.bingo-credit-info {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 18px;
+
+    flex-wrap: wrap;
+
+    margin: 12px 0 20px;
+
+    color:
+        var(--text-soft, #667085);
+
+    font-size: 0.8rem;
+}
+
+
+.bingo-credit-info strong {
+    color:
+        var(--navy-dark, #071426);
+}
+
+
+/* =========================================================
+   32. KEYBOARD / FOCUS ACCESSIBILITY
+========================================================= */
+
+.bingo-cell:focus-visible,
+.bingo-controls button:focus-visible,
+.bingo-card-option:focus-visible {
+    outline:
+        3px solid
+        rgba(
+            214,
+            179,
+            106,
+            0.45
+        );
+
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   33. TABLET
+========================================================= */
+
+@media (
+    max-width: 900px
+) {
+
+    #bingoGame {
+        width:
+            min(
+                calc(100% - 24px),
+                760px
+            );
+
+        padding-top: 22px;
+    }
+
+
+    .bingo-panel {
+        padding: 16px;
+    }
+
+
+    #bingoCards {
+        grid-template-columns:
+            repeat(
+                auto-fit,
+                minmax(
+                    260px,
+                    360px
+                )
+            );
+
+        gap: 16px;
+    }
+
+
+    .bingo-card {
+        max-width: 360px;
+
+        padding: 12px;
+    }
+
+
+    .bingo-card-selection {
+        gap: 7px;
+    }
+
+
+    .bingo-card-option {
+        flex: 1 1 0;
+
+        min-width: 0;
+
+        padding:
+            0 8px;
+
+        font-size: 0.76rem;
+    }
+
+}
+
+
+/* =========================================================
+   34. MOBILE
+========================================================= */
+
+@media (
+    max-width: 600px
+) {
+
+    #bingoGame {
+        width:
+            calc(100% - 16px);
+
+        padding:
+            16px 0 40px;
+    }
+
+
+    .bingo-header {
+        margin-bottom: 16px;
+    }
+
+
+    .bingo-header h1 {
+        font-size: 2rem;
+    }
+
+
+    .bingo-header p {
+        font-size: 0.84rem;
+    }
+
+
+    .bingo-panel {
+        padding: 12px;
+
+        border-radius: 16px;
+    }
+
+
+    /* ---------------------------------------------
+       CARD SELECTION
+    --------------------------------------------- */
+
+    .bingo-card-selection {
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, 1fr);
+
+        gap: 6px;
+
+        margin-bottom: 14px;
+    }
+
+
+    .bingo-card-selection-title {
+        grid-column:
+            1 / -1;
+
+        margin: 0 0 3px;
+
+        text-align: center;
+
+        font-size: 0.68rem;
+    }
+
+
+    .bingo-card-option {
+        width: 100%;
+
+        min-width: 0;
+
+        height: 40px;
+
+        padding: 0 4px;
+
+        border-radius: 9px;
+
+        font-size: 0.68rem;
+
+        white-space: nowrap;
+    }
+
+
+    /* ---------------------------------------------
+       BINGO CARDS
+    --------------------------------------------- */
+
+    #bingoCards {
+        grid-template-columns:
+            minmax(
+                0,
+                1fr
+            );
+
+        gap: 12px;
+    }
+
+
+    .bingo-card {
+        width: 100%;
+
+        max-width: 390px;
+
+        padding: 9px;
+
+        border-radius: 14px;
+    }
+
+
+    .bingo-card h3 {
+        margin-bottom: 7px;
+
+        font-size: 1rem;
+    }
+
+
+    .bingo-grid {
+        gap: 3px;
+    }
+
+
+    .bingo-cell {
+        border-radius: 5px;
+
+        font-size:
+            clamp(
+                0.68rem,
+                4vw,
+                0.9rem
+            );
+    }
+
+
+    .bingo-cell.bingo-header {
+        font-size: 0.72rem;
+    }
+
+
+    .bingo-cell.free {
+        font-size: 0.52rem;
+    }
+
+
+    /* ---------------------------------------------
+       CURRENT NUMBER
+    --------------------------------------------- */
+
+    .bingo-current {
+        margin: 14px auto;
+
+        min-height: 68px;
+
+        gap: 8px;
+    }
+
+
+    #bingoCurrentLetter {
+        width: 44px;
+
+        height: 44px;
+
+        font-size: 1rem;
+    }
+
+
+    #bingoCurrentNumber {
+        font-size: 2.6rem;
+    }
+
+
+    /* ---------------------------------------------
+       CONTROLS
+    --------------------------------------------- */
+
+    .bingo-controls {
+        gap: 7px;
+
+        margin: 14px auto;
+    }
+
+
+    .bingo-controls button {
+        flex:
+            1 1 calc(50% - 7px);
+
+        min-height: 42px;
+
+        padding: 0 10px;
+
+        font-size: 0.68rem;
+    }
+
+
+    /* ---------------------------------------------
+       CALLED NUMBERS
+    --------------------------------------------- */
+
+    .bingo-called-history {
+        margin-top: 16px;
+
+        padding-top: 14px;
+    }
+
+
+    #bingoCalledNumbers {
+        gap: 5px;
+
+        max-height: 105px;
+    }
+
+
+    .bingo-called-number {
+        min-width: 40px;
+
+        height: 28px;
+
+        padding: 0 6px;
+
+        font-size: 0.64rem;
+    }
+
+
+    /* ---------------------------------------------
+       WIN PANEL
+    --------------------------------------------- */
+
+    #bingoWin {
+        padding: 18px;
+
+        margin-top: 16px;
+
+        border-radius: 14px;
+    }
+
+
+    #bingoWin h2 {
+        font-size: 1.6rem;
+    }
+
+
+    #bingoWinMessage {
+        font-size: 0.8rem;
+    }
+
+
+    .bingo-final-details {
+        gap: 20px;
+
+        margin-top: 14px;
+    }
+
+
+    .bingo-final-detail strong {
+        font-size: 1.1rem;
+    }
+
+}
+
+
+/* =========================================================
+   35. VERY SMALL PHONES
+========================================================= */
+
+@media (
+    max-width: 380px
+) {
+
+    #bingoGame {
+        width:
+            calc(100% - 10px);
+
+        padding-top: 12px;
+    }
+
+
+    .bingo-panel {
+        padding: 9px;
+    }
+
+
+    .bingo-card-selection {
+        gap: 4px;
+    }
+
+
+    .bingo-card-option {
+        height: 37px;
+
+        font-size: 0.62rem;
+    }
+
+
+    .bingo-card {
+        padding: 7px;
+    }
+
+
+    .bingo-grid {
+        gap: 2px;
+    }
+
+
+    .bingo-cell {
+        border-radius: 4px;
+
+        font-size: 0.65rem;
+    }
+
+
+    .bingo-cell.bingo-header {
+        font-size: 0.66rem;
+    }
+
+
+    .bingo-cell.free {
+        font-size: 0.46rem;
+    }
+
+
+    .bingo-controls button {
+        font-size: 0.62rem;
+
+        padding: 0 7px;
+    }
+
+
+    .bingo-called-number {
+        min-width: 36px;
+
+        height: 26px;
+
+        font-size: 0.58rem;
+    }
+
+}
+
+
+/* =========================================================
+   36. REDUCED MOTION
+========================================================= */
+
+@media (
+    prefers-reduced-motion: reduce
+) {
+
+    .bingo-card,
+    .bingo-cell,
+    .bingo-card-option,
+    .bingo-controls button {
+        transition: none;
+    }
+
+
+    .bingo-card.bingo-winner {
+        animation: none;
+    }
+
+}
