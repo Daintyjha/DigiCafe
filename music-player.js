@@ -68,6 +68,8 @@ window.initMusicPlayer = async function () {
     const trackTitle =
         document.getElementById("trackTitle");
 
+const trackArtist =
+    document.getElementById("trackArtist");
 
     const playbackSource =
         document.getElementById("playbackSource");
@@ -274,13 +276,20 @@ window.initMusicPlayer = async function () {
 
         if (trackTitle) {
 
-            trackTitle.textContent =
-                song.title ||
-                "Untitled";
+    trackTitle.textContent =
+        song.title ||
+        "Untitled";
 
-        }
+}
 
 
+if (trackArtist) {
+
+    trackArtist.textContent =
+        song.artist ||
+        "Unknown Artist";
+
+}
         if (playbackSource) {
 
             playbackSource.textContent =
