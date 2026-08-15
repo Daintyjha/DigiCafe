@@ -360,5 +360,32 @@
 "category": "Heal",
 "file": "Asset/MusicFiles/Heal/Beyond Recognition.mp3",
 "dateAdded": "2026-08-14"
+},
+{
+"id": 41,
+"title": "Goodbye My Bestfriend",
+"artist": "DaintyJha",
+"album": "Sad Collection",
+"category": "Sad",
+"file": "Asset/MusicFiles/Sad/Goodbye My Bestfriend.mp3",
+"dateAdded": "2026-08-15"
+},
+{
+"id": 42,
+"title": "I Was the Last to Know",
+"artist": "DaintyJha",
+"album": "Sad Collection",
+"category": "Sad",
+"file": "Asset/MusicFiles/Sad/I Was the Last to Know.mp3",
+"dateAdded": "2026-08-15"
+},
+{
+"id": 43,
+"title": "I Was There, You Just Never Noticed",
+"artist": "DaintyJha",
+"album": "Sad Collection",
+"category": "Sad",
+"file": "Asset/MusicFiles/Sad/I Was There, You Just Never Noticed.mp3",
+"dateAdded": "2026-08-15"
 }
 ]
