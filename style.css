@@ -6113,797 +6113,1353 @@ html {
 
 /* =========================================================
    DIGICAFE SOLITAIRE
-   ========================================================= */
+   RESPONSIVE KLONDIKE DRAW 3
+   =========================================================
+
+   DESIGN GOALS
+   ---------------------------------------------------------
+   • DigiCafe visual language
+   • Desktop friendly
+   • Tablet friendly
+   • Mobile friendly
+   • 7 tableau columns never overlap sideways
+   • Cards preserve their aspect ratio
+   • Tableau grows naturally
+   • Controls never sit underneath cards
+   • Touch friendly
+   • Drag friendly
+   • Double-click friendly
+========================================================= */
 
 
 /* =========================================================
-   01. SOLITAIRE ROOM
+   01. SOLITAIRE VARIABLES
 ========================================================= */
 
-.solitaire-room {
-    position: relative;
+:root {
 
-    overflow: hidden;
+    --solitaire-bg:
+        #101a2b;
 
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255, 255, 255, 0.035),
-            rgba(255, 255, 255, 0.012)
-        );
-}
+    --solitaire-surface:
+        #17243a;
 
+    --solitaire-surface-2:
+        #1d2d46;
 
-/* =========================================================
-   02. HEADER
-========================================================= */
+    --solitaire-border:
+        rgba(255,255,255,0.12);
 
-.solitaire-header {
-    align-items: center;
+    --solitaire-border-soft:
+        rgba(255,255,255,0.07);
 
-    flex-wrap: wrap;
-}
+    --solitaire-gold:
+        #d8b878;
 
-.solitaire-title {
-    flex: 1;
+    --solitaire-gold-soft:
+        rgba(216,184,120,0.20);
 
-    min-width: 160px;
-}
+    --solitaire-card:
+        #fffaf1;
 
-.solitaire-title h2 {
-    margin: 0;
+    --solitaire-card-shadow:
+        rgba(0,0,0,0.32);
 
-    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    --solitaire-red:
+        #b33d4b;
 
-    letter-spacing: -0.035em;
-}
+    --solitaire-black:
+        #172131;
 
-
-/* =========================================================
-   03. STATS
-========================================================= */
-
-.solitaire-stats {
-    display: flex;
-
-    align-items: center;
-
-    gap: 10px;
-}
-
-.solitaire-stat {
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: center;
-
-    justify-content: center;
-
-    min-width: 65px;
-
-    padding: 8px 11px;
-
-    border:
-        1px solid rgba(255, 255, 255, 0.07);
-
-    border-radius: 12px;
-
-    background:
-        rgba(255, 255, 255, 0.025);
-}
-
-.solitaire-stat span {
-    font-size: 0.5rem;
-
-    font-weight: 800;
-
-    letter-spacing: 0.13em;
-
-    opacity: 0.4;
-}
-
-.solitaire-stat strong {
-    margin-top: 2px;
-
-    font-size: 0.82rem;
-
-    font-variant-numeric: tabular-nums;
 }
 
 
 /* =========================================================
-   04. SOLITAIRE TABLE
+   02. GAME WRAPPER
 ========================================================= */
 
-.solitaire-board {
-    position: relative;
+#solitaireBoard {
 
     width: 100%;
 
-    min-height: 620px;
+    max-width: 1120px;
 
-    padding: 25px;
+    margin:
+        0 auto;
 
-    border-radius: 22px;
+    padding:
+        24px;
 
-    background:
-        radial-gradient(
-            circle at 50% 30%,
-            rgba(255, 255, 255, 0.035),
-            transparent 55%
-        ),
-        rgba(0, 0, 0, 0.13);
+    box-sizing: border-box;
 
-    border:
-        1px solid rgba(255, 255, 255, 0.055);
+    color:
+        var(--solitaire-card);
 
-    overflow: hidden;
 }
 
 
 /* =========================================================
-   05. TOP CARD AREA
+   03. TOP ROW
 ========================================================= */
 
 .solitaire-top-row {
+
+    width: 100%;
+
     display: grid;
 
     grid-template-columns:
-        repeat(7, minmax(70px, 1fr));
+        90px
+        120px
+        minmax(30px, 1fr)
+        repeat(4, 90px);
 
-    gap: 15px;
+    gap:
+        16px;
 
-    width: 100%;
+    align-items:
+        start;
+
+    margin-bottom:
+        30px;
+
 }
 
 
-/* Stock */
+/* =========================================================
+   04. TOP PILES
+========================================================= */
 
-.solitaire-stock {
-    grid-column: 1;
+.solitaire-pile,
+.solitaire-foundation {
 
-    position: relative;
+    width:
+        88px;
+
+    height:
+        124px;
+
+    position:
+        relative;
+
+    box-sizing:
+        border-box;
+
+    flex-shrink:
+        0;
+
 }
 
 
-/* Waste */
+/* =========================================================
+   05. EMPTY PILES
+========================================================= */
 
-.solitaire-waste {
-    grid-column: 2;
+.solitaire-pile:empty,
+.solitaire-foundation:empty {
 
-    position: relative;
+    border:
+        2px dashed
+        var(--solitaire-border);
+
+    border-radius:
+        11px;
+
+    background:
+        rgba(255,255,255,0.025);
+
 }
 
 
-/* Foundations */
+/* =========================================================
+   06. EMPTY STOCK
+========================================================= */
+
+.solitaire-stock-empty {
+
+    cursor:
+        pointer;
+
+    border:
+        2px dashed
+        var(--solitaire-gold);
+
+    background:
+        var(--solitaire-gold-soft);
+
+}
+
+
+/* =========================================================
+   07. WASTE
+========================================================= */
+
+.solitaire-pile[data-pile="waste"] {
+
+    width:
+        122px;
+
+}
+
+
+/* =========================================================
+   08. FOUNDATIONS
+========================================================= */
 
 .solitaire-foundations {
-    grid-column: 4 / 8;
 
-    display: grid;
+    display:
+        contents;
 
-    grid-template-columns:
-        repeat(4, minmax(70px, 1fr));
-
-    gap: 15px;
 }
 
 
 /* =========================================================
-   06. TABLEAU
-========================================================= */
-
-.solitaire-tableau {
-    display: grid;
-
-    grid-template-columns:
-        repeat(7, minmax(70px, 1fr));
-
-    gap: 15px;
-
-    margin-top: 35px;
-
-    width: 100%;
-}
-
-.solitaire-column {
-    position: relative;
-
-    min-height: 400px;
-}
-
-
-/* =========================================================
-   07. CARD SLOT
-========================================================= */
-
-.solitaire-pile {
-    position: relative;
-
-    width: 100%;
-
-    aspect-ratio: 0.715;
-
-    min-height: 90px;
-
-    border-radius: 9px;
-
-    border:
-        1px dashed rgba(255, 255, 255, 0.09);
-
-    background:
-        rgba(255, 255, 255, 0.018);
-
-    box-sizing: border-box;
-}
-
-
-/* Empty tableau slots */
-
-.solitaire-column .solitaire-pile {
-    position: absolute;
-
-    top: 0;
-
-    left: 0;
-}
-
-
-/* Empty foundation */
-
-.solitaire-foundation {
-    position: relative;
-
-    width: 100%;
-
-    aspect-ratio: 0.715;
-
-    border-radius: 9px;
-
-    border:
-        1px dashed rgba(255, 255, 255, 0.1);
-
-    background:
-        rgba(255, 255, 255, 0.018);
-}
-
-
-/* =========================================================
-   08. PLAYING CARD
+   09. CARD
 ========================================================= */
 
 .solitaire-card {
-    position: absolute;
 
-    left: 0;
+    width:
+        88px;
 
-    width: 100%;
+    height:
+        124px;
 
-    aspect-ratio: 0.715;
+    position:
+        absolute;
 
-    border-radius: 9px;
+    box-sizing:
+        border-box;
 
-    user-select: none;
+    border-radius:
+        11px;
 
-    cursor: pointer;
+    overflow:
+        hidden;
 
-    box-sizing: border-box;
+    user-select:
+        none;
+
+    -webkit-user-select:
+        none;
+
+    -webkit-touch-callout:
+        none;
+
+    touch-action:
+        none;
 
     transition:
-        transform 0.18s ease,
-        box-shadow 0.18s ease;
-}
+        transform 0.12s ease,
+        box-shadow 0.12s ease,
+        opacity 0.12s ease;
 
-
-/* Face-up card */
-
-.solitaire-card-face {
-    display: flex;
-
-    flex-direction: column;
-
-    justify-content: space-between;
-
-    padding: 7px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255, 255, 255, 0.97),
-            rgba(230, 230, 230, 0.94)
-        );
-
-    border:
-        1px solid rgba(255, 255, 255, 0.8);
-
-    box-shadow:
-        0 5px 12px rgba(0, 0, 0, 0.18);
-
-    color: #18202a;
-}
-
-
-/* Card hover */
-
-.solitaire-card-face:hover {
-    transform:
-        translateY(-3px);
-
-    box-shadow:
-        0 10px 20px rgba(0, 0, 0, 0.25);
-
-    z-index: 100;
 }
 
 
 /* =========================================================
-   09. CARD BACK
+   10. FACE-UP CARD
+========================================================= */
+
+.solitaire-card-face {
+
+    background:
+        var(--solitaire-card);
+
+    border:
+        1px solid
+        rgba(0,0,0,0.18);
+
+    box-shadow:
+        0 4px 9px
+        var(--solitaire-card-shadow);
+
+}
+
+
+/* =========================================================
+   11. CARD BACK
 ========================================================= */
 
 .solitaire-card-back {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 6px;
 
     background:
         linear-gradient(
             145deg,
-            rgba(40, 48, 62, 1),
-            rgba(22, 27, 37, 1)
+            #1b3150,
+            #263f61
         );
 
     border:
-        1px solid rgba(255, 255, 255, 0.16);
+        2px solid
+        rgba(216,184,120,0.35);
 
     box-shadow:
-        0 5px 12px rgba(0, 0, 0, 0.25);
+        0 4px 9px
+        var(--solitaire-card-shadow);
 
-    cursor: pointer;
-}
-
-.solitaire-card-back::before {
-    content: "";
-
-    width: 100%;
-    height: 100%;
-
-    border-radius: 6px;
-
-    border:
-        1px solid rgba(255, 255, 255, 0.13);
-
-    background:
-        repeating-linear-gradient(
-            45deg,
-            transparent 0,
-            transparent 4px,
-            rgba(255, 255, 255, 0.035) 4px,
-            rgba(255, 255, 255, 0.035) 5px
-        );
 }
 
 
 /* =========================================================
-   10. CARD CONTENT
+   12. CARD CORNER
 ========================================================= */
 
 .solitaire-card-corner {
-    display: flex;
 
-    flex-direction: column;
+    position:
+        absolute;
 
-    align-items: flex-start;
+    top:
+        7px;
 
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
+    left:
+        8px;
 
-    font-weight: 700;
+    display:
+        flex;
 
-    line-height: 0.9;
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    line-height:
+        1;
+
+    font-weight:
+        700;
+
+    z-index:
+        2;
+
 }
+
+
+/* =========================================================
+   13. CARD RANK
+========================================================= */
 
 .solitaire-card-rank {
-    font-size: clamp(0.8rem, 1.5vw, 1rem);
+
+    font-size:
+        18px;
+
+    line-height:
+        18px;
+
 }
+
+
+/* =========================================================
+   14. CARD SUIT
+========================================================= */
 
 .solitaire-card-suit {
-    font-size: clamp(0.7rem, 1.3vw, 0.9rem);
 
-    margin-top: 2px;
+    font-size:
+        15px;
+
+    line-height:
+        15px;
+
 }
+
+
+/* =========================================================
+   15. CARD CENTER
+========================================================= */
 
 .solitaire-card-center {
-    position: absolute;
 
-    top: 50%;
-    left: 50%;
+    position:
+        absolute;
+
+    top:
+        50%;
+
+    left:
+        50%;
 
     transform:
-        translate(-50%, -50%);
+        translate(
+            -50%,
+            -50%
+        );
 
-    font-family:
-        Georgia,
-        "Times New Roman",
-        serif;
+    font-size:
+        40px;
 
-    font-size: clamp(1.7rem, 4vw, 2.5rem);
+    line-height:
+        1;
+
+    opacity:
+        0.88;
+
 }
 
 
-/* Red suits */
+/* =========================================================
+   16. CARD COLORS
+========================================================= */
 
 .solitaire-red {
-    color: #a83d4c;
+
+    color:
+        var(--solitaire-red);
+
 }
 
-
-/* Black suits */
 
 .solitaire-black {
-    color: #20252d;
-}
 
-
-/* =========================================================
-   11. SELECTED CARD
-========================================================= */
-
-.solitaire-card.selected {
-    transform:
-        translateY(-7px);
-
-    box-shadow:
-        0 0 0 3px rgba(255, 255, 255, 0.3),
-        0 12px 25px rgba(0, 0, 0, 0.28);
-
-    z-index: 200;
-}
-
-
-/* =========================================================
-   12. DRAGGING
-========================================================= */
-
-.solitaire-card.dragging {
-    opacity: 0.8;
-
-    transform:
-        scale(1.04)
-        rotate(1deg);
-
-    cursor: grabbing;
-
-    z-index: 999;
-}
-
-
-/* =========================================================
-   13. CONTROLS
-========================================================= */
-
-.solitaire-controls {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 10px;
-
-    margin-top: 20px;
-}
-
-
-/* /* =========================================================
-   14. WIN SCREEN
-========================================================= */
-
-.solitaire-win {
-    position: absolute;
-
-    inset: 0;
-
-    z-index: 1000;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 25px;
-
-    background:
-        rgba(8, 12, 18, 0.76);
-
-    backdrop-filter:
-        blur(8px);
-
-    -webkit-backdrop-filter:
-        blur(8px);
-}
-
-
-/* =========================================================
-   HIDE WIN SCREEN WHEN NOT ACTIVE
-========================================================= */
-
-.solitaire-win[hidden] {
-    display: none !important;
-}
-
-
-.solitaire-win-card {
-    width: min(100%, 390px);
-
-    padding: 30px;
-
-    text-align: center;
-
-    border:
-        1px solid rgba(255, 255, 255, 0.11);
-
-    border-radius: 25px;
-
-    background:
-        rgba(255, 255, 255, 0.06);
-
-    box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.35);
-
-    animation:
-        solitaireWinIn 0.5s ease both;
-}
-
-.solitaire-win-icon {
-    margin-bottom: 15px;
-
-    font-size: 2rem;
-
-    animation:
-        solitaireWinFloat 2.5s ease-in-out infinite;
-}
-
-.solitaire-win-card h2 {
-    margin: 3px 0 8px;
-
-    font-size: 2rem;
-}
-
-.solitaire-win-card p {
-    margin: 0 auto 20px;
-
-    max-width: 280px;
-
-    font-size: 0.82rem;
-
-    line-height: 1.65;
-
-    opacity: 0.6;
-}
-/* =========================================================
-   15. FINAL STATS
-========================================================= */
-
-.solitaire-final-stats {
-    display: flex;
-
-    justify-content: center;
-
-    gap: 10px;
-
-    margin-bottom: 20px;
-}
-
-.solitaire-final-stats > div {
-    min-width: 90px;
-
-    padding: 9px 12px;
-
-    border:
-        1px solid rgba(255, 255, 255, 0.07);
-
-    border-radius: 12px;
-
-    background:
-        rgba(255, 255, 255, 0.025);
-}
-
-.solitaire-final-stats span {
-    display: block;
-
-    font-size: 0.5rem;
-
-    font-weight: 800;
-
-    letter-spacing: 0.12em;
-
-    opacity: 0.4;
-}
-
-.solitaire-final-stats strong {
-    display: block;
-
-    margin-top: 3px;
-
-    font-size: 0.85rem;
-
-    font-variant-numeric: tabular-nums;
-}
-
-
-/* =========================================================
-   16. ANIMATIONS
-========================================================= */
-
-@keyframes solitaireWinIn {
-
-    from {
-        opacity: 0;
-
-        transform:
-            translateY(15px)
-            scale(0.96);
-    }
-
-    to {
-        opacity: 1;
-
-        transform:
-            translateY(0)
-            scale(1);
-    }
-}
-
-
-@keyframes solitaireWinFloat {
-
-    0%,
-    100% {
-        transform:
-            translateY(0);
-    }
-
-    50% {
-        transform:
-            translateY(-5px);
-    }
-}
-
-
-/* =========================================================
-   17. TABLET
-========================================================= */
-
-@media (max-width: 850px) {
-
-    .solitaire-board {
-        padding: 18px;
-
-        min-height: 550px;
-
-        overflow-x: auto;
-    }
-
-
-    .solitaire-top-row,
-    .solitaire-tableau {
-        min-width: 650px;
-
-        gap: 10px;
-    }
-
-
-    .solitaire-foundations {
-        gap: 10px;
-    }
-
-
-    .solitaire-tableau {
-        margin-top: 25px;
-    }
+    color:
+        var(--solitaire-black);
 
 }
 
 
 /* =========================================================
-   18. MOBILE
+   17. CARD DRAGGING
 ========================================================= */
 
-@media (max-width: 650px) {
-
-    .solitaire-room {
-        padding: 18px;
-    }
-
-
-    .solitaire-header {
-        align-items: flex-start;
-
-        flex-direction: column;
-    }
-
-
-    .solitaire-stats {
-        width: 100%;
-    }
-
-
-    .solitaire-stat {
-        flex: 1;
-    }
-
-
-    .solitaire-board {
-        margin:
-            0 -4px;
-
-        padding: 12px;
-
-        border-radius: 17px;
-
-        min-height: 500px;
-    }
-
-
-    .solitaire-top-row,
-    .solitaire-tableau {
-        min-width: 590px;
-
-        gap: 8px;
-    }
-
-
-    .solitaire-tableau {
-        margin-top: 20px;
-    }
-
-
-    .solitaire-controls {
-        flex-wrap: wrap;
-    }
-
-
-    .solitaire-controls .game-button,
-    .solitaire-controls .game-secondary-button {
-        flex: 1;
-    }
-
-}
-
-
-/* =========================================================
-   19. SMALL PHONES
-========================================================= */
-
-@media (max-width: 380px) {
-
-    .solitaire-room {
-        padding: 14px;
-    }
-
-
-    .solitaire-board {
-        padding: 9px;
-    }
-
-
-    .solitaire-top-row,
-    .solitaire-tableau {
-        min-width: 550px;
-    }
-
-}
 .solitaire-card-dragging {
-    opacity: 0.55;
-    transform: scale(1.03);
+
+    opacity:
+        0.55;
+
+    transform:
+        translateX(-50%)
+        scale(1.04);
+
+    z-index:
+        9999;
+
+}
+
+
+/* =========================================================
+   18. WASTE CARDS
+========================================================= */
+
+.solitaire-pile[data-pile="waste"]
+.solitaire-card {
+
+    top:
+        0;
+
+}
+
+
+/* =========================================================
+   19. WASTE PLAYABLE CARD
+========================================================= */
+
+.solitaire-waste-top {
+
+    cursor:
+        grab;
+
+    z-index:
+        50;
+
+}
+
+
+.solitaire-waste-top:active {
+
+    cursor:
+        grabbing;
+
+}
+
+
+/* =========================================================
+   20. FOUNDATION CARD
+========================================================= */
+
+.solitaire-foundation
+.solitaire-card {
+
+    top:
+        0;
+
+    left:
+        0;
+
+}
+
+
+/* =========================================================
+   21. TABLEAU
+========================================================= */
+
+.solitaire-tableau {
+
+    width:
+        100%;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            7,
+            minmax(
+                0,
+                1fr
+            )
+        );
+
+    gap:
+        12px;
+
+    align-items:
+        start;
+
+    box-sizing:
+        border-box;
+
+    /*
+        IMPORTANT:
+
+        Never give the tableau a fixed height.
+        The cards determine its height.
+    */
+
+    min-height:
+        400px;
+
+    padding-bottom:
+        90px;
+
+}
+
+
+/* =========================================================
+   22. TABLEAU COLUMN
+========================================================= */
+
+.solitaire-column {
+
+    position:
+        relative;
+
+    width:
+        100%;
+
+    min-width:
+        0;
+
+    min-height:
+        124px;
+
+}
+
+
+/* =========================================================
+   23. TABLEAU CARD
+========================================================= */
+
+.solitaire-column >
+.solitaire-card {
+
+    left:
+        50%;
+
+    transform:
+        translateX(-50%);
+
+}
+
+
+/* =========================================================
+   24. EMPTY TABLEAU
+========================================================= */
+
+.solitaire-column >
+.solitaire-pile {
+
+    position:
+        absolute;
+
+    top:
+        0;
+
+    left:
+        50%;
+
+    transform:
+        translateX(-50%);
+
+}
+
+
+/* =========================================================
+   25. CARD STACK DEPTH
+========================================================= */
+
+.solitaire-column
+.solitaire-card:nth-child(1) {
+    z-index: 1;
+}
+
+.solitaire-column
+.solitaire-card:nth-child(2) {
+    z-index: 2;
+}
+
+.solitaire-column
+.solitaire-card:nth-child(3) {
+    z-index: 3;
+}
+
+.solitaire-column
+.solitaire-card:nth-child(4) {
+    z-index: 4;
+}
+
+.solitaire-column
+.solitaire-card:nth-child(5) {
+    z-index: 5;
+}
+
+.solitaire-column
+.solitaire-card:nth-child(6) {
+    z-index: 6;
+}
+
+.solitaire-column
+.solitaire-card:nth-child(7) {
+    z-index: 7;
+}
+
+.solitaire-column
+.solitaire-card:nth-child(8) {
+    z-index: 8;
+}
+
+.solitaire-column
+.solitaire-card:nth-child(9) {
+    z-index: 9;
+}
+
+.solitaire-column
+.solitaire-card:nth-child(10) {
+    z-index: 10;
+}
+
+
+/* =========================================================
+   26. TABLET
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    #solitaireBoard {
+
+        padding:
+            18px;
+
+    }
+
+
+    .solitaire-top-row {
+
+        grid-template-columns:
+            78px
+            104px
+            minmax(20px, 1fr)
+            repeat(
+                4,
+                78px
+            );
+
+        gap:
+            10px;
+
+    }
+
+
+    .solitaire-pile,
+    .solitaire-foundation {
+
+        width:
+            76px;
+
+        height:
+            107px;
+
+    }
+
+
+    .solitaire-pile[data-pile="waste"] {
+
+        width:
+            106px;
+
+    }
+
+
+    .solitaire-card {
+
+        width:
+            76px;
+
+        height:
+            107px;
+
+        border-radius:
+            9px;
+
+    }
+
+
+    .solitaire-card-rank {
+
+        font-size:
+            16px;
+
+    }
+
+
+    .solitaire-card-suit {
+
+        font-size:
+            14px;
+
+    }
+
+
+    .solitaire-card-center {
+
+        font-size:
+            34px;
+
+    }
+
+
+    .solitaire-tableau {
+
+        gap:
+            8px;
+
+        min-height:
+            350px;
+
+        padding-bottom:
+            100px;
+
+    }
+
+
+    .solitaire-column {
+
+        min-height:
+            107px;
+
+    }
+
+}
+
+
+/* =========================================================
+   27. SMALL TABLET / LARGE PHONE
+========================================================= */
+
+@media (max-width: 760px) {
+
+    #solitaireBoard {
+
+        padding:
+            12px 8px 120px;
+
+    }
+
+
+    /*
+        Top area becomes two rows.
+    */
+
+    .solitaire-top-row {
+
+        display:
+            grid;
+
+        grid-template-columns:
+            repeat(
+                4,
+                minmax(
+                    0,
+                    1fr
+                )
+            );
+
+        gap:
+            8px;
+
+        margin-bottom:
+            24px;
+
+    }
+
+
+    .solitaire-top-spacer {
+
+        display:
+            none;
+
+    }
+
+
+    .solitaire-pile,
+    .solitaire-foundation {
+
+        width:
+            min(
+                72px,
+                100%
+            );
+
+        height:
+            auto;
+
+        aspect-ratio:
+            0.71;
+
+    }
+
+
+    .solitaire-card {
+
+        width:
+            min(
+                72px,
+                100%
+            );
+
+        height:
+            auto;
+
+        aspect-ratio:
+            0.71;
+
+    }
+
+
+    .solitaire-pile[data-pile="waste"] {
+
+        width:
+            min(
+                104px,
+                100%
+            );
+
+    }
+
+
+    .solitaire-card-rank {
+
+        font-size:
+            15px;
+
+    }
+
+
+    .solitaire-card-suit {
+
+        font-size:
+            13px;
+
+    }
+
+
+    .solitaire-card-center {
+
+        font-size:
+            30px;
+
+    }
+
+
+    /*
+        Seven columns remain separate.
+    */
+
+    .solitaire-tableau {
+
+        grid-template-columns:
+            repeat(
+                7,
+                minmax(
+                    0,
+                    1fr
+                )
+            );
+
+        gap:
+            4px;
+
+        min-height:
+            330px;
+
+        padding-bottom:
+            130px;
+
+    }
+
+
+    .solitaire-column {
+
+        min-height:
+            100px;
+
+    }
+
+}
+
+
+/* =========================================================
+   28. PHONE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    #solitaireBoard {
+
+        padding:
+            8px 5px 130px;
+
+    }
+
+
+    /* -----------------------------------------------------
+       TOP AREA
+    ----------------------------------------------------- */
+
+    .solitaire-top-row {
+
+        gap:
+            6px;
+
+        margin-bottom:
+            20px;
+
+    }
+
+
+    .solitaire-pile,
+    .solitaire-foundation {
+
+        width:
+            100%;
+
+        max-width:
+            68px;
+
+        aspect-ratio:
+            0.71;
+
+        justify-self:
+            center;
+
+    }
+
+
+    .solitaire-pile[data-pile="waste"] {
+
+        width:
+            100%;
+
+        max-width:
+            100px;
+
+    }
+
+
+    /* -----------------------------------------------------
+       CARDS
+
+       The card width is calculated FROM THE COLUMN.
+
+       This is what prevents horizontal overlap.
+    ----------------------------------------------------- */
+
+    .solitaire-card {
+
+        width:
+            100%;
+
+        height:
+            auto;
+
+        aspect-ratio:
+            0.71;
+
+        border-radius:
+            7px;
+
+    }
+
+
+    .solitaire-column >
+    .solitaire-card {
+
+        left:
+            0;
+
+        transform:
+            none;
+
+    }
+
+
+    /* -----------------------------------------------------
+       CARD TEXT
+    ----------------------------------------------------- */
+
+    .solitaire-card-corner {
+
+        top:
+            4px;
+
+        left:
+            4px;
+
+    }
+
+
+    .solitaire-card-rank {
+
+        font-size:
+            clamp(
+                11px,
+                3.6vw,
+                15px
+            );
+
+        line-height:
+            1;
+
+    }
+
+
+    .solitaire-card-suit {
+
+        font-size:
+            clamp(
+                10px,
+                3vw,
+                13px
+            );
+
+        line-height:
+            1;
+
+    }
+
+
+    .solitaire-card-center {
+
+        font-size:
+            clamp(
+                22px,
+                7vw,
+                30px
+            );
+
+    }
+
+
+    /* -----------------------------------------------------
+       TABLEAU
+    ----------------------------------------------------- */
+
+    .solitaire-tableau {
+
+        width:
+            100%;
+
+        grid-template-columns:
+            repeat(
+                7,
+                minmax(
+                    0,
+                    1fr
+                )
+            );
+
+        gap:
+            3px;
+
+        min-height:
+            340px;
+
+        padding-bottom:
+            150px;
+
+        overflow:
+            visible;
+
+    }
+
+
+    .solitaire-column {
+
+        width:
+            100%;
+
+        min-width:
+            0;
+
+        min-height:
+            95px;
+
+    }
+
+
+    /* -----------------------------------------------------
+       EMPTY COLUMN
+    ----------------------------------------------------- */
+
+    .solitaire-column >
+    .solitaire-pile {
+
+        width:
+            100%;
+
+        max-width:
+            none;
+
+        aspect-ratio:
+            0.71;
+
+    }
+
+
+    /* -----------------------------------------------------
+       DRAGGING
+    ----------------------------------------------------- */
+
+    .solitaire-card-dragging {
+
+        transform:
+            scale(1.05);
+
+        z-index:
+            9999;
+
+    }
+
+}
+
+
+/* =========================================================
+   29. VERY SMALL PHONE
+========================================================= */
+
+@media (max-width: 400px) {
+
+    #solitaireBoard {
+
+        padding:
+            6px 3px 140px;
+
+    }
+
+
+    .solitaire-top-row {
+
+        gap:
+            4px;
+
+    }
+
+
+    .solitaire-tableau {
+
+        gap:
+            2px;
+
+        padding-bottom:
+            160px;
+
+    }
+
+
+    .solitaire-card {
+
+        border-radius:
+            6px;
+
+    }
+
+
+    .solitaire-card-corner {
+
+        top:
+            3px;
+
+        left:
+            3px;
+
+    }
+
+
+    .solitaire-card-rank {
+
+        font-size:
+            10px;
+
+    }
+
+
+    .solitaire-card-suit {
+
+        font-size:
+            9px;
+
+    }
+
+
+    .solitaire-card-center {
+
+        font-size:
+            20px;
+
+    }
+
+}
+
+
+/* =========================================================
+   30. LANDSCAPE PHONE
+========================================================= */
+
+@media (
+    max-width: 900px
+)
+and (
+    orientation: landscape
+) {
+
+    #solitaireBoard {
+
+        padding:
+            10px 14px 100px;
+
+    }
+
+
+    .solitaire-top-row {
+
+        margin-bottom:
+            18px;
+
+    }
+
+
+    .solitaire-tableau {
+
+        min-height:
+            300px;
+
+        padding-bottom:
+            110px;
+
+    }
+
+}
+
+
+/* =========================================================
+   31. TOUCH DEVICES
+========================================================= */
+
+@media (hover: none) {
+
+    .solitaire-card {
+
+        -webkit-tap-highlight-color:
+            transparent;
+
+    }
+
+
+    .solitaire-card:active {
+
+        filter:
+            brightness(0.96);
+
+    }
+
+}
+
+
+/* =========================================================
+   32. DESKTOP HOVER
+========================================================= */
+
+@media (hover: hover) {
+
+    .solitaire-card-face:hover {
+
+        box-shadow:
+            0 7px 14px
+            rgba(0,0,0,0.38);
+
+    }
+
+
+    .solitaire-waste-top:hover {
+
+        transform:
+            translateY(-2px);
+
+    }
+
+
+    .solitaire-pile[data-pile="stock"]:hover {
+
+        transform:
+            translateY(-2px);
+
+    }
+
+}
+
+
+/* =========================================================
+   33. ACCESSIBILITY
+========================================================= */
+
+.solitaire-card:focus-visible {
+
+    outline:
+        3px solid
+        var(--solitaire-gold);
+
+    outline-offset:
+        2px;
+
+}
+
+
+/* =========================================================
+   34. REDUCE MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .solitaire-card {
+
+        transition:
+            none;
+
+    }
+
 }
 /* =========================================================
    DIGICAFE CAFÉ SLOTS
@@ -8184,1878 +8740,500 @@ html {
 }
 /* =========================================================
    DIGICAFE BINGO
-   COMPLETE BINGO ROOM STYLING
+   COMPLETE RESPONSIVE STYLES
+   ---------------------------------------------------------
+   • DigiCafe navy / gold theme
+   • Mobile first
+   • Responsive 5 × 5 cards
+   • 1–4 cards supported
+   • Floating coffee meter
+   • Floating power-up reward
+   • Compact setup screen
+   • Desktop / tablet / mobile
+   • No horizontal number collapse
+   • No card overlap
 ========================================================= */
 
 
 /* =========================================================
-   01. BINGO ROOM
+   01. BINGO VARIABLES
 ========================================================= */
 
 .bingo-room {
-    width: min(100%, 1200px);
-    margin: 0 auto;
-    padding: 28px 20px 60px;
+
+    --bingo-navy-dark: #071426;
+    --bingo-navy: #0d2038;
+    --bingo-navy-soft: #16304f;
+
+    --bingo-gold: #d6b36a;
+    --bingo-gold-light: #f1d89b;
+
+    --bingo-white: #ffffff;
+    --bingo-background: #f4f7fb;
+    --bingo-card: #ffffff;
+
+    --bingo-text: #172033;
+    --bingo-text-soft: #667085;
+
+    --bingo-border: #dfe6ef;
+
+    --bingo-success: #2f8f68;
+    --bingo-success-soft: #e8f5ef;
+
+    --bingo-red: #b94a48;
+    --bingo-red-soft: #fbeceb;
+
+    --bingo-shadow:
+        0 18px 45px rgba(7, 20, 38, 0.12);
+
+    --bingo-small-shadow:
+        0 8px 22px rgba(7, 20, 38, 0.10);
+
+    --bingo-radius: 22px;
+
+    --bingo-card-gap: 10px;
+
     box-sizing: border-box;
-}
 
-.bingo-room[hidden] {
-    display: none !important;
 }
 
 
 /* =========================================================
-   02. HEADER
+   02. RESET
 ========================================================= */
 
-.bingo-header {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    gap: 24px;
+.bingo-room *,
+.bingo-room *::before,
+.bingo-room *::after {
 
-    padding: 24px;
-    margin-bottom: 24px;
+    box-sizing: border-box;
 
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 24px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(18, 29, 54, 0.98),
-            rgba(10, 18, 36, 0.98)
-        );
-
-    box-shadow:
-        0 18px 45px rgba(0, 0, 0, 0.25);
 }
 
 
-.bingo-title {
-    min-width: 0;
+.bingo-room button {
+
+    font: inherit;
+
 }
 
 
-.bingo-title h2 {
-    margin: 4px 0 5px;
+.bingo-room button:focus-visible {
 
-    font-size: clamp(1.7rem, 4vw, 2.5rem);
-    line-height: 1.1;
+    outline:
+        3px solid
+        var(--bingo-gold);
 
-    color: #ffffff;
-}
+    outline-offset: 3px;
 
-
-.bingo-title p {
-    margin: 0;
-
-    color: rgba(255, 255, 255, 0.65);
-}
-
-
-.game-eyebrow {
-    display: inline-block;
-
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.16em;
-
-    color: #d6b98c;
 }
 
 
 /* =========================================================
-   03. HEADER STATS
+   03. GAME ROOM
 ========================================================= */
 
-.bingo-stats {
-    display: flex;
-    gap: 10px;
-}
-
-
-.bingo-stat {
-    min-width: 78px;
-    padding: 11px 14px;
-
-    text-align: center;
-
-    border-radius: 15px;
-
-    background: rgba(255, 255, 255, 0.055);
-    border: 1px solid rgba(255, 255, 255, 0.07);
-}
-
-
-.bingo-stat span {
-    display: block;
-
-    margin-bottom: 4px;
-
-    font-size: 0.58rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-
-    color: rgba(255, 255, 255, 0.48);
-}
-
-
-.bingo-stat strong {
-    display: block;
-
-    font-size: 1.2rem;
-
-    color: #ffffff;
-}
-
-
-/* =========================================================
-   04. BACK BUTTON
-========================================================= */
-
-.game-secondary-button {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-
-    background: rgba(255, 255, 255, 0.05);
-
-    color: rgba(255, 255, 255, 0.8);
-
-    padding: 10px 15px;
-    border-radius: 12px;
-
-    cursor: pointer;
-
-    transition:
-        background 0.2s ease,
-        transform 0.2s ease;
-}
-
-
-.game-secondary-button:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateY(-1px);
-}
-
-
-/* =========================================================
-   05. MAIN GAME
-========================================================= */
-
-.bingo-game {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-
-/* =========================================================
-   06. GENERAL PANELS
-========================================================= */
-
-.bingo-card-selection,
-.bingo-daub-settings,
-.bingo-powerup,
-.bingo-cards-area,
-.bingo-called-area,
-.bingo-legend {
-    border: 1px solid rgba(255, 255, 255, 0.07);
-
-    border-radius: 22px;
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(19, 30, 56, 0.96),
-            rgba(11, 20, 39, 0.96)
-        );
-
-    box-shadow:
-        0 12px 30px rgba(0, 0, 0, 0.16);
-}
-
-
-/* =========================================================
-   07. CARD SELECTION
-========================================================= */
-
-.bingo-card-selection {
-    padding: 22px;
-}
-
-
-.bingo-selection-heading h3,
-.bingo-setting-heading h3,
-.bingo-powerup-header h3 {
-    margin: 4px 0 5px;
-
-    color: #ffffff;
-    font-size: 1.2rem;
-}
-
-
-.bingo-selection-heading p,
-.bingo-setting-heading p,
-.bingo-powerup-header p {
-    margin: 0;
-
-    color: rgba(255, 255, 255, 0.55);
-    font-size: 0.86rem;
-}
-
-
-.bingo-card-options {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-
-    margin-top: 18px;
-}
-
-
-.bingo-card-option {
-    min-height: 70px;
-
-    padding: 12px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 15px;
-
-    background: rgba(255, 255, 255, 0.035);
-
-    color: rgba(255, 255, 255, 0.72);
-
-    cursor: pointer;
-
-    transition:
-        transform 0.2s ease,
-        border-color 0.2s ease,
-        background 0.2s ease;
-}
-
-
-.bingo-card-option span:first-child {
-    font-size: 0.82rem;
-    font-weight: 800;
-}
-
-
-.bingo-card-option span:last-child {
-    font-size: 0.7rem;
-    color: rgba(255, 255, 255, 0.45);
-}
-
-
-.bingo-card-option:hover {
-    transform: translateY(-2px);
-    background: rgba(255, 255, 255, 0.065);
-}
-
-
-.bingo-card-option.active {
-    border-color: rgba(214, 185, 140, 0.75);
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(214, 185, 140, 0.16),
-            rgba(214, 185, 140, 0.06)
-        );
-
-    color: #ffffff;
-}
-
-
-.bingo-card-option.active span:last-child {
-    color: #d6b98c;
-}
-
-
-/* =========================================================
-   08. CREDIT INFO
-========================================================= */
-
-.bingo-credit-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    margin-top: 16px;
-    padding-top: 14px;
-
-    border-top: 1px solid rgba(255, 255, 255, 0.07);
-}
-
-
-.bingo-credit-info span {
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-
-    color: rgba(255, 255, 255, 0.45);
-}
-
-
-.bingo-credit-info strong {
-    font-size: 1.15rem;
-    color: #d6b98c;
-}
-
-
-/* =========================================================
-   09. DAUB SETTINGS
-========================================================= */
-
-.bingo-daub-settings {
-    padding: 22px;
-}
-
-
-.bingo-daub-options {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-
-    margin-top: 18px;
-}
-
-
-.bingo-daub-option {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-
-    padding: 15px;
-
-    text-align: left;
-
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-
-    background: rgba(255, 255, 255, 0.035);
-
-    color: #ffffff;
-
-    cursor: pointer;
-
-    transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.2s ease;
-}
-
-
-.bingo-daub-option:hover {
-    transform: translateY(-1px);
-}
-
-
-.bingo-daub-option.active {
-    border-color: rgba(214, 185, 140, 0.65);
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(214, 185, 140, 0.14),
-            rgba(255, 255, 255, 0.035)
-        );
-}
-
-
-.bingo-daub-icon {
-    width: 42px;
-    height: 42px;
-
-    display: grid;
-    place-items: center;
-
-    flex-shrink: 0;
-
-    border-radius: 13px;
-
-    background: rgba(255, 255, 255, 0.06);
-
-    font-size: 1.25rem;
-}
-
-
-.bingo-daub-info {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-
-.bingo-daub-info strong {
-    font-size: 0.9rem;
-}
-
-
-.bingo-daub-info small {
-    color: rgba(255, 255, 255, 0.48);
-    line-height: 1.35;
-}
-
-
-/* =========================================================
-   10. POWER-UP ROOM
-========================================================= */
-
-.bingo-powerup {
-    position: relative;
-
-    padding: 22px;
-
-    overflow: hidden;
-}
-
-
-.bingo-powerup-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 20px;
-}
-
-
-/* =========================================================
-   11. POWER-UP TIMER
-========================================================= */
-
-.bingo-powerup-timer {
-    flex-shrink: 0;
-
-    padding: 8px 12px;
-
-    border-radius: 10px;
-
-    background: rgba(255, 255, 255, 0.05);
-
-    color: rgba(255, 255, 255, 0.55);
-
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-}
-
-
-/* =========================================================
-   12. COFFEE XP METER
-========================================================= */
-
-.bingo-powerup-meter {
-    position: relative;
-
-    height: 115px;
-
-    margin: 20px auto 0;
-
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-
-    overflow: hidden;
-}
-
-
-/*
- * The actual coffee cup.
- */
-
-.bingo-powerup-meter::before {
-    content: "☕";
-
-    position: relative;
-    z-index: 2;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 96px;
-    height: 92px;
-
-    font-size: 4.5rem;
-    line-height: 1;
-
-    filter:
-        drop-shadow(
-            0 8px 15px rgba(0, 0, 0, 0.3)
-        );
-
-    transition:
-        transform 0.3s ease;
-}
-
-
-/*
- * Coffee filling glow.
- */
-
-.bingo-powerup-progress {
-    position: absolute;
-
-    left: 50%;
-    bottom: 14px;
-
-    transform: translateX(-50%);
-
-    width: 52px;
-
-    height: 0%;
-
-    max-height: 45px;
-
-    border-radius:
-        0 0 18px 18px;
-
-    background:
-        linear-gradient(
-            to top,
-            rgba(111, 70, 42, 0.95),
-            rgba(201, 143, 91, 0.95)
-        );
-
-    box-shadow:
-        0 0 18px rgba(201, 143, 91, 0.3);
-
-    transition:
-        height 0.55s cubic-bezier(.2,.8,.2,1);
-}
-
-
-/*
- * Hide the normal progressbar look.
- * JS still controls its width.
- */
-
-.bingo-powerup-meter {
-    background: transparent;
-}
-
-
-/*
- * The XP information below the cup.
- */
-
-.bingo-powerup-meter-info {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-
-    margin-top: 4px;
-}
-
-
-.bingo-powerup-meter-info span {
-    font-size: 0.62rem;
-    font-weight: 800;
-    letter-spacing: 0.12em;
-
-    color: rgba(255, 255, 255, 0.45);
-}
-
-
-.bingo-powerup-meter-info strong {
-    color: #d6b98c;
-    font-size: 0.85rem;
-}
-
-
-/* =========================================================
-   13. POWER-UP STATUS
-========================================================= */
-
-.bingo-powerup-status {
-    display: flex;
-    align-items: center;
-    gap: 13px;
-
-    margin-top: 18px;
-    padding: 14px;
-
-    border-radius: 15px;
-
-    background: rgba(255, 255, 255, 0.035);
-}
-
-
-.bingo-powerup-status-icon {
-    width: 38px;
-    height: 38px;
-
-    display: grid;
-    place-items: center;
-
-    flex-shrink: 0;
-
-    border-radius: 12px;
-
-    background: rgba(214, 185, 140, 0.1);
-
-    font-size: 1.15rem;
-}
-
-
-.bingo-powerup-status div {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-
-.bingo-powerup-status strong {
-    color: #ffffff;
-    font-size: 0.82rem;
-}
-
-
-.bingo-powerup-status small {
-    color: rgba(255, 255, 255, 0.5);
-}
-
-
-/* =========================================================
-   14. POWER-UP OPTIONS
-========================================================= */
-
-.bingo-powerup-options {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-
-    margin-top: 14px;
-}
-
-
-.bingo-powerup-option {
-    position: relative;
-
-    display: grid;
-    grid-template-columns: auto 1fr;
-    grid-template-rows: auto auto;
-    column-gap: 11px;
-
-    padding: 14px;
-
-    text-align: left;
-
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 16px;
-
-    background: rgba(255, 255, 255, 0.035);
-
-    color: #ffffff;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.2s ease,
-        border-color 0.2s ease,
-        background 0.2s ease;
-}
-
-
-.bingo-powerup-option:not(:disabled):hover {
-    transform: translateY(-2px);
-
-    border-color:
-        rgba(214, 185, 140, 0.55);
-
-    background:
-        rgba(214, 185, 140, 0.08);
-}
-
-
-.bingo-powerup-option:disabled {
-    opacity: 0.42;
-    cursor: not-allowed;
-}
-
-
-.bingo-powerup-icon {
-    grid-row: span 2;
-
-    width: 40px;
-    height: 40px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 12px;
-
-    background: rgba(255, 255, 255, 0.06);
-
-    font-size: 1.25rem;
-}
-
-
-.bingo-powerup-info {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-}
-
-
-.bingo-powerup-info strong {
-    font-size: 0.78rem;
-}
-
-
-.bingo-powerup-info small {
-    font-size: 0.66rem;
-    line-height: 1.35;
-
-    color: rgba(255, 255, 255, 0.48);
-}
-
-
-.bingo-powerup-cost {
-    grid-column: 2;
-
-    margin-top: 5px;
-
-    font-size: 0.55rem;
-    font-weight: 900;
-    letter-spacing: 0.1em;
-
-    color: #d6b98c;
-}
-
-
-/* =========================================================
-   15. POWER-UP COOLDOWN
-========================================================= */
-
-.bingo-powerup-cooldown {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 7px;
-
-    margin-top: 14px;
-    padding: 10px 14px;
-
-    border-radius: 12px;
-
-    background: rgba(100, 130, 180, 0.1);
-
-    color: rgba(255, 255, 255, 0.65);
-
-    font-size: 0.72rem;
-}
-
-
-.bingo-powerup-cooldown[hidden] {
-    display: none;
-}
-
-
-/* =========================================================
-   16. CALLER
-========================================================= */
-
-.bingo-caller {
-    position: relative;
-
-    padding: 32px 20px;
-
-    text-align: center;
-
-    border-radius: 24px;
-
-    background:
-        radial-gradient(
-            circle at center,
-            rgba(214, 185, 140, 0.12),
-            transparent 55%
-        ),
-        linear-gradient(
-            145deg,
-            rgba(20, 31, 57, 0.98),
-            rgba(8, 16, 32, 0.98)
-        );
-
-    border: 1px solid rgba(214, 185, 140, 0.15);
-
-    box-shadow:
-        0 18px 40px rgba(0, 0, 0, 0.22);
-}
-
-
-.bingo-caller-label {
-    display: block;
-
-    margin-bottom: 7px;
-
-    font-size: 0.65rem;
-    font-weight: 900;
-    letter-spacing: 0.16em;
-
-    color: #d6b98c;
-}
-
-
-.bingo-current-letter {
-    font-size: 1rem;
-    font-weight: 900;
-    letter-spacing: 0.25em;
-
-    color: rgba(255, 255, 255, 0.55);
-}
-
-
-.bingo-current-number {
-    margin: 2px 0;
-
-    font-size: clamp(4rem, 12vw, 7rem);
-    line-height: 0.95;
-    font-weight: 900;
-
-    color: #ffffff;
-
-    text-shadow:
-        0 8px 25px rgba(0, 0, 0, 0.3);
-}
-
-
-.bingo-result {
-    min-height: 22px;
-
-    margin: 12px 0 0;
-
-    color: rgba(255, 255, 255, 0.62);
-
-    font-size: 0.85rem;
-}
-
-
-/* =========================================================
-   17. CARDS AREA
-========================================================= */
-
-.bingo-cards-area {
-    padding: 22px;
-
-    /*
-     * IMPORTANT:
-     * Never hide or clip the cards.
-     */
-
-    overflow: visible;
-}
-
-
-.bingo-cards-heading {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    margin-bottom: 16px;
-}
-
-
-.bingo-cards-heading span:first-child {
-    font-size: 0.68rem;
-    font-weight: 900;
-    letter-spacing: 0.12em;
-
-    color: rgba(255, 255, 255, 0.55);
-}
-
-
-.bingo-cards-heading span:last-child {
-    padding: 5px 9px;
-
-    border-radius: 8px;
-
-    background: rgba(214, 185, 140, 0.1);
-
-    color: #d6b98c;
-
-    font-size: 0.62rem;
-    font-weight: 800;
-}
-
-
-/* =========================================================
-   18. CARDS GRID
-========================================================= */
-
-.bingo-cards {
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(
-                min(100%, 280px),
-                1fr
-            )
-        );
-
-    gap: 18px;
+.bingo-room {
 
     width: 100%;
-}
 
-
-/* =========================================================
-   19. INDIVIDUAL CARD
-========================================================= */
-
-.bingo-card {
-    min-width: 0;
-
-    padding: 14px;
-
-    border-radius: 18px;
+    min-height: 100%;
 
     background:
-        linear-gradient(
-            145deg,
-            rgba(29, 41, 70, 0.98),
-            rgba(13, 23, 44, 0.98)
-        );
-
-    border: 1px solid rgba(255, 255, 255, 0.08);
-
-    box-shadow:
-        0 10px 25px rgba(0, 0, 0, 0.18);
-
-    transition:
-        transform 0.25s ease,
-        border-color 0.25s ease,
-        box-shadow 0.25s ease;
-}
-
-
-.bingo-card h3 {
-    margin: 0 0 11px;
-
-    text-align: center;
-
-    color: rgba(255, 255, 255, 0.8);
-
-    font-size: 0.8rem;
-    font-weight: 800;
-}
-
-
-/* =========================================================
-   20. BINGO GRID
-========================================================= */
-
-.bingo-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(5, minmax(0, 1fr));
-
-    gap: 5px;
-
-    width: 100%;
-}
-
-
-/* =========================================================
-   21. BINGO CELLS
-========================================================= */
-
-.bingo-cell {
-    aspect-ratio: 1;
-
-    min-width: 0;
-
-    display: grid;
-    place-items: center;
-
-    padding: 0;
-
-    border: 1px solid rgba(255, 255, 255, 0.07);
-    border-radius: 8px;
-
-    background:
-        rgba(255, 255, 255, 0.045);
-
-    color: rgba(255, 255, 255, 0.82);
-
-    font-size: clamp(0.65rem, 2vw, 0.9rem);
-    font-weight: 800;
-
-    cursor: pointer;
-
-    transition:
-        background 0.18s ease,
-        border-color 0.18s ease,
-        transform 0.18s ease,
-        color 0.18s ease;
-}
-
-
-button.bingo-cell:hover {
-    transform: scale(1.04);
-
-    background:
-        rgba(255, 255, 255, 0.09);
-}
-
-
-.bingo-cell.bingo-header {
-    aspect-ratio: auto;
-
-    min-height: 32px;
-
-    border: none;
-
-    background:
-        rgba(214, 185, 140, 0.12);
-
-    color: #d6b98c;
-
-    cursor: default;
-
-    font-size: 0.72rem;
-}
-
-
-button.bingo-cell.called {
-    border-color:
-        rgba(214, 185, 140, 0.6);
-
-    background:
-        rgba(214, 185, 140, 0.12);
-
-    color: #ffffff;
-}
-
-
-button.bingo-cell.marked {
-    border-color:
-        rgba(116, 191, 150, 0.65);
-
-    background:
-        rgba(116, 191, 150, 0.18);
-
-    color: #ffffff;
-
-    box-shadow:
-        inset 0 0 0 1px
-        rgba(116, 191, 150, 0.12);
-}
-
-
-button.bingo-cell.called.marked {
-    background:
-        linear-gradient(
-            145deg,
-            rgba(116, 191, 150, 0.25),
-            rgba(214, 185, 140, 0.15)
-        );
-}
-
-
-.bingo-cell.free {
-    background:
-        linear-gradient(
-            145deg,
-            rgba(214, 185, 140, 0.2),
-            rgba(214, 185, 140, 0.08)
-        );
-
-    border-color:
-        rgba(214, 185, 140, 0.4);
-
-    color: #d6b98c;
-
-    cursor: default;
-}
-
-
-/* =========================================================
-   22. WINNING CARD
-========================================================= */
-
-.bingo-card.bingo-winner {
-    border-color:
-        rgba(214, 185, 140, 0.85);
-
-    box-shadow:
-        0 0 0 2px rgba(214, 185, 140, 0.12),
-        0 18px 45px rgba(0, 0, 0, 0.25);
-
-    animation:
-        bingoWinnerPulse 1.4s ease-in-out infinite;
-}
-
-
-@keyframes bingoWinnerPulse {
-
-    0%,
-    100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.015);
-    }
-
-}
-
-
-/* =========================================================
-   23. CONTROLS
-========================================================= */
-
-.bingo-controls {
-    display: grid;
-
-    grid-template-columns:
-        minmax(0, 1.5fr)
-        minmax(0, 1fr)
-        minmax(0, 1fr);
-
-    gap: 10px;
-}
-
-
-.bingo-controls button {
-    min-height: 58px;
-
-    border-radius: 15px;
-
-    border: 1px solid rgba(255, 255, 255, 0.08);
-
-    font-weight: 900;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.2s ease,
-        filter 0.2s ease,
-        background 0.2s ease;
-}
-
-
-.bingo-controls button:hover:not(:disabled) {
-    transform: translateY(-2px);
-    filter: brightness(1.08);
-}
-
-
-.bingo-controls button:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
-
-
-.bingo-call-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #d6b98c,
-            #a98557
-        );
-
-    color: #111a2d;
-
-    border: none !important;
-}
-
-
-.bingo-call-icon {
-    font-size: 1.25rem;
-}
-
-
-.bingo-auto-button {
-    background:
-        rgba(255, 255, 255, 0.055);
-
-    color: #ffffff;
-}
-
-
-.bingo-auto-button[aria-pressed="true"] {
-    background:
-        rgba(214, 185, 140, 0.15);
-
-    border-color:
-        rgba(214, 185, 140, 0.5);
-}
-
-
-.bingo-new-button {
-    background:
-        rgba(255, 255, 255, 0.04);
-
-    color: rgba(255, 255, 255, 0.72);
-}
-
-
-/* =========================================================
-   24. CALLED NUMBERS
-========================================================= */
-
-.bingo-called-area {
-    padding: 20px;
-}
-
-
-.bingo-section-heading {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    margin-bottom: 14px;
-}
-
-
-.bingo-section-heading > span:first-child {
-    font-size: 0.68rem;
-    font-weight: 900;
-    letter-spacing: 0.12em;
-
-    color: rgba(255, 255, 255, 0.5);
-}
-
-
-.bingo-section-heading > span:last-child {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 0.72rem;
-}
-
-
-.bingo-section-heading strong {
-    color: #d6b98c;
-}
-
-
-.bingo-called-numbers {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-
-    min-height: 34px;
-}
-
-
-.bingo-called-number {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-
-    min-width: 43px;
-    height: 32px;
-
-    padding: 0 8px;
-
-    border-radius: 9px;
-
-    background:
-        rgba(214, 185, 140, 0.1);
-
-    border: 1px solid
-        rgba(214, 185, 140, 0.18);
-
-    color: #d6b98c;
-
-    font-size: 0.66rem;
-    font-weight: 900;
-}
-
-
-.bingo-no-numbers {
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 0.75rem;
-}
-
-
-/* =========================================================
-   25. LEGEND
-========================================================= */
-
-.bingo-legend {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-
-    padding: 15px 20px;
-}
-
-
-.bingo-legend-item {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-
-    color: rgba(255, 255, 255, 0.5);
-
-    font-size: 0.68rem;
-}
-
-
-.bingo-legend-dot {
-    width: 9px;
-    height: 9px;
-
-    border-radius: 50%;
-}
-
-
-.bingo-legend-dot.called {
-    background: #d6b98c;
-}
-
-
-.bingo-legend-dot.marked {
-    background: #74bf96;
-}
-
-
-.bingo-legend-dot.free {
-    background: #a98c62;
-}
-
-
-/* =========================================================
-   26. WIN SCREEN
-========================================================= */
-
-.bingo-win {
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 9999;
-
-    display: grid;
-    place-items: center;
-
-    padding: 20px;
-
-    background:
-        rgba(5, 10, 22, 0.84);
-
-    backdrop-filter:
-        blur(10px);
-}
-
-
-.bingo-win[hidden] {
-    display: none !important;
-}
-
-
-.bingo-win-card {
-    width: min(100%, 470px);
-
-    padding: 34px 28px;
-
-    text-align: center;
-
-    border-radius: 26px;
-
-    border: 1px solid
-        rgba(214, 185, 140, 0.35);
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(28, 42, 72, 0.99),
-            rgba(10, 18, 36, 0.99)
-        );
-
-    box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.5);
-}
-
-
-.bingo-win-icon {
-    margin-bottom: 10px;
-
-    font-size: 2.6rem;
-}
-
-
-.bingo-win-card h2 {
-    margin: 7px 0;
-
-    font-size: 3rem;
-
-    color: #d6b98c;
-}
-
-
-.bingo-win-card p {
-    margin: 0 auto 22px;
-
-    max-width: 350px;
-
-    color: rgba(255, 255, 255, 0.65);
-
-    line-height: 1.5;
-}
-
-
-.bingo-final-stats {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-
-    margin-bottom: 22px;
-}
-
-
-.bingo-final-stats > div {
-    padding: 12px;
-
-    border-radius: 13px;
-
-    background:
-        rgba(255, 255, 255, 0.045);
-}
-
-
-.bingo-final-stats span {
-    display: block;
-
-    margin-bottom: 4px;
-
-    font-size: 0.56rem;
-    font-weight: 900;
-    letter-spacing: 0.1em;
-
-    color: rgba(255, 255, 255, 0.4);
-}
-
-
-.bingo-final-stats strong {
-    font-size: 1.15rem;
-
-    color: #ffffff;
-}
-
-
-.bingo-win-card .game-button {
-    width: 100%;
-
-    min-height: 52px;
-
-    border: none;
-    border-radius: 14px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #d6b98c,
-            #a98557
-        );
-
-    color: #111a2d;
-
-    font-weight: 900;
-
-    cursor: pointer;
-}
-
-
-/* =========================================================
-   27. NOTE
-========================================================= */
-
-.bingo-note {
-    margin: 0;
-
-    text-align: center;
-
-    color: rgba(255, 255, 255, 0.35);
-
-    font-size: 0.68rem;
-}
-
-
-/* =========================================================
-   28. TABLET
-========================================================= */
-
-@media (max-width: 850px) {
-
-    .bingo-header {
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
-
-
-    .bingo-stats {
-        width: 100%;
-    }
-
-
-    .bingo-stat {
-        flex: 1;
-    }
-
-
-    .bingo-powerup-options {
-        grid-template-columns: 1fr;
-    }
-
-
-    .bingo-cards {
-        grid-template-columns:
-            repeat(
-                2,
-                minmax(0, 1fr)
-            );
-    }
-
-}
-
-
-/* =========================================================
-   29. MOBILE
-========================================================= */
-
-@media (max-width: 600px) {
-
-    .bingo-room {
-        width: 100%;
-        padding: 14px 10px 40px;
-    }
-
-
-    .bingo-game {
-        gap: 13px;
-    }
-
-
-    .bingo-header,
-    .bingo-card-selection,
-    .bingo-daub-settings,
-    .bingo-powerup,
-    .bingo-cards-area,
-    .bingo-called-area {
-        border-radius: 18px;
-    }
-
-
-    .bingo-header {
-        padding: 17px;
-    }
-
-
-    .bingo-title h2 {
-        font-size: 1.65rem;
-    }
-
-
-    .bingo-stats {
-        gap: 6px;
-    }
-
-
-    .bingo-stat {
-        min-width: 0;
-        padding: 9px 6px;
-    }
-
-
-    .bingo-stat strong {
-        font-size: 1rem;
-    }
-
-
-    .bingo-card-selection,
-    .bingo-daub-settings,
-    .bingo-powerup,
-    .bingo-cards-area,
-    .bingo-called-area {
-        padding: 16px;
-    }
-
-
-    .bingo-card-options {
-        grid-template-columns:
-            repeat(2, 1fr);
-    }
-
-
-    .bingo-daub-options {
-        grid-template-columns: 1fr;
-    }
-
-
-    .bingo-powerup-header {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-
-    .bingo-powerup-timer {
-        align-self: flex-start;
-    }
-
-
-    .bingo-cards {
-        grid-template-columns: 1fr;
-        gap: 14px;
-    }
-
-
-    /*
-     * Keep the Bingo card large enough to tap.
-     */
-
-    .bingo-card {
-        width: 100%;
-        padding: 12px;
-    }
-
-
-    .bingo-grid {
-        gap: 4px;
-    }
-
-
-    .bingo-cell {
-        border-radius: 7px;
-
-        font-size:
-            clamp(
-                0.7rem,
-                4vw,
-                0.9rem
-            );
-    }
-
-
-    .bingo-cell.bingo-header {
-        min-height: 28px;
-    }
-
-
-    .bingo-controls {
-        grid-template-columns: 1fr 1fr;
-    }
-
-
-    .bingo-call-button {
-        grid-column: 1 / -1;
-    }
-
-
-    .bingo-controls button {
-        min-height: 52px;
-    }
-
-
-    .bingo-current-number {
-        font-size: 4.5rem;
-    }
-
-
-    .bingo-caller {
-        padding: 25px 15px;
-    }
-
-
-    .bingo-called-numbers {
-        max-height: 180px;
-        overflow-y: auto;
-    }
-
-
-    .bingo-win-card {
-        padding: 28px 20px;
-    }
-
-
-    .bingo-win-card h2 {
-        font-size: 2.5rem;
-    }
-
-}
-
-
-/* =========================================================
-   30. SMALL PHONES
-========================================================= */
-
-@media (max-width: 380px) {
-
-    .bingo-room {
-        padding-left: 7px;
-        padding-right: 7px;
-    }
-
-
-    .bingo-card {
-        padding: 9px;
-    }
-
-
-    .bingo-grid {
-        gap: 3px;
-    }
-
-
-    .bingo-cell {
-        border-radius: 5px;
-        font-size: 0.65rem;
-    }
-
-
-    .bingo-card-option {
-        min-height: 62px;
-    }
-
-
-    .bingo-current-number {
-        font-size: 4rem;
-    }
-
-}
-
-
-/* =========================================================
-   31. REDUCED MOTION
-========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    .bingo-card,
-    .bingo-card-option,
-    .bingo-cell,
-    .bingo-controls button,
-    .bingo-powerup-option,
-    .game-secondary-button {
-        transition: none;
-    }
-
-
-    .bingo-card.bingo-winner {
-        animation: none;
-    }
-
-}
-/* =========================================================
-   DIGICAFE CHESS
-   ---------------------------------------------------------
-   Chess Room CSS
-   • DigiCafe navy / gold aesthetic
-   • Compact game-room layout
-   • Responsive chessboard
-   • Desktop / tablet / mobile
-   • Touch-friendly squares
-   • Game status
-   • Controls
-   • Move history
-   • Selected / legal / capture states
-   • Check / last-move states
-========================================================= */
-
-
-/* =========================================================
-   01. CHESS ROOM
-========================================================= */
-
-.chess-room {
-
-    width:
-        min(
-            calc(100% - 32px),
-            1180px
-        );
-
-    margin:
-        0 auto;
-
-    padding:
-        28px 0 60px;
-
-    box-sizing:
-        border-box;
+        var(--bingo-background);
 
     color:
-        var(--text, #172033);
+        var(--bingo-text);
+
+    position: relative;
 
 }
 
 
 /* =========================================================
-   02. CHESS HEADER
+   04. GAME HEADER
 ========================================================= */
 
-.chess-header {
+.bingo-game-header {
 
-    text-align:
-        center;
+    width: 100%;
 
-    margin-bottom:
-        22px;
+    min-height: 68px;
+
+    padding:
+        12px
+        16px;
+
+    display: grid;
+
+    grid-template-columns:
+        auto
+        1fr
+        auto;
+
+    align-items: center;
+
+    gap: 12px;
+
+    background:
+        var(--bingo-navy-dark);
+
+    color:
+        var(--bingo-white);
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
 
 }
 
 
-.chess-header h1,
-.chess-header h2 {
+/* =========================================================
+   05. BACK BUTTON
+========================================================= */
 
-    margin:
-        0;
+.bingo-back-button {
+
+    border:
+        1px solid
+        rgba(255,255,255,0.20);
+
+    background:
+        rgba(255,255,255,0.08);
+
+    color:
+        var(--bingo-white);
+
+    border-radius:
+        999px;
+
+    padding:
+        8px 12px;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
 
 }
 
 
-.chess-header h1 {
+.bingo-back-button:hover {
 
-    font-family:
-        "DM Serif Display",
-        Georgia,
-        serif;
+    background:
+        rgba(255,255,255,0.15);
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+/* =========================================================
+   06. TITLE
+========================================================= */
+
+.bingo-heading {
+
+    min-width: 0;
+
+}
+
+
+.bingo-heading .game-eyebrow {
+
+    color:
+        var(--bingo-gold-light);
 
     font-size:
-        clamp(
-            2rem,
-            4vw,
-            3rem
-        );
+        0.62rem;
+
+    letter-spacing:
+        0.14em;
+
+}
+
+
+.bingo-heading h2 {
+
+    margin:
+        2px 0 0;
+
+    color:
+        var(--bingo-white);
+
+    font-size:
+        1.15rem;
 
     line-height:
         1.1;
 
+}
+
+
+/* =========================================================
+   07. COFFEE METER
+========================================================= */
+
+.bingo-coffee-meter {
+
+    appearance: none;
+
+    border: 0;
+
+    background:
+        rgba(255,255,255,0.08);
+
     color:
-        var(--navy-dark, #071426);
+        var(--bingo-white);
+
+    min-width:
+        68px;
+
+    min-height:
+        44px;
+
+    padding:
+        5px 8px;
+
+    border-radius:
+        14px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    cursor: default;
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
 
 }
 
 
-.chess-header p {
-
-    max-width:
-        620px;
-
-    margin:
-        8px auto 0;
-
-    color:
-        var(--text-soft, #667085);
+.bingo-coffee-icon {
 
     font-size:
-        0.95rem;
+        1.25rem;
+
+    line-height:
+        1;
+
+}
+
+
+/* =========================================================
+   08. COFFEE PROGRESS
+========================================================= */
+
+.bingo-coffee-progress {
+
+    width:
+        24px;
+
+    height:
+        6px;
+
+    border-radius:
+        999px;
+
+    background:
+        rgba(255,255,255,0.18);
+
+    overflow:
+        hidden;
+
+    flex-shrink: 0;
+
+}
+
+
+.bingo-coffee-fill {
+
+    display: block;
+
+    width: 0%;
+
+    height: 100%;
+
+    border-radius:
+        inherit;
+
+    background:
+        var(--bingo-gold);
+
+    transition:
+        width 0.35s ease;
+
+}
+
+
+/* =========================================================
+   09. COFFEE COUNT
+========================================================= */
+
+.bingo-coffee-count {
+
+    font-size:
+        0.68rem;
+
+    font-weight:
+        700;
+
+    white-space:
+        nowrap;
+
+}
+
+
+/* =========================================================
+   10. COFFEE READY STATE
+========================================================= */
+
+.bingo-coffee-meter.ready {
+
+    background:
+        var(--bingo-gold);
+
+    color:
+        var(--bingo-navy-dark);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(214,179,106,0.18),
+        0 8px 25px
+        rgba(214,179,106,0.25);
+
+    animation:
+        bingoCoffeePulse 1.5s ease-in-out infinite;
+
+}
+
+
+.bingo-coffee-meter.ready
+.bingo-coffee-fill {
+
+    background:
+        var(--bingo-navy-dark);
+
+}
+
+
+@keyframes bingoCoffeePulse {
+
+    0%,
+    100% {
+
+        transform:
+            scale(1);
+
+    }
+
+    50% {
+
+        transform:
+            scale(1.04);
+
+    }
+
+}
+
+
+/* =========================================================
+   11. SETUP
+========================================================= */
+
+.bingo-setup {
+
+    min-height:
+        calc(100vh - 68px);
+
+    padding:
+        30px 16px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+}
+
+
+.bingo-setup-card {
+
+    width:
+        min(100%, 460px);
+
+    background:
+        var(--bingo-card);
+
+    border:
+        1px solid
+        var(--bingo-border);
+
+    border-radius:
+        var(--bingo-radius);
+
+    padding:
+        28px 20px;
+
+    box-shadow:
+        var(--bingo-shadow);
+
+    text-align:
+        center;
+
+}
+
+
+.bingo-setup-card
+.game-eyebrow {
+
+    color:
+        var(--bingo-gold);
+
+}
+
+
+.bingo-setup-card h1 {
+
+    margin:
+        8px 0;
+
+    color:
+        var(--bingo-navy-dark);
+
+    font-size:
+        clamp(2rem, 8vw, 3rem);
+
+}
+
+
+.bingo-setup-card > p {
+
+    margin:
+        0 auto 25px;
+
+    color:
+        var(--bingo-text-soft);
+
+    max-width:
+        340px;
 
     line-height:
         1.6;
@@ -10064,81 +9242,78 @@ button.bingo-cell.called.marked {
 
 
 /* =========================================================
-   03. CHESS PANEL
+   12. SETUP SECTIONS
 ========================================================= */
 
-.chess-panel {
+.bingo-setup-section {
 
-    width:
-        100%;
-
-    padding:
+    margin-top:
         22px;
 
-    box-sizing:
-        border-box;
+}
 
-    background:
-        var(--card, #ffffff);
 
-    border:
-        1px solid
-        var(--border, #dfe6ef);
+.bingo-setup-label {
 
-    border-radius:
-        var(--radius, 22px);
+    display:
+        block;
 
-    box-shadow:
-        0 10px 30px
-        rgba(
-            7,
-            20,
-            38,
-            0.07
-        );
+    margin-bottom:
+        10px;
+
+    color:
+        var(--bingo-text-soft);
+
+    font-size:
+        0.7rem;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.12em;
 
 }
 
 
 /* =========================================================
-   04. MAIN CHESS LAYOUT
+   13. CARD OPTIONS
 ========================================================= */
 
-.chess-layout {
+.bingo-card-options {
 
     display:
         grid;
 
     grid-template-columns:
-        minmax(
-            320px,
-            680px
-        )
-        minmax(
-            220px,
-            320px
-        );
-
-    justify-content:
-        center;
-
-    align-items:
-        start;
+        repeat(4, 1fr);
 
     gap:
-        28px;
+        8px;
 
 }
 
 
-/* =========================================================
-   05. BOARD AREA
-========================================================= */
+.bingo-card-option {
 
-.chess-board-area {
+    min-height:
+        72px;
 
-    width:
-        100%;
+    border:
+        1px solid
+        var(--bingo-border);
+
+    background:
+        var(--bingo-background);
+
+    color:
+        var(--bingo-text);
+
+    border-radius:
+        15px;
+
+    cursor:
+        pointer;
 
     display:
         flex;
@@ -10149,17 +9324,473 @@ button.bingo-cell.called.marked {
     align-items:
         center;
 
+    justify-content:
+        center;
+
+    gap:
+        2px;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.bingo-card-option strong {
+
+    font-size:
+        1.35rem;
+
+}
+
+
+.bingo-card-option small {
+
+    font-size:
+        0.62rem;
+
+    font-weight:
+        700;
+
+    color:
+        var(--bingo-text-soft);
+
+}
+
+
+.bingo-card-option:hover {
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        var(--bingo-gold);
+
+}
+
+
+.bingo-card-option.active {
+
+    background:
+        var(--bingo-navy);
+
+    border-color:
+        var(--bingo-navy);
+
+    color:
+        var(--bingo-white);
+
+}
+
+
+.bingo-card-option.active small {
+
+    color:
+        var(--bingo-gold-light);
+
 }
 
 
 /* =========================================================
-   06. PLAYER / TURN STATUS
+   14. DAUB OPTIONS
 ========================================================= */
 
-.chess-player-status {
+.bingo-daub-options {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap:
+        8px;
+
+}
+
+
+.bingo-daub-option {
+
+    min-height:
+        56px;
+
+    border:
+        1px solid
+        var(--bingo-border);
+
+    background:
+        var(--bingo-background);
+
+    color:
+        var(--bingo-text);
+
+    border-radius:
+        15px;
+
+    cursor:
+        pointer;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        8px;
+
+    transition:
+        0.2s ease;
+
+}
+
+
+.bingo-daub-option.active {
+
+    background:
+        var(--bingo-navy);
+
+    border-color:
+        var(--bingo-navy);
+
+    color:
+        var(--bingo-white);
+
+}
+
+
+/* =========================================================
+   15. CREDIT INFO
+========================================================= */
+
+.bingo-credit-info {
+
+    margin-top:
+        20px;
+
+    padding:
+        12px 15px;
+
+    border-radius:
+        14px;
+
+    background:
+        var(--bingo-background);
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+}
+
+
+.bingo-credit-info span {
+
+    font-size:
+        0.68rem;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.08em;
+
+    color:
+        var(--bingo-text-soft);
+
+}
+
+
+.bingo-credit-info strong {
+
+    color:
+        var(--bingo-navy);
+
+}
+
+
+/* =========================================================
+   16. START BUTTON
+========================================================= */
+
+.bingo-start-button {
 
     width:
         100%;
+
+    min-height:
+        54px;
+
+    margin-top:
+        18px;
+
+    border:
+        0;
+
+    border-radius:
+        15px;
+
+    background:
+        var(--bingo-gold);
+
+    color:
+        var(--bingo-navy-dark);
+
+    cursor:
+        pointer;
+
+    font-weight:
+        800;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        8px;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.bingo-start-button:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(214,179,106,0.30);
+
+}
+
+
+/* =========================================================
+   17. PLAY AREA
+========================================================= */
+
+.bingo-play-area {
+
+    width:
+        min(100%, 1250px);
+
+    margin:
+        0 auto;
+
+    padding:
+        12px;
+
+    position:
+        relative;
+
+}
+
+
+/* =========================================================
+   18. TOP STATS
+========================================================= */
+
+.bingo-top-bar {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap:
+        7px;
+
+    margin-bottom:
+        12px;
+
+}
+
+
+.bingo-top-stat {
+
+    background:
+        var(--bingo-card);
+
+    border:
+        1px solid
+        var(--bingo-border);
+
+    border-radius:
+        12px;
+
+    padding:
+        7px;
+
+    text-align:
+        center;
+
+}
+
+
+.bingo-top-stat span {
+
+    display:
+        block;
+
+    color:
+        var(--bingo-text-soft);
+
+    font-size:
+        0.56rem;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.08em;
+
+}
+
+
+.bingo-top-stat strong {
+
+    display:
+        block;
+
+    margin-top:
+        2px;
+
+    color:
+        var(--bingo-navy);
+
+    font-size:
+        0.95rem;
+
+}
+
+
+/* =========================================================
+   19. CALLER
+========================================================= */
+
+.bingo-caller {
+
+    width:
+        100%;
+
+    max-width:
+        420px;
+
+    margin:
+        8px auto 16px;
+
+    text-align:
+        center;
+
+}
+
+
+.bingo-caller-label {
+
+    display:
+        block;
+
+    color:
+        var(--bingo-text-soft);
+
+    font-size:
+        0.65rem;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.14em;
+
+}
+
+
+.bingo-current-letter {
+
+    margin-top:
+        5px;
+
+    color:
+        var(--bingo-gold);
+
+    font-size:
+        0.9rem;
+
+    font-weight:
+        900;
+
+}
+
+
+.bingo-current-number {
+
+    margin:
+        0;
+
+    color:
+        var(--bingo-navy-dark);
+
+    font-size:
+        clamp(3rem, 15vw, 5rem);
+
+    line-height:
+        0.95;
+
+    font-weight:
+        900;
+
+}
+
+
+.bingo-result {
+
+    margin:
+        7px auto 0;
+
+    color:
+        var(--bingo-text-soft);
+
+    font-size:
+        0.8rem;
+
+    line-height:
+        1.4;
+
+}
+
+
+/* =========================================================
+   20. CARDS AREA
+========================================================= */
+
+.bingo-cards-area {
+
+    width:
+        100%;
+
+}
+
+
+.bingo-cards-heading {
 
     display:
         flex;
@@ -10170,509 +9801,131 @@ button.bingo-cell.called.marked {
     justify-content:
         space-between;
 
-    gap:
-        12px;
-
     margin-bottom:
-        10px;
-
-    padding:
-        10px 14px;
-
-    box-sizing:
-        border-box;
-
-    border:
-        1px solid
-        var(--border, #dfe6ef);
-
-    border-radius:
-        12px;
-
-    background:
-        var(--background, #f4f7fb);
-
-}
-
-
-.chess-player-status strong {
+        9px;
 
     color:
-        var(--navy-dark, #071426);
+        var(--bingo-text-soft);
 
     font-size:
-        0.85rem;
-
-}
-
-
-.chess-player-status span {
-
-    color:
-        var(--text-soft, #667085);
-
-    font-size:
-        0.75rem;
+        0.65rem;
 
     font-weight:
-        700;
+        800;
+
+    letter-spacing:
+        0.08em;
+
+}
+
+
+.bingo-cards-heading span:last-child {
+
+    color:
+        var(--bingo-navy);
 
 }
 
 
 /* =========================================================
-   07. CHESS BOARD
+   21. CARDS CONTAINER
 ========================================================= */
 
-.chess-board {
+.bingo-cards {
+
+    width:
+        100%;
 
     display:
         grid;
 
     grid-template-columns:
-        repeat(
-            8,
-            1fr
-        );
-
-    grid-template-rows:
-        repeat(
-            8,
-            1fr
-        );
-
-    width:
-        min(
-            100%,
-            680px
-        );
-
-    aspect-ratio:
-        1 / 1;
-
-    overflow:
-        hidden;
-
-    border:
-        8px solid
-        var(--navy-dark, #071426);
-
-    border-radius:
-        10px;
-
-    box-sizing:
-        border-box;
-
-    background:
-        var(--navy-dark, #071426);
-
-    box-shadow:
-        0 14px 35px
-        rgba(
-            7,
-            20,
-            38,
-            0.18
-        );
-
-}
-
-
-/* =========================================================
-   08. CHESS SQUARE
-========================================================= */
-
-.chess-square {
-
-    position:
-        relative;
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
-    width:
-        100%;
-
-    height:
-        100%;
-
-    padding:
-        0;
-
-    border:
-        none;
-
-    border-radius:
-        0;
-
-    font-family:
-        inherit;
-
-    cursor:
-        pointer;
-
-    box-sizing:
-        border-box;
-
-    transition:
-        background 0.15s ease,
-        box-shadow 0.15s ease;
-
-}
-
-
-/* =========================================================
-   09. LIGHT SQUARE
-========================================================= */
-
-.chess-square.light {
-
-    background:
-        #f0dfbd;
-
-}
-
-
-/* =========================================================
-   10. DARK SQUARE
-========================================================= */
-
-.chess-square.dark {
-
-    background:
-        #49637c;
-
-}
-
-
-/* =========================================================
-   11. CHESS PIECES
-========================================================= */
-
-.chess-piece {
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
-    width:
-        86%;
-
-    height:
-        86%;
-
-    font-family:
-        "Arial Unicode MS",
-        "Segoe UI Symbol",
-        "Noto Sans Symbols 2",
-        serif;
-
-    font-size:
-        clamp(
-            2rem,
-            7vw,
-            4.6rem
-        );
-
-    line-height:
-        1;
-
-    user-select:
-        none;
-
-    pointer-events:
-        none;
-
-    transition:
-        transform 0.15s ease;
-
-}
-
-
-/* =========================================================
-   12. WHITE PIECES
-========================================================= */
-
-.chess-piece.white {
-
-    color:
-        #ffffff;
-
-    text-shadow:
-        0 2px 2px
-        rgba(
-            0,
-            0,
-            0,
-            0.45
-        );
-
-}
-
-
-/* =========================================================
-   13. BLACK PIECES
-========================================================= */
-
-.chess-piece.black {
-
-    color:
-        #111827;
-
-    text-shadow:
-        0 1px 1px
-        rgba(
-            255,
-            255,
-            255,
-            0.15
-        );
-
-}
-
-
-/* =========================================================
-   14. SELECTED SQUARE
-========================================================= */
-
-.chess-square.selected {
-
-    box-shadow:
-        inset 0 0 0 4px
-        var(--gold, #d6b36a);
-
-}
-
-
-/* =========================================================
-   15. LAST MOVE
-========================================================= */
-
-.chess-square.last-move {
-
-    box-shadow:
-        inset 0 0 0 999px
-        rgba(
-            214,
-            179,
-            106,
-            0.20
-        );
-
-}
-
-
-/* =========================================================
-   16. LEGAL MOVE
-========================================================= */
-
-.chess-square.legal-move::after {
-
-    content:
-        "";
-
-    position:
-        absolute;
-
-    width:
-        22%;
-
-    aspect-ratio:
-        1 / 1;
-
-    border-radius:
-        50%;
-
-    background:
-        rgba(
-            7,
-            20,
-            38,
-            0.30
-        );
-
-    pointer-events:
-        none;
-
-}
-
-
-/* =========================================================
-   17. LEGAL CAPTURE
-========================================================= */
-
-.chess-square.legal-capture::after {
-
-    content:
-        "";
-
-    position:
-        absolute;
-
-    inset:
-        8%;
-
-    border:
-        4px solid
-        rgba(
-            214,
-            179,
-            106,
-            0.85
-        );
-
-    border-radius:
-        50%;
-
-    pointer-events:
-        none;
-
-}
-
-
-/* =========================================================
-   18. KING IN CHECK
-========================================================= */
-
-.chess-square.in-check {
-
-    box-shadow:
-        inset 0 0 0 5px
-        rgba(
-            170,
-            50,
-            50,
-            0.85
-        ),
-        inset 0 0 25px
-        rgba(
-            170,
-            50,
-            50,
-            0.30
-        );
-
-}
-
-
-/* =========================================================
-   19. SQUARE HOVER
-========================================================= */
-
-.chess-square:hover {
-
-    filter:
-        brightness(1.06);
-
-}
-
-
-.chess-square:active {
-
-    filter:
-        brightness(0.96);
-
-}
-
-
-/* =========================================================
-   20. CHESS SIDE PANEL
-========================================================= */
-
-.chess-side-panel {
-
-    display:
-        flex;
-
-    flex-direction:
-        column;
+        minmax(0, 1fr);
 
     gap:
-        16px;
+        18px;
+
+    align-items:
+        start;
 
 }
 
 
 /* =========================================================
-   21. SIDE PANEL CARDS
+   22. INDIVIDUAL BINGO CARD
 ========================================================= */
 
-.chess-info-card {
+.bingo-card {
+
+    width:
+        100%;
+
+    max-width:
+        440px;
+
+    margin:
+        0 auto;
 
     padding:
-        16px;
-
-    box-sizing:
-        border-box;
+        8px;
 
     background:
-        var(--background, #f4f7fb);
+        var(--bingo-card);
 
     border:
         1px solid
-        var(--border, #dfe6ef);
+        var(--bingo-border);
 
     border-radius:
-        16px;
+        18px;
+
+    box-shadow:
+        var(--bingo-shadow);
 
 }
 
 
-.chess-info-card h3 {
+/*
+   Some existing Bingo JS implementations
+   use different names for the actual grid.
+   These selectors support the common structures.
+*/
 
-    margin:
-        0 0 8px;
+.bingo-card-grid,
+.bingo-grid,
+.bingo-card-table {
 
-    font-family:
-        "DM Serif Display",
-        Georgia,
-        serif;
+    width:
+        100%;
 
-    font-size:
-        1.2rem;
+    display:
+        grid;
 
-    font-weight:
-        400;
+    grid-template-columns:
+        repeat(5, minmax(0, 1fr));
 
-    color:
-        var(--navy-dark, #071426);
+    grid-template-rows:
+        repeat(5, minmax(0, 1fr));
 
-}
-
-
-.chess-info-card p {
-
-    margin:
-        0;
-
-    color:
-        var(--text-soft, #667085);
-
-    font-size:
-        0.82rem;
-
-    line-height:
-        1.5;
+    gap:
+        4px;
 
 }
 
 
 /* =========================================================
-   22. GAME STATUS
+   23. BINGO HEADER LETTERS
 ========================================================= */
 
-.chess-status {
+.bingo-letter,
+.bingo-column-header,
+.bingo-card-header {
+
+    min-width:
+        0;
+
+    aspect-ratio:
+        1 / 0.72;
 
     display:
         flex;
@@ -10683,136 +9936,109 @@ button.bingo-cell.called.marked {
     justify-content:
         center;
 
-    min-height:
-        48px;
-
-    padding:
-        10px 14px;
-
-    box-sizing:
-        border-box;
-
     border-radius:
-        12px;
+        8px;
 
     background:
-        var(--navy-dark, #071426);
+        var(--bingo-navy);
 
     color:
-        #ffffff;
+        var(--bingo-white);
+
+    font-size:
+        clamp(0.7rem, 3vw, 1.1rem);
+
+    font-weight:
+        900;
+
+}
+
+
+/* =========================================================
+   24. BINGO CELLS
+========================================================= */
+
+.bingo-cell,
+.bingo-number,
+.bingo-square {
+
+    min-width:
+        0;
+
+    width:
+        100%;
+
+    aspect-ratio:
+        1 / 1;
+
+    border:
+        1px solid
+        var(--bingo-border);
+
+    border-radius:
+        8px;
+
+    background:
+        var(--bingo-white);
+
+    color:
+        var(--bingo-text);
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
 
     text-align:
         center;
 
     font-size:
-        0.82rem;
-
-    font-weight:
-        700;
-
-    line-height:
-        1.4;
-
-}
-
-
-/* =========================================================
-   23. STATUS — CHECK
-========================================================= */
-
-.chess-status.check {
-
-    background:
-        #8f4a4a;
-
-}
-
-
-/* =========================================================
-   24. STATUS — GAME OVER
-========================================================= */
-
-.chess-status.game-over {
-
-    background:
-        var(--gold, #d6b36a);
-
-    color:
-        var(--navy-dark, #071426);
-
-}
-
-
-/* =========================================================
-   25. CHESS CONTROLS
-========================================================= */
-
-.chess-controls {
-
-    display:
-        flex;
-
-    flex-wrap:
-        wrap;
-
-    justify-content:
-        center;
-
-    gap:
-        8px;
-
-    margin-top:
-        14px;
-
-}
-
-
-.chess-controls button {
-
-    min-height:
-        42px;
-
-    padding:
-        0 16px;
-
-    border:
-        1px solid
-        var(--border, #dfe6ef);
-
-    border-radius:
-        10px;
-
-    background:
-        #ffffff;
-
-    color:
-        var(--navy-dark, #071426);
-
-    font-family:
-        inherit;
-
-    font-size:
-        0.75rem;
+        clamp(0.75rem, 3.7vw, 1.15rem);
 
     font-weight:
         800;
 
+    line-height:
+        1;
+
+    padding:
+        2px;
+
+    overflow:
+        hidden;
+
     cursor:
         pointer;
 
+    user-select:
+        none;
+
+    -webkit-tap-highlight-color:
+        transparent;
+
     transition:
-        background 0.2s ease,
-        border-color 0.2s ease,
-        color 0.2s ease,
-        transform 0.2s ease;
+        background 0.18s ease,
+        color 0.18s ease,
+        border-color 0.18s ease,
+        transform 0.18s ease;
 
 }
 
 
-.chess-controls button:hover {
+/* =========================================================
+   25. CELL HOVER
+========================================================= */
+
+.bingo-cell:hover,
+.bingo-number:hover,
+.bingo-square:hover {
 
     border-color:
-        var(--gold, #d6b36a);
+        var(--bingo-gold);
 
     transform:
         translateY(-1px);
@@ -10820,45 +10046,272 @@ button.bingo-cell.called.marked {
 }
 
 
-.chess-controls button:active {
-
-    transform:
-        translateY(0);
-
-}
-
-
 /* =========================================================
-   26. PRIMARY CONTROL
+   26. CALLED CELL
 ========================================================= */
 
-.chess-controls .primary {
+.bingo-cell.called,
+.bingo-number.called,
+.bingo-square.called {
 
     background:
-        var(--navy-dark, #071426);
+        #eef3f8;
 
     border-color:
-        var(--navy-dark, #071426);
-
-    color:
-        #ffffff;
-
-}
-
-
-.chess-controls .primary:hover {
-
-    background:
-        var(--navy, #0d2038);
+        #cbd6e3;
 
 }
 
 
 /* =========================================================
-   27. DISABLED CONTROLS
+   27. MARKED CELL
 ========================================================= */
 
-.chess-controls button:disabled {
+.bingo-cell.marked,
+.bingo-number.marked,
+.bingo-square.marked {
+
+    background:
+        var(--bingo-gold);
+
+    border-color:
+        var(--bingo-gold);
+
+    color:
+        var(--bingo-navy-dark);
+
+    box-shadow:
+        inset 0 0 0 2px
+        rgba(255,255,255,0.45);
+
+}
+
+
+/* =========================================================
+   28. FREE SPACE
+========================================================= */
+
+.bingo-cell.free,
+.bingo-number.free,
+.bingo-square.free {
+
+    background:
+        var(--bingo-navy);
+
+    border-color:
+        var(--bingo-navy);
+
+    color:
+        var(--bingo-gold-light);
+
+    cursor:
+        default;
+
+}
+
+
+/* =========================================================
+   29. AUTO-DAUB HIGHLIGHT
+========================================================= */
+
+.bingo-cell.auto-mark,
+.bingo-number.auto-mark,
+.bingo-square.auto-mark {
+
+    animation:
+        bingoAutoMark 0.45s ease;
+
+}
+
+
+@keyframes bingoAutoMark {
+
+    0% {
+
+        transform:
+            scale(0.88);
+
+    }
+
+    70% {
+
+        transform:
+            scale(1.06);
+
+    }
+
+    100% {
+
+        transform:
+            scale(1);
+
+    }
+
+}
+
+
+/* =========================================================
+   30. WINNING LINE
+========================================================= */
+
+.bingo-cell.winning,
+.bingo-number.winning,
+.bingo-square.winning {
+
+    background:
+        var(--bingo-success);
+
+    border-color:
+        var(--bingo-success);
+
+    color:
+        var(--bingo-white);
+
+    animation:
+        bingoWinningCell 0.9s ease-in-out infinite alternate;
+
+}
+
+
+@keyframes bingoWinningCell {
+
+    from {
+
+        transform:
+            scale(1);
+
+    }
+
+    to {
+
+        transform:
+            scale(1.04);
+
+    }
+
+}
+
+
+/* =========================================================
+   31. CARD LABEL
+========================================================= */
+
+.bingo-card-title,
+.bingo-card-label {
+
+    margin:
+        0 0 7px;
+
+    color:
+        var(--bingo-navy);
+
+    text-align:
+        center;
+
+    font-size:
+        0.7rem;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.08em;
+
+}
+
+
+/* =========================================================
+   32. CONTROLS
+========================================================= */
+
+.bingo-controls {
+
+    width:
+        100%;
+
+    max-width:
+        600px;
+
+    margin:
+        18px auto;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1.3fr
+        1fr
+        1fr;
+
+    gap:
+        8px;
+
+}
+
+
+.bingo-controls button {
+
+    min-height:
+        48px;
+
+    border-radius:
+        13px;
+
+    cursor:
+        pointer;
+
+    font-weight:
+        800;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        6px;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.bingo-controls button:hover {
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+/* =========================================================
+   33. CALL BUTTON
+========================================================= */
+
+.bingo-call-button {
+
+    border:
+        0;
+
+    background:
+        var(--bingo-gold);
+
+    color:
+        var(--bingo-navy-dark);
+
+    box-shadow:
+        var(--bingo-small-shadow);
+
+}
+
+
+.bingo-call-button:disabled {
 
     opacity:
         0.45;
@@ -10873,125 +10326,136 @@ button.bingo-cell.called.marked {
 
 
 /* =========================================================
-   28. MOVE HISTORY
+   34. AUTO BUTTON
 ========================================================= */
 
-.chess-move-history {
-
-    max-height:
-        250px;
-
-    overflow-y:
-        auto;
-
-    padding:
-        8px;
+.bingo-auto-button {
 
     border:
         1px solid
-        var(--border, #dfe6ef);
-
-    border-radius:
-        12px;
+        var(--bingo-border);
 
     background:
-        #ffffff;
+        var(--bingo-white);
+
+    color:
+        var(--bingo-navy);
 
 }
 
 
-.chess-move-history:empty::before {
+.bingo-auto-button[aria-pressed="true"] {
 
-    content:
-        "No moves yet.";
+    background:
+        var(--bingo-navy);
 
-    display:
-        block;
-
-    padding:
-        12px;
+    border-color:
+        var(--bingo-navy);
 
     color:
-        var(--text-soft, #667085);
-
-    font-size:
-        0.78rem;
-
-    font-style:
-        italic;
-
-    text-align:
-        center;
+        var(--bingo-white);
 
 }
 
 
 /* =========================================================
-   29. MOVE HISTORY ROW
+   35. NEW GAME
 ========================================================= */
 
-.chess-move {
+.bingo-new-button {
 
-    display:
-        grid;
-
-    grid-template-columns:
-        32px
-        1fr
-        1fr;
-
-    gap:
-        6px;
-
-    padding:
-        7px 6px;
-
-    border-bottom:
+    border:
         1px solid
-        var(--border, #dfe6ef);
+        var(--bingo-border);
 
-    font-size:
-        0.76rem;
+    background:
+        var(--bingo-white);
+
+    color:
+        var(--bingo-navy);
 
 }
 
 
-.chess-move:last-child {
+/* =========================================================
+   36. CALLED NUMBERS
+========================================================= */
 
-    border-bottom:
+.bingo-called-area {
+
+    width:
+        100%;
+
+    max-width:
+        900px;
+
+    margin:
+        12px auto;
+
+    background:
+        var(--bingo-card);
+
+    border:
+        1px solid
+        var(--bingo-border);
+
+    border-radius:
+        15px;
+
+}
+
+
+.bingo-called-summary {
+
+    min-height:
+        48px;
+
+    padding:
+        12px 14px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    cursor:
+        pointer;
+
+    list-style:
+        none;
+
+    color:
+        var(--bingo-navy);
+
+    font-size:
+        0.7rem;
+
+    font-weight:
+        800;
+
+}
+
+
+.bingo-called-summary::-webkit-details-marker {
+
+    display:
         none;
 
 }
 
 
-.chess-move-number {
-
-    color:
-        var(--text-soft, #667085);
-
-    font-weight:
-        700;
-
-}
-
-
-.chess-move-white,
-.chess-move-black {
-
-    color:
-        var(--navy-dark, #071426);
-
-    font-weight:
-        700;
-
-}
-
-
 /* =========================================================
-   30. CAPTURED PIECES
+   37. CALLED NUMBERS GRID
 ========================================================= */
 
-.chess-captured {
+.bingo-called-numbers {
+
+    padding:
+        0 12px 12px;
 
     display:
         flex;
@@ -11000,93 +10464,68 @@ button.bingo-cell.called.marked {
         wrap;
 
     gap:
-        3px;
-
-    min-height:
-        24px;
+        5px;
 
 }
 
 
-.chess-captured-piece {
+.bingo-called-number {
 
-    font-family:
-        "Segoe UI Symbol",
-        "Noto Sans Symbols 2",
-        serif;
+    min-width:
+        30px;
+
+    height:
+        30px;
+
+    padding:
+        0 7px;
+
+    border-radius:
+        8px;
+
+    background:
+        var(--bingo-background);
+
+    color:
+        var(--bingo-navy);
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
 
     font-size:
-        1rem;
-
-    line-height:
-        1;
-
-}
-
-
-/* =========================================================
-   31. BOARD COORDINATES
-========================================================= */
-
-.chess-coordinate {
-
-    position:
-        absolute;
-
-    z-index:
-        2;
-
-    font-size:
-        0.62rem;
+        0.68rem;
 
     font-weight:
         800;
 
-    pointer-events:
-        none;
-
-    opacity:
-        0.65;
-
 }
 
 
-.chess-coordinate.rank {
+.bingo-no-numbers {
 
-    top:
-        3px;
+    color:
+        var(--bingo-text-soft);
 
-    left:
-        4px;
-
-}
-
-
-.chess-coordinate.file {
-
-    right:
-        4px;
-
-    bottom:
-        3px;
+    font-size:
+        0.75rem;
 
 }
 
 
 /* =========================================================
-   32. PROMOTION PANEL
+   38. LEGEND
 ========================================================= */
 
-.chess-promotion {
+.bingo-legend {
 
-    position:
-        absolute;
-
-    inset:
-        0;
-
-    z-index:
-        20;
+    width:
+        100%;
 
     display:
         flex;
@@ -11097,226 +10536,583 @@ button.bingo-cell.called.marked {
     justify-content:
         center;
 
-    padding:
-        20px;
+    flex-wrap:
+        wrap;
 
-    background:
-        rgba(
-            7,
-            20,
-            38,
-            0.72
-        );
+    gap:
+        14px;
 
-    backdrop-filter:
-        blur(4px);
+    margin:
+        12px auto 18px;
+
+    color:
+        var(--bingo-text-soft);
+
+    font-size:
+        0.65rem;
 
 }
 
 
-.chess-promotion[hidden] {
+.bingo-legend-item {
 
     display:
-        none;
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        5px;
 
 }
 
 
-.chess-promotion-box {
+.bingo-legend-dot {
 
     width:
-        min(
-            100%,
-            360px
-        );
+        9px;
 
-    padding:
-        20px;
-
-    background:
-        #ffffff;
-
-    border:
-        1px solid
-        var(--gold, #d6b36a);
+    height:
+        9px;
 
     border-radius:
-        18px;
+        50%;
+
+    display:
+        block;
+
+}
+
+
+.bingo-legend-dot.called {
+
+    background:
+        #cbd6e3;
+
+}
+
+
+.bingo-legend-dot.marked {
+
+    background:
+        var(--bingo-gold);
+
+}
+
+
+.bingo-legend-dot.free {
+
+    background:
+        var(--bingo-navy);
+
+}
+
+
+/* =========================================================
+   39. FLOATING COFFEE REWARD
+========================================================= */
+
+.bingo-coffee-reward {
+
+    position:
+        fixed;
+
+    left:
+        50%;
+
+    top:
+        50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    width:
+        min(88vw, 330px);
+
+    padding:
+        24px 20px;
+
+    background:
+        var(--bingo-white);
+
+    border:
+        2px solid
+        var(--bingo-gold);
+
+    border-radius:
+        24px;
+
+    box-shadow:
+        0 25px 70px
+        rgba(7,20,38,0.25);
 
     text-align:
         center;
 
-    box-shadow:
-        0 18px 40px
-        rgba(
-            0,
-            0,
-            0,
-            0.25
-        );
+    z-index:
+        500;
+
+    animation:
+        bingoRewardAppear 0.35s ease;
 
 }
 
 
-.chess-promotion-box h3 {
+@keyframes bingoRewardAppear {
 
-    margin:
-        0 0 14px;
+    from {
 
-    font-family:
-        "DM Serif Display",
-        Georgia,
-        serif;
+        opacity:
+            0;
+
+        transform:
+            translate(-50%, -46%)
+            scale(0.9);
+
+    }
+
+    to {
+
+        opacity:
+            1;
+
+        transform:
+            translate(-50%, -50%)
+            scale(1);
+
+    }
+
+}
+
+
+/* =========================================================
+   40. REWARD ICON
+========================================================= */
+
+.bingo-reward-icon {
 
     font-size:
-        1.35rem;
+        3rem;
 
-    font-weight:
-        400;
+    line-height:
+        1;
 
-    color:
-        var(--navy-dark, #071426);
-
-}
-
-
-.chess-promotion-options {
-
-    display:
-        grid;
-
-    grid-template-columns:
-        repeat(
-            4,
-            1fr
-        );
-
-    gap:
+    margin-bottom:
         8px;
 
 }
 
 
-.chess-promotion-options button {
+.bingo-coffee-reward .game-eyebrow {
 
-    aspect-ratio:
-        1;
+    color:
+        var(--bingo-gold);
+
+}
+
+
+.bingo-coffee-reward h3 {
+
+    margin:
+        6px 0;
+
+    color:
+        var(--bingo-navy-dark);
+
+    font-size:
+        1.25rem;
+
+}
+
+
+.bingo-coffee-reward p {
+
+    margin:
+        0 auto 16px;
+
+    color:
+        var(--bingo-text-soft);
+
+    font-size:
+        0.8rem;
+
+    line-height:
+        1.5;
+
+    max-width:
+        260px;
+
+}
+
+
+/* =========================================================
+   41. USE POWER-UP
+========================================================= */
+
+.bingo-use-powerup {
+
+    min-width:
+        130px;
+
+    min-height:
+        44px;
+
+    padding:
+        0 22px;
 
     border:
-        1px solid
-        var(--border, #dfe6ef);
+        0;
 
     border-radius:
-        12px;
+        999px;
 
     background:
-        var(--background, #f4f7fb);
+        var(--bingo-gold);
+
+    color:
+        var(--bingo-navy-dark);
 
     cursor:
         pointer;
 
-    font-size:
-        2rem;
+    font-weight:
+        900;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 
 }
 
 
-.chess-promotion-options button:hover {
+.bingo-use-powerup:hover {
 
-    border-color:
-        var(--gold, #d6b36a);
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(214,179,106,0.30);
+
+}
+
+
+/* =========================================================
+   42. POWER-UP COOLDOWN
+========================================================= */
+
+.bingo-powerup-cooldown {
+
+    position:
+        fixed;
+
+    top:
+        82px;
+
+    left:
+        50%;
+
+    transform:
+        translateX(-50%);
+
+    z-index:
+        300;
+
+    padding:
+        7px 12px;
+
+    border-radius:
+        999px;
 
     background:
-        rgba(
-            214,
-            179,
-            106,
-            0.12
-        );
+        var(--bingo-navy);
+
+    color:
+        var(--bingo-white);
+
+    box-shadow:
+        var(--bingo-small-shadow);
+
+    font-size:
+        0.7rem;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        5px;
 
 }
 
 
 /* =========================================================
-   33. RESPONSIVE — TABLET
+   43. WIN SCREEN
 ========================================================= */
 
-@media (
-    max-width: 900px
-) {
+.bingo-win {
 
-    .chess-room {
+    position:
+        fixed;
 
-        width:
-            min(
-                calc(100% - 24px),
-                760px
-            );
+    inset:
+        0;
 
-        padding-top:
-            22px;
+    z-index:
+        1000;
 
-    }
+    padding:
+        20px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    background:
+        rgba(7,20,38,0.72);
+
+    backdrop-filter:
+        blur(7px);
+
+}
 
 
-    .chess-panel {
+.bingo-win-card {
+
+    width:
+        min(100%, 430px);
+
+    padding:
+        30px 22px;
+
+    background:
+        var(--bingo-white);
+
+    border-radius:
+        25px;
+
+    box-shadow:
+        0 30px 80px
+        rgba(0,0,0,0.25);
+
+    text-align:
+        center;
+
+}
+
+
+.bingo-win-icon {
+
+    font-size:
+        3rem;
+
+    margin-bottom:
+        8px;
+
+}
+
+
+.bingo-win-card .game-eyebrow {
+
+    color:
+        var(--bingo-gold);
+
+}
+
+
+.bingo-win-card h2 {
+
+    margin:
+        5px 0;
+
+    color:
+        var(--bingo-navy-dark);
+
+    font-size:
+        2.4rem;
+
+}
+
+
+.bingo-win-card p {
+
+    color:
+        var(--bingo-text-soft);
+
+    line-height:
+        1.5;
+
+}
+
+
+/* =========================================================
+   44. FINAL STATS
+========================================================= */
+
+.bingo-final-stats {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap:
+        10px;
+
+    margin:
+        20px 0;
+
+}
+
+
+.bingo-final-stats div {
+
+    padding:
+        12px;
+
+    background:
+        var(--bingo-background);
+
+    border-radius:
+        13px;
+
+}
+
+
+.bingo-final-stats span {
+
+    display:
+        block;
+
+    color:
+        var(--bingo-text-soft);
+
+    font-size:
+        0.6rem;
+
+    font-weight:
+        800;
+
+}
+
+
+.bingo-final-stats strong {
+
+    display:
+        block;
+
+    margin-top:
+        3px;
+
+    color:
+        var(--bingo-navy);
+
+    font-size:
+        1.2rem;
+
+}
+
+
+/* =========================================================
+   45. NOTE
+========================================================= */
+
+.bingo-note {
+
+    max-width:
+        700px;
+
+    margin:
+        0 auto;
+
+    padding:
+        0 15px 25px;
+
+    text-align:
+        center;
+
+    color:
+        var(--bingo-text-soft);
+
+    font-size:
+        0.65rem;
+
+    line-height:
+        1.5;
+
+}
+
+
+/* =========================================================
+   46. TABLET
+========================================================= */
+
+@media (min-width: 600px) {
+
+    .bingo-game-header {
 
         padding:
-            16px;
+            14px 24px;
 
     }
 
 
-    .chess-layout {
+    .bingo-play-area {
+
+        padding:
+            18px 24px;
+
+    }
+
+
+    .bingo-cards {
 
         grid-template-columns:
-            1fr;
+            repeat(2, minmax(0, 1fr));
 
         gap:
-            18px;
+            20px;
 
     }
 
 
-    .chess-board {
+    .bingo-card {
 
-        width:
-            min(
-                100%,
-                620px
-            );
+        max-width:
+            none;
 
     }
 
 
-    .chess-side-panel {
+    .bingo-cell,
+    .bingo-number,
+    .bingo-square {
 
-        width:
-            min(
-                100%,
-                620px
-            );
-
-        margin:
-            0 auto;
-
-        display:
-            grid;
-
-        grid-template-columns:
-            repeat(
-                2,
-                1fr
-            );
+        font-size:
+            clamp(0.85rem, 2.2vw, 1.15rem);
 
     }
 
 
-    .chess-side-panel
-    .chess-controls {
+    .bingo-cards-heading {
 
-        grid-column:
-            1 / -1;
+        max-width:
+            900px;
+
+        margin-left:
+            auto;
+
+        margin-right:
+            auto;
 
     }
 
@@ -11324,196 +11120,213 @@ button.bingo-cell.called.marked {
 
 
 /* =========================================================
-   34. RESPONSIVE — MOBILE
+   47. DESKTOP
 ========================================================= */
 
-@media (
-    max-width: 600px
-) {
+@media (min-width: 900px) {
 
-    .chess-room {
+    .bingo-game-header {
 
-        width:
-            calc(100% - 16px);
+        min-height:
+            74px;
 
         padding:
-            16px 0 40px;
+            15px 32px;
 
     }
 
 
-    .chess-header {
-
-        margin-bottom:
-            14px;
-
-    }
-
-
-    .chess-header h1 {
+    .bingo-heading h2 {
 
         font-size:
-            2rem;
+            1.35rem;
 
     }
 
 
-    .chess-header p {
+    .bingo-play-area {
+
+        padding:
+            24px 32px 35px;
+
+    }
+
+
+    .bingo-top-bar {
+
+        max-width:
+            600px;
+
+        margin:
+            0 auto 18px;
+
+    }
+
+
+    .bingo-caller {
+
+        margin:
+            15px auto 24px;
+
+    }
+
+
+    .bingo-current-number {
 
         font-size:
-            0.82rem;
+            5rem;
 
     }
 
 
-    .chess-panel {
+    .bingo-cards {
+
+        grid-template-columns:
+            repeat(2, minmax(280px, 430px));
+
+        justify-content:
+            center;
+
+        gap:
+            24px;
+
+    }
+
+
+    .bingo-card {
 
         padding:
             10px;
 
         border-radius:
-            16px;
+            20px;
 
     }
 
 
-    .chess-layout {
+    .bingo-card-grid,
+    .bingo-grid,
+    .bingo-card-table {
 
         gap:
-            12px;
-
-    }
-
-
-    .chess-board {
-
-        width:
-            100%;
-
-        border-width:
             5px;
 
-        border-radius:
-            7px;
-
     }
 
 
-    .chess-piece {
+    .bingo-cell,
+    .bingo-number,
+    .bingo-square {
+
+        border-radius:
+            9px;
 
         font-size:
-            clamp(
-                1.7rem,
-                10vw,
-                3.2rem
-            );
+            1rem;
 
     }
 
 
-    .chess-square.selected {
+    .bingo-controls {
 
-        box-shadow:
-            inset 0 0 0 3px
-            var(--gold, #d6b36a);
-
-    }
-
-
-    .chess-square.in-check {
-
-        box-shadow:
-            inset 0 0 0 3px
-            rgba(
-                170,
-                50,
-                50,
-                0.85
-            );
+        margin-top:
+            24px;
 
     }
 
 
-    .chess-square.legal-capture::after {
+    .bingo-called-area {
 
-        border-width:
-            3px;
+        max-width:
+            860px;
 
     }
 
 
-    .chess-player-status {
+    .bingo-note {
+
+        padding-bottom:
+            35px;
+
+    }
+
+}
+
+
+/* =========================================================
+   48. LARGE DESKTOP
+========================================================= */
+
+@media (min-width: 1200px) {
+
+    .bingo-play-area {
+
+        padding-left:
+            40px;
+
+        padding-right:
+            40px;
+
+    }
+
+
+    .bingo-cards {
+
+        grid-template-columns:
+            repeat(4, minmax(230px, 280px));
+
+        gap:
+            20px;
+
+    }
+
+
+    .bingo-card {
 
         padding:
-            8px 10px;
+            8px;
 
     }
 
 
-    .chess-side-panel {
+    .bingo-cell,
+    .bingo-number,
+    .bingo-square {
 
-        display:
-            flex;
-
-        width:
-            100%;
-
-    }
-
-
-    .chess-info-card {
-
-        padding:
-            13px;
+        font-size:
+            0.95rem;
 
     }
 
+}
 
-    .chess-controls {
 
-        width:
-            100%;
+/* =========================================================
+   49. VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .bingo-game-header {
+
+        grid-template-columns:
+            auto
+            1fr
+            auto;
 
         gap:
             6px;
 
+        padding:
+            9px 10px;
+
     }
 
 
-    .chess-controls button {
-
-        flex:
-            1 1
-            calc(
-                50% - 6px
-            );
-
-        min-height:
-            40px;
+    .bingo-back-button {
 
         padding:
-            0 9px;
-
-        font-size:
-            0.68rem;
-
-    }
-
-
-    .chess-move-history {
-
-        max-height:
-            180px;
-
-    }
-
-
-    .chess-move {
-
-        grid-template-columns:
-            28px
-            1fr
-            1fr;
+            7px 9px;
 
         font-size:
             0.7rem;
@@ -11521,81 +11334,92 @@ button.bingo-cell.called.marked {
     }
 
 
-    .chess-coordinate {
+    .bingo-heading .game-eyebrow {
+
+        display:
+            none;
+
+    }
+
+
+    .bingo-heading h2 {
+
+        font-size:
+            1rem;
+
+    }
+
+
+    .bingo-coffee-meter {
+
+        min-width:
+            62px;
+
+        padding:
+            4px 6px;
+
+    }
+
+
+    .bingo-play-area {
+
+        padding:
+            9px;
+
+    }
+
+
+    .bingo-top-stat {
+
+        padding:
+            6px 3px;
+
+    }
+
+
+    .bingo-top-stat span {
 
         font-size:
             0.5rem;
 
     }
 
-}
 
-
-/* =========================================================
-   35. VERY SMALL PHONES
-========================================================= */
-
-@media (
-    max-width: 380px
-) {
-
-    .chess-room {
-
-        width:
-            calc(100% - 10px);
-
-        padding-top:
-            12px;
-
-    }
-
-
-    .chess-panel {
-
-        padding:
-            7px;
-
-    }
-
-
-    .chess-board {
-
-        border-width:
-            4px;
-
-    }
-
-
-    .chess-piece {
+    .bingo-current-number {
 
         font-size:
-            clamp(
-                1.45rem,
-                10vw,
-                2.6rem
-            );
+            3.5rem;
 
     }
 
 
-    .chess-controls button {
-
-        min-height:
-            38px;
-
-        font-size:
-            0.62rem;
-
-    }
-
-
-    .chess-status {
-
-        min-height:
-            42px;
+    .bingo-card {
 
         padding:
-            8px;
+            6px;
+
+        border-radius:
+            14px;
+
+    }
+
+
+    .bingo-card-grid,
+    .bingo-grid,
+    .bingo-card-table {
+
+        gap:
+            3px;
+
+    }
+
+
+    .bingo-cell,
+    .bingo-number,
+    .bingo-square {
+
+        border-radius:
+            6px;
 
         font-size:
             0.72rem;
@@ -11603,18 +11427,21 @@ button.bingo-cell.called.marked {
     }
 
 
-    .chess-info-card {
+    .bingo-controls {
 
-        padding:
-            11px;
+        gap:
+            5px;
 
     }
 
 
-    .chess-info-card h3 {
+    .bingo-controls button {
+
+        min-height:
+            44px;
 
         font-size:
-            1rem;
+            0.7rem;
 
     }
 
@@ -11622,267 +11449,328 @@ button.bingo-cell.called.marked {
 
 
 /* =========================================================
-   36. TOUCH DEVICES
+   50. REDUCED MOTION
 ========================================================= */
 
-@media (
-    hover: none
-) {
+@media (prefers-reduced-motion: reduce) {
 
-    .chess-square:hover {
+    .bingo-room *,
+    .bingo-room *::before,
+    .bingo-room *::after {
 
-        filter:
-            none;
+        animation-duration:
+            0.01ms !important;
 
-    }
+        animation-iteration-count:
+            1 !important;
 
-
-    .chess-controls button:hover {
-
-        transform:
-            none;
-
-    }
-
-}
-
-
-/* =========================================================
-   37. REDUCED MOTION
-========================================================= */
-
-@media (
-    prefers-reduced-motion: reduce
-) {
-
-    .chess-square,
-    .chess-piece,
-    .chess-controls button {
-
-        transition:
-            none;
+        transition-duration:
+            0.01ms !important;
 
     }
 
 }
 /* =========================================================
-   DIGICAFE DAMA
-   ---------------------------------------------------------
-   Dama / Checkers Game Room
+   DIGICAFE PLAYROOM
+   Inherits the main DigiCafe color system
 ========================================================= */
 
 
 /* =========================================================
-   01. DAMA ROOM
+   PLAYROOM BASE
 ========================================================= */
 
-.dama-room {
+.playroom {
 
-    width: min(
-        calc(100% - 32px),
-        1050px
-    );
+    width: 100%;
+    max-width: 1200px;
 
     margin: 0 auto;
+    padding: 40px 20px 80px;
 
-    padding: 30px 0 60px;
+    color: var(--text-color, #2f2a26);
 
-    box-sizing: border-box;
+    background:
+        var(
+            --section-bg,
+            transparent
+        );
 
 }
 
 
 /* =========================================================
-   02. DAMA HEADER
+   PLAYROOM LOUNGE
 ========================================================= */
 
-.dama-header {
+.game-lounge {
 
-    display: flex;
+    width: 100%;
 
-    align-items: center;
+}
 
-    gap: 18px;
 
-    margin-bottom: 28px;
+/* =========================================================
+   HERO
+========================================================= */
 
-    padding: 22px 24px;
+.playroom-hero {
 
-    border-radius: 20px;
+    position: relative;
+
+    padding: 70px 30px;
+
+    margin-bottom: 30px;
+
+    border-radius: 28px;
 
     background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,0.08),
-            rgba(255,255,255,0.025)
+        var(
+            --card-bg,
+            #f6efe6
         );
 
     border:
         1px solid
-        rgba(255,255,255,0.10);
+        var(
+            --border-color,
+            rgba(80, 60, 45, 0.15)
+        );
 
     box-shadow:
-        0 12px 35px
-        rgba(0,0,0,0.22);
+        0 15px 40px
+        rgba(50, 35, 25, 0.08);
 
 }
 
 
-.dama-header-icon {
+.playroom-hero-content {
 
-    width: 58px;
+    max-width: 700px;
 
-    height: 58px;
+    margin: 0 auto;
 
-    flex-shrink: 0;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    border-radius: 16px;
-
-    background:
-        rgba(255,255,255,0.08);
-
-    font-size: 30px;
+    text-align: center;
 
 }
 
 
-.dama-header h1 {
+.playroom-eyebrow {
 
-    margin: 0 0 6px;
+    display: inline-block;
+
+    margin-bottom: 12px;
+
+    font-size: 0.78rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.12em;
+
+    text-transform: uppercase;
+
+    color:
+        var(
+            --accent-color,
+            #8a5a44
+        );
+
+}
+
+
+.playroom-hero h1 {
+
+    margin: 0 0 15px;
 
     font-size: clamp(
-        1.7rem,
-        4vw,
-        2.4rem
+        2rem,
+        5vw,
+        3.5rem
     );
 
     line-height: 1.1;
 
+    color:
+        var(
+            --heading-color,
+            #3b2f2a
+        );
+
 }
 
 
-.dama-header p {
+.playroom-hero p {
 
     margin: 0;
 
-    opacity: 0.68;
+    font-size: 1.05rem;
 
-    font-size: 0.95rem;
+    line-height: 1.7;
+
+    color:
+        var(
+            --muted-text,
+            #6d625c
+        );
 
 }
 
 
 /* =========================================================
-   03. DAMA PANEL
+   VISITOR NOTE
 ========================================================= */
 
-.dama-panel {
+.playroom-note {
 
-    width: 100%;
+    display: flex;
 
-    padding: 24px;
+    align-items: center;
 
-    box-sizing: border-box;
+    gap: 18px;
 
-    border-radius: 24px;
+    padding: 22px 25px;
+
+    margin-bottom: 45px;
+
+    border-radius: 18px;
 
     background:
-        rgba(255,255,255,0.035);
+        var(
+            --secondary-bg,
+            #eee2d3
+        );
 
     border:
         1px solid
-        rgba(255,255,255,0.08);
-
-    box-shadow:
-        0 20px 50px
-        rgba(0,0,0,0.25);
+        var(
+            --border-color,
+            rgba(80, 60, 45, 0.12)
+        );
 
 }
 
 
-/* =========================================================
-   04. STATUS
-========================================================= */
-
-.dama-status {
+.playroom-note-icon {
 
     display: flex;
 
     align-items: center;
+    justify-content: center;
 
-    justify-content: space-between;
+    width: 50px;
+    height: 50px;
 
-    gap: 20px;
+    flex-shrink: 0;
 
-    margin-bottom: 24px;
-
-    padding: 14px 18px;
-
-    border-radius: 14px;
+    border-radius: 50%;
 
     background:
-        rgba(0,0,0,0.18);
+        var(
+            --accent-color,
+            #8a5a44
+        );
+
+    font-size: 1.4rem;
 
 }
 
 
-.dama-turn {
+.playroom-note-content strong {
 
-    display: flex;
+    display: block;
 
-    align-items: center;
+    margin-bottom: 5px;
 
-    gap: 10px;
-
-}
-
-
-.dama-status-label {
-
-    font-size: 0.7rem;
-
-    letter-spacing: 0.12em;
-
-    opacity: 0.55;
+    color:
+        var(
+            --heading-color,
+            #3b2f2a
+        );
 
 }
 
 
-.dama-turn strong {
+.playroom-note-content p {
 
-    font-size: 0.9rem;
+    margin: 0;
 
-}
+    line-height: 1.6;
 
-
-.dama-status-message {
-
-    font-size: 0.9rem;
-
-    opacity: 0.75;
-
-    text-align: right;
+    color:
+        var(
+            --muted-text,
+            #6d625c
+        );
 
 }
 
 
 /* =========================================================
-   05. GAME AREA
+   SECTION HEADING
 ========================================================= */
 
-.dama-game-area {
+.playroom-section-heading {
 
     display: flex;
 
-    flex-direction: column;
-
     align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 25px;
+
+}
+
+
+.playroom-section-heading > span {
+
+    font-size: 1.8rem;
+
+}
+
+
+.playroom-section-heading h2 {
+
+    margin: 0 0 4px;
+
+    color:
+        var(
+            --heading-color,
+            #3b2f2a
+        );
+
+}
+
+
+.playroom-section-heading p {
+
+    margin: 0;
+
+    color:
+        var(
+            --muted-text,
+            #6d625c
+        );
+
+}
+
+
+/* =========================================================
+   GAME GRID
+========================================================= */
+
+.game-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(
+                260px,
+                1fr
+            )
+        );
 
     gap: 18px;
 
@@ -11890,15 +11778,259 @@ button.bingo-cell.called.marked {
 
 
 /* =========================================================
-   06. PLAYER
+   GAME CARD
 ========================================================= */
 
-.dama-player {
+.game-card {
 
-    width: min(
-        100%,
-        560px
-    );
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns:
+        auto 1fr auto;
+
+    align-items: center;
+
+    gap: 18px;
+
+    width: 100%;
+
+    padding: 22px;
+
+    text-align: left;
+
+    border: 1px solid
+        var(
+            --border-color,
+            rgba(80, 60, 45, 0.15)
+        );
+
+    border-radius: 20px;
+
+    background:
+        var(
+            --card-bg,
+            #f8f1e8
+        );
+
+    color:
+        var(
+            --text-color,
+            #2f2a26
+        );
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+
+}
+
+
+.game-card:hover {
+
+    transform:
+        translateY(-4px);
+
+    border-color:
+        var(
+            --accent-color,
+            #8a5a44
+        );
+
+    box-shadow:
+        0 12px 30px
+        rgba(50, 35, 25, 0.10);
+
+}
+
+
+.game-card:active {
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+/* =========================================================
+   GAME CARD ICON
+========================================================= */
+
+.game-card-icon {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 58px;
+    height: 58px;
+
+    flex-shrink: 0;
+
+    border-radius: 16px;
+
+    background:
+        var(
+            --accent-light,
+            #ead8c5
+        );
+
+    font-size: 1.8rem;
+
+}
+
+
+/* =========================================================
+   GAME CARD CONTENT
+========================================================= */
+
+.game-card-content {
+
+    min-width: 0;
+
+}
+
+
+.game-card-label {
+
+    display: block;
+
+    margin-bottom: 4px;
+
+    font-size: 0.72rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
+
+    color:
+        var(
+            --accent-color,
+            #8a5a44
+        );
+
+}
+
+
+.game-card h3 {
+
+    margin: 0 0 6px;
+
+    font-size: 1.15rem;
+
+    color:
+        var(
+            --heading-color,
+            #3b2f2a
+        );
+
+}
+
+
+.game-card p {
+
+    margin: 0;
+
+    font-size: 0.9rem;
+
+    line-height: 1.5;
+
+    color:
+        var(
+            --muted-text,
+            #6d625c
+        );
+
+}
+
+
+.game-card-arrow {
+
+    font-size: 1.4rem;
+
+    color:
+        var(
+            --accent-color,
+            #8a5a44
+        );
+
+}
+
+
+/* =========================================================
+   GAME ROOMS
+========================================================= */
+
+.game-room {
+
+    width: 100%;
+
+    margin: 0 auto;
+
+    padding: 0;
+
+    color:
+        var(
+            --text-color,
+            #2f2a26
+        );
+
+    background:
+        transparent;
+
+}
+
+
+.game-room[hidden] {
+
+    display: none !important;
+
+}
+
+
+/* =========================================================
+   GAME ROOM HEADER
+========================================================= */
+
+.game-room-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+    padding: 22px 25px;
+
+    margin-bottom: 25px;
+
+    border-radius: 20px;
+
+    background:
+        var(
+            --card-bg,
+            #f8f1e8
+        );
+
+    border:
+        1px solid
+        var(
+            --border-color,
+            rgba(80, 60, 45, 0.15)
+        );
+
+}
+
+
+.game-room-title {
 
     display: flex;
 
@@ -11906,490 +12038,60 @@ button.bingo-cell.called.marked {
 
     gap: 14px;
 
-    padding: 12px 16px;
+}
 
-    box-sizing: border-box;
 
-    border-radius: 14px;
+.game-room-title > span {
 
-    background:
-        rgba(255,255,255,0.035);
-
-    border:
-        1px solid
-        rgba(255,255,255,0.06);
+    font-size: 1.8rem;
 
 }
 
 
-.dama-player-piece {
-
-    width: 40px;
-
-    height: 40px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    border-radius: 50%;
-
-    font-size: 28px;
-
-    background:
-        rgba(255,255,255,0.08);
-
-}
-
-
-.dama-player-info {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 3px;
-
-}
-
-
-.dama-player-label {
-
-    font-size: 0.65rem;
-
-    letter-spacing: 0.14em;
-
-    opacity: 0.5;
-
-}
-
-
-.dama-player-info strong {
-
-    font-size: 0.95rem;
-
-}
-
-
-/* =========================================================
-   07. DAMA BOARD
-========================================================= */
-
-.dama-board {
-
-    width: min(
-        88vw,
-        560px
-    );
-
-    aspect-ratio: 1 / 1;
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(8, 1fr);
-
-    grid-template-rows:
-        repeat(8, 1fr);
-
-    overflow: hidden;
-
-    border-radius: 16px;
-
-    border:
-        6px solid
-        rgba(255,255,255,0.08);
-
-    box-shadow:
-        0 20px 45px
-        rgba(0,0,0,0.38);
-
-}
-
-
-/* =========================================================
-   08. BOARD SQUARES
-========================================================= */
-
-.dama-square {
-
-    position: relative;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 0;
-
-    margin: 0;
-
-    border: 0;
-
-    cursor: pointer;
-
-    transition:
-        filter 0.15s ease,
-        transform 0.15s ease;
-
-}
-
-
-.dama-square.light {
-
-    background:
-        #d8c3a5;
-
-}
-
-
-.dama-square.dark {
-
-    background:
-        #76523c;
-
-}
-
-
-.dama-square:hover {
-
-    filter:
-        brightness(1.08);
-
-}
-
-
-/* =========================================================
-   09. DAMA PIECES
-========================================================= */
-
-.dama-piece {
-
-    width: 72%;
-
-    height: 72%;
-
-    border-radius: 50%;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    position: relative;
-
-    z-index: 2;
-
-    font-size: 0;
-
-    transition:
-        transform 0.15s ease,
-        box-shadow 0.15s ease;
-
-}
-
-
-.dama-piece-white {
-
-    background:
-        radial-gradient(
-            circle at 35% 30%,
-            #ffffff,
-            #e7e7e7 55%,
-            #bcbcbc
-        );
-
-    border:
-        3px solid
-        rgba(0,0,0,0.22);
-
-    box-shadow:
-        inset 0 3px 4px
-        rgba(255,255,255,0.8),
-
-        0 5px 8px
-        rgba(0,0,0,0.35);
-
-}
-
-
-.dama-piece-black {
-
-    background:
-        radial-gradient(
-            circle at 35% 30%,
-            #555555,
-            #242424 55%,
-            #090909
-        );
-
-    border:
-        3px solid
-        rgba(255,255,255,0.12);
-
-    box-shadow:
-        inset 0 3px 4px
-        rgba(255,255,255,0.12),
-
-        0 5px 8px
-        rgba(0,0,0,0.45);
-
-}
-
-
-/* =========================================================
-   10. KING PIECES
-========================================================= */
-
-.dama-piece.king::after {
-
-    content:
-        "♛";
-
-    font-size:
-        clamp(
-            16px,
-            4vw,
-            28px
-        );
-
-    line-height: 1;
-
-}
-
-
-.dama-piece-white.king::after {
-
-    color:
-        #6d573d;
-
-    text-shadow:
-        0 1px 1px
-        rgba(255,255,255,0.7);
-
-}
-
-
-.dama-piece-black.king::after {
-
-    color:
-        #e2d2bd;
-
-    text-shadow:
-        0 1px 2px
-        rgba(0,0,0,0.8);
-
-}
-
-
-/* =========================================================
-   11. SELECTED SQUARE
-========================================================= */
-
-.dama-square.selected {
-
-    box-shadow:
-        inset 0 0 0 4px
-        rgba(255,255,255,0.75);
-
-}
-
-
-.dama-square.selected .dama-piece {
-
-    transform:
-        scale(1.08);
-
-}
-
-
-/* =========================================================
-   12. LEGAL MOVE
-========================================================= */
-
-.dama-square.legal-move::after {
-
-    content: "";
-
-    position: absolute;
-
-    width: 22%;
-
-    height: 22%;
-
-    border-radius: 50%;
-
-    background:
-        rgba(255,255,255,0.58);
-
-    box-shadow:
-        0 0 12px
-        rgba(255,255,255,0.25);
-
-    z-index: 3;
-
-}
-
-
-/* =========================================================
-   13. CAPTURE MOVE
-========================================================= */
-
-.dama-square.capture-move::after {
-
-    width: 72%;
-
-    height: 72%;
-
-    background:
-        transparent;
-
-    border:
-        4px solid
-        rgba(255,255,255,0.65);
-
-    box-sizing:
-        border-box;
-
-}
-
-
-/* =========================================================
-   14. LAST MOVE
-========================================================= */
-
-.dama-square.last-move {
-
-    box-shadow:
-        inset 0 0 0 4px
-        rgba(240,195,120,0.55);
-
-}
-
-
-/* =========================================================
-   15. CAPTURED PIECES
-========================================================= */
-
-.dama-captured {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, 1fr);
-
-    gap: 18px;
-
-    margin-top: 24px;
-
-}
-
-
-.dama-captured-group {
-
-    min-width: 0;
-
-    padding: 14px;
-
-    border-radius: 14px;
-
-    background:
-        rgba(0,0,0,0.16);
-
-}
-
-
-.dama-captured-label {
+.game-room-title small {
 
     display: block;
 
-    margin-bottom: 8px;
+    margin-bottom: 3px;
 
     font-size: 0.7rem;
 
-    letter-spacing: 0.08em;
+    font-weight: 700;
 
-    opacity: 0.55;
+    letter-spacing: 0.1em;
 
-}
+    text-transform: uppercase;
 
-
-.dama-captured-pieces {
-
-    min-height: 28px;
-
-    display: flex;
-
-    flex-wrap: wrap;
-
-    gap: 5px;
+    color:
+        var(
+            --accent-color,
+            #8a5a44
+        );
 
 }
 
 
-.dama-captured-piece {
+.game-room-title h2 {
 
-    width: 24px;
+    margin: 0;
 
-    height: 24px;
-
-    border-radius: 50%;
-
-    display: inline-flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    font-size: 0;
-
-}
-
-
-.dama-captured-piece.dama-piece-white {
-
-    background:
-        #e7e7e7;
-
-}
-
-
-.dama-captured-piece.dama-piece-black {
-
-    background:
-        #222;
+    color:
+        var(
+            --heading-color,
+            #3b2f2a
+        );
 
 }
 
 
 /* =========================================================
-   16. CONTROLS
+   BACK BUTTONS
 ========================================================= */
 
-.dama-controls {
+.game-back-button,
+.game-secondary-button {
 
-    display: flex;
-
-    justify-content: center;
-
-    flex-wrap: wrap;
-
-    gap: 10px;
-
-    margin-top: 24px;
-
-}
-
-
-.dama-button {
-
-    min-height: 44px;
-
-    padding: 10px 18px;
+    appearance: none;
 
     display: inline-flex;
 
@@ -12399,36 +12101,64 @@ button.bingo-cell.called.marked {
 
     gap: 8px;
 
+    min-height: 42px;
+
+    padding: 10px 16px;
+
     border: 1px solid
-        rgba(255,255,255,0.10);
+        var(
+            --border-color,
+            rgba(80, 60, 45, 0.18)
+        );
 
     border-radius: 12px;
 
     background:
-        rgba(255,255,255,0.055);
+        var(
+            --secondary-bg,
+            #eee2d3
+        );
 
-    color: inherit;
+    color:
+        var(
+            --text-color,
+            #3b302b
+        ) !important;
 
-    font: inherit;
+    font-family: inherit;
 
-    font-size: 0.78rem;
+    font-size: 0.9rem;
 
-    letter-spacing: 0.05em;
+    font-weight: 700;
 
     cursor: pointer;
 
     transition:
-        background 0.15s ease,
-        transform 0.15s ease,
-        opacity 0.15s ease;
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
 
 }
 
 
-.dama-button:hover:not(:disabled) {
+.game-back-button:hover,
+.game-secondary-button:hover {
 
     background:
-        rgba(255,255,255,0.10);
+        var(
+            --accent-color,
+            #8a5a44
+        );
+
+    color:
+        #ffffff !important;
+
+    border-color:
+        var(
+            --accent-color,
+            #8a5a44
+        );
 
     transform:
         translateY(-1px);
@@ -12436,479 +12166,238 @@ button.bingo-cell.called.marked {
 }
 
 
-.dama-button:disabled {
+/* =========================================================
+   GAME ROOM CONTENT
+========================================================= */
 
-    opacity: 0.35;
+.game-room-content {
 
-    cursor:
-        not-allowed;
+    width: 100%;
 
-}
-
-
-.dama-button-primary {
-
-    background:
-        rgba(255,255,255,0.12);
-
-}
-
-
-.dama-button-danger {
-
-    background:
-        rgba(150,50,50,0.20);
+    color:
+        var(
+            --text-color,
+            #2f2a26
+        );
 
 }
 
 
 /* =========================================================
-   17. MOVE HISTORY
+   GAME ROOM TEXT
 ========================================================= */
 
-.dama-history {
+.game-room h1,
+.game-room h2,
+.game-room h3,
+.game-room h4 {
 
-    margin-top: 28px;
-
-    border-radius: 16px;
-
-    overflow: hidden;
-
-    background:
-        rgba(0,0,0,0.16);
+    color:
+        var(
+            --heading-color,
+            #3b2f2a
+        );
 
 }
 
 
-.dama-history-header {
+.game-room p {
 
-    display: flex;
+    color:
+        var(
+            --muted-text,
+            #6d625c
+        );
+
+}
+
+
+.game-room span,
+.game-room label {
+
+    color:
+        inherit;
+
+}
+
+
+/* =========================================================
+   GAME BUTTONS
+========================================================= */
+
+.game-button {
+
+    appearance: none;
+
+    display: inline-flex;
 
     align-items: center;
 
-    justify-content: space-between;
-
-    gap: 15px;
-
-    padding: 14px 18px;
-
-    border-bottom:
-        1px solid
-        rgba(255,255,255,0.06);
-
-}
-
-
-.dama-history-header h2 {
-
-    margin: 0;
-
-    font-size: 1rem;
-
-}
-
-
-.dama-history-header span {
-
-    font-size: 0.72rem;
-
-    opacity: 0.5;
-
-}
-
-
-.dama-move-list {
-
-    max-height: 240px;
-
-    overflow-y: auto;
-
-}
-
-
-.dama-move-row {
-
-    display: grid;
-
-    grid-template-columns:
-        45px 1fr 1fr;
+    justify-content: center;
 
     gap: 10px;
 
-    padding: 9px 18px;
+    min-height: 44px;
 
-    font-size: 0.82rem;
+    padding: 11px 20px;
 
-}
+    border: none;
 
-
-.dama-move-row:nth-child(even) {
-
-    background:
-        rgba(255,255,255,0.025);
-
-}
-
-
-.dama-move-number {
-
-    opacity: 0.4;
-
-}
-
-
-.dama-move-white,
-.dama-move-black {
-
-    font-weight: 500;
-
-}
-
-
-.dama-history-empty {
-
-    padding: 25px 18px;
-
-    text-align: center;
-
-    opacity: 0.45;
-
-    font-size: 0.85rem;
-
-}
-
-
-/* =========================================================
-   18. GAME RESULT
-========================================================= */
-
-.dama-result {
-
-    margin-top: 24px;
-
-    padding: 30px 20px;
-
-    text-align: center;
-
-    border-radius: 20px;
+    border-radius: 12px;
 
     background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,0.08),
-            rgba(255,255,255,0.025)
+        var(
+            --accent-color,
+            #8a5a44
         );
 
-    border:
-        1px solid
-        rgba(255,255,255,0.10);
+    color:
+        #ffffff !important;
+
+    font-family: inherit;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease,
+        box-shadow 0.2s ease;
 
 }
 
 
-.dama-result-icon {
+.game-button:hover {
 
-    font-size: 42px;
+    transform:
+        translateY(-2px);
 
-    margin-bottom: 10px;
+    opacity: 0.92;
 
-}
-
-
-.dama-result h2 {
-
-    margin: 0 0 8px;
-
-    font-size: 1.4rem;
-
-}
-
-
-.dama-result p {
-
-    margin: 0;
-
-    opacity: 0.65;
-
-}
-
-
-.dama-result-details {
-
-    display: flex;
-
-    justify-content: center;
-
-    gap: 50px;
-
-    margin: 24px 0;
-
-}
-
-
-.dama-result-detail {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 4px;
-
-}
-
-
-.dama-result-detail strong {
-
-    font-size: 1.2rem;
-
-}
-
-
-.dama-result-detail span {
-
-    font-size: 0.65rem;
-
-    letter-spacing: 0.1em;
-
-    opacity: 0.45;
+    box-shadow:
+        0 8px 20px
+        rgba(50, 35, 25, 0.15);
 
 }
 
 
 /* =========================================================
-   19. FOCUS ACCESSIBILITY
+   COMMON GAME PANELS
 ========================================================= */
 
-.dama-square:focus-visible,
-.dama-button:focus-visible {
+.game-panel,
+.chess-panel,
+.dama-panel,
+.bingo-game,
+.cafe-slots-game {
 
-    outline:
-        3px solid
-        rgba(255,255,255,0.75);
-
-    outline-offset:
-        2px;
+    color:
+        var(
+            --text-color,
+            #2f2a26
+        );
 
 }
 
 
 /* =========================================================
-   20. TABLET
+   GAME ROOM ACTIVE STATE
 ========================================================= */
 
-@media (
-    max-width: 700px
-) {
+.game-room.game-active,
+.game-room.game-room-active {
 
-    .dama-room {
+    display: block;
 
-        width:
-            min(
-                calc(100% - 20px),
-                600px
-            );
-
-        padding-top: 18px;
-
-    }
+}
 
 
-    .dama-panel {
+/* =========================================================
+   HIDDEN ELEMENT SAFETY
+========================================================= */
 
-        padding: 16px;
+.playroom [hidden] {
 
-        border-radius: 18px;
+    display: none !important;
 
-    }
+}
 
 
-    .dama-header {
+/* =========================================================
+   MOBILE
+========================================================= */
 
-        padding: 18px;
+@media (max-width: 700px) {
 
-        border-radius: 18px;
+    .playroom {
+
+        padding:
+            25px 14px 60px;
 
     }
 
 
-    .dama-board {
+    .playroom-hero {
 
-        width:
-            min(
-                92vw,
-                520px
-            );
+        padding:
+            50px 20px;
+
+        border-radius:
+            22px;
 
     }
 
 
-    .dama-captured {
+    .playroom-note {
+
+        align-items: flex-start;
+
+        padding:
+            18px;
+
+    }
+
+
+    .game-grid {
 
         grid-template-columns:
             1fr;
 
     }
 
-}
 
-
-/* =========================================================
-   21. MOBILE
-========================================================= */
-
-@media (
-    max-width: 480px
-) {
-
-    .dama-room {
-
-        width:
-            calc(100% - 12px);
+    .game-card {
 
         padding:
-            10px 0 35px;
+            18px;
 
     }
 
 
-    .dama-header {
-
-        gap: 12px;
-
-        padding: 14px;
-
-        margin-bottom: 14px;
-
-    }
-
-
-    .dama-header-icon {
-
-        width: 46px;
-
-        height: 46px;
-
-        border-radius: 13px;
-
-        font-size: 24px;
-
-    }
-
-
-    .dama-header h1 {
-
-        font-size: 1.45rem;
-
-    }
-
-
-    .dama-header p {
-
-        font-size: 0.8rem;
-
-    }
-
-
-    .dama-status {
+    .game-room-header {
 
         flex-direction: column;
 
-        align-items: stretch;
+        align-items: flex-start;
 
-        gap: 8px;
-
-        margin-bottom: 14px;
-
-    }
-
-
-    .dama-status-message {
-
-        text-align: left;
+        padding:
+            18px;
 
     }
 
 
-    .dama-player {
-
-        padding: 9px 12px;
-
-    }
-
-
-    .dama-player-piece {
-
-        width: 34px;
-
-        height: 34px;
-
-        font-size: 23px;
-
-    }
-
-
-    .dama-board {
-
-        width:
-            min(
-                94vw,
-                430px
-            );
-
-        border-width:
-            4px;
-
-        border-radius:
-            10px;
-
-    }
-
-
-    .dama-piece {
-
-        width: 70%;
-
-        height: 70%;
-
-    }
-
-
-    .dama-square.capture-move::after {
-
-        border-width:
-            3px;
-
-    }
-
-
-    .dama-controls {
-
-        display: grid;
-
-        grid-template-columns:
-            1fr 1fr;
-
-    }
-
-
-    .dama-button {
+    .game-room-title {
 
         width: 100%;
 
     }
 
 
-    .dama-button-danger {
+    .game-back-button,
+    .game-secondary-button {
 
-        grid-column:
-            1 / -1;
-
-    }
-
-
-    .dama-result-details {
-
-        gap: 30px;
+        width: 100%;
 
     }
 
@@ -12916,19 +12405,41 @@ button.bingo-cell.called.marked {
 
 
 /* =========================================================
-   22. REDUCED MOTION
+   VERY SMALL SCREENS
 ========================================================= */
 
-@media (
-    prefers-reduced-motion: reduce
-) {
+@media (max-width: 420px) {
 
-    .dama-square,
-    .dama-piece,
-    .dama-button {
+    .playroom-hero h1 {
 
-        transition:
-            none;
+        font-size:
+            2rem;
+
+    }
+
+
+    .game-card {
+
+        grid-template-columns:
+            auto 1fr;
+
+    }
+
+
+    .game-card-arrow {
+
+        display: none;
+
+    }
+
+
+    .game-card-icon {
+
+        width: 50px;
+        height: 50px;
+
+        font-size:
+            1.5rem;
 
     }
 

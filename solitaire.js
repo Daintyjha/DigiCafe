@@ -86,7 +86,15 @@ const solitaire = {
         Prevent multiple automatic moves
         from running at the same time.
     */
-    autoMoving: false
+    autoMoving: false,
+
+/*
+    UNDO HISTORY
+    Stores previous game states.
+*/
+history: [],
+
+maxHistory: 100
 
 };
 
@@ -342,15 +350,11 @@ function startSolitaireGame() {
     ];
 
     solitaire.moves = 0;
-
     solitaire.seconds = 0;
-
+    solitaire.history = [];
     solitaire.started = false;
-
     solitaire.drag = null;
-
     solitaire.redeals = 0;
-
     solitaire.autoMoving = false;
 
 
@@ -405,7 +409,7 @@ function startSolitaireGame() {
 
     renderSolitaire();
 
-
+updateSolitaireUndoButton();
     console.log(
         "🃏 Solitaire ready."
     );
@@ -1172,6 +1176,21 @@ function moveTableauToTableau(
     }
 
 
+    /*
+        SAVE THE GAME BEFORE
+        MAKING THE MOVE.
+
+        This is what allows Undo
+        to restore the exact previous state.
+    */
+
+    saveSolitaireState();
+
+
+    /*
+        Remove cards from source.
+    */
+
     const removed =
         removeCardsFromSource(
             "tableau",
@@ -1181,6 +1200,10 @@ function moveTableauToTableau(
         );
 
 
+    /*
+        Add cards to target.
+    */
+
     solitaire.tableau[
         targetColumn
     ].push(
@@ -1188,10 +1211,19 @@ function moveTableauToTableau(
     );
 
 
+    /*
+        Reveal the newly exposed
+        card in the source column.
+    */
+
     revealTopCard(
         sourceColumn
     );
 
+
+    /*
+        Complete the move.
+    */
 
     completeSolitaireMove();
 
@@ -1204,7 +1236,6 @@ function moveTableauToTableau(
     return true;
 
 }
-
 
 /* =========================================================
    18. MOVE TABLEAU → FOUNDATION
@@ -1271,7 +1302,7 @@ function moveTableauToFoundation(
 
     }
 
-
+saveSolitaireState();
     column.pop();
 
 
@@ -1350,7 +1381,7 @@ function moveWasteToTableau(
 
     }
 
-
+saveSolitaireState();
     solitaire.waste.pop();
 
 
@@ -3200,7 +3231,224 @@ function createSolitaireCardElement(
 
 }
 
+/* =========================================================
+   UNDO SYSTEM
+========================================================= */
 
+function saveSolitaireState() {
+
+    /*
+        Save only the actual game state.
+        Timer and UI references are NOT saved.
+    */
+
+    const state = {
+
+        stock:
+            solitaire.stock.map(card => ({
+                ...card
+            })),
+
+        waste:
+            solitaire.waste.map(card => ({
+                ...card
+            })),
+
+        foundations:
+            solitaire.foundations.map(
+                foundation =>
+                    foundation.map(card => ({
+                        ...card
+                    }))
+            ),
+
+        tableau:
+            solitaire.tableau.map(
+                column =>
+                    column.map(card => ({
+                        ...card
+                    }))
+            ),
+
+        moves:
+            solitaire.moves,
+
+        seconds:
+            solitaire.seconds,
+
+        redeals:
+            solitaire.redeals
+
+    };
+
+
+    solitaire.history.push(state);
+
+
+    /*
+        Prevent unlimited memory growth.
+    */
+
+    if (
+        solitaire.history.length >
+        solitaire.maxHistory
+    ) {
+
+        solitaire.history.shift();
+
+    }
+
+
+    updateSolitaireUndoButton();
+
+}
+
+
+/* =========================================================
+   RESTORE PREVIOUS STATE
+========================================================= */
+
+function undoSolitaireMove() {
+
+    if (
+        solitaire.history.length === 0
+    ) {
+
+        console.log(
+            "↩️ Nothing to undo."
+        );
+
+        return;
+
+    }
+
+
+    /*
+        Stop automatic foundation movement
+        while restoring the previous state.
+    */
+
+    solitaire.autoMoving = true;
+
+
+    const previousState =
+        solitaire.history.pop();
+
+
+    solitaire.stock =
+        previousState.stock.map(
+            card => ({
+                ...card
+            })
+        );
+
+
+    solitaire.waste =
+        previousState.waste.map(
+            card => ({
+                ...card
+            })
+        );
+
+
+    solitaire.foundations =
+        previousState.foundations.map(
+            foundation =>
+                foundation.map(
+                    card => ({
+                        ...card
+                    })
+                )
+        );
+
+
+    solitaire.tableau =
+        previousState.tableau.map(
+            column =>
+                column.map(
+                    card => ({
+                        ...card
+                    })
+                )
+        );
+
+
+    solitaire.moves =
+        previousState.moves;
+
+
+    solitaire.seconds =
+        previousState.seconds;
+
+
+    solitaire.redeals =
+        previousState.redeals;
+
+
+    solitaire.autoMoving = false;
+
+
+    /*
+        Restart timer if the game is still active.
+    */
+
+    if (
+        solitaire.started &&
+        solitaire.timer === null
+    ) {
+
+        startSolitaireTimer();
+
+    }
+
+
+    updateSolitaireStats();
+
+    renderSolitaire();
+
+    updateSolitaireUndoButton();
+
+
+    console.log(
+        "↩️ Solitaire move undone."
+    );
+
+}
+
+
+/* =========================================================
+   UPDATE UNDO BUTTON
+========================================================= */
+
+function updateSolitaireUndoButton() {
+
+    const undoButton =
+        document.getElementById(
+            "solitaireUndo"
+        );
+
+
+    if (!undoButton) {
+
+        return;
+
+    }
+
+
+    const hasHistory =
+        solitaire.history.length > 0;
+
+
+    undoButton.disabled =
+        !hasHistory;
+
+
+    undoButton.classList.toggle(
+        "disabled",
+        !hasHistory
+    );
+
+}
 /* =========================================================
    32. CONTROLS
 ========================================================= */
@@ -3232,7 +3480,31 @@ function setupSolitaireControls() {
         );
 
     }
+/* =====================================================
+   UNDO
+===================================================== */
 
+const undoButton =
+    document.getElementById(
+        "solitaireUndo"
+    );
+
+
+if (
+    undoButton &&
+    !undoButton.dataset.solitaireBound
+) {
+
+    undoButton.dataset.solitaireBound =
+        "true";
+
+
+    undoButton.addEventListener(
+        "click",
+        undoSolitaireMove
+    );
+
+}
 
     /* =====================================================
        PLAY AGAIN
