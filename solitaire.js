@@ -2713,23 +2713,6 @@ function createSolitairePile(
                     createSolitaireCardElement(
                         card
                     );
-
-
-                /*
-                    Stack the three cards
-                    horizontally.
-                */
-
-                cardElement.style.position =
-                    "absolute";
-
-                cardElement.style.left =
-                    `${visibleIndex * 18}px`;
-
-                cardElement.style.top =
-                    "0px";
-
-
                 /*
                     Only the newest / rightmost
                     card is playable.
