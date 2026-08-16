@@ -1,10 +1,9 @@
-
 console.log("☕ DigiCafe Shell Loaded");
 
 
-/* =====================================================
+/* =========================================================
    DIGICAFE MAIN SHELL
-   -----------------------------------------------------
+   ---------------------------------------------------------
    Handles:
 
    • Global page navigation
@@ -14,27 +13,26 @@ console.log("☕ DigiCafe Shell Loaded");
    • Reader loading
    • Music Lounge loading
    • Library rendering
-   • Playroom navigation
-   • Individual game initialization
+   • Playroom module loading
    • Browser back / forward navigation
 
-   IMPORTANT:
-   Each Playroom game has its own JS file.
+   PLAYROOM GAME LOGIC IS NOT HERE.
+
+   Playroom navigation:
+   • playroom.js
 
    Games:
    • solitaire.js
-   • slots.js
    • bingo.js
+   • slots.js
    • chess.js
    • dama.js
-
-   This file does NOT contain game engines.
-===================================================== */
+========================================================= */
 
 
-/* =====================================================
+/* =========================================================
    01. PAGE CONFIGURATION
-===================================================== */
+========================================================= */
 
 const pages = {
 
@@ -61,11 +59,9 @@ const pages = {
 };
 
 
-/* =====================================================
-   02. READER MODULE STATE
-
-   Reader is loaded only when needed.
-===================================================== */
+/* =========================================================
+   02. READER MODULE
+========================================================= */
 
 let readerModuleLoaded = false;
 
@@ -75,7 +71,9 @@ let readerModuleLoading = null;
 async function loadReaderModule() {
 
     if (readerModuleLoaded) {
+
         return;
+
     }
 
 
@@ -92,8 +90,7 @@ async function loadReaderModule() {
         import("./reader.js")
             .then(() => {
 
-                readerModuleLoaded =
-                    true;
+                readerModuleLoaded = true;
 
                 console.log(
                     "📖 Reader module loaded."
@@ -107,8 +104,7 @@ async function loadReaderModule() {
                     error
                 );
 
-                readerModuleLoading =
-                    null;
+                readerModuleLoading = null;
 
                 throw error;
 
@@ -120,11 +116,9 @@ async function loadReaderModule() {
 }
 
 
-/* =====================================================
-   03. MUSIC LOUNGE MODULE STATE
-
-   music.js is loaded only when Music Lounge opens.
-===================================================== */
+/* =========================================================
+   03. MUSIC LOUNGE MODULE
+========================================================= */
 
 let musicModuleLoaded = false;
 
@@ -134,7 +128,9 @@ let musicModuleLoading = null;
 async function loadMusicModule() {
 
     if (musicModuleLoaded) {
+
         return;
+
     }
 
 
@@ -163,8 +159,7 @@ async function loadMusicModule() {
 
                 if (existingScript) {
 
-                    musicModuleLoaded =
-                        true;
+                    musicModuleLoaded = true;
 
                     console.log(
                         "🎵 Music Lounge script already loaded."
@@ -187,47 +182,40 @@ async function loadMusicModule() {
                     );
 
 
-                script.src =
-                    "music.js";
+                script.src = "music.js";
+
+                script.async = false;
 
 
-                script.async =
-                    false;
+                script.onload = () => {
+
+                    musicModuleLoaded = true;
+
+                    console.log(
+                        "🎵 Music Lounge module loaded."
+                    );
+
+                    resolve();
+
+                };
 
 
-                script.onload =
-                    () => {
+                script.onerror = error => {
 
-                        musicModuleLoaded =
-                            true;
+                    console.error(
+                        "❌ Could not load music.js:",
+                        error
+                    );
 
-                        console.log(
-                            "🎵 Music Lounge module loaded."
-                        );
+                    musicModuleLoading = null;
 
-                        resolve();
+                    reject(
+                        new Error(
+                            "Could not load music.js"
+                        )
+                    );
 
-                    };
-
-
-                script.onerror =
-                    error => {
-
-                        console.error(
-                            "❌ Could not load music.js:",
-                            error
-                        );
-
-                        musicModuleLoading =
-                            null;
-
-                        reject(
-                            new Error(
-                                "Could not load music.js"
-                            )
-                        );
-
-                    };
+                };
 
 
                 document.body.appendChild(
@@ -243,9 +231,124 @@ async function loadMusicModule() {
 }
 
 
-/* =====================================================
-   04. DIGICAFE STARTUP
-===================================================== */
+/* =========================================================
+   04. PLAYROOM MODULE
+========================================================= */
+
+let playroomModuleLoaded = false;
+
+let playroomModuleLoading = null;
+
+
+async function loadPlayroomModule() {
+
+    if (playroomModuleLoaded) {
+
+        return;
+
+    }
+
+
+    if (playroomModuleLoading) {
+
+        await playroomModuleLoading;
+
+        return;
+
+    }
+
+
+    playroomModuleLoading =
+        new Promise(
+            (resolve, reject) => {
+
+                const existingScript =
+                    document.querySelector(
+                        'script[src="playroom.js"]'
+                    );
+
+
+                /* -----------------------------------------
+                   SCRIPT ALREADY EXISTS
+                ----------------------------------------- */
+
+                if (existingScript) {
+
+                    playroomModuleLoaded = true;
+
+                    console.log(
+                        "🎮 Playroom script already loaded."
+                    );
+
+                    resolve();
+
+                    return;
+
+                }
+
+
+                /* -----------------------------------------
+                   CREATE SCRIPT
+                ----------------------------------------- */
+
+                const script =
+                    document.createElement(
+                        "script"
+                    );
+
+
+                script.src = "playroom.js";
+
+                script.async = false;
+
+
+                script.onload = () => {
+
+                    playroomModuleLoaded = true;
+
+                    console.log(
+                        "🎮 Playroom module loaded."
+                    );
+
+                    resolve();
+
+                };
+
+
+                script.onerror = error => {
+
+                    console.error(
+                        "❌ Could not load playroom.js:",
+                        error
+                    );
+
+                    playroomModuleLoading = null;
+
+                    reject(
+                        new Error(
+                            "Could not load playroom.js"
+                        )
+                    );
+
+                };
+
+
+                document.body.appendChild(
+                    script
+                );
+
+            }
+        );
+
+
+    await playroomModuleLoading;
+
+}
+
+
+/* =========================================================
+   05. DIGICAFE STARTUP
+========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -339,9 +442,9 @@ document.addEventListener(
 );
 
 
-/* =====================================================
-   05. COMPONENT LOADER
-===================================================== */
+/* =========================================================
+   06. COMPONENT LOADER
+========================================================= */
 
 async function loadComponent(
     id,
@@ -409,9 +512,9 @@ async function loadComponent(
 }
 
 
-/* =====================================================
-   06. INITIAL PAGE
-===================================================== */
+/* =========================================================
+   07. INITIAL PAGE
+========================================================= */
 
 async function loadInitialPage() {
 
@@ -435,16 +538,14 @@ async function loadInitialPage() {
 
     if (!page) {
 
-        page =
-            "home";
+        page = "home";
 
     }
 
 
     if (!pages[page]) {
 
-        page =
-            "home";
+        page = "home";
 
     }
 
@@ -477,9 +578,9 @@ async function loadInitialPage() {
 }
 
 
-/* =====================================================
-   07. LIBRARY
-===================================================== */
+/* =========================================================
+   08. LIBRARY
+========================================================= */
 
 window.initLibrary =
     async function () {
@@ -537,26 +638,21 @@ window.initLibrary =
 
         if (blogList) {
 
-            blogList.innerHTML =
-                "";
+            blogList.innerHTML = "";
 
         }
 
 
         if (discussionList) {
 
-            discussionList.innerHTML =
-                "";
+            discussionList.innerHTML = "";
 
         }
 
 
-        let blogCount =
-            0;
+        let blogCount = 0;
 
-
-        let discussionCount =
-            0;
+        let discussionCount = 0;
 
 
         Object.entries(
@@ -565,7 +661,9 @@ window.initLibrary =
             ([storyKey, story]) => {
 
                 if (!story) {
+
                     return;
+
                 }
 
 
@@ -599,9 +697,7 @@ window.initLibrary =
                         );
 
 
-                    link.href =
-                        "#";
-
+                    link.href = "#";
 
                     link.className =
                         "library-content-link";
@@ -687,9 +783,7 @@ window.initLibrary =
                         );
 
 
-                    link.href =
-                        "#";
-
+                    link.href = "#";
 
                     link.className =
                         "library-content-link";
@@ -753,6 +847,10 @@ window.initLibrary =
         );
 
 
+        /* =================================================
+           EMPTY STATES
+        ================================================= */
+
         if (
             blogList &&
             blogCount === 0
@@ -800,9 +898,9 @@ window.initLibrary =
     };
 
 
-/* =====================================================
-   08. ESCAPE HTML
-===================================================== */
+/* =========================================================
+   09. ESCAPE HTML
+========================================================= */
 
 function escapeHTML(
     value
@@ -825,9 +923,9 @@ function escapeHTML(
 }
 
 
-/* =====================================================
-   09. FORMAT DATE
-===================================================== */
+/* =========================================================
+   10. FORMAT PUBLISHED DATE
+========================================================= */
 
 function formatPublishedDate(
     dateString
@@ -870,9 +968,9 @@ function formatPublishedDate(
 }
 
 
-/* =====================================================
-   10. NAVIGATION
-===================================================== */
+/* =========================================================
+   11. MAIN NAVIGATION
+========================================================= */
 
 async function navigateTo(
     page,
@@ -881,17 +979,24 @@ async function navigateTo(
     chapter = null
 ) {
 
+    /* -----------------------------------------------------
+       Validate page
+    ----------------------------------------------------- */
+
     if (!pages[page]) {
 
         console.warn(
             `⚠️ Unknown page "${page}". Returning home.`
         );
 
-        page =
-            "home";
+        page = "home";
 
     }
 
+
+    /* -----------------------------------------------------
+       Find page container
+    ----------------------------------------------------- */
 
     const content =
         document.getElementById(
@@ -945,28 +1050,6 @@ async function navigateTo(
 
 
         /* =================================================
-           PLAYROOM
-
-           IMPORTANT:
-
-           We ONLY prepare the Playroom navigation here.
-
-           We DO NOT initialize every game.
-
-           Each individual game is initialized only
-           when the player opens that game.
-        ================================================= */
-
-        if (
-            page === "playroom"
-        ) {
-
-            setupPlayroomGames();
-
-        }
-
-
-        /* =================================================
            CURRENT READER STORY
         ================================================= */
 
@@ -986,6 +1069,40 @@ async function navigateTo(
 
         }
 
+
+        /* =================================================
+           PLAYROOM MODULE
+
+           The HTML must be loaded first.
+
+           Then playroom.js is loaded.
+        ================================================= */
+
+        if (
+            page === "playroom"
+        ) {
+
+            try {
+
+                await loadPlayroomModule();
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "❌ Playroom module failed:",
+                    error
+                );
+
+            }
+
+        }
+
+
+        /* =================================================
+           REMOVE LOADING STATE
+        ================================================= */
 
         content.classList.remove(
             "page-loading"
@@ -1009,8 +1126,7 @@ async function navigateTo(
                 page === "home"
             ) {
 
-                url =
-                    "index.html";
+                url = "index.html";
 
             }
 
@@ -1099,7 +1215,7 @@ async function navigateTo(
 
 
         /* =================================================
-           BESHY PAGE
+           BESHY PAGE STATE
         ================================================= */
 
         document.body.dataset.beshyPage =
@@ -1110,14 +1226,12 @@ async function navigateTo(
            ROOM INITIALIZATION
         ================================================= */
 
-        switch (
-            page
-        ) {
+        switch (page) {
 
 
             /* =============================================
                HOME
-            ============================================= */
+            ============================================== */
 
             case "home":
 
@@ -1135,7 +1249,7 @@ async function navigateTo(
 
             /* =============================================
                MUSIC
-            ============================================= */
+            ============================================== */
 
             case "music":
 
@@ -1184,7 +1298,7 @@ async function navigateTo(
 
             /* =============================================
                LIBRARY
-            ============================================= */
+            ============================================== */
 
             case "library":
 
@@ -1210,7 +1324,7 @@ async function navigateTo(
 
             /* =============================================
                ROMANCE
-            ============================================= */
+            ============================================== */
 
             case "romance":
 
@@ -1223,7 +1337,7 @@ async function navigateTo(
 
             /* =============================================
                COMEDY
-            ============================================= */
+            ============================================== */
 
             case "comedy":
 
@@ -1236,7 +1350,7 @@ async function navigateTo(
 
             /* =============================================
                SCI-FI
-            ============================================= */
+            ============================================== */
 
             case "scifi":
 
@@ -1249,7 +1363,7 @@ async function navigateTo(
 
             /* =============================================
                READER
-            ============================================= */
+            ============================================== */
 
             case "reader":
 
@@ -1344,7 +1458,7 @@ async function navigateTo(
 
             /* =============================================
                ABOUT
-            ============================================= */
+            ============================================== */
 
             case "about":
 
@@ -1362,7 +1476,7 @@ async function navigateTo(
 
             /* =============================================
                ACCOUNT
-            ============================================= */
+            ============================================== */
 
             case "account":
 
@@ -1380,21 +1494,31 @@ async function navigateTo(
 
             /* =============================================
                PLAYROOM
-
-               No game is initialized here.
-
-               setupPlayroomGames() already prepared
-               the game buttons.
-
-               The selected game is initialized by
-               openPlayroomGame().
-            ============================================= */
+            ============================================== */
 
             case "playroom":
 
                 console.log(
                     "🎮 DigiCafe Playroom ready."
                 );
+
+
+                if (
+                    typeof window.setupPlayroomGames ===
+                    "function"
+                ) {
+
+                    window.setupPlayroomGames();
+
+                }
+
+                else {
+
+                    console.error(
+                        "❌ setupPlayroomGames() was not found."
+                    );
+
+                }
 
                 break;
 
@@ -1462,9 +1586,9 @@ async function navigateTo(
 }
 
 
-/* =====================================================
-   11. GLOBAL NAVIGATION
-===================================================== */
+/* =========================================================
+   12. GLOBAL NAVIGATION
+========================================================= */
 
 function initGlobalNavigation() {
 
@@ -1486,8 +1610,8 @@ function initGlobalNavigation() {
 
 
             /* ---------------------------------------------
-               ALLOW NORMAL BROWSER BEHAVIOR
-               FOR MODIFIED CLICKS
+               Allow modified clicks
+               Ctrl / Cmd / Shift / Alt
             --------------------------------------------- */
 
             if (
@@ -1555,9 +1679,9 @@ function initGlobalNavigation() {
 }
 
 
-/* =====================================================
-   12. NAVBAR
-===================================================== */
+/* =========================================================
+   13. NAVBAR
+========================================================= */
 
 function initNavbar() {
 
@@ -1626,9 +1750,9 @@ function initNavbar() {
 }
 
 
-/* =====================================================
-   13. ACTIVE NAVIGATION
-===================================================== */
+/* =========================================================
+   14. ACTIVE NAVIGATION
+========================================================= */
 
 function highlightActiveLink(
     currentPage
@@ -1663,9 +1787,9 @@ function highlightActiveLink(
 }
 
 
-/* =====================================================
-   14. CLOSE MOBILE MENU
-===================================================== */
+/* =========================================================
+   15. CLOSE MOBILE MENU
+========================================================= */
 
 function closeMobileMenu() {
 
@@ -1709,9 +1833,9 @@ function closeMobileMenu() {
 }
 
 
-/* =====================================================
-   15. BROWSER BACK / FORWARD
-===================================================== */
+/* =========================================================
+   16. BROWSER BACK / FORWARD
+========================================================= */
 
 window.addEventListener(
     "popstate",
@@ -1762,660 +1886,38 @@ window.addEventListener(
 );
 
 
-/* =====================================================
-   16. GLOBAL NAVIGATION API
-===================================================== */
+/* =========================================================
+   17. GLOBAL NAVIGATION API
+========================================================= */
 
 window.navigateTo =
     navigateTo;
 
-/* =====================================================
-   17. PLAYROOM GAME SYSTEM
-===================================================== */
 
-function setupPlayroomGames() {
+/* =========================================================
+   18. GLOBAL SHELL API
+========================================================= */
 
-    const playroom =
-        document.querySelector(".playroom");
+window.loadComponent =
+    loadComponent;
 
 
-    if (!playroom) {
+window.loadMusicModule =
+    loadMusicModule;
 
-        console.warn(
-            "🎮 Playroom not found."
-        );
 
-        return;
+window.loadReaderModule =
+    loadReaderModule;
 
-    }
 
+window.loadPlayroomModule =
+    loadPlayroomModule;
 
-    /* =================================================
-       PLAYROOM LOUNGE
-    ================================================= */
 
-    const gameLounge =
-        playroom.querySelector(".game-lounge");
-
-
-    /* =================================================
-       GAME ROOMS
-    ================================================= */
-
-    const gameRooms =
-        playroom.querySelectorAll(
-            ":scope > .game-room"
-        );
-
-
-    /* =================================================
-       GAME CARDS
-    ================================================= */
-
-    const gameButtons =
-        playroom.querySelectorAll(
-            "[data-game]"
-        );
-
-
-    /* =================================================
-       SHOW LOBBY
-    ================================================= */
-
-    function showPlayroomLobby() {
-
-        console.log(
-            "☕ Returning to Playroom lobby."
-        );
-
-
-        /* ---------------------------------------------
-           Hide every game room
-        --------------------------------------------- */
-
-        gameRooms.forEach(room => {
-
-            room.hidden = true;
-
-            room.classList.remove(
-                "game-active",
-                "game-room-active"
-            );
-
-        });
-
-
-        /* ---------------------------------------------
-           Show lounge
-        --------------------------------------------- */
-
-        if (gameLounge) {
-
-            gameLounge.hidden = false;
-
-        }
-
-
-        /* ---------------------------------------------
-           Remove state
-        --------------------------------------------- */
-
-        playroom.classList.remove(
-            "playing-game"
-        );
-
-
-        playroom.removeAttribute(
-            "data-active-game"
-        );
-
-
-        document.body.classList.remove(
-            "playing-digicafe-game"
-        );
-
-
-        document.body.removeAttribute(
-            "data-active-game"
-        );
-
-
-        /* ---------------------------------------------
-           Return to Playroom
-        --------------------------------------------- */
-
-        playroom.scrollIntoView({
-
-            behavior: "smooth",
-
-            block: "start"
-
-        });
-
-    }
-
-
-    /* =================================================
-       OPEN GAME
-    ================================================= */
-
-    function showGame(gameName) {
-
-        if (!gameName) {
-
-            console.warn(
-                "🎮 No game name supplied."
-            );
-
-            return;
-
-        }
-
-
-        console.log(
-            "🎮 Opening game:",
-            gameName
-        );
-
-
-        let selectedRoom = null;
-
-
-        /* ---------------------------------------------
-           Find the requested game room
-        --------------------------------------------- */
-
-        gameRooms.forEach(room => {
-
-            const roomName =
-                room.dataset.gameRoom;
-
-
-            const isActive =
-                roomName === gameName;
-
-
-            room.hidden =
-                !isActive;
-
-
-            room.classList.toggle(
-                "game-active",
-                isActive
-            );
-
-
-            room.classList.toggle(
-                "game-room-active",
-                isActive
-            );
-
-
-            if (isActive) {
-
-                selectedRoom = room;
-
-            }
-
-        });
-
-
-        /* ---------------------------------------------
-           Game not found
-        --------------------------------------------- */
-
-        if (!selectedRoom) {
-
-            console.error(
-                `🎮 Game room "${gameName}" was not found.`
-            );
-
-            showPlayroomLobby();
-
-            return;
-
-        }
-
-
-        /* ---------------------------------------------
-           Hide lounge
-        --------------------------------------------- */
-
-        if (gameLounge) {
-
-            gameLounge.hidden = true;
-
-        }
-
-
-        /* ---------------------------------------------
-           Set Playroom state
-        --------------------------------------------- */
-
-        playroom.classList.add(
-            "playing-game"
-        );
-
-
-        playroom.dataset.activeGame =
-            gameName;
-
-
-        document.body.classList.add(
-            "playing-digicafe-game"
-        );
-
-
-        document.body.dataset.activeGame =
-            gameName;
-
-
-        /* ---------------------------------------------
-           Initialize game
-        --------------------------------------------- */
-
-        initializePlayroomGame(
-            gameName
-        );
-
-
-        /* ---------------------------------------------
-           Scroll to game
-        --------------------------------------------- */
-
-        selectedRoom.scrollIntoView({
-
-            behavior: "smooth",
-
-            block: "start"
-
-        });
-
-    }
-
-
-    /* =================================================
-       GAME CARD CLICK
-    ================================================= */
-
-    gameButtons.forEach(button => {
-
-        button.addEventListener(
-            "click",
-            function(event) {
-
-                event.preventDefault();
-
-                const gameName =
-                    this.dataset.game;
-
-
-                showGame(
-                    gameName
-                );
-
-            }
-        );
-
-    });
-
-
-    /* =================================================
-       BACK TO GAMES
-       ---------------------------------------------
-       EVENT DELEGATION
-       Works for existing and dynamically created
-       buttons.
-    ================================================= */
-
-    playroom.addEventListener(
-        "click",
-        function(event) {
-
-            const backButton =
-                event.target.closest(
-                    "[data-back-to-games]"
-                );
-
-
-            if (
-                !backButton ||
-                !playroom.contains(backButton)
-            ) {
-
-                return;
-
-            }
-
-
-            event.preventDefault();
-
-            event.stopPropagation();
-
-
-            console.log(
-                "🎮 Back to Games clicked."
-            );
-
-
-            showPlayroomLobby();
-
-        }
-    );
-
-
-    /* =================================================
-       INITIAL STATE
-    ================================================= */
-
-    showPlayroomLobby();
-
-
-    /* =================================================
-       PUBLIC API
-    ================================================= */
-
-    playroom.showGame =
-        showGame;
-
-
-    playroom.showLobby =
-        showPlayroomLobby;
-
-
-    window.playroomShowGame =
-        showGame;
-
-
-    window.playroomShowLobby =
-        showPlayroomLobby;
-
-
-    console.log(
-        "🎮 Playroom game system ready."
-    );
-
-}
-
-
-/* =====================================================
-   18. INITIALIZE SELECTED GAME
-===================================================== */
-
-function initializePlayroomGame(gameName) {
-
-    console.log(
-        "🎮 Initializing game:",
-        gameName
-    );
-
-
-    switch (gameName) {
-
-
-        case "solitaire":
-
-            if (
-                typeof window.initSolitaire ===
-                "function"
-            ) {
-
-                window.initSolitaire();
-
-            }
-
-            else if (
-                typeof window.setupSolitaire ===
-                "function"
-            ) {
-
-                window.setupSolitaire();
-
-            }
-
-            else {
-
-                console.warn(
-                    "🃏 Solitaire initializer not found."
-                );
-
-            }
-
-            break;
-
-
-        case "slots":
-
-            if (
-                typeof window.initCafeSlots ===
-                "function"
-            ) {
-
-                window.initCafeSlots();
-
-            }
-
-            else {
-
-                console.warn(
-                    "🎰 Cafe Slots initializer not found."
-                );
-
-            }
-
-            break;
-
-
-        case "bingo":
-
-            if (
-                typeof window.initBingo ===
-                "function"
-            ) {
-
-                window.initBingo();
-
-            }
-
-            else if (
-                typeof window.setupBingo ===
-                "function"
-            ) {
-
-                window.setupBingo();
-
-            }
-
-            else {
-
-                console.warn(
-                    "🎱 Bingo initializer not found."
-                );
-
-            }
-
-            break;
-
-
-        case "chess":
-
-            if (
-                typeof window.initChess ===
-                "function"
-            ) {
-
-                window.initChess();
-
-            }
-
-            else if (
-                typeof window.setupChess ===
-                "function"
-            ) {
-
-                window.setupChess();
-
-            }
-
-            else {
-
-                console.warn(
-                    "♟️ Chess initializer not found."
-                );
-
-            }
-
-            break;
-
-
-        case "dama":
-
-            if (
-                typeof window.initDama ===
-                "function"
-            ) {
-
-                window.initDama();
-
-            }
-
-            else if (
-                typeof window.setupDama ===
-                "function"
-            ) {
-
-                window.setupDama();
-
-            }
-
-            else {
-
-                console.warn(
-                    "⚫ Dama initializer not found."
-                );
-
-            }
-
-            break;
-
-
-        default:
-
-            console.warn(
-                `🎮 Unknown game: ${gameName}`
-            );
-
-    }
-
-}
-
-
-/* =====================================================
-   19. OPEN GAME
-===================================================== */
-
-function openPlayroomGame(gameName) {
-
-    const playroom =
-        document.querySelector(
-            ".playroom"
-        );
-
-
-    if (!playroom) {
-
-        console.warn(
-            "🎮 Playroom not found."
-        );
-
-        return;
-
-    }
-
-
-    if (
-        typeof playroom.showGame ===
-        "function"
-    ) {
-
-        playroom.showGame(
-            gameName
-        );
-
-    }
-
-    else {
-
-        console.warn(
-            "🎮 Playroom system is not initialized."
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   20. CLOSE GAME
-===================================================== */
-
-function closePlayroomGame() {
-
-    const playroom =
-        document.querySelector(
-            ".playroom"
-        );
-
-
-    if (!playroom) {
-
-        return;
-
-    }
-
-
-    if (
-        typeof playroom.showLobby ===
-        "function"
-    ) {
-
-        playroom.showLobby();
-
-    }
-
-    else {
-
-        console.warn(
-            "🎮 Playroom system is not initialized."
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   21. GLOBAL PLAYROOM API
-===================================================== */
-
-window.setupPlayroomGames =
-    setupPlayroomGames;
-
-
-window.openPlayroomGame =
-    openPlayroomGame;
-
-
-window.closePlayroomGame =
-    closePlayroomGame;
-
-
-window.initializePlayroomGame =
-    initializePlayroomGame;
-
+/* =========================================================
+   19. SHELL READY
+========================================================= */
 
 console.log(
-    "☕ DigiCafe Playroom shell ready."
+    "☕ DigiCafe shell script ready."
 );
-
-

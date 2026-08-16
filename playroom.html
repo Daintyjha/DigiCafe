@@ -2,14 +2,29 @@
      DIGICAFE PLAYROOM
 ========================================================= -->
 
-<section class="playroom" id="playroom">
+<link
+    rel="stylesheet"
+    href="playroom.css"
+>
+
+
+<section
+    class="playroom"
+    id="playroom"
+>
 
 
     <!-- =====================================================
          PLAYROOM LOUNGE
     ====================================================== -->
 
-    <div class="game-lounge" id="gameLounge">
+    <div
+        class="game-lounge"
+        id="gameLounge"
+    >
+
+
+        <!-- HERO -->
 
         <header class="playroom-hero">
 
@@ -33,9 +48,14 @@
         </header>
 
 
+        <!-- WELCOME NOTE -->
+
         <div class="playroom-note">
 
-            <div class="playroom-note-icon">
+            <div
+                class="playroom-note-icon"
+                aria-hidden="true"
+            >
                 ☕
             </div>
 
@@ -55,15 +75,15 @@
         </div>
 
 
-        <!-- =================================================
-             GAME SELECTION
-        ================================================== -->
+        <!-- GAME SELECTION -->
 
         <div class="playroom-games">
 
             <div class="playroom-section-heading">
 
-                <span>🎮</span>
+                <span aria-hidden="true">
+                    🎮
+                </span>
 
                 <div>
 
@@ -83,9 +103,7 @@
             <div class="game-grid">
 
 
-                <!-- =================================================
-                     SOLITAIRE CARD
-                ================================================== -->
+                <!-- SOLITAIRE -->
 
                 <button
                     type="button"
@@ -93,7 +111,10 @@
                     data-game="solitaire"
                 >
 
-                    <div class="game-card-icon">
+                    <div
+                        class="game-card-icon"
+                        aria-hidden="true"
+                    >
                         🃏
                     </div>
 
@@ -114,16 +135,17 @@
 
                     </div>
 
-                    <span class="game-card-arrow">
+                    <span
+                        class="game-card-arrow"
+                        aria-hidden="true"
+                    >
                         →
                     </span>
 
                 </button>
 
 
-                <!-- =================================================
-                     BINGO CARD
-                ================================================== -->
+                <!-- BINGO -->
 
                 <button
                     type="button"
@@ -131,7 +153,10 @@
                     data-game="bingo"
                 >
 
-                    <div class="game-card-icon">
+                    <div
+                        class="game-card-icon"
+                        aria-hidden="true"
+                    >
                         🎱
                     </div>
 
@@ -152,16 +177,17 @@
 
                     </div>
 
-                    <span class="game-card-arrow">
+                    <span
+                        class="game-card-arrow"
+                        aria-hidden="true"
+                    >
                         →
                     </span>
 
                 </button>
 
 
-                <!-- =================================================
-                     SLOTS CARD
-                ================================================== -->
+                <!-- SLOTS -->
 
                 <button
                     type="button"
@@ -169,7 +195,10 @@
                     data-game="slots"
                 >
 
-                    <div class="game-card-icon">
+                    <div
+                        class="game-card-icon"
+                        aria-hidden="true"
+                    >
                         ☕
                     </div>
 
@@ -190,16 +219,17 @@
 
                     </div>
 
-                    <span class="game-card-arrow">
+                    <span
+                        class="game-card-arrow"
+                        aria-hidden="true"
+                    >
                         →
                     </span>
 
                 </button>
 
 
-                <!-- =================================================
-                     CHESS CARD
-                ================================================== -->
+                <!-- CHESS -->
 
                 <button
                     type="button"
@@ -207,7 +237,10 @@
                     data-game="chess"
                 >
 
-                    <div class="game-card-icon">
+                    <div
+                        class="game-card-icon"
+                        aria-hidden="true"
+                    >
                         ♟
                     </div>
 
@@ -228,16 +261,17 @@
 
                     </div>
 
-                    <span class="game-card-arrow">
+                    <span
+                        class="game-card-arrow"
+                        aria-hidden="true"
+                    >
                         →
                     </span>
 
                 </button>
 
 
-                <!-- =================================================
-                     DAMA CARD
-                ================================================== -->
+                <!-- DAMA -->
 
                 <button
                     type="button"
@@ -245,7 +279,10 @@
                     data-game="dama"
                 >
 
-                    <div class="game-card-icon">
+                    <div
+                        class="game-card-icon"
+                        aria-hidden="true"
+                    >
                         ⚫
                     </div>
 
@@ -266,7 +303,10 @@
 
                     </div>
 
-                    <span class="game-card-arrow">
+                    <span
+                        class="game-card-arrow"
+                        aria-hidden="true"
+                    >
                         →
                     </span>
 
@@ -279,10 +319,8 @@
     </div>
 
 
-
     <!-- =====================================================
          SOLITAIRE
-         ONE GAME ROOM ONLY
     ====================================================== -->
 
     <section
@@ -351,21 +389,12 @@
 
         <div class="game-room-content">
 
-
-            <!-- =================================================
-                 SOLITAIRE BOARD
-            ================================================== -->
-
             <div
                 id="solitaireBoard"
                 class="solitaire-board"
                 aria-label="DigiCafe Solitaire game"
             ></div>
 
-
-            <!-- =================================================
-                 CONTROLS
-            ================================================== -->
 
             <div class="solitaire-controls">
 
@@ -378,7 +407,7 @@
                         New Game
                     </span>
 
-                    <span>
+                    <span aria-hidden="true">
                         ↻
                     </span>
                 </button>
@@ -396,10 +425,6 @@
             </div>
 
 
-            <!-- =================================================
-                 WIN SCREEN
-            ================================================== -->
-
             <div
                 id="solitaireWin"
                 class="solitaire-win"
@@ -408,7 +433,10 @@
 
                 <div class="solitaire-win-card">
 
-                    <div class="solitaire-win-icon">
+                    <div
+                        class="solitaire-win-icon"
+                        aria-hidden="true"
+                    >
                         ☕🃏✨
                     </div>
 
@@ -467,7 +495,7 @@
                             Play Again
                         </span>
 
-                        <span>
+                        <span aria-hidden="true">
                             ☕
                         </span>
 
@@ -482,452 +510,405 @@
     </section>
 
 
-
     <!-- =====================================================
-     DIGICAFE BINGO 2.0
-     APP STYLE GAME ROOM
-====================================================== -->
+         BINGO
+    ====================================================== -->
 
-<section
-    id="bingoGame"
-    class="game-room bingo-room"
-    data-game-room="bingo"
-    hidden
-    aria-labelledby="bingoTitle"
->
+    <section
+        id="bingoGame"
+        class="game-room bingo-room"
+        data-game-room="bingo"
+        hidden
+        aria-labelledby="bingoTitle"
+    >
 
-    <!-- =================================================
-         TOP BAR
-    ================================================== -->
+        <header class="bingo-app-header">
 
-    <header class="bingo-topbar">
-
-        <button
-            class="game-secondary-button"
-            type="button"
-            data-back-to-games
-        >
-            ← Games
-        </button>
-
-
-        <div class="bingo-brand">
-
-            <span class="game-eyebrow">
-                DIGICAFE SOCIAL TABLE
-            </span>
-
-            <h2 id="bingoTitle">
-                🎱 Bingo
-            </h2>
-
-        </div>
-
-
-        <div class="bingo-top-stats">
-
-            <div class="bingo-mini-stat">
-
-                <span>
-                    CALLED
-                </span>
-
-                <strong id="bingoCalledCount">
-                    0
-                </strong>
-
-            </div>
-
-
-            <div class="bingo-mini-stat">
-
-                <span>
-                    LEFT
-                </span>
-
-                <strong id="bingoRemainingCount">
-                    75
-                </strong>
-
-            </div>
-
-
-            <div class="bingo-mini-stat">
-
-                <span>
-                    WINS
-                </span>
-
-                <strong id="bingoWins">
-                    0
-                </strong>
-
-            </div>
-
-        </div>
-
-    </header>
-
-
-
-    <!-- =================================================
-         BINGO PLAY AREA
-    ================================================== -->
-
-    <div class="bingo-app">
-
-
-        <!-- =============================================
-             LEFT FLOATING PANEL
-        ============================================== -->
-
-        <aside class="bingo-side-panel bingo-left-panel">
-
-
-            <!-- =========================================
-                 COFFEE
-            ========================================== -->
-
-            <section
-                class="bingo-coffee-widget"
-                aria-label="Coffee power meter"
+            <button
+                class="game-secondary-button"
+                type="button"
+                data-back-to-games
             >
-
-                <div class="bingo-widget-label">
-                    CAFÉ POWER
-                </div>
+                ← Back to Games
+            </button>
 
 
-                <div class="bingo-coffee-display">
+            <div class="bingo-app-title">
 
-                    <div
-                        class="bingo-coffee-cup"
-                        aria-hidden="true"
-                    >
+                <span class="game-eyebrow">
+                    DIGICAFE SOCIAL TABLE
+                </span>
 
-                        <div class="bingo-coffee-steam steam-one"></div>
+                <h2 id="bingoTitle">
+                    🎱 Bingo
+                </h2>
 
-                        <div class="bingo-coffee-steam steam-two"></div>
-
-                        <div class="bingo-coffee-liquid">
-
-                            <div
-                                id="bingoCoffeeFill"
-                                class="bingo-coffee-fill"
-                            ></div>
-
-                        </div>
-
-                        <div class="bingo-coffee-cup-rim"></div>
-
-                        <div class="bingo-coffee-cup-body">
-                            ☕
-                        </div>
-
-                        <div class="bingo-coffee-handle"></div>
-
-                    </div>
+            </div>
 
 
-                    <div class="bingo-coffee-info">
+            <div class="bingo-mini-stats">
 
-                        <strong
-                            id="bingoCoffeeStatus"
-                        >
-                            BREWING
-                        </strong>
-
-                        <span
-                            id="bingoCoffeeProgress"
-                        >
-                            ● ○ ○
-                        </span>
-
-                        <small
-                            id="bingoCoffeeMessage"
-                        >
-                            Daub numbers to brew
-                            your next power-up.
-                        </small>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =========================================
-                 CARD COUNT
-            ========================================== -->
-
-            <section
-                class="bingo-compact-widget"
-                aria-label="Choose number of Bingo cards"
-            >
-
-                <div class="bingo-widget-label">
-                    YOUR TABLE
-                </div>
-
-                <div
-                    class="bingo-card-options"
-                    role="group"
-                    aria-label="Number of Bingo cards"
-                >
-
-                    <button
-                        type="button"
-                        class="bingo-card-option active"
-                        data-card-count="1"
-                        aria-pressed="true"
-                    >
-                        1
-                    </button>
-
-                    <button
-                        type="button"
-                        class="bingo-card-option"
-                        data-card-count="2"
-                        aria-pressed="false"
-                    >
-                        2
-                    </button>
-
-                    <button
-                        type="button"
-                        class="bingo-card-option"
-                        data-card-count="3"
-                        aria-pressed="false"
-                    >
-                        3
-                    </button>
-
-                    <button
-                        type="button"
-                        class="bingo-card-option"
-                        data-card-count="4"
-                        aria-pressed="false"
-                    >
-                        4
-                    </button>
-
-                </div>
-
-
-                <div class="bingo-credit-row">
+                <div class="bingo-mini-stat">
 
                     <span>
-                        CAFÉ CREDITS
+                        CALLED
                     </span>
 
-                    <strong data-bingo-credit-balance>
-                        100
+                    <strong id="bingoCalledCount">
+                        0
                     </strong>
 
                 </div>
 
-            </section>
 
+                <div class="bingo-mini-stat">
 
-
-            <!-- =========================================
-                 DAUB MODE
-            ========================================== -->
-
-            <section
-                class="bingo-compact-widget"
-                aria-label="Daub mode"
-            >
-
-                <div class="bingo-widget-label">
-                    PLAY STYLE
-                </div>
-
-
-                <div
-                    class="bingo-daub-options"
-                    role="group"
-                >
-
-                    <button
-                        type="button"
-                        class="bingo-daub-option active"
-                        data-daub-mode="manual"
-                        aria-pressed="true"
-                    >
-                        ✋
-                        <span>
-                            Manual
-                        </span>
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="bingo-daub-option"
-                        data-daub-mode="auto"
-                        aria-pressed="false"
-                    >
-                        ✨
-                        <span>
-                            Auto
-                        </span>
-                    </button>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =========================================
-                 POWER-UP
-            ========================================== -->
-
-            <section
-                class="bingo-powerup-widget"
-                aria-label="Available power-up"
-            >
-
-                <div class="bingo-widget-label">
-                    POWER-UP
-                </div>
-
-
-                <div
-                    id="bingoPowerupStatus"
-                    class="bingo-powerup-status"
-                >
-
-                    <span
-                        id="bingoPowerupStatusIcon"
-                        class="bingo-powerup-icon"
-                    >
-                        ☕
+                    <span>
+                        LEFT
                     </span>
 
+                    <strong id="bingoRemainingCount">
+                        75
+                    </strong>
 
-                    <div>
+                </div>
 
-                        <strong
-                            id="bingoPowerupStatusTitle"
+
+                <div class="bingo-mini-stat">
+
+                    <span>
+                        WINS
+                    </span>
+
+                    <strong id="bingoWins">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <div class="bingo-app-layout">
+
+
+            <!-- LEFT SIDEBAR -->
+
+            <aside
+                class="bingo-sidebar bingo-sidebar-left"
+            >
+
+
+                <!-- CARD COUNT -->
+
+                <section class="bingo-mini-panel">
+
+                    <span class="game-eyebrow">
+                        YOUR TABLE
+                    </span>
+
+                    <h3>
+                        Cards
+                    </h3>
+
+
+                    <div
+                        class="bingo-card-options"
+                        role="group"
+                        aria-label="Number of Bingo cards"
+                    >
+
+                        <button
+                            type="button"
+                            class="bingo-card-option active"
+                            data-card-count="1"
+                            aria-pressed="true"
                         >
-                            Brewing
-                        </strong>
+                            <strong>
+                                1
+                            </strong>
 
-                        <small
-                            id="bingoPowerupStatusText"
+                            <small>
+                                10 credits
+                            </small>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="bingo-card-option"
+                            data-card-count="2"
+                            aria-pressed="false"
                         >
-                            Your next surprise
-                            is brewing.
-                        </small>
+                            <strong>
+                                2
+                            </strong>
+
+                            <small>
+                                20 credits
+                            </small>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="bingo-card-option"
+                            data-card-count="3"
+                            aria-pressed="false"
+                        >
+                            <strong>
+                                3
+                            </strong>
+
+                            <small>
+                                30 credits
+                            </small>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="bingo-card-option"
+                            data-card-count="4"
+                            aria-pressed="false"
+                        >
+                            <strong>
+                                4
+                            </strong>
+
+                            <small>
+                                40 credits
+                            </small>
+
+                        </button>
 
                     </div>
 
-                </div>
+
+                    <div class="bingo-credit-info">
+
+                        <span>
+                            CAFÉ CREDITS
+                        </span>
+
+                        <strong data-bingo-credit-balance>
+                            100
+                        </strong>
+
+                    </div>
+
+                </section>
 
 
-                <!--
-                    The actual available power-up
-                    appears here when coffee is ready.
-                -->
+                <!-- DAUB MODE -->
 
-                <button
-                    type="button"
-                    class="bingo-powerup-button"
-                    id="bingoPowerupButton"
-                    disabled
+                <section class="bingo-mini-panel">
+
+                    <span class="game-eyebrow">
+                        PLAY STYLE
+                    </span>
+
+                    <h3>
+                        Daub Mode
+                    </h3>
+
+
+                    <div
+                        class="bingo-daub-options"
+                        role="group"
+                        aria-label="Bingo daub mode"
+                    >
+
+                        <button
+                            type="button"
+                            class="bingo-daub-option active"
+                            data-daub-mode="manual"
+                            aria-pressed="true"
+                        >
+
+                            <span
+                                class="bingo-daub-icon"
+                                aria-hidden="true"
+                            >
+                                ✋
+                            </span>
+
+                            <span class="bingo-daub-info">
+
+                                <strong>
+                                    Manual
+                                </strong>
+
+                                <small>
+                                    Tap numbers
+                                </small>
+
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="bingo-daub-option"
+                            data-daub-mode="auto"
+                            aria-pressed="false"
+                        >
+
+                            <span
+                                class="bingo-daub-icon"
+                                aria-hidden="true"
+                            >
+                                ✨
+                            </span>
+
+                            <span class="bingo-daub-info">
+
+                                <strong>
+                                    Auto
+                                </strong>
+
+                                <small>
+                                    Mark automatically
+                                </small>
+
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <!-- CALLER -->
+
+                <section
+                    class="bingo-mini-panel bingo-caller-panel"
                 >
+
+                    <span class="game-eyebrow">
+                        NUMBER CALLED
+                    </span>
+
+
+                    <div
+                        id="bingoCurrentLetter"
+                        class="bingo-current-letter"
+                    >
+                        READY
+                    </div>
+
+
+                    <div
+                        id="bingoCurrentNumber"
+                        class="bingo-current-number"
+                    >
+                        —
+                    </div>
+
+
+                    <p
+                        id="bingoResult"
+                        class="bingo-result"
+                    >
+                        Choose your cards and call a number.
+                    </p>
+
+                </section>
+
+
+                <!-- CONTROLS -->
+
+                <section
+                    class="bingo-mini-panel bingo-control-panel"
+                >
+
+                    <button
+                        id="bingoCallNumber"
+                        class="bingo-call-button"
+                        type="button"
+                    >
+                        <span aria-hidden="true">
+                            🎱
+                        </span>
+
+                        <span>
+                            CALL NUMBER
+                        </span>
+
+                    </button>
+
+
+                    <div class="bingo-secondary-controls">
+
+                        <button
+                            id="bingoAutoCall"
+                            class="bingo-auto-button"
+                            type="button"
+                            aria-pressed="false"
+                        >
+                            <span aria-hidden="true">
+                                ↻
+                            </span>
+
+                            <span>
+                                AUTO CALL
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            id="bingoNewGame"
+                            class="bingo-new-button"
+                            type="button"
+                        >
+                            <span>
+                                NEW GAME
+                            </span>
+
+                            <span aria-hidden="true">
+                                ↻
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </section>
+
+            </aside>
+
+
+            <!-- CENTER -->
+
+            <main class="bingo-main-board">
+
+                <div class="bingo-board-heading">
+
+                    <div>
+
+                        <span class="game-eyebrow">
+                            YOUR BINGO CARDS
+                        </span>
+
+                        <h3>
+                            Good luck, besh ☕
+                        </h3>
+
+                    </div>
+
 
                     <span
-                        id="bingoPowerupButtonIcon"
+                        id="bingoCardCountLabel"
+                        class="bingo-card-count-label"
                     >
-                        ☕
-                    </span>
-
-                    <span
-                        id="bingoPowerupButtonName"
-                    >
-                        BREWING
-                    </span>
-
-                </button>
-
-            </section>
-
-
-        </aside>
-
-
-
-        <!-- =============================================
-             MAIN BINGO TABLE
-        ============================================== -->
-
-        <main class="bingo-main-table">
-
-
-            <!-- =========================================
-                 CURRENT NUMBER
-            ========================================== -->
-
-            <section
-                class="bingo-caller"
-                aria-live="polite"
-                aria-label="Current Bingo number"
-            >
-
-                <span class="bingo-caller-label">
-                    NUMBER CALLED
-                </span>
-
-
-                <div
-                    id="bingoCurrentLetter"
-                    class="bingo-current-letter"
-                >
-                    READY
-                </div>
-
-
-                <div
-                    id="bingoCurrentNumber"
-                    class="bingo-current-number"
-                >
-                    —
-                </div>
-
-
-                <p
-                    id="bingoResult"
-                    class="bingo-result"
-                >
-                    Choose your cards,
-                    then call a number.
-                </p>
-
-            </section>
-
-
-
-            <!-- =========================================
-                 MAIN CARDS
-            ========================================== -->
-
-            <section
-                class="bingo-cards-area"
-                aria-label="Your Bingo cards"
-            >
-
-                <div class="bingo-cards-heading">
-
-                    <span>
-                        YOUR BINGO CARDS
-                    </span>
-
-                    <span id="bingoCardCountLabel">
                         1 CARD
                     </span>
 
@@ -939,277 +920,459 @@
                     class="bingo-cards"
                 ></div>
 
-            </section>
+
+                <div class="bingo-legend">
+
+                    <div class="bingo-legend-item">
+
+                        <span
+                            class="bingo-legend-dot called"
+                            aria-hidden="true"
+                        ></span>
+
+                        <span>
+                            Called
+                        </span>
+
+                    </div>
 
 
+                    <div class="bingo-legend-item">
 
-            <!-- =========================================
-                 MAIN CONTROLS
-            ========================================== -->
+                        <span
+                            class="bingo-legend-dot marked"
+                            aria-hidden="true"
+                        ></span>
 
-            <section
-                class="bingo-controls"
-                aria-label="Bingo controls"
+                        <span>
+                            Your daub
+                        </span>
+
+                    </div>
+
+
+                    <div class="bingo-legend-item">
+
+                        <span
+                            class="bingo-legend-dot free"
+                            aria-hidden="true"
+                        ></span>
+
+                        <span>
+                            Free
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </main>
+
+
+            <!-- RIGHT SIDEBAR -->
+
+            <aside
+                class="bingo-sidebar bingo-sidebar-right"
             >
 
-                <button
-                    id="bingoCallNumber"
-                    class="bingo-call-button"
-                    type="button"
+
+                <!-- COFFEE POWER-UP -->
+
+                <section
+                    class="bingo-mini-panel bingo-coffee-panel"
                 >
 
-                    <span aria-hidden="true">
-                        🎱
-                    </span>
+                    <div class="bingo-panel-heading">
 
-                    <span>
-                        CALL NUMBER
-                    </span>
+                        <div>
 
-                </button>
+                            <span class="game-eyebrow">
+                                CAFÉ POWER-UP
+                            </span>
+
+                            <h3>
+                                Coffee Brewing
+                            </h3>
+
+                        </div>
 
 
-                <button
-                    id="bingoAutoCall"
-                    class="bingo-auto-button"
-                    type="button"
-                    aria-pressed="false"
+                        <span
+                            id="bingoPowerupTimer"
+                            class="bingo-powerup-timer"
+                            aria-live="polite"
+                        >
+                            BREWING
+                        </span>
+
+                    </div>
+
+
+                    <div class="bingo-coffee-meter">
+
+                        <div
+                            class="bingo-coffee-cup"
+                            aria-hidden="true"
+                        >
+
+                            <div
+                                class="bingo-coffee-steam steam-one"
+                            ></div>
+
+                            <div
+                                class="bingo-coffee-steam steam-two"
+                            ></div>
+
+
+                            <div class="bingo-coffee-liquid">
+
+                                <div
+                                    id="bingoCoffeeFill"
+                                    class="bingo-coffee-fill"
+                                ></div>
+
+                            </div>
+
+
+                            <div class="bingo-coffee-cup-rim"></div>
+
+
+                            <div class="bingo-coffee-cup-body">
+                                ☕
+                            </div>
+
+
+                            <div class="bingo-coffee-handle"></div>
+
+                        </div>
+
+
+                        <div class="bingo-coffee-meter-info">
+
+                            <strong id="bingoPowerupXP">
+                                0 / 3
+                            </strong>
+
+                            <small id="bingoPowerupXPText">
+                                Your coffee is brewing...
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="bingoPowerupStatus"
+                        class="bingo-powerup-status"
+                        aria-live="polite"
+                    >
+
+                        <span
+                            id="bingoPowerupStatusIcon"
+                            class="bingo-powerup-status-icon"
+                            aria-hidden="true"
+                        >
+                            ☕
+                        </span>
+
+
+                        <div>
+
+                            <strong id="bingoPowerupStatusTitle">
+                                Coffee is brewing
+                            </strong>
+
+                            <small id="bingoPowerupStatusText">
+                                Daub 3 called numbers to receive
+                                a random power-up.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- POWER-UPS -->
+
+                    <div
+                        class="bingo-powerup-options"
+                        role="group"
+                        aria-label="Bingo power-ups"
+                    >
+
+                        <button
+                            type="button"
+                            class="bingo-powerup-option"
+                            data-powerup="lucky-daub"
+                            disabled
+                        >
+
+                            <span
+                                class="bingo-powerup-icon"
+                                aria-hidden="true"
+                            >
+                                🍀
+                            </span>
+
+                            <span class="bingo-powerup-info">
+
+                                <strong>
+                                    Lucky Daub
+                                </strong>
+
+                                <small>
+                                    Marks one called number.
+                                </small>
+
+                            </span>
+
+                            <span
+                                class="bingo-powerup-cost"
+                                data-powerup-ready
+                            >
+                                LOCKED
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="bingo-powerup-option"
+                            data-powerup="number-boost"
+                            disabled
+                        >
+
+                            <span
+                                class="bingo-powerup-icon"
+                                aria-hidden="true"
+                            >
+                                ⚡
+                            </span>
+
+                            <span class="bingo-powerup-info">
+
+                                <strong>
+                                    Number Boost
+                                </strong>
+
+                                <small>
+                                    Highlights called numbers.
+                                </small>
+
+                            </span>
+
+                            <span
+                                class="bingo-powerup-cost"
+                                data-powerup-ready
+                            >
+                                LOCKED
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="bingo-powerup-option"
+                            data-powerup="double-daub"
+                            disabled
+                        >
+
+                            <span
+                                class="bingo-powerup-icon"
+                                aria-hidden="true"
+                            >
+                                ✨
+                            </span>
+
+                            <span class="bingo-powerup-info">
+
+                                <strong>
+                                    Double Daub
+                                </strong>
+
+                                <small>
+                                    Next daub gives 2 XP.
+                                </small>
+
+                            </span>
+
+                            <span
+                                class="bingo-powerup-cost"
+                                data-powerup-ready
+                            >
+                                LOCKED
+                            </span>
+
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="bingoPowerupCooldown"
+                        class="bingo-powerup-cooldown"
+                        hidden
+                        aria-live="polite"
+                    >
+
+                        <span aria-hidden="true">
+                            ⏳
+                        </span>
+
+                        <strong>
+                            Power-up cooldown
+                        </strong>
+
+                        <span id="bingoPowerupCooldownTime">
+                            5
+                        </span>
+
+                        <small>
+                            seconds
+                        </small>
+
+                    </div>
+
+                </section>
+
+
+                <!-- CALLED NUMBERS -->
+
+                <section
+                    class="bingo-mini-panel bingo-called-panel"
                 >
 
-                    <span>
-                        ↻
-                    </span>
+                    <div class="bingo-section-heading">
 
-                    <span>
-                        AUTO CALL
-                    </span>
+                        <span>
+                            NUMBERS CALLED
+                        </span>
 
-                </button>
+                        <span>
 
+                            <strong id="bingoCalledTotal">
+                                0
+                            </strong>
 
-                <button
-                    id="bingoNewGame"
-                    class="bingo-new-button"
-                    type="button"
-                >
+                            / 75
 
-                    <span>
-                        NEW GAME
-                    </span>
+                        </span>
 
-                    <span aria-hidden="true">
-                        ↻
-                    </span>
+                    </div>
 
-                </button>
 
-            </section>
+                    <div
+                        id="bingoCalledNumbers"
+                        class="bingo-called-numbers"
+                    >
 
+                        <span class="bingo-no-numbers">
+                            No numbers called yet.
+                        </span>
 
-        </main>
+                    </div>
 
+                </section>
 
-
-        <!-- =============================================
-             RIGHT FLOATING PANEL
-        ============================================== -->
-
-        <aside class="bingo-side-panel bingo-right-panel">
-
-
-            <!-- =========================================
-                 CALLED NUMBERS
-            ========================================== -->
-
-            <section
-                class="bingo-called-widget"
-                aria-label="Called Bingo numbers"
-            >
-
-                <div class="bingo-widget-label">
-                    NUMBERS CALLED
-                </div>
-
-
-                <div class="bingo-called-counter">
-
-                    <strong id="bingoCalledTotal">
-                        0
-                    </strong>
-
-                    <span>
-                        / 75
-                    </span>
-
-                </div>
-
-
-                <div
-                    id="bingoCalledNumbers"
-                    class="bingo-called-numbers"
-                >
-
-                    <span class="bingo-no-numbers">
-                        No numbers called yet.
-                    </span>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =========================================
-                 LEGEND
-            ========================================== -->
-
-            <section class="bingo-legend">
-
-                <div class="bingo-legend-item">
-
-                    <span
-                        class="bingo-legend-dot called"
-                    ></span>
-
-                    <span>
-                        Called
-                    </span>
-
-                </div>
-
-
-                <div class="bingo-legend-item">
-
-                    <span
-                        class="bingo-legend-dot marked"
-                    ></span>
-
-                    <span>
-                        Daubed
-                    </span>
-
-                </div>
-
-
-                <div class="bingo-legend-item">
-
-                    <span
-                        class="bingo-legend-dot free"
-                    ></span>
-
-                    <span>
-                        Free
-                    </span>
-
-                </div>
-
-            </section>
-
-        </aside>
-
-
-    </div>
-
-
-
-    <!-- =================================================
-         WIN SCREEN
-    ================================================== -->
-
-    <section
-        id="bingoWin"
-        class="bingo-win"
-        hidden
-        aria-live="assertive"
-    >
-
-        <div class="bingo-win-card">
-
-            <div
-                class="bingo-win-icon"
-                aria-hidden="true"
-            >
-                🎱☕✨
-            </div>
-
-
-            <span class="game-eyebrow">
-                CAFÉ BINGO
-            </span>
-
-
-            <h2>
-                BINGO!
-            </h2>
-
-
-            <p id="bingoWinMessage">
-                You got five in a row!
-                Nicely played, besh. ☕
-            </p>
-
-
-            <div class="bingo-final-stats">
-
-                <div>
-
-                    <span>
-                        CARDS PLAYED
-                    </span>
-
-                    <strong id="bingoFinalCards">
-                        1
-                    </strong>
-
-                </div>
-
-
-                <div>
-
-                    <span>
-                        NUMBERS CALLED
-                    </span>
-
-                    <strong id="bingoFinalCalled">
-                        0
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <button
-                id="bingoPlayAgain"
-                class="game-button"
-                type="button"
-            >
-
-                <span>
-                    PLAY AGAIN
-                </span>
-
-                <span>
-                    ☕
-                </span>
-
-            </button>
+            </aside>
 
         </div>
+
+
+        <!-- BINGO WIN -->
+
+        <section
+            id="bingoWin"
+            class="bingo-win"
+            hidden
+            aria-live="assertive"
+        >
+
+            <div class="bingo-win-card">
+
+                <div
+                    class="bingo-win-icon"
+                    aria-hidden="true"
+                >
+                    🎱☕✨
+                </div>
+
+                <span class="game-eyebrow">
+                    CAFÉ BINGO
+                </span>
+
+                <h2>
+                    BINGO!
+                </h2>
+
+                <p id="bingoWinMessage">
+                    You got five in a row!
+                    Nicely played, besh. ☕
+                </p>
+
+
+                <div class="bingo-final-stats">
+
+                    <div>
+
+                        <span>
+                            CARDS PLAYED
+                        </span>
+
+                        <strong id="bingoFinalCards">
+                            1
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            NUMBERS CALLED
+                        </span>
+
+                        <strong id="bingoFinalCalled">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="bingoPlayAgain"
+                    class="game-button"
+                    type="button"
+                >
+                    <span>
+                        Play Again
+                    </span>
+
+                    <span aria-hidden="true">
+                        ☕
+                    </span>
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <p class="bingo-note">
+            🎱 DigiCafe Bingo is a fictional café game.
+            No real money or prizes are involved.
+        </p>
 
     </section>
 
 
-
-    <p class="bingo-note">
-        🎱 DigiCafe Bingo is a fictional café game.
-        No real money or prizes are involved.
-    </p>
-
-</section>
     <!-- =====================================================
          CAFÉ SLOTS
-         ONE GAME ROOM ONLY
     ====================================================== -->
 
     <section
@@ -1253,9 +1416,7 @@
         <div class="cafe-slots-game">
 
 
-            <!-- =================================================
-                 STATS
-            ================================================== -->
+            <!-- STATS -->
 
             <div class="cafe-slots-stats">
 
@@ -1300,10 +1461,7 @@
             </div>
 
 
-
-            <!-- =================================================
-                 SLOT MACHINE
-            ================================================== -->
+            <!-- SLOT MACHINE -->
 
             <div
                 class="cafe-slot-machine"
@@ -1401,10 +1559,7 @@
             </div>
 
 
-
-            <!-- =================================================
-                 CONTROLS
-            ================================================== -->
+            <!-- CONTROLS -->
 
             <section
                 class="slots-controls"
@@ -1470,8 +1625,13 @@
                     class="slots-auto-button"
                     aria-pressed="false"
                 >
-                    <span>↻</span>
-                    <span>AUTO</span>
+                    <span aria-hidden="true">
+                        ↻
+                    </span>
+
+                    <span>
+                        AUTO
+                    </span>
                 </button>
 
 
@@ -1486,10 +1646,7 @@
             </section>
 
 
-
-            <!-- =================================================
-                 PAYTABLE
-            ================================================== -->
+            <!-- PAYTABLE -->
 
             <section class="slots-paytable">
 
@@ -1509,45 +1666,121 @@
                 <div class="paytable-grid">
 
                     <div class="pay-item jackpot">
-                        <span class="pay-symbol">☕</span>
-                        <span class="pay-name">Coffee</span>
-                        <strong>× 25</strong>
+
+                        <span class="pay-symbol">
+                            ☕
+                        </span>
+
+                        <span class="pay-name">
+                            Coffee
+                        </span>
+
+                        <strong>
+                            × 25
+                        </strong>
+
                     </div>
 
-                    <div class="pay-item">
-                        <span class="pay-symbol">💎</span>
-                        <span class="pay-name">Diamond</span>
-                        <strong>× 15</strong>
-                    </div>
 
                     <div class="pay-item">
-                        <span class="pay-symbol">⭐</span>
-                        <span class="pay-name">Star</span>
-                        <strong>× 12</strong>
+
+                        <span class="pay-symbol">
+                            💎
+                        </span>
+
+                        <span class="pay-name">
+                            Diamond
+                        </span>
+
+                        <strong>
+                            × 15
+                        </strong>
+
                     </div>
 
-                    <div class="pay-item">
-                        <span class="pay-symbol">🌙</span>
-                        <span class="pay-name">Moon</span>
-                        <strong>× 10</strong>
-                    </div>
 
                     <div class="pay-item">
-                        <span class="pay-symbol">🍰</span>
-                        <span class="pay-name">Cake</span>
-                        <strong>× 8</strong>
+
+                        <span class="pay-symbol">
+                            ⭐
+                        </span>
+
+                        <span class="pay-name">
+                            Star
+                        </span>
+
+                        <strong>
+                            × 12
+                        </strong>
+
                     </div>
 
-                    <div class="pay-item">
-                        <span class="pay-symbol">🧁</span>
-                        <span class="pay-name">Cupcake</span>
-                        <strong>× 6</strong>
-                    </div>
 
                     <div class="pay-item">
-                        <span class="pay-symbol">🍪</span>
-                        <span class="pay-name">Cookie</span>
-                        <strong>× 5</strong>
+
+                        <span class="pay-symbol">
+                            🌙
+                        </span>
+
+                        <span class="pay-name">
+                            Moon
+                        </span>
+
+                        <strong>
+                            × 10
+                        </strong>
+
+                    </div>
+
+
+                    <div class="pay-item">
+
+                        <span class="pay-symbol">
+                            🍰
+                        </span>
+
+                        <span class="pay-name">
+                            Cake
+                        </span>
+
+                        <strong>
+                            × 8
+                        </strong>
+
+                    </div>
+
+
+                    <div class="pay-item">
+
+                        <span class="pay-symbol">
+                            🧁
+                        </span>
+
+                        <span class="pay-name">
+                            Cupcake
+                        </span>
+
+                        <strong>
+                            × 6
+                        </strong>
+
+                    </div>
+
+
+                    <div class="pay-item">
+
+                        <span class="pay-symbol">
+                            🍪
+                        </span>
+
+                        <span class="pay-name">
+                            Cookie
+                        </span>
+
+                        <strong>
+                            × 5
+                        </strong>
+
                     </div>
 
                 </div>
@@ -1555,10 +1788,7 @@
             </section>
 
 
-
-            <!-- =================================================
-                 SESSION
-            ================================================== -->
+            <!-- SESSION -->
 
             <section class="slots-session">
 
@@ -1613,10 +1843,8 @@
     </section>
 
 
-
     <!-- =====================================================
          CHESS
-         ONE GAME ROOM ONLY
     ====================================================== -->
 
     <section
@@ -1648,6 +1876,10 @@
 
             <div class="chess-header-content">
 
+                <span class="game-eyebrow">
+                    DIGICAFE STRATEGY TABLE
+                </span>
+
                 <h1 id="chessTitle">
                     DigiCafe Chess
                 </h1>
@@ -1665,9 +1897,7 @@
         <section class="chess-panel">
 
 
-            <!-- =================================================
-                 STATUS
-            ================================================== -->
+            <!-- STATUS -->
 
             <div
                 class="chess-status"
@@ -1698,15 +1928,13 @@
             </div>
 
 
-
-            <!-- =================================================
-                 GAME AREA
-            ================================================== -->
+            <!-- GAME AREA -->
 
             <div class="chess-game-area">
 
-
-                <div class="chess-player chess-player-black">
+                <div
+                    class="chess-player chess-player-black"
+                >
 
                     <div
                         class="chess-player-piece"
@@ -1738,7 +1966,9 @@
                 ></div>
 
 
-                <div class="chess-player chess-player-white">
+                <div
+                    class="chess-player chess-player-white"
+                >
 
                     <div
                         class="chess-player-piece"
@@ -1764,10 +1994,7 @@
             </div>
 
 
-
-            <!-- =================================================
-                 CAPTURED
-            ================================================== -->
+            <!-- CAPTURED -->
 
             <section class="chess-captured">
 
@@ -1801,10 +2028,7 @@
             </section>
 
 
-
-            <!-- =================================================
-                 CONTROLS
-            ================================================== -->
+            <!-- CONTROLS -->
 
             <div class="chess-controls">
 
@@ -1813,7 +2037,10 @@
                     id="chessNewGame"
                     class="chess-button chess-button-primary"
                 >
-                    <span aria-hidden="true">↻</span>
+                    <span aria-hidden="true">
+                        ↻
+                    </span>
+
                     NEW GAME
                 </button>
 
@@ -1824,7 +2051,10 @@
                     class="chess-button"
                     disabled
                 >
-                    <span aria-hidden="true">↶</span>
+                    <span aria-hidden="true">
+                        ↶
+                    </span>
+
                     UNDO
                 </button>
 
@@ -1834,17 +2064,17 @@
                     id="chessResign"
                     class="chess-button chess-button-danger"
                 >
-                    <span aria-hidden="true">⚑</span>
+                    <span aria-hidden="true">
+                        ⚑
+                    </span>
+
                     RESIGN
                 </button>
 
             </div>
 
 
-
-            <!-- =================================================
-                 HISTORY
-            ================================================== -->
+            <!-- HISTORY -->
 
             <section class="chess-history">
 
@@ -1876,10 +2106,7 @@
             </section>
 
 
-
-            <!-- =================================================
-                 RESULT
-            ================================================== -->
+            <!-- RESULT -->
 
             <section
                 id="chessResult"
@@ -1950,10 +2177,8 @@
     </section>
 
 
-
     <!-- =====================================================
          DAMA
-         ONE GAME ROOM ONLY
     ====================================================== -->
 
     <section
@@ -1983,7 +2208,11 @@
             </div>
 
 
-            <div>
+            <div class="dama-header-content">
+
+                <span class="game-eyebrow">
+                    DIGICAFE CLASSIC TABLE
+                </span>
 
                 <h1 id="damaTitle">
                     DigiCafe Dama
@@ -2002,9 +2231,7 @@
         <section class="dama-panel">
 
 
-            <!-- =================================================
-                 STATUS
-            ================================================== -->
+            <!-- STATUS -->
 
             <div
                 class="dama-status"
@@ -2035,17 +2262,18 @@
             </div>
 
 
-
-            <!-- =================================================
-                 GAME AREA
-            ================================================== -->
+            <!-- GAME AREA -->
 
             <div class="dama-game-area">
 
+                <div
+                    class="dama-player dama-player-black"
+                >
 
-                <div class="dama-player dama-player-black">
-
-                    <div class="dama-player-piece">
+                    <div
+                        class="dama-player-piece"
+                        aria-hidden="true"
+                    >
                         ●
                     </div>
 
@@ -2072,9 +2300,14 @@
                 ></div>
 
 
-                <div class="dama-player dama-player-white">
+                <div
+                    class="dama-player dama-player-white"
+                >
 
-                    <div class="dama-player-piece">
+                    <div
+                        class="dama-player-piece"
+                        aria-hidden="true"
+                    >
                         ○
                     </div>
 
@@ -2095,10 +2328,7 @@
             </div>
 
 
-
-            <!-- =================================================
-                 CAPTURED
-            ================================================== -->
+            <!-- CAPTURED -->
 
             <section class="dama-captured">
 
@@ -2132,10 +2362,7 @@
             </section>
 
 
-
-            <!-- =================================================
-                 CONTROLS
-            ================================================== -->
+            <!-- CONTROLS -->
 
             <div class="dama-controls">
 
@@ -2144,7 +2371,10 @@
                     id="damaNewGame"
                     class="dama-button dama-button-primary"
                 >
-                    <span aria-hidden="true">↻</span>
+                    <span aria-hidden="true">
+                        ↻
+                    </span>
+
                     NEW GAME
                 </button>
 
@@ -2155,7 +2385,10 @@
                     class="dama-button"
                     disabled
                 >
-                    <span aria-hidden="true">↶</span>
+                    <span aria-hidden="true">
+                        ↶
+                    </span>
+
                     UNDO
                 </button>
 
@@ -2165,17 +2398,17 @@
                     id="damaResign"
                     class="dama-button dama-button-danger"
                 >
-                    <span aria-hidden="true">⚑</span>
+                    <span aria-hidden="true">
+                        ⚑
+                    </span>
+
                     RESIGN
                 </button>
 
             </div>
 
 
-
-            <!-- =================================================
-                 HISTORY
-            ================================================== -->
+            <!-- HISTORY -->
 
             <section class="dama-history">
 
@@ -2207,10 +2440,7 @@
             </section>
 
 
-
-            <!-- =================================================
-                 RESULT
-            ================================================== -->
+            <!-- RESULT -->
 
             <section
                 id="damaResult"

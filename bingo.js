@@ -1699,51 +1699,50 @@ function useDoubleDaub() {
 
 function autoDaubAllCards() {
 
-    bingo.cards.forEach(
-        card => {
+    let successfulDaubs = 0;
 
-            card.forEach(
-                row => {
+    bingo.cards.forEach(card => {
 
-                    row.forEach(
-                        cell => {
+        card.forEach(row => {
 
-                            if (
-                                cell.free ||
-                                cell.marked
-                            ) {
-                                return;
-                            }
+            row.forEach(cell => {
 
-
-                            if (
-                                isBingoNumberCalled(
-                                    cell.number
-                                )
-                            ) {
-
-                                cell.marked =
-                                    true;
-
-                            }
-
-                        }
-                    );
-
+                if (cell.free || cell.marked) {
+                    return;
                 }
-            );
+
+                if (!isBingoNumberCalled(cell.number)) {
+                    return;
+                }
+
+                cell.marked = true;
+                successfulDaubs++;
+
+            });
+
+        });
+
+    });
+
+
+    if (successfulDaubs > 0) {
+
+        for (let i = 0; i < successfulDaubs; i++) {
+
+            if (bingo.powerUpReady) {
+                break;
+            }
+
+            rewardSuccessfulBingoDaub();
 
         }
-    );
+
+    }
 
 
     renderBingoCards();
 
-
-    checkBingoWin();
-
 }
-
 
 /* =========================================================
    31. RENDER CARDS
