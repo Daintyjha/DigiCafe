@@ -15735,7 +15735,188 @@ h1 {
             5px;
 
     }
+/* =========================================================
+   MOBILE — FLOATING TOP CONTROLS
+========================================================= */
 
+@media (max-width: 600px) {
+
+    /* -----------------------------------------------------
+       KEEP THE BINGO CARDS AS THE MAIN VIEW
+    ----------------------------------------------------- */
+
+    .bingo-play-area {
+
+        width: 100%;
+
+        padding:
+            8px 6px 30px;
+
+    }
+
+
+    /* -----------------------------------------------------
+       2 × 2 CARD LAYOUT
+    ----------------------------------------------------- */
+
+    .bingo-cards {
+
+        width: 100%;
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap: 8px;
+
+        align-items: start;
+
+    }
+
+
+    .bingo-card {
+
+        width: 100%;
+
+        max-width: none;
+
+        margin: 0;
+
+        padding: 5px;
+
+        border-radius: 12px;
+
+    }
+
+
+    /* -----------------------------------------------------
+       FLOATING CONTROL BAR
+    ----------------------------------------------------- */
+
+    .bingo-controls {
+
+        position: sticky;
+
+        top: 68px;
+
+        z-index: 90;
+
+        width:
+            calc(100% + 12px);
+
+        margin:
+            0 -6px 12px;
+
+        padding:
+            7px;
+
+        display: grid;
+
+        grid-template-columns:
+            1.3fr
+            1fr
+            1fr;
+
+        gap: 6px;
+
+        background:
+            rgba(244,247,251,0.94);
+
+        backdrop-filter:
+            blur(12px);
+
+        -webkit-backdrop-filter:
+            blur(12px);
+
+        border-bottom:
+            1px solid
+            var(--bingo-border);
+
+        box-shadow:
+            0 6px 18px
+            rgba(7,20,38,0.10);
+
+    }
+
+
+    .bingo-controls button {
+
+        min-height:
+            44px;
+
+        padding:
+            0 6px;
+
+        border-radius:
+            11px;
+
+        font-size:
+            0.72rem;
+
+        white-space:
+            nowrap;
+
+    }
+
+
+    /* -----------------------------------------------------
+       CARD GRID
+    ----------------------------------------------------- */
+
+    .bingo-card-grid,
+    .bingo-grid,
+    .bingo-card-table {
+
+        width: 100%;
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(5, minmax(0, 1fr));
+
+        gap: 3px;
+
+    }
+
+
+    .bingo-cell,
+    .bingo-number,
+    .bingo-square {
+
+        width: 100%;
+
+        aspect-ratio:
+            1 / 1;
+
+        min-width: 0;
+
+        padding: 1px;
+
+        border-radius: 5px;
+
+        font-size:
+            clamp(
+                0.52rem,
+                3vw,
+                0.78rem
+            );
+
+    }
+
+
+    /* -----------------------------------------------------
+       LESS SPACE ABOVE THE CARDS
+    ----------------------------------------------------- */
+
+    .bingo-cards-heading {
+
+        margin-bottom:
+            6px;
+
+    }
+
+}
 
     /* -----------------------------------------------------
        SLOTS
