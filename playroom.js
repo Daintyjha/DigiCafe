@@ -1,49 +1,36 @@
-  console.log("🎮 DigiCafe Playroom Loaded");
-
-
-/* =====================================================
+ /* =========================================================
    DIGICAFE PLAYROOM
-   -----------------------------------------------------
+   ---------------------------------------------------------
    Handles ONLY:
 
-   • Playroom lobby
-   • Game selection
+   • Game lounge
    • Opening game rooms
    • Closing game rooms
    • Back to Games buttons
-   • Calling individual game initializers
+   • Game initialization
+   • Public Playroom API
 
-   Individual game logic stays in:
-
+   Games themselves remain in:
    • solitaire.js
    • bingo.js
    • slots.js
    • chess.js
    • dama.js
-===================================================== */
+========================================================= */
+
+(() => {
+
+    "use strict";
 
 
-/* =====================================================
-   01. PLAYROOM STATE
-===================================================== */
+    /* =====================================================
+       PREVENT DUPLICATE INITIALIZATION
+    ===================================================== */
 
-let playroomInitialized = false;
-
-
-/* =====================================================
-   02. SETUP PLAYROOM
-===================================================== */
-
-function setupPlayroomGames() {
-
-    const playroom =
-        document.querySelector(".playroom");
-
-
-    if (!playroom) {
+    if (window.__DigiCafePlayroomLoaded) {
 
         console.warn(
-            "🎮 Playroom not found."
+            "🎮 DigiCafe Playroom is already loaded."
         );
 
         return;
@@ -51,702 +38,736 @@ function setupPlayroomGames() {
     }
 
 
-    /* Prevent duplicate initialization */
-
-    if (playroomInitialized) {
-
-        console.log(
-            "🎮 Playroom already initialized."
-        );
-
-        return;
-
-    }
+    window.__DigiCafePlayroomLoaded = true;
 
 
-    playroomInitialized = true;
+    /* =====================================================
+       GAME INITIALIZERS
+    ===================================================== */
 
-
-    /* =================================================
-       PLAYROOM LOUNGE
-    ================================================= */
-
-    const gameLounge =
-        playroom.querySelector(".game-lounge");
-
-
-    /* =================================================
-       GAME ROOMS
-    ================================================= */
-
-    const gameRooms =
-        playroom.querySelectorAll(
-            ":scope > .game-room"
-        );
-
-
-    /* =================================================
-       GAME BUTTONS
-
-       IMPORTANT:
-       Only buttons that actually have
-       data-game are game selection buttons.
-    ================================================= */
-
-    const gameButtons =
-        playroom.querySelectorAll(
-            ".game-card[data-game]"
-        );
-
-
-    console.log(
-        "🎮 Game buttons found:",
-        gameButtons.length
-    );
-
-
-    console.log(
-        "🎮 Game rooms found:",
-        gameRooms.length
-    );
-
-
-    /* =================================================
-       SHOW PLAYROOM LOBBY
-    ================================================= */
-
-    function showPlayroomLobby() {
+    function initializeGame(gameName) {
 
         console.log(
-            "☕ Returning to Playroom lobby."
+            `🎮 Initializing ${gameName}...`
         );
 
 
-        /* ---------------------------------------------
-           Hide ALL game rooms
-        --------------------------------------------- */
+        try {
 
-        gameRooms.forEach(room => {
-
-            room.hidden = true;
-
-            room.classList.remove(
-                "game-active",
-                "game-room-active"
-            );
-
-        });
+            switch (gameName) {
 
 
-        /* ---------------------------------------------
-           Show lounge
-        --------------------------------------------- */
+                /* =========================================
+                   SOLITAIRE
+                ========================================= */
 
-        if (gameLounge) {
+                case "solitaire":
 
-            gameLounge.hidden = false;
+                    if (
+                        typeof window.initSolitaire ===
+                        "function"
+                    ) {
 
-        }
+                        return window.initSolitaire();
 
+                    }
 
-        /* ---------------------------------------------
-           Remove active game state
-        --------------------------------------------- */
+                    console.warn(
+                        "🃏 initSolitaire() not found."
+                    );
 
-        playroom.classList.remove(
-            "playing-game"
-        );
-
-
-        playroom.removeAttribute(
-            "data-active-game"
-        );
+                    break;
 
 
-        document.body.classList.remove(
-            "playing-digicafe-game"
-        );
+                /* =========================================
+                   BINGO
+                ========================================= */
+
+                case "bingo":
+
+                    if (
+                        typeof window.initBingo ===
+                        "function"
+                    ) {
+
+                        return window.initBingo();
+
+                    }
+
+                    if (
+                        typeof window.setupBingo ===
+                        "function"
+                    ) {
+
+                        return window.setupBingo();
+
+                    }
+
+                    console.warn(
+                        "🎱 Bingo initializer not found."
+                    );
+
+                    break;
 
 
-        document.body.removeAttribute(
-            "data-active-game"
-        );
+                /* =========================================
+                   SLOTS
+                ========================================= */
+
+                case "slots":
+
+                    if (
+                        typeof window.initCafeSlots ===
+                        "function"
+                    ) {
+
+                        return window.initCafeSlots();
+
+                    }
+
+                    console.warn(
+                        "🎰 initCafeSlots() not found."
+                    );
+
+                    break;
 
 
-        /* ---------------------------------------------
-           Scroll to lobby
-        --------------------------------------------- */
+                /* =========================================
+                   CHESS
+                ========================================= */
 
-        playroom.scrollIntoView({
+                case "chess":
 
-            behavior: "smooth",
+                    if (
+                        typeof window.initChess ===
+                        "function"
+                    ) {
 
-            block: "start"
+                        return window.initChess();
 
-        });
+                    }
 
-    }
+                    if (
+                        typeof window.setupChess ===
+                        "function"
+                    ) {
 
+                        return window.setupChess();
 
-    /* =================================================
-       OPEN GAME
-    ================================================= */
+                    }
 
-    function showGame(gameName) {
+                    console.warn(
+                        "♟️ Chess initializer not found."
+                    );
 
-        if (!gameName) {
-
-            console.warn(
-                "🎮 No game name supplied."
-            );
-
-            return;
-
-        }
-
-
-        console.log(
-            "🎮 Opening game:",
-            gameName
-        );
+                    break;
 
 
-        let selectedRoom = null;
+                /* =========================================
+                   DAMA
+                ========================================= */
+
+                case "dama":
+
+                    if (
+                        typeof window.initDama ===
+                        "function"
+                    ) {
+
+                        return window.initDama();
+
+                    }
+
+                    if (
+                        typeof window.setupDama ===
+                        "function"
+                    ) {
+
+                        return window.setupDama();
+
+                    }
+
+                    console.warn(
+                        "⚫ Dama initializer not found."
+                    );
+
+                    break;
 
 
-        /* ---------------------------------------------
-           Find and show selected room
-        --------------------------------------------- */
+                default:
 
-        gameRooms.forEach(room => {
-
-            const roomName =
-                room.dataset.gameRoom;
-
-
-            const isActive =
-                roomName === gameName;
-
-
-            room.hidden =
-                !isActive;
-
-
-            room.classList.toggle(
-                "game-active",
-                isActive
-            );
-
-
-            room.classList.toggle(
-                "game-room-active",
-                isActive
-            );
-
-
-            if (isActive) {
-
-                selectedRoom = room;
+                    console.warn(
+                        `🎮 Unknown game "${gameName}".`
+                    );
 
             }
 
-        });
+        }
 
+        catch (error) {
 
-        /* ---------------------------------------------
-           Game not found
-        --------------------------------------------- */
+            /*
+                IMPORTANT:
 
-        if (!selectedRoom) {
+                A broken game should NOT break
+                the Playroom navigation itself.
+            */
 
             console.error(
-                `🎮 Game room "${gameName}" was not found.`
+                `❌ Error initializing ${gameName}:`,
+                error
             );
 
-
-            showPlayroomLobby();
-
-            return;
-
         }
-
-
-        /* ---------------------------------------------
-           Hide lobby
-        --------------------------------------------- */
-
-        if (gameLounge) {
-
-            gameLounge.hidden = true;
-
-        }
-
-
-        /* ---------------------------------------------
-           Set active game state
-        --------------------------------------------- */
-
-        playroom.classList.add(
-            "playing-game"
-        );
-
-
-        playroom.dataset.activeGame =
-            gameName;
-
-
-        document.body.classList.add(
-            "playing-digicafe-game"
-        );
-
-
-        document.body.dataset.activeGame =
-            gameName;
-
-
-        /* ---------------------------------------------
-           Initialize selected game
-        --------------------------------------------- */
-
-        initializePlayroomGame(
-            gameName
-        );
-
-
-        /* ---------------------------------------------
-           Scroll to selected game
-        --------------------------------------------- */
-
-        selectedRoom.scrollIntoView({
-
-            behavior: "smooth",
-
-            block: "start"
-
-        });
 
     }
 
 
-    /* =================================================
-       GAME CARD CLICK
-    ================================================= */
+    /* =====================================================
+       PLAYROOM SETUP
+    ===================================================== */
 
-    gameButtons.forEach(button => {
+    function setupPlayroomGames() {
 
-        button.addEventListener(
-            "click",
-            event => {
-
-                event.preventDefault();
-
-
-                const gameName =
-                    button.dataset.game;
+        const playroom =
+            document.getElementById(
+                "playroom"
+            );
 
 
-                showGame(
-                    gameName
-                );
+        if (!playroom) {
 
-            }
+            console.warn(
+                "🎮 #playroom was not found."
+            );
+
+            return false;
+
+        }
+
+
+        const lounge =
+            playroom.querySelector(
+                ".game-lounge"
+            );
+
+
+        /*
+            IMPORTANT:
+
+            Do NOT use :scope here.
+
+            The Playroom HTML is dynamically loaded,
+            and a plain querySelectorAll is safer.
+        */
+
+        const gameRooms =
+            Array.from(
+                playroom.querySelectorAll(
+                    ".game-room"
+                )
+            );
+
+
+        const gameButtons =
+            Array.from(
+                playroom.querySelectorAll(
+                    "[data-game]"
+                )
+            );
+
+
+        console.log(
+            "🎮 Playroom rooms found:",
+            gameRooms.map(
+                room =>
+                    room.dataset.gameRoom
+            )
         );
 
-    });
+
+        /* =================================================
+           SHOW LOBBY
+        ================================================= */
+
+        function showLobby() {
+
+            console.log(
+                "☕ Returning to Playroom lobby."
+            );
 
 
-    /* =================================================
-       BACK TO GAMES
-       -------------------------------------------------
-       EVENT DELEGATION
+            gameRooms.forEach(
+                room => {
 
-       This works for ALL game rooms:
+                    room.hidden =
+                        true;
 
-       • Solitaire
-       • Bingo
-       • Slots
-       • Chess
-       • Dama
-    ================================================= */
+                    room.classList.remove(
+                        "game-active",
+                        "game-room-active"
+                    );
 
-    playroom.addEventListener(
-        "click",
-        event => {
+                }
+            );
 
-            const backButton =
-                event.target.closest(
-                    "[data-back-to-games]"
+
+            if (lounge) {
+
+                lounge.hidden =
+                    false;
+
+            }
+
+
+            playroom.classList.remove(
+                "playing-game"
+            );
+
+
+            playroom.removeAttribute(
+                "data-active-game"
+            );
+
+
+            document.body.classList.remove(
+                "playing-digicafe-game"
+            );
+
+
+            document.body.removeAttribute(
+                "data-active-game"
+            );
+
+
+            /*
+                Return to top of Playroom.
+            */
+
+            requestAnimationFrame(
+                () => {
+
+                    playroom.scrollIntoView({
+
+                        behavior:
+                            "smooth",
+
+                        block:
+                            "start"
+
+                    });
+
+                }
+            );
+
+        }
+
+
+        /* =================================================
+           SHOW GAME
+        ================================================= */
+
+        function showGame(
+            gameName
+        ) {
+
+            if (!gameName) {
+
+                console.warn(
+                    "🎮 No game name supplied."
                 );
 
-
-            if (!backButton) {
-
-                return;
+                return false;
 
             }
-
-
-            if (
-                !playroom.contains(
-                    backButton
-                )
-            ) {
-
-                return;
-
-            }
-
-
-            event.preventDefault();
-
-            event.stopPropagation();
 
 
             console.log(
-                "🎮 Back to Games clicked."
+                "🎮 Opening game:",
+                gameName
             );
 
 
-            showPlayroomLobby();
+            const selectedRoom =
+                gameRooms.find(
+                    room =>
+                        room.dataset.gameRoom ===
+                        gameName
+                );
+
+
+            /*
+                GAME DOES NOT EXIST
+            */
+
+            if (!selectedRoom) {
+
+                console.error(
+                    `🎮 No room found for "${gameName}".`
+                );
+
+
+                console.log(
+                    "Available rooms:",
+                    gameRooms.map(
+                        room =>
+                            room.dataset.gameRoom
+                    )
+                );
+
+
+                showLobby();
+
+                return false;
+
+            }
+
+
+            /*
+                Hide lounge.
+            */
+
+            if (lounge) {
+
+                lounge.hidden =
+                    true;
+
+            }
+
+
+            /*
+                Hide every game except
+                the selected one.
+            */
+
+            gameRooms.forEach(
+                room => {
+
+                    const active =
+                        room ===
+                        selectedRoom;
+
+
+                    room.hidden =
+                        !active;
+
+
+                    room.classList.toggle(
+                        "game-active",
+                        active
+                    );
+
+
+                    room.classList.toggle(
+                        "game-room-active",
+                        active
+                    );
+
+                }
+            );
+
+
+            /*
+                Update state.
+            */
+
+            playroom.classList.add(
+                "playing-game"
+            );
+
+
+            playroom.dataset.activeGame =
+                gameName;
+
+
+            document.body.classList.add(
+                "playing-digicafe-game"
+            );
+
+
+            document.body.dataset.activeGame =
+                gameName;
+
+
+            /*
+                Initialize the selected game.
+
+                IMPORTANT:
+                The room remains open even if
+                its game JS has an error.
+            */
+
+            initializeGame(
+                gameName
+            );
+
+
+            /*
+                Scroll AFTER the room has
+                been displayed.
+            */
+
+            requestAnimationFrame(
+                () => {
+
+                    selectedRoom.scrollIntoView({
+
+                        behavior:
+                            "smooth",
+
+                        block:
+                            "start"
+
+                    });
+
+                }
+            );
+
+
+            return true;
 
         }
-    );
 
 
-    /* =================================================
-       INITIAL STATE
-    ================================================= */
+        /* =================================================
+           GAME CARD EVENTS
+           -------------------------------------------------
+           Event delegation avoids duplicate listeners.
+        ================================================= */
 
-    showPlayroomLobby();
+        playroom.addEventListener(
+            "click",
+            event => {
 
-
-    /* =================================================
-       PUBLIC PLAYROOM API
-    ================================================= */
-
-    playroom.showGame =
-        showGame;
-
-
-    playroom.showLobby =
-        showPlayroomLobby;
+                const gameButton =
+                    event.target.closest(
+                        "[data-game]"
+                    );
 
 
-    window.playroomShowGame =
-        showGame;
+                if (
+                    gameButton &&
+                    playroom.contains(
+                        gameButton
+                    )
+                ) {
+
+                    event.preventDefault();
 
 
-    window.playroomShowLobby =
-        showPlayroomLobby;
+                    const gameName =
+                        gameButton.dataset.game;
 
 
-    console.log(
-        "🎮 Playroom game system ready."
-    );
-
-}
+                    showGame(
+                        gameName
+                    );
 
 
-/* =====================================================
-   03. INITIALIZE INDIVIDUAL GAME
-===================================================== */
+                    return;
 
-function initializePlayroomGame(gameName) {
+                }
 
-    console.log(
-        "🎮 Initializing game:",
+
+                /*
+                    BACK TO GAMES
+                */
+
+                const backButton =
+                    event.target.closest(
+                        "[data-back-to-games]"
+                    );
+
+
+                if (
+                    backButton &&
+                    playroom.contains(
+                        backButton
+                    )
+                ) {
+
+                    event.preventDefault();
+
+                    event.stopPropagation();
+
+
+                    showLobby();
+
+                }
+
+            }
+        );
+
+
+        /* =================================================
+           INITIAL STATE
+        ================================================= */
+
+        showLobby();
+
+
+        /* =================================================
+           PUBLIC API
+        ================================================= */
+
+        playroom.showGame =
+            showGame;
+
+
+        playroom.showLobby =
+            showLobby;
+
+
+        window.playroomShowGame =
+            showGame;
+
+
+        window.playroomShowLobby =
+            showLobby;
+
+
+        console.log(
+            "🎮 DigiCafe Playroom ready."
+        );
+
+
+        return true;
+
+    }
+
+
+    /* =====================================================
+       OPEN GAME API
+    ===================================================== */
+
+    function openPlayroomGame(
         gameName
-    );
-
-
-    switch (gameName) {
-
-
-        /* =============================================
-           SOLITAIRE
-        ============================================== */
-
-        case "solitaire":
-
-            if (
-                typeof window.initSolitaire ===
-                "function"
-            ) {
-
-                window.initSolitaire();
-
-            }
-
-            else if (
-                typeof window.setupSolitaire ===
-                "function"
-            ) {
-
-                window.setupSolitaire();
-
-            }
-
-            else {
-
-                console.warn(
-                    "🃏 Solitaire initializer not found."
-                );
-
-            }
-
-            break;
-
-
-        /* =============================================
-           BINGO
-        ============================================== */
-
-        case "bingo":
-
-            if (
-                typeof window.initBingo ===
-                "function"
-            ) {
-
-                window.initBingo();
-
-            }
-
-            else if (
-                typeof window.setupBingo ===
-                "function"
-            ) {
-
-                window.setupBingo();
-
-            }
-
-            else {
-
-                console.warn(
-                    "🎱 Bingo initializer not found."
-                );
-
-            }
-
-            break;
-
-
-        /* =============================================
-           SLOTS
-        ============================================== */
-
-        case "slots":
-
-            if (
-                typeof window.initCafeSlots ===
-                "function"
-            ) {
-
-                window.initCafeSlots();
-
-            }
-
-            else {
-
-                console.warn(
-                    "🎰 Café Slots initializer not found."
-                );
-
-            }
-
-            break;
-
-
-        /* =============================================
-           CHESS
-        ============================================== */
-
-        case "chess":
-
-            if (
-                typeof window.initChess ===
-                "function"
-            ) {
-
-                window.initChess();
-
-            }
-
-            else if (
-                typeof window.setupChess ===
-                "function"
-            ) {
-
-                window.setupChess();
-
-            }
-
-            else {
-
-                console.warn(
-                    "♟️ Chess initializer not found."
-                );
-
-            }
-
-            break;
-
-
-        /* =============================================
-           DAMA
-        ============================================== */
-
-        case "dama":
-
-            if (
-                typeof window.initDama ===
-                "function"
-            ) {
-
-                window.initDama();
-
-            }
-
-            else if (
-                typeof window.setupDama ===
-                "function"
-            ) {
-
-                window.setupDama();
-
-            }
-
-            else {
-
-                console.warn(
-                    "⚫ Dama initializer not found."
-                );
-
-            }
-
-            break;
-
-
-        /* =============================================
-           UNKNOWN GAME
-        ============================================== */
-
-        default:
-
-            console.warn(
-                `🎮 Unknown game: ${gameName}`
+    ) {
+
+        const playroom =
+            document.getElementById(
+                "playroom"
             );
 
-    }
 
-}
+        if (!playroom) {
 
+            console.warn(
+                "🎮 Playroom not found."
+            );
 
-/* =====================================================
-   04. OPEN GAME
-===================================================== */
+            return false;
 
-function openPlayroomGame(gameName) {
-
-    const playroom =
-        document.querySelector(
-            ".playroom"
-        );
+        }
 
 
-    if (!playroom) {
+        if (
+            typeof playroom.showGame ===
+            "function"
+        ) {
 
-        console.warn(
-            "🎮 Playroom not found."
-        );
+            return playroom.showGame(
+                gameName
+            );
 
-        return;
-
-    }
-
-
-    if (
-        typeof playroom.showGame ===
-        "function"
-    ) {
-
-        playroom.showGame(
-            gameName
-        );
-
-    }
-
-    else {
-
-        console.warn(
-            "🎮 Playroom system is not initialized."
-        );
-
-    }
-
-}
+        }
 
 
-/* =====================================================
-   05. CLOSE GAME
-===================================================== */
+        /*
+            Playroom may have just been
+            dynamically loaded.
+        */
 
-function closePlayroomGame() {
+        if (
+            setupPlayroomGames()
+        ) {
 
-    const playroom =
-        document.querySelector(
-            ".playroom"
-        );
+            return playroom.showGame(
+                gameName
+            );
 
+        }
 
-    if (!playroom) {
-
-        return;
-
-    }
-
-
-    if (
-        typeof playroom.showLobby ===
-        "function"
-    ) {
-
-        playroom.showLobby();
-
-    }
-
-    else {
 
         console.warn(
             "🎮 Playroom system is not initialized."
         );
 
+
+        return false;
+
     }
 
-}
+
+    /* =====================================================
+       CLOSE GAME API
+    ===================================================== */
+
+    function closePlayroomGame() {
+
+        const playroom =
+            document.getElementById(
+                "playroom"
+            );
 
 
-/* =====================================================
-   06. GLOBAL PLAYROOM API
-===================================================== */
+        if (!playroom) {
 
-window.setupPlayroomGames =
-    setupPlayroomGames;
+            return false;
 
-
-window.openPlayroomGame =
-    openPlayroomGame;
+        }
 
 
-window.closePlayroomGame =
-    closePlayroomGame;
+        if (
+            typeof playroom.showLobby ===
+            "function"
+        ) {
+
+            playroom.showLobby();
+
+            return true;
+
+        }
 
 
-window.initializePlayroomGame =
-    initializePlayroomGame;
+        if (
+            setupPlayroomGames()
+        ) {
+
+            playroom.showLobby();
+
+            return true;
+
+        }
 
 
-console.log(
-    "☕ DigiCafe Playroom JS ready."
-);
+        return false;
+
+    }
+
+
+    /* =====================================================
+       GLOBAL API
+    ===================================================== */
+
+    window.setupPlayroomGames =
+        setupPlayroomGames;
+
+
+    window.openPlayroomGame =
+        openPlayroomGame;
+
+
+    window.closePlayroomGame =
+        closePlayroomGame;
+
+
+    window.initializePlayroomGame =
+        initializeGame;
+
+
+    console.log(
+        "☕ DigiCafe Playroom controller loaded."
+    );
+
+})();
