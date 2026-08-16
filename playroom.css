@@ -15025,3 +15025,73 @@ and (
     }
 
 }
+/* =========================================================
+   SOLITAIRE MOBILE TOUCH
+========================================================= */
+
+@media (hover: none) {
+
+    .solitaire-card {
+
+        touch-action:
+            none !important;
+
+        -webkit-user-select:
+            none;
+
+        user-select:
+            none;
+
+        -webkit-touch-callout:
+            none;
+
+    }
+
+
+    .solitaire-touch-ghost {
+
+        position:
+            fixed;
+
+        pointer-events:
+            none;
+
+        z-index:
+            999999;
+
+        margin:
+            0;
+
+        opacity:
+            .95;
+
+        transform:
+            scale(1.06);
+
+        box-shadow:
+            0 16px 30px
+            rgba(0,0,0,.35);
+
+    }
+
+
+    .solitaire-touch-target {
+
+        outline:
+            3px solid
+            #d8b878 !important;
+
+        outline-offset:
+            -3px;
+
+    }
+
+
+    .solitaire-card-touching {
+
+        opacity:
+            .25;
+
+    }
+
+}

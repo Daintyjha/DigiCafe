@@ -2749,7 +2749,64 @@ function createSolitairePile(
 
                     cardElement.draggable =
                         true;
+/* =====================================================
+   MOBILE TOUCH DRAG — WASTE CARD
+===================================================== */
 
+cardElement.addEventListener(
+    "touchstart",
+    event => {
+
+        startSolitaireTouch(
+            event,
+            cardElement,
+            card
+        );
+
+    },
+    {
+        passive: false
+    }
+);
+
+
+cardElement.addEventListener(
+    "touchmove",
+    event => {
+
+        moveSolitaireTouch(
+            event
+        );
+
+    },
+    {
+        passive: false
+    }
+);
+
+
+cardElement.addEventListener(
+    "touchend",
+    event => {
+
+        endSolitaireTouch(
+            event
+        );
+
+    },
+    {
+        passive: false
+    }
+);
+
+
+cardElement.addEventListener(
+    "touchcancel",
+    cancelSolitaireTouch,
+    {
+        passive: false
+    }
+);
 
                     cardElement.addEventListener(
                         "dragstart",
@@ -2907,7 +2964,589 @@ function renderSolitaireColumn(
     );
 
 }
+/* =========================================================
+   SOLITAIRE MOBILE TOUCH DRAG
+========================================================= */
 
+let solitaireTouch = null;
+
+
+/* =========================================================
+   TOUCH START
+========================================================= */
+
+function startSolitaireTouch(
+    event,
+    cardElement,
+    card
+) {
+
+    if (
+        !event.touches ||
+        event.touches.length !== 1
+    ) {
+
+        return;
+
+    }
+
+
+    const touch =
+        event.touches[0];
+
+
+    const location =
+        findSolitaireCard(
+            card.id
+        );
+
+
+    if (!location) {
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------------------
+       WASTE
+    ----------------------------------------------------- */
+
+    if (
+        location.source === "waste"
+    ) {
+
+        if (
+            location.index !==
+            solitaire.waste.length - 1
+        ) {
+
+            return;
+
+        }
+
+    }
+
+
+    /* -----------------------------------------------------
+       TABLEAU
+    ----------------------------------------------------- */
+
+    if (
+        location.source === "tableau"
+    ) {
+
+        const sequence =
+            getMovableSequence(
+                location.column,
+                location.index
+            );
+
+
+        if (
+            sequence.length === 0
+        ) {
+
+            return;
+
+        }
+
+    }
+
+
+    event.preventDefault();
+
+
+    const rect =
+        cardElement.getBoundingClientRect();
+
+
+    /* -----------------------------------------------------
+       CREATE DRAG GHOST
+    ----------------------------------------------------- */
+
+    const ghost =
+        cardElement.cloneNode(true);
+
+
+    ghost.classList.add(
+        "solitaire-touch-ghost"
+    );
+
+
+    ghost.style.position =
+        "fixed";
+
+    ghost.style.left =
+        `${rect.left}px`;
+
+    ghost.style.top =
+        `${rect.top}px`;
+
+    ghost.style.width =
+        `${rect.width}px`;
+
+    ghost.style.height =
+        `${rect.height}px`;
+
+    ghost.style.margin =
+        "0";
+
+    ghost.style.pointerEvents =
+        "none";
+
+    ghost.style.zIndex =
+        "999999";
+
+    ghost.style.opacity =
+        "0.95";
+
+
+    document.body.appendChild(
+        ghost
+    );
+
+
+    /* -----------------------------------------------------
+       SAVE TOUCH STATE
+    ----------------------------------------------------- */
+
+    solitaireTouch = {
+
+        card,
+
+        cardElement,
+
+        ghost,
+
+        source:
+            location.source,
+
+        column:
+            location.column,
+
+        index:
+            location.index,
+
+        startX:
+            touch.clientX,
+
+        startY:
+            touch.clientY,
+
+        offsetX:
+            touch.clientX -
+            rect.left,
+
+        offsetY:
+            touch.clientY -
+            rect.top,
+
+        moved:
+            false
+
+    };
+
+
+    cardElement.classList.add(
+        "solitaire-card-touching"
+    );
+
+
+    startSolitaireTimer();
+
+
+    console.log(
+        "📱 Solitaire touch started:",
+        card.rank +
+        card.symbol
+    );
+
+}
+
+
+/* =========================================================
+   TOUCH MOVE
+========================================================= */
+
+function moveSolitaireTouch(
+    event
+) {
+
+    if (
+        !solitaireTouch ||
+        !event.touches ||
+        event.touches.length !== 1
+    ) {
+
+        return;
+
+    }
+
+
+    const touch =
+        event.touches[0];
+
+
+    const drag =
+        solitaireTouch;
+
+
+    const distanceX =
+        Math.abs(
+            touch.clientX -
+            drag.startX
+        );
+
+
+    const distanceY =
+        Math.abs(
+            touch.clientY -
+            drag.startY
+        );
+
+
+    /*
+        Do not activate dragging for a tiny
+        accidental finger movement.
+    */
+
+    if (
+        !drag.moved &&
+        distanceX < 6 &&
+        distanceY < 6
+    ) {
+
+        return;
+
+    }
+
+
+    event.preventDefault();
+
+
+    drag.moved =
+        true;
+
+
+    drag.ghost.style.left =
+        `${touch.clientX - drag.offsetX}px`;
+
+    drag.ghost.style.top =
+        `${touch.clientY - drag.offsetY}px`;
+
+
+    /*
+        Remove previous target highlight.
+    */
+
+    document
+        .querySelectorAll(
+            ".solitaire-touch-target"
+        )
+        .forEach(
+            element => {
+
+                element.classList.remove(
+                    "solitaire-touch-target"
+                );
+
+            }
+        );
+
+
+    /*
+        Temporarily hide ghost so we can
+        find the actual element underneath.
+    */
+
+    drag.ghost.style.display =
+        "none";
+
+
+    const target =
+        document.elementFromPoint(
+            touch.clientX,
+            touch.clientY
+        );
+
+
+    drag.ghost.style.display =
+        "";
+
+
+    if (!target) {
+
+        return;
+
+    }
+
+
+    const column =
+        target.closest(
+            ".solitaire-column"
+        );
+
+
+    const foundation =
+        target.closest(
+            ".solitaire-foundation"
+        );
+
+
+    if (column) {
+
+        column.classList.add(
+            "solitaire-touch-target"
+        );
+
+    }
+
+    else if (foundation) {
+
+        foundation.classList.add(
+            "solitaire-touch-target"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   TOUCH END
+========================================================= */
+
+function endSolitaireTouch(
+    event
+) {
+
+    if (
+        !solitaireTouch ||
+        !event.changedTouches ||
+        event.changedTouches.length !== 1
+    ) {
+
+        return;
+
+    }
+
+
+    const touch =
+        event.changedTouches[0];
+
+
+    const drag =
+        solitaireTouch;
+
+
+    event.preventDefault();
+
+
+    let moved =
+        false;
+
+
+    /*
+        Hide ghost while finding
+        the element underneath.
+    */
+
+    drag.ghost.style.display =
+        "none";
+
+
+    const target =
+        document.elementFromPoint(
+            touch.clientX,
+            touch.clientY
+        );
+
+
+    drag.ghost.style.display =
+        "";
+
+
+    if (target) {
+
+        const targetColumn =
+            target.closest(
+                ".solitaire-column"
+            );
+
+
+        const targetFoundation =
+            target.closest(
+                ".solitaire-foundation"
+            );
+
+
+        /* =================================================
+           TABLEAU
+        ================================================= */
+
+        if (targetColumn) {
+
+            const targetIndex =
+                Number(
+                    targetColumn.dataset.column
+                );
+
+
+            if (
+                drag.source ===
+                "tableau"
+            ) {
+
+                moved =
+                    moveTableauToTableau(
+                        drag.column,
+                        drag.index,
+                        targetIndex
+                    );
+
+            }
+
+            else if (
+                drag.source ===
+                "waste"
+            ) {
+
+                moved =
+                    moveWasteToTableau(
+                        targetIndex
+                    );
+
+            }
+
+        }
+
+
+        /* =================================================
+           FOUNDATION
+        ================================================= */
+
+        else if (
+            targetFoundation
+        ) {
+
+            const foundationIndex =
+                Number(
+                    targetFoundation.dataset.foundation
+                );
+
+
+            if (
+                drag.source ===
+                "tableau"
+            ) {
+
+                moved =
+                    moveTableauToFoundation(
+                        drag.column,
+                        drag.index,
+                        foundationIndex
+                    );
+
+            }
+
+            else if (
+                drag.source ===
+                "waste"
+            ) {
+
+                moved =
+                    moveWasteToFoundation(
+                        foundationIndex
+                    );
+
+            }
+
+        }
+
+    }
+
+
+    cleanupSolitaireTouch();
+
+
+    if (moved) {
+
+        console.log(
+            "📱 Solitaire touch move completed."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   TOUCH CANCEL
+========================================================= */
+
+function cancelSolitaireTouch() {
+
+    cleanupSolitaireTouch();
+
+}
+
+
+/* =========================================================
+   CLEANUP
+========================================================= */
+
+function cleanupSolitaireTouch() {
+
+    if (!solitaireTouch) {
+
+        return;
+
+    }
+
+
+    if (
+        solitaireTouch.ghost
+    ) {
+
+        solitaireTouch.ghost.remove();
+
+    }
+
+
+    if (
+        solitaireTouch.cardElement
+    ) {
+
+        solitaireTouch.cardElement.classList.remove(
+            "solitaire-card-touching"
+        );
+
+        solitaireTouch.cardElement.style.opacity =
+            "";
+
+    }
+
+
+    document
+        .querySelectorAll(
+            ".solitaire-touch-target"
+        )
+        .forEach(
+            element => {
+
+                element.classList.remove(
+                    "solitaire-touch-target"
+                );
+
+            }
+        );
+
+
+    solitaireTouch =
+        null;
+
+}
 
 /* =========================================================
    31. CREATE CARD
@@ -2993,7 +3632,64 @@ function createSolitaireCardElement(
 cardElement.draggable =
     true;
 
+/* =====================================================
+   MOBILE TOUCH EVENTS
+===================================================== */
 
+cardElement.addEventListener(
+    "touchstart",
+    event => {
+
+        startSolitaireTouch(
+            event,
+            cardElement,
+            card
+        );
+
+    },
+    {
+        passive: false
+    }
+);
+
+
+cardElement.addEventListener(
+    "touchmove",
+    event => {
+
+        moveSolitaireTouch(
+            event
+        );
+
+    },
+    {
+        passive: false
+    }
+);
+
+
+cardElement.addEventListener(
+    "touchend",
+    event => {
+
+        endSolitaireTouch(
+            event
+        );
+
+    },
+    {
+        passive: false
+    }
+);
+
+
+cardElement.addEventListener(
+    "touchcancel",
+    cancelSolitaireTouch,
+    {
+        passive: false
+    }
+);
 /* =====================================================
    DESKTOP DRAG START
 ===================================================== */
