@@ -4849,3 +4849,7583 @@ html {
     }
 
 }
+/* =========================================================
+   DIGICAFE PLAYROOM
+   PLAYFUL CAFÉ THEME
+========================================================= */
+
+
+/* =========================================================
+   01. MAIN ROOM
+========================================================= */
+
+.playroom {
+    position: relative;
+
+    width: min(calc(100% - 28px), 1180px);
+
+    margin: 0 auto;
+
+    padding: 35px 0 80px;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   02. FLOATING DECOR
+========================================================= */
+
+.playroom-decor {
+    position: absolute;
+
+    pointer-events: none;
+
+    user-select: none;
+
+    opacity: 0.16;
+
+    z-index: 0;
+}
+
+.decor-coffee {
+    top: 95px;
+    left: 2%;
+
+    font-size: 2.5rem;
+
+    transform: rotate(-14deg);
+
+    animation: playroomFloat 5s ease-in-out infinite;
+}
+
+.decor-card {
+    top: 240px;
+    right: 3%;
+
+    font-size: 2rem;
+
+    transform: rotate(18deg);
+
+    animation: playroomFloat 6s ease-in-out infinite reverse;
+}
+
+.decor-dice {
+    top: 520px;
+    left: 1%;
+
+    font-size: 1.8rem;
+
+    transform: rotate(-8deg);
+
+    animation: playroomFloat 7s ease-in-out infinite;
+}
+
+.decor-star {
+    top: 600px;
+    right: 2%;
+
+    font-size: 2rem;
+
+    animation: playroomTwinkle 3s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   03. HEADER
+========================================================= */
+
+.playroom-header {
+    position: relative;
+
+    z-index: 2;
+
+    text-align: center;
+
+    padding:
+        25px
+        15px
+        45px;
+}
+
+
+/* =========================================================
+   04. OPEN SIGN
+========================================================= */
+
+.playroom-sign {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    margin-bottom: 18px;
+
+    padding: 7px 14px;
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.035);
+
+    font-size: 0.62rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.17em;
+
+    opacity: 0.65;
+}
+
+.playroom-sign-dot {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: currentColor;
+
+    animation: playroomPulse 2s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   05. TITLE
+========================================================= */
+
+.playroom-title-wrap {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 18px;
+}
+
+.playroom-title-wrap h1 {
+    margin: 0;
+
+    font-size: clamp(2.7rem, 8vw, 5rem);
+
+    line-height: 0.95;
+
+    letter-spacing: -0.055em;
+}
+
+.playroom-side-doodle {
+    font-size: clamp(1.5rem, 4vw, 2.4rem);
+
+    opacity: 0.35;
+
+    transition:
+        transform 0.3s ease,
+        opacity 0.3s ease;
+}
+
+.doodle-left {
+    transform: rotate(-15deg);
+}
+
+.doodle-right {
+    transform: rotate(15deg);
+}
+
+.playroom-title-wrap:hover .doodle-left {
+    transform:
+        rotate(-25deg)
+        translateY(-5px);
+}
+
+.playroom-title-wrap:hover .doodle-right {
+    transform:
+        rotate(25deg)
+        translateY(-5px);
+}
+
+
+/* =========================================================
+   06. TAGLINE
+========================================================= */
+
+.playroom-tagline {
+    margin: 20px auto 0;
+
+    font-size: clamp(1.05rem, 3vw, 1.35rem);
+
+    line-height: 1.5;
+}
+
+.playroom-tagline strong {
+    font-weight: 800;
+}
+
+.playroom-intro {
+    max-width: 610px;
+
+    margin: 12px auto 0;
+
+    font-size: 0.88rem;
+
+    line-height: 1.75;
+
+    opacity: 0.58;
+}
+
+
+/* =========================================================
+   07. COFFEE NOTE
+========================================================= */
+
+.playroom-coffee-note {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    margin-top: 22px;
+
+    padding: 9px 15px;
+
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.025);
+
+    border: 1px solid rgba(255, 255, 255, 0.06);
+
+    font-size: 0.7rem;
+
+    opacity: 0.6;
+}
+
+.playroom-coffee-note span:first-child {
+    animation:
+        playroomCoffee 3s ease-in-out infinite;
+}
+
+.playroom-coffee-note span:last-child {
+    animation:
+        playroomCoffee 3s ease-in-out 0.4s infinite;
+}
+
+
+/* =========================================================
+   08. GAME LOUNGE
+========================================================= */
+
+.game-lounge {
+    position: relative;
+
+    z-index: 2;
+}
+
+
+/* =========================================================
+   09. LOUNGE HEADING
+========================================================= */
+
+.game-lounge-heading {
+    text-align: center;
+
+    margin-bottom: 30px;
+}
+
+.game-lounge-label {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 9px;
+
+    font-size: 0.62rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.18em;
+
+    opacity: 0.45;
+}
+
+.game-lounge-label span {
+    font-size: 0.75rem;
+
+    opacity: 0.7;
+}
+
+.game-lounge-heading h2 {
+    margin: 0;
+
+    font-size: clamp(1.55rem, 4vw, 2.25rem);
+
+    letter-spacing: -0.035em;
+}
+
+.game-lounge-heading p {
+    margin: 8px 0 0;
+
+    font-size: 0.82rem;
+
+    opacity: 0.52;
+}
+
+
+/* =========================================================
+   10. GAME GRID
+========================================================= */
+
+.game-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+
+/* =========================================================
+   11. GAME CARD
+========================================================= */
+
+.game-card {
+    position: relative;
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-height: 315px;
+
+    padding: 25px;
+
+    overflow: hidden;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.075);
+
+    border-radius: 25px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.06),
+            rgba(255, 255, 255, 0.018)
+        );
+
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.13);
+
+    transform:
+        rotate(0deg);
+
+    transition:
+        transform 0.35s cubic-bezier(.2,.8,.2,1),
+        box-shadow 0.35s ease,
+        border-color 0.35s ease;
+}
+
+
+/* Subtle individual card rotations */
+
+.game-card-solitaire {
+    transform: rotate(-0.5deg);
+}
+
+.game-card-slots {
+    transform: rotate(0.65deg);
+}
+
+.game-card-bingo {
+    transform: rotate(0.35deg);
+}
+
+.game-card-chess {
+    transform: rotate(-0.65deg);
+}
+
+.game-card-dama {
+    transform: rotate(0.5deg);
+}
+
+
+/* Hover */
+
+.game-card:hover {
+    transform:
+        translateY(-8px)
+        rotate(0deg);
+
+    border-color:
+        rgba(255, 255, 255, 0.16);
+
+    box-shadow:
+        0 28px 60px rgba(0, 0, 0, 0.22);
+}
+
+
+/* =========================================================
+   12. CARD DECORATION
+========================================================= */
+
+.game-card::before {
+    content: "";
+
+    position: absolute;
+
+    width: 190px;
+    height: 190px;
+
+    top: -105px;
+    right: -75px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.035);
+
+    filter: blur(3px);
+
+    transition:
+        transform 0.5s ease;
+}
+
+.game-card:hover::before {
+    transform: scale(1.35);
+}
+
+
+/* Bottom glow */
+
+.game-card::after {
+    content: "";
+
+    position: absolute;
+
+    left: 25px;
+    right: 25px;
+    bottom: 0;
+
+    height: 3px;
+
+    border-radius: 20px;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+
+    transform:
+        scaleX(0.18);
+
+    transition:
+        transform 0.35s ease;
+}
+
+.game-card:hover::after {
+    transform:
+        scaleX(1);
+}
+
+
+/* =========================================================
+   13. SPARKLE
+========================================================= */
+
+.game-card-sparkle {
+    position: absolute;
+
+    top: 19px;
+    right: 22px;
+
+    font-size: 0.85rem;
+
+    opacity: 0.25;
+
+    animation:
+        playroomTwinkle 3.5s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   14. CARD TOP
+========================================================= */
+
+.game-card-top {
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    margin-bottom: 21px;
+}
+
+.game-card-number {
+    font-size: 0.65rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.12em;
+
+    opacity: 0.25;
+}
+
+
+/* =========================================================
+   15. GAME ICON
+========================================================= */
+
+.game-card-icon {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 64px;
+    height: 64px;
+
+    border-radius: 19px;
+
+    background:
+        rgba(255, 255, 255, 0.055);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.09);
+
+    font-size: 1.8rem;
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.1);
+
+    transition:
+        transform 0.35s ease;
+}
+
+.game-card:hover .game-card-icon {
+    transform:
+        translateY(-4px)
+        rotate(-4deg);
+}
+
+
+/* Individual icon movement */
+
+.game-card-slots:hover .game-card-icon {
+    animation:
+        slotShake 0.5s ease;
+}
+
+.game-card-bingo:hover .game-card-icon {
+    animation:
+        bingoBounce 0.6s ease;
+}
+
+.game-card-chess:hover .game-card-icon {
+    transform:
+        translateY(-5px)
+        rotate(8deg);
+}
+
+.game-card-dama:hover .game-card-icon {
+    transform:
+        translateY(-5px)
+        rotate(-8deg);
+}
+
+
+/* =========================================================
+   16. CARD CONTENT
+========================================================= */
+
+.game-card-content {
+    position: relative;
+
+    z-index: 2;
+
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.game-card-label {
+    margin-bottom: 7px;
+
+    font-size: 0.59rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.17em;
+
+    opacity: 0.43;
+}
+
+.game-card h3 {
+    margin: 0;
+
+    font-size: 1.5rem;
+
+    letter-spacing: -0.035em;
+}
+
+.game-card p {
+    max-width: 430px;
+
+    margin: 10px 0 22px;
+
+    font-size: 0.83rem;
+
+    line-height: 1.7;
+
+    opacity: 0.58;
+}
+
+
+/* =========================================================
+   17. GAME BUTTON
+========================================================= */
+
+.game-button {
+    position: relative;
+
+    z-index: 3;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    width: fit-content;
+
+    margin-top: auto;
+
+    padding: 10px 14px 10px 16px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.1);
+
+    border-radius: 999px;
+
+    background:
+        rgba(255, 255, 255, 0.045);
+
+    color: inherit;
+
+    font: inherit;
+
+    font-size: 0.72rem;
+
+    font-weight: 750;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.game-button:hover {
+    background:
+        rgba(255, 255, 255, 0.1);
+
+    border-color:
+        rgba(255, 255, 255, 0.18);
+
+    transform:
+        translateX(3px);
+}
+
+.game-button-arrow {
+    font-size: 1rem;
+
+    transition:
+        transform 0.25s ease;
+}
+
+.game-button:hover .game-button-arrow {
+    transform:
+        translateX(4px);
+}
+
+
+/* =========================================================
+   18. CARD MOODS
+========================================================= */
+
+.game-card-solitaire {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.06),
+            rgba(75, 95, 115, 0.045)
+        );
+}
+
+.game-card-slots {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.065),
+            rgba(125, 75, 85, 0.05)
+        );
+}
+
+.game-card-bingo {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.06),
+            rgba(75, 105, 85, 0.045)
+        );
+}
+
+.game-card-chess {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.06),
+            rgba(75, 75, 110, 0.05)
+        );
+}
+
+.game-card-dama {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.06),
+            rgba(115, 80, 60, 0.05)
+        );
+}
+
+
+/* =========================================================
+   19. BOTTOM MESSAGE
+========================================================= */
+
+.playroom-bottom {
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 35px;
+}
+
+.playroom-bottom-card {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    max-width: 650px;
+
+    margin: 0 auto;
+
+    padding: 17px 20px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.06);
+
+    border-radius: 20px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+}
+
+.bottom-coffee {
+    flex-shrink: 0;
+
+    font-size: 1.45rem;
+
+    animation:
+        playroomCoffee 4s ease-in-out infinite;
+}
+
+.bottom-label {
+    display: block;
+
+    margin-bottom: 4px;
+
+    font-size: 0.58rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.16em;
+
+    opacity: 0.4;
+}
+
+.playroom-bottom-card p {
+    margin: 0;
+
+    font-size: 0.76rem;
+
+    line-height: 1.55;
+
+    opacity: 0.5;
+}
+
+.bottom-doodle {
+    margin-left: auto;
+
+    font-size: 1.4rem;
+
+    opacity: 0.25;
+
+    transform: rotate(10deg);
+}
+
+
+/* =========================================================
+   20. GAME ROOMS
+========================================================= */
+
+.game-room {
+    position: relative;
+
+    z-index: 5;
+
+    margin-top: 25px;
+
+    padding: 25px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 26px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.2);
+}
+
+.game-room-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-bottom: 25px;
+}
+
+.game-room-header h2 {
+    margin: 0;
+
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+}
+
+.game-eyebrow {
+    display: block;
+
+    margin-bottom: 6px;
+
+    font-size: 0.6rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.16em;
+
+    opacity: 0.45;
+}
+
+.game-secondary-button {
+    flex-shrink: 0;
+
+    padding: 9px 14px;
+
+    border:
+        1px solid rgba(255, 255, 255, 0.1);
+
+    border-radius: 999px;
+
+    background:
+        transparent;
+
+    color: inherit;
+
+    font: inherit;
+
+    font-size: 0.7rem;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        transform 0.25s ease;
+}
+
+.game-secondary-button:hover {
+    background:
+        rgba(255, 255, 255, 0.06);
+
+    transform:
+        translateX(-2px);
+}
+
+.game-board {
+    min-height: 400px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border:
+        1px dashed rgba(255, 255, 255, 0.1);
+
+    border-radius: 20px;
+
+    background:
+        rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================================================
+   21. ANIMATIONS
+========================================================= */
+
+@keyframes playroomFloat {
+
+    0%,
+    100% {
+        transform:
+            translateY(0)
+            rotate(-10deg);
+    }
+
+    50% {
+        transform:
+            translateY(-9px)
+            rotate(-5deg);
+    }
+}
+
+
+@keyframes playroomTwinkle {
+
+    0%,
+    100% {
+        opacity: 0.18;
+
+        transform:
+            scale(0.9)
+            rotate(0deg);
+    }
+
+    50% {
+        opacity: 0.45;
+
+        transform:
+            scale(1.15)
+            rotate(15deg);
+    }
+}
+
+
+@keyframes playroomPulse {
+
+    0%,
+    100% {
+        transform: scale(0.8);
+
+        opacity: 0.4;
+    }
+
+    50% {
+        transform: scale(1.25);
+
+        opacity: 1;
+    }
+}
+
+
+@keyframes playroomCoffee {
+
+    0%,
+    100% {
+        transform:
+            translateY(0)
+            rotate(0deg);
+    }
+
+    50% {
+        transform:
+            translateY(-3px)
+            rotate(4deg);
+    }
+}
+
+
+@keyframes slotShake {
+
+    0%,
+    100% {
+        transform: rotate(0);
+    }
+
+    25% {
+        transform: rotate(-5deg);
+    }
+
+    75% {
+        transform: rotate(5deg);
+    }
+}
+
+
+@keyframes bingoBounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    35% {
+        transform: translateY(-8px);
+    }
+
+    65% {
+        transform: translateY(2px);
+    }
+}
+
+
+/* =========================================================
+   22. TABLET
+========================================================= */
+
+@media (max-width: 850px) {
+
+    .game-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .game-card {
+        min-height: 300px;
+    }
+
+}
+
+
+/* =========================================================
+   23. MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    .playroom {
+        width: min(calc(100% - 20px), 1180px);
+
+        padding-top: 20px;
+    }
+
+
+    .playroom-header {
+        padding:
+            20px
+            8px
+            38px;
+    }
+
+
+    .playroom-title-wrap {
+        gap: 10px;
+    }
+
+
+    .playroom-title-wrap h1 {
+        font-size: 3rem;
+    }
+
+
+    .playroom-side-doodle {
+        font-size: 1.35rem;
+    }
+
+
+    .playroom-tagline {
+        font-size: 1rem;
+    }
+
+
+    .playroom-intro {
+        font-size: 0.8rem;
+
+        line-height: 1.7;
+    }
+
+
+    .playroom-coffee-note {
+        max-width: 90%;
+
+        font-size: 0.64rem;
+
+        line-height: 1.4;
+    }
+
+
+    .game-grid {
+        grid-template-columns: 1fr;
+
+        gap: 15px;
+    }
+
+
+    .game-card {
+        min-height: 285px;
+
+        padding: 23px;
+
+        border-radius: 22px;
+    }
+
+
+    .game-card-solitaire,
+    .game-card-slots,
+    .game-card-bingo,
+    .game-card-chess,
+    .game-card-dama {
+        transform: rotate(0);
+    }
+
+
+    .game-card:hover {
+        transform:
+            translateY(-5px);
+    }
+
+
+    .game-card-icon {
+        width: 58px;
+        height: 58px;
+
+        font-size: 1.65rem;
+    }
+
+
+    .game-card h3 {
+        font-size: 1.35rem;
+    }
+
+
+    .game-card p {
+        font-size: 0.8rem;
+    }
+
+
+    .game-button {
+        width: 100%;
+    }
+
+
+    .game-room {
+        padding: 20px;
+
+        border-radius: 22px;
+    }
+
+
+    .game-room-header {
+        align-items: flex-start;
+
+        flex-direction: column-reverse;
+    }
+
+
+    .game-secondary-button {
+        align-self: flex-start;
+    }
+
+
+    .game-board {
+        min-height: 320px;
+    }
+
+
+    .playroom-bottom-card {
+        align-items: flex-start;
+
+        padding: 16px;
+    }
+
+
+    .bottom-doodle {
+        display: none;
+    }
+
+
+    .decor-coffee {
+        left: -10px;
+    }
+
+
+    .decor-card {
+        right: -5px;
+    }
+
+
+    .decor-dice {
+        display: none;
+    }
+
+}
+
+
+/* =========================================================
+   24. VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .playroom-title-wrap h1 {
+        font-size: 2.55rem;
+    }
+
+
+    .playroom-side-doodle {
+        display: none;
+    }
+
+
+    .game-card {
+        padding: 20px;
+    }
+
+}
+
+/* =========================================================
+   DIGICAFE SOLITAIRE
+   RESPONSIVE KLONDIKE DRAW 3
+   =========================================================
+
+   DESIGN GOALS
+   ---------------------------------------------------------
+   • DigiCafe visual language
+   • Desktop friendly
+   • Tablet friendly
+   • Mobile friendly
+   • 7 tableau columns never overlap sideways
+   • Cards preserve their aspect ratio
+   • Tableau grows naturally
+   • Controls never sit underneath cards
+   • Touch friendly
+   • Drag friendly
+   • Double-click friendly
+========================================================= */
+
+
+/* =========================================================
+   01. SOLITAIRE VARIABLES
+========================================================= */
+
+:root {
+
+    --solitaire-bg:
+        #101a2b;
+
+    --solitaire-surface:
+        #17243a;
+
+    --solitaire-surface-2:
+        #1d2d46;
+
+    --solitaire-border:
+        rgba(255,255,255,0.12);
+
+    --solitaire-border-soft:
+        rgba(255,255,255,0.07);
+
+    --solitaire-gold:
+        #d8b878;
+
+    --solitaire-gold-soft:
+        rgba(216,184,120,0.20);
+
+    --solitaire-card:
+        #fffaf1;
+
+    --solitaire-card-shadow:
+        rgba(0,0,0,0.32);
+
+    --solitaire-red:
+        #b33d4b;
+
+    --solitaire-black:
+        #172131;
+
+}
+
+
+/* =========================================================
+   02. GAME WRAPPER
+========================================================= */
+
+#solitaireBoard {
+
+    width: 100%;
+
+    max-width: 1120px;
+
+    margin:
+        0 auto;
+
+    padding:
+        24px;
+
+    box-sizing: border-box;
+
+    color:
+        var(--solitaire-card);
+
+}
+
+
+/* =========================================================
+   03. TOP ROW
+========================================================= */
+
+.solitaire-top-row {
+
+    width: 100%;
+
+    display: grid;
+
+    grid-template-columns:
+        90px
+        120px
+        minmax(30px, 1fr)
+        repeat(4, 90px);
+
+    gap:
+        16px;
+
+    align-items:
+        start;
+
+    margin-bottom:
+        30px;
+
+}
+
+
+/* =========================================================
+   04. TOP PILES
+========================================================= */
+
+.solitaire-pile,
+.solitaire-foundation {
+
+    width:
+        88px;
+
+    height:
+        124px;
+
+    position:
+        relative;
+
+    box-sizing:
+        border-box;
+
+    flex-shrink:
+        0;
+
+}
+
+
+/* =========================================================
+   05. EMPTY PILES
+========================================================= */
+
+.solitaire-pile:empty,
+.solitaire-foundation:empty {
+
+    border:
+        2px dashed
+        var(--solitaire-border);
+
+    border-radius:
+        11px;
+
+    background:
+        rgba(255,255,255,0.025);
+
+}
+
+
+/* =========================================================
+   06. EMPTY STOCK
+========================================================= */
+
+.solitaire-stock-empty {
+
+    cursor:
+        pointer;
+
+    border:
+        2px dashed
+        var(--solitaire-gold);
+
+    background:
+        var(--solitaire-gold-soft);
+
+}
+
+
+/* =========================================================
+   07. WASTE
+========================================================= */
+
+.solitaire-pile[data-pile="waste"] {
+
+    width:
+        122px;
+
+}
+
+
+/* =========================================================
+   08. FOUNDATIONS
+========================================================= */
+
+.solitaire-foundations {
+
+    display:
+        contents;
+
+}
+
+
+/* =========================================================
+   09. CARD
+========================================================= */
+
+.solitaire-card {
+
+    width:
+        88px;
+
+    height:
+        124px;
+
+    position:
+        absolute;
+
+    box-sizing:
+        border-box;
+
+    border-radius:
+        11px;
+
+    overflow:
+        hidden;
+
+    user-select:
+        none;
+
+    -webkit-user-select:
+        none;
+
+    -webkit-touch-callout:
+        none;
+
+    touch-action:
+        none;
+
+    transition:
+        transform 0.12s ease,
+        box-shadow 0.12s ease,
+        opacity 0.12s ease;
+
+}
+
+
+/* =========================================================
+   10. FACE-UP CARD
+========================================================= */
+
+.solitaire-card-face {
+
+    background:
+        var(--solitaire-card);
+
+    border:
+        1px solid
+        rgba(0,0,0,0.18);
+
+    box-shadow:
+        0 4px 9px
+        var(--solitaire-card-shadow);
+
+}
+
+
+/* =========================================================
+   11. CARD BACK
+========================================================= */
+
+.solitaire-card-back {
+
+    background:
+        linear-gradient(
+            145deg,
+            #1b3150,
+            #263f61
+        );
+
+    border:
+        2px solid
+        rgba(216,184,120,0.35);
+
+    box-shadow:
+        0 4px 9px
+        var(--solitaire-card-shadow);
+
+}
+
+
+/* =========================================================
+   12. CARD CORNER
+========================================================= */
+
+.solitaire-card-corner {
+
+    position:
+        absolute;
+
+    top:
+        7px;
+
+    left:
+        8px;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    line-height:
+        1;
+
+    font-weight:
+        700;
+
+    z-index:
+        2;
+
+}
+
+
+/* =========================================================
+   13. CARD RANK
+========================================================= */
+
+.solitaire-card-rank {
+
+    font-size:
+        18px;
+
+    line-height:
+        18px;
+
+}
+
+
+/* =========================================================
+   14. CARD SUIT
+========================================================= */
+
+.solitaire-card-suit {
+
+    font-size:
+        15px;
+
+    line-height:
+        15px;
+
+}
+
+
+/* =========================================================
+   15. CARD CENTER
+========================================================= */
+
+.solitaire-card-center {
+
+    position:
+        absolute;
+
+    top:
+        50%;
+
+    left:
+        50%;
+
+    transform:
+        translate(
+            -50%,
+            -50%
+        );
+
+    font-size:
+        40px;
+
+    line-height:
+        1;
+
+    opacity:
+        0.88;
+
+}
+
+
+/* =========================================================
+   16. CARD COLORS
+========================================================= */
+
+.solitaire-red {
+
+    color:
+        var(--solitaire-red);
+
+}
+
+
+.solitaire-black {
+
+    color:
+        var(--solitaire-black);
+
+}
+
+
+/* =========================================================
+   17. CARD DRAGGING
+========================================================= */
+
+.solitaire-card-dragging {
+
+    opacity:
+        0.55;
+
+    transform:
+        translateX(-50%)
+        scale(1.04);
+
+    z-index:
+        9999;
+
+}
+
+
+/* =========================================================
+   18. WASTE CARDS
+========================================================= */
+
+.solitaire-pile[data-pile="waste"]
+.solitaire-card {
+
+    top:
+        0;
+
+}
+
+
+/* =========================================================
+   19. WASTE PLAYABLE CARD
+========================================================= */
+
+.solitaire-waste-top {
+
+    cursor:
+        grab;
+
+    z-index:
+        50;
+
+}
+
+
+.solitaire-waste-top:active {
+
+    cursor:
+        grabbing;
+
+}
+
+
+/* =========================================================
+   20. FOUNDATION CARD
+========================================================= */
+
+.solitaire-foundation
+.solitaire-card {
+
+    top:
+        0;
+
+    left:
+        0;
+
+}
+
+
+/* =========================================================
+   21. TABLEAU
+========================================================= */
+
+.solitaire-tableau {
+
+    width:
+        100%;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            7,
+            minmax(
+                0,
+                1fr
+            )
+        );
+
+    gap:
+        12px;
+
+    align-items:
+        start;
+
+    box-sizing:
+        border-box;
+
+    /*
+        IMPORTANT:
+
+        Never give the tableau a fixed height.
+        The cards determine its height.
+    */
+
+    min-height:
+        400px;
+
+    padding-bottom:
+        90px;
+
+}
+
+
+/* =========================================================
+   22. TABLEAU COLUMN
+========================================================= */
+
+.solitaire-column {
+
+    position:
+        relative;
+
+    width:
+        100%;
+
+    min-width:
+        0;
+
+    min-height:
+        124px;
+
+}
+
+
+/* =========================================================
+   23. TABLEAU CARD
+========================================================= */
+
+.solitaire-column >
+.solitaire-card {
+
+    left:
+        50%;
+
+    transform:
+        translateX(-50%);
+
+}
+
+
+/* =========================================================
+   24. EMPTY TABLEAU
+========================================================= */
+
+.solitaire-column >
+.solitaire-pile {
+
+    position:
+        absolute;
+
+    top:
+        0;
+
+    left:
+        50%;
+
+    transform:
+        translateX(-50%);
+
+}
+
+
+/* =========================================================
+   25. CARD STACK DEPTH
+========================================================= */
+
+.solitaire-column
+.solitaire-card:nth-child(1) {
+    z-index: 1;
+}
+
+.solitaire-column
+.solitaire-card:nth-child(2) {
+    z-index: 2;
+}
+
+.solitaire-column
+.solitaire-card:nth-child(3) {
+    z-index: 3;
+}
+
+.solitaire-column
+.solitaire-card:nth-child(4) {
+    z-index: 4;
+}
+
+.solitaire-column
+.solitaire-card:nth-child(5) {
+    z-index: 5;
+}
+
+.solitaire-column
+.solitaire-card:nth-child(6) {
+    z-index: 6;
+}
+
+.solitaire-column
+.solitaire-card:nth-child(7) {
+    z-index: 7;
+}
+
+.solitaire-column
+.solitaire-card:nth-child(8) {
+    z-index: 8;
+}
+
+.solitaire-column
+.solitaire-card:nth-child(9) {
+    z-index: 9;
+}
+
+.solitaire-column
+.solitaire-card:nth-child(10) {
+    z-index: 10;
+}
+
+
+/* =========================================================
+   26. TABLET
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    #solitaireBoard {
+
+        padding:
+            18px;
+
+    }
+
+
+    .solitaire-top-row {
+
+        grid-template-columns:
+            78px
+            104px
+            minmax(20px, 1fr)
+            repeat(
+                4,
+                78px
+            );
+
+        gap:
+            10px;
+
+    }
+
+
+    .solitaire-pile,
+    .solitaire-foundation {
+
+        width:
+            76px;
+
+        height:
+            107px;
+
+    }
+
+
+    .solitaire-pile[data-pile="waste"] {
+
+        width:
+            106px;
+
+    }
+
+
+    .solitaire-card {
+
+        width:
+            76px;
+
+        height:
+            107px;
+
+        border-radius:
+            9px;
+
+    }
+
+
+    .solitaire-card-rank {
+
+        font-size:
+            16px;
+
+    }
+
+
+    .solitaire-card-suit {
+
+        font-size:
+            14px;
+
+    }
+
+
+    .solitaire-card-center {
+
+        font-size:
+            34px;
+
+    }
+
+
+    .solitaire-tableau {
+
+        gap:
+            8px;
+
+        min-height:
+            350px;
+
+        padding-bottom:
+            100px;
+
+    }
+
+
+    .solitaire-column {
+
+        min-height:
+            107px;
+
+    }
+
+}
+
+
+/* =========================================================
+   27. SMALL TABLET / LARGE PHONE
+========================================================= */
+
+@media (max-width: 760px) {
+
+    #solitaireBoard {
+
+        padding:
+            12px 8px 120px;
+
+    }
+
+
+    /*
+        Top area becomes two rows.
+    */
+
+    .solitaire-top-row {
+
+        display:
+            grid;
+
+        grid-template-columns:
+            repeat(
+                4,
+                minmax(
+                    0,
+                    1fr
+                )
+            );
+
+        gap:
+            8px;
+
+        margin-bottom:
+            24px;
+
+    }
+
+
+    .solitaire-top-spacer {
+
+        display:
+            none;
+
+    }
+
+
+    .solitaire-pile,
+    .solitaire-foundation {
+
+        width:
+            min(
+                72px,
+                100%
+            );
+
+        height:
+            auto;
+
+        aspect-ratio:
+            0.71;
+
+    }
+
+
+    .solitaire-card {
+
+        width:
+            min(
+                72px,
+                100%
+            );
+
+        height:
+            auto;
+
+        aspect-ratio:
+            0.71;
+
+    }
+
+
+    .solitaire-pile[data-pile="waste"] {
+
+        width:
+            min(
+                104px,
+                100%
+            );
+
+    }
+
+
+    .solitaire-card-rank {
+
+        font-size:
+            15px;
+
+    }
+
+
+    .solitaire-card-suit {
+
+        font-size:
+            13px;
+
+    }
+
+
+    .solitaire-card-center {
+
+        font-size:
+            30px;
+
+    }
+
+
+    /*
+        Seven columns remain separate.
+    */
+
+    .solitaire-tableau {
+
+        grid-template-columns:
+            repeat(
+                7,
+                minmax(
+                    0,
+                    1fr
+                )
+            );
+
+        gap:
+            4px;
+
+        min-height:
+            330px;
+
+        padding-bottom:
+            130px;
+
+    }
+
+
+    .solitaire-column {
+
+        min-height:
+            100px;
+
+    }
+
+}
+
+
+/* =========================================================
+   28. PHONE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    #solitaireBoard {
+
+        padding:
+            8px 5px 130px;
+
+    }
+
+
+    /* -----------------------------------------------------
+       TOP AREA
+    ----------------------------------------------------- */
+
+    .solitaire-top-row {
+
+        gap:
+            6px;
+
+        margin-bottom:
+            20px;
+
+    }
+
+
+    .solitaire-pile,
+    .solitaire-foundation {
+
+        width:
+            100%;
+
+        max-width:
+            68px;
+
+        aspect-ratio:
+            0.71;
+
+        justify-self:
+            center;
+
+    }
+
+
+    .solitaire-pile[data-pile="waste"] {
+
+        width:
+            100%;
+
+        max-width:
+            100px;
+
+    }
+
+
+    /* -----------------------------------------------------
+       CARDS
+
+       The card width is calculated FROM THE COLUMN.
+
+       This is what prevents horizontal overlap.
+    ----------------------------------------------------- */
+
+    .solitaire-card {
+
+        width:
+            100%;
+
+        height:
+            auto;
+
+        aspect-ratio:
+            0.71;
+
+        border-radius:
+            7px;
+
+    }
+
+
+    .solitaire-column >
+    .solitaire-card {
+
+        left:
+            0;
+
+        transform:
+            none;
+
+    }
+
+
+    /* -----------------------------------------------------
+       CARD TEXT
+    ----------------------------------------------------- */
+
+    .solitaire-card-corner {
+
+        top:
+            4px;
+
+        left:
+            4px;
+
+    }
+
+
+    .solitaire-card-rank {
+
+        font-size:
+            clamp(
+                11px,
+                3.6vw,
+                15px
+            );
+
+        line-height:
+            1;
+
+    }
+
+
+    .solitaire-card-suit {
+
+        font-size:
+            clamp(
+                10px,
+                3vw,
+                13px
+            );
+
+        line-height:
+            1;
+
+    }
+
+
+    .solitaire-card-center {
+
+        font-size:
+            clamp(
+                22px,
+                7vw,
+                30px
+            );
+
+    }
+
+
+    /* -----------------------------------------------------
+       TABLEAU
+    ----------------------------------------------------- */
+
+    .solitaire-tableau {
+
+        width:
+            100%;
+
+        grid-template-columns:
+            repeat(
+                7,
+                minmax(
+                    0,
+                    1fr
+                )
+            );
+
+        gap:
+            3px;
+
+        min-height:
+            340px;
+
+        padding-bottom:
+            150px;
+
+        overflow:
+            visible;
+
+    }
+
+
+    .solitaire-column {
+
+        width:
+            100%;
+
+        min-width:
+            0;
+
+        min-height:
+            95px;
+
+    }
+
+
+    /* -----------------------------------------------------
+       EMPTY COLUMN
+    ----------------------------------------------------- */
+
+    .solitaire-column >
+    .solitaire-pile {
+
+        width:
+            100%;
+
+        max-width:
+            none;
+
+        aspect-ratio:
+            0.71;
+
+    }
+
+
+    /* -----------------------------------------------------
+       DRAGGING
+    ----------------------------------------------------- */
+
+    .solitaire-card-dragging {
+
+        transform:
+            scale(1.05);
+
+        z-index:
+            9999;
+
+    }
+
+}
+
+
+/* =========================================================
+   29. VERY SMALL PHONE
+========================================================= */
+
+@media (max-width: 400px) {
+
+    #solitaireBoard {
+
+        padding:
+            6px 3px 140px;
+
+    }
+
+
+    .solitaire-top-row {
+
+        gap:
+            4px;
+
+    }
+
+
+    .solitaire-tableau {
+
+        gap:
+            2px;
+
+        padding-bottom:
+            160px;
+
+    }
+
+
+    .solitaire-card {
+
+        border-radius:
+            6px;
+
+    }
+
+
+    .solitaire-card-corner {
+
+        top:
+            3px;
+
+        left:
+            3px;
+
+    }
+
+
+    .solitaire-card-rank {
+
+        font-size:
+            10px;
+
+    }
+
+
+    .solitaire-card-suit {
+
+        font-size:
+            9px;
+
+    }
+
+
+    .solitaire-card-center {
+
+        font-size:
+            20px;
+
+    }
+
+}
+
+
+/* =========================================================
+   30. LANDSCAPE PHONE
+========================================================= */
+
+@media (
+    max-width: 900px
+)
+and (
+    orientation: landscape
+) {
+
+    #solitaireBoard {
+
+        padding:
+            10px 14px 100px;
+
+    }
+
+
+    .solitaire-top-row {
+
+        margin-bottom:
+            18px;
+
+    }
+
+
+    .solitaire-tableau {
+
+        min-height:
+            300px;
+
+        padding-bottom:
+            110px;
+
+    }
+
+}
+
+
+/* =========================================================
+   31. TOUCH DEVICES
+========================================================= */
+
+@media (hover: none) {
+
+    .solitaire-card {
+
+        -webkit-tap-highlight-color:
+            transparent;
+
+    }
+
+
+    .solitaire-card:active {
+
+        filter:
+            brightness(0.96);
+
+    }
+
+}
+
+
+/* =========================================================
+   32. DESKTOP HOVER
+========================================================= */
+
+@media (hover: hover) {
+
+    .solitaire-card-face:hover {
+
+        box-shadow:
+            0 7px 14px
+            rgba(0,0,0,0.38);
+
+    }
+
+
+    .solitaire-waste-top:hover {
+
+        transform:
+            translateY(-2px);
+
+    }
+
+
+    .solitaire-pile[data-pile="stock"]:hover {
+
+        transform:
+            translateY(-2px);
+
+    }
+
+}
+
+
+/* =========================================================
+   33. ACCESSIBILITY
+========================================================= */
+
+.solitaire-card:focus-visible {
+
+    outline:
+        3px solid
+        var(--solitaire-gold);
+
+    outline-offset:
+        2px;
+
+}
+
+
+/* =========================================================
+   34. REDUCE MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .solitaire-card {
+
+        transition:
+            none;
+
+    }
+
+}
+/* =========================================================
+   DIGICAFE CAFÉ SLOTS
+   ---------------------------------------------------------
+   Complete Slots styling
+   Works with the existing Café Slots HTML.
+========================================================= */
+
+
+/* =========================================================
+   01. SLOTS ROOM
+========================================================= */
+
+.cafe-slots-room {
+    width: min(100% - 32px, 1100px);
+    margin: 0 auto;
+    padding: 30px 0 70px;
+}
+
+
+/* =========================================================
+   02. HEADER
+========================================================= */
+
+.cafe-slots-header {
+    position: relative;
+
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 24px;
+
+    margin-bottom: 30px;
+}
+
+
+.cafe-slots-title {
+    text-align: center;
+}
+
+
+.cafe-slots-title .game-eyebrow {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+
+    opacity: .65;
+}
+
+
+.cafe-slots-title h2 {
+    margin: 0;
+
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    line-height: 1.05;
+}
+
+
+.cafe-slots-title p {
+    margin: 10px 0 0;
+
+    opacity: .7;
+}
+
+
+/* =========================================================
+   03. MAIN GAME
+========================================================= */
+
+.cafe-slots-game {
+    width: min(100%, 850px);
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   04. TOP STATS
+========================================================= */
+
+.cafe-slots-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+
+    margin-bottom: 22px;
+}
+
+
+.slots-stat {
+    padding: 16px 18px;
+
+    border-radius: 18px;
+
+    background: var(--card, #ffffff);
+    border: 1px solid var(--border, #dfe6ef);
+
+    text-align: center;
+
+    box-shadow:
+        0 8px 25px rgba(7, 20, 38, .06);
+}
+
+
+.slots-stat-label {
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+
+    color: var(--text-soft, #667085);
+}
+
+
+.slots-stat strong {
+    display: block;
+
+    font-size: 1.35rem;
+
+    color: var(--navy-dark, #071426);
+}
+
+
+/* =========================================================
+   05. SLOT MACHINE
+========================================================= */
+
+.cafe-slot-machine {
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 25px 25px 28px;
+
+    border-radius: 30px;
+
+    background:
+        linear-gradient(
+            145deg,
+            var(--navy-dark, #071426),
+            var(--navy, #0d2038)
+        );
+
+    border: 2px solid rgba(214, 179, 106, .45);
+
+    box-shadow:
+        0 25px 60px rgba(7, 20, 38, .25),
+        inset 0 1px 0 rgba(255,255,255,.08);
+
+    color: white;
+}
+
+
+/* =========================================================
+   06. MACHINE TOP
+========================================================= */
+
+.slot-machine-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+
+    margin-bottom: 20px;
+
+    font-size: .78rem;
+    font-weight: 900;
+    letter-spacing: .25em;
+
+    color: var(--gold-light, #f1d89b);
+}
+
+
+.slot-machine-light {
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+
+    background: var(--gold, #d6b36a);
+
+    box-shadow:
+        0 0 10px rgba(214,179,106,.8);
+
+    animation:
+        slotLightPulse 1.2s ease-in-out infinite alternate;
+}
+
+
+.slot-machine-light:last-child {
+    animation-delay: .6s;
+}
+
+
+@keyframes slotLightPulse {
+
+    from {
+        opacity: .45;
+        transform: scale(.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1.15);
+    }
+
+}
+
+
+/* =========================================================
+   07. REEL AREA
+========================================================= */
+
+.slot-reels {
+    position: relative;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 14px;
+
+    padding: 22px;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #111827,
+            #080f1c
+        );
+
+    border: 2px solid rgba(255,255,255,.08);
+
+    box-shadow:
+        inset 0 8px 18px rgba(0,0,0,.35),
+        inset 0 -8px 18px rgba(0,0,0,.3);
+}
+
+
+/* =========================================================
+   08. PAYLINE
+========================================================= */
+
+.slot-payline {
+    position: absolute;
+
+    left: 22px;
+    right: 22px;
+
+    top: 50%;
+
+    height: 3px;
+
+    transform: translateY(-50%);
+
+    z-index: 5;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--gold, #d6b36a),
+            transparent
+        );
+
+    opacity: .7;
+
+    box-shadow:
+        0 0 12px rgba(214,179,106,.6);
+}
+
+
+/* =========================================================
+   09. INDIVIDUAL REEL
+========================================================= */
+
+.slot-reel {
+    position: relative;
+
+    height: 150px;
+
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff,
+            #f1f3f6
+        );
+
+    border: 3px solid rgba(214,179,106,.75);
+
+    box-shadow:
+        inset 0 10px 20px rgba(0,0,0,.08),
+        inset 0 -10px 20px rgba(0,0,0,.08),
+        0 8px 18px rgba(0,0,0,.2);
+
+    color: #111827;
+
+    transition:
+        transform .18s ease,
+        box-shadow .18s ease;
+}
+
+
+/*
+    Slight glass reflection
+*/
+
+.slot-reel::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 2;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            115deg,
+            rgba(255,255,255,.5),
+            transparent 35%,
+            transparent 70%,
+            rgba(255,255,255,.18)
+        );
+
+    opacity: .7;
+}
+
+
+/*
+    Dark top/bottom fade gives the
+    illusion of depth while spinning.
+*/
+
+.slot-reel::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 3;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,.16),
+            transparent 25%,
+            transparent 75%,
+            rgba(0,0,0,.16)
+        );
+}
+
+
+/* =========================================================
+   10. SYMBOL
+========================================================= */
+
+.slot-symbol {
+    position: relative;
+
+    z-index: 1;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    font-size: clamp(3rem, 7vw, 4.6rem);
+
+    line-height: 1;
+
+    user-select: none;
+
+    transform:
+        translateZ(0);
+
+    transition:
+        transform .12s ease,
+        filter .12s ease;
+}
+
+
+/* =========================================================
+   11. SPINNING VISUAL
+========================================================= */
+
+.slot-reel.spinning {
+    transform:
+        scaleY(.98);
+
+    box-shadow:
+        inset 0 0 30px rgba(255,255,255,.12),
+        0 0 18px rgba(214,179,106,.35);
+}
+
+
+.slot-reel.spinning .slot-symbol {
+    filter:
+        blur(2px);
+
+    animation:
+        slotSymbolSpin .11s linear infinite;
+}
+
+
+@keyframes slotSymbolSpin {
+
+    0% {
+        transform:
+            translateY(-5px)
+            scaleY(.96);
+    }
+
+    50% {
+        transform:
+            translateY(5px)
+            scaleY(1.04);
+    }
+
+    100% {
+        transform:
+            translateY(-5px)
+            scaleY(.96);
+    }
+
+}
+
+
+/* =========================================================
+   12. REEL STOP
+========================================================= */
+
+.slot-reel.slot-landed {
+    animation:
+        slotReelLand .28s ease-out;
+}
+
+
+@keyframes slotReelLand {
+
+    0% {
+        transform:
+            scale(1.04)
+            translateY(-5px);
+    }
+
+    45% {
+        transform:
+            scale(.97)
+            translateY(3px);
+    }
+
+    75% {
+        transform:
+            scale(1.015)
+            translateY(-1px);
+    }
+
+    100% {
+        transform:
+            scale(1)
+            translateY(0);
+    }
+
+}
+
+
+/* =========================================================
+   13. RESULT
+========================================================= */
+
+.slots-result {
+    min-height: 30px;
+
+    margin: 20px 10px 10px;
+
+    text-align: center;
+
+    font-size: .95rem;
+    font-weight: 700;
+
+    color: rgba(255,255,255,.82);
+
+    transition:
+        color .2s ease,
+        transform .2s ease;
+}
+
+
+.slots-result.win {
+    color: var(--gold-light, #f1d89b);
+
+    transform: scale(1.04);
+}
+
+
+.slots-result.jackpot {
+    color: #fff;
+
+    transform: scale(1.08);
+
+    text-shadow:
+        0 0 10px rgba(241,216,155,.8),
+        0 0 25px rgba(214,179,106,.6);
+
+    animation:
+        jackpotText .7s ease-in-out infinite alternate;
+}
+
+
+.slots-result.lose {
+    color: rgba(255,255,255,.6);
+}
+
+
+@keyframes jackpotText {
+
+    from {
+        opacity: .7;
+    }
+
+    to {
+        opacity: 1;
+    }
+
+}
+
+
+/* =========================================================
+   14. MACHINE BOTTOM
+========================================================= */
+
+.slot-machine-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 18px;
+
+    margin-top: 12px;
+
+    font-size: .72rem;
+    font-weight: 800;
+
+    letter-spacing: .16em;
+
+    color: rgba(255,255,255,.55);
+}
+
+
+/* =========================================================
+   15. JACKPOT MACHINE
+========================================================= */
+
+.cafe-slot-machine.jackpot {
+    animation:
+        machineJackpot .75s ease-in-out infinite alternate;
+
+    border-color:
+        var(--gold-light, #f1d89b);
+}
+
+
+@keyframes machineJackpot {
+
+    from {
+        box-shadow:
+            0 25px 60px rgba(7,20,38,.25),
+            0 0 15px rgba(214,179,106,.35);
+    }
+
+    to {
+        box-shadow:
+            0 25px 60px rgba(7,20,38,.25),
+            0 0 45px rgba(214,179,106,.8);
+    }
+
+}
+
+
+/* =========================================================
+   16. WINNING REELS
+========================================================= */
+
+.slot-reel.winner {
+    border-color:
+        var(--gold-light, #f1d89b);
+
+    box-shadow:
+        inset 0 0 25px rgba(214,179,106,.18),
+        0 0 25px rgba(214,179,106,.65);
+
+    animation:
+        winningReel .65s ease-in-out infinite alternate;
+}
+
+
+@keyframes winningReel {
+
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.025);
+    }
+
+}
+
+
+/* =========================================================
+   17. CONTROLS
+========================================================= */
+
+.slots-controls {
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        auto
+        auto;
+
+    align-items: end;
+
+    gap: 18px;
+
+    margin-top: 24px;
+}
+
+
+/* =========================================================
+   18. BET CONTROL
+========================================================= */
+
+.bet-control {
+    padding: 12px 16px;
+
+    border-radius: 16px;
+
+    background: var(--card, #ffffff);
+    border: 1px solid var(--border, #dfe6ef);
+}
+
+
+.control-label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    font-size: .65rem;
+    font-weight: 900;
+    letter-spacing: .14em;
+
+    color: var(--text-soft, #667085);
+}
+
+
+.bet-buttons {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.bet-buttons button {
+    width: 38px;
+    height: 38px;
+
+    border: 0;
+    border-radius: 10px;
+
+    background:
+        var(--navy, #0d2038);
+
+    color: white;
+
+    font-size: 1.4rem;
+
+    cursor: pointer;
+
+    transition:
+        transform .15s ease,
+        opacity .15s ease;
+}
+
+
+.bet-buttons button:hover:not(:disabled) {
+    transform: translateY(-2px);
+}
+
+
+.bet-buttons button:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+}
+
+
+.bet-buttons strong {
+    min-width: 60px;
+
+    text-align: center;
+
+    font-size: 1.15rem;
+
+    color: var(--navy-dark, #071426);
+}
+
+
+/* =========================================================
+   19. SPIN BUTTON
+========================================================= */
+
+.slots-spin-button {
+    min-width: 150px;
+    min-height: 62px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    border: 0;
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--gold, #d6b36a),
+            var(--gold-light, #f1d89b)
+        );
+
+    color: var(--navy-dark, #071426);
+
+    font-weight: 900;
+    letter-spacing: .1em;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(214,179,106,.25);
+
+    transition:
+        transform .15s ease,
+        box-shadow .15s ease,
+        opacity .15s ease;
+}
+
+
+.slots-spin-button:hover:not(:disabled) {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 12px 28px rgba(214,179,106,.35);
+}
+
+
+.slots-spin-button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+
+.slots-spin-button:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+
+.spin-icon {
+    font-size: 1.25rem;
+}
+
+
+/* =========================================================
+   20. RESET
+========================================================= */
+
+.slots-reset-button {
+    min-height: 50px;
+
+    padding: 0 20px;
+
+    border-radius: 14px;
+
+    border: 1px solid var(--border, #dfe6ef);
+
+    background: var(--card, #ffffff);
+
+    color: var(--text, #172033);
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform .15s ease,
+        background .15s ease;
+}
+
+
+.slots-reset-button:hover {
+    transform: translateY(-2px);
+}
+
+
+/* =========================================================
+   21. PAYTABLE
+========================================================= */
+
+.slots-paytable {
+    margin-top: 30px;
+
+    padding: 24px;
+
+    border-radius: 22px;
+
+    background: var(--card, #ffffff);
+
+    border: 1px solid var(--border, #dfe6ef);
+
+    box-shadow:
+        0 10px 30px rgba(7,20,38,.06);
+}
+
+
+.paytable-header {
+    text-align: center;
+
+    margin-bottom: 20px;
+}
+
+
+.paytable-header h2 {
+    margin: 0 0 5px;
+
+    font-size: 1.3rem;
+}
+
+
+.paytable-header p {
+    margin: 0;
+
+    font-size: .85rem;
+
+    color: var(--text-soft, #667085);
+}
+
+
+.paytable-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 10px;
+}
+
+
+.pay-item {
+    display: grid;
+
+    grid-template-columns:
+        auto 1fr auto;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 12px;
+
+    border-radius: 13px;
+
+    background:
+        rgba(7,20,38,.035);
+}
+
+
+.pay-item.jackpot {
+    border:
+        1px solid rgba(214,179,106,.5);
+
+    background:
+        rgba(214,179,106,.1);
+}
+
+
+.pay-symbol {
+    font-size: 1.5rem;
+}
+
+
+.pay-name {
+    font-size: .78rem;
+    font-weight: 700;
+}
+
+
+.pay-item strong {
+    font-size: .78rem;
+
+    color: var(--navy, #0d2038);
+}
+
+
+/* =========================================================
+   22. SESSION INFORMATION
+========================================================= */
+
+.slots-session {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 12px;
+
+    margin-top: 18px;
+}
+
+
+.slots-session > div {
+    padding: 16px;
+
+    text-align: center;
+
+    border-radius: 16px;
+
+    background:
+        rgba(7,20,38,.045);
+}
+
+
+.slots-session span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    font-size: .68rem;
+    font-weight: 800;
+
+    letter-spacing: .08em;
+
+    text-transform: uppercase;
+
+    color: var(--text-soft, #667085);
+}
+
+
+.slots-session strong {
+    font-size: 1.15rem;
+
+    color: var(--navy-dark, #071426);
+}
+
+
+/* =========================================================
+   23. NOTE
+========================================================= */
+
+.slots-note {
+    margin: 20px auto 0;
+
+    max-width: 600px;
+
+    text-align: center;
+
+    font-size: .75rem;
+    line-height: 1.6;
+
+    color: var(--text-soft, #667085);
+}
+
+
+/* =========================================================
+   24. MOBILE
+========================================================= */
+
+@media (max-width: 760px) {
+
+    .cafe-slots-room {
+        width: min(100% - 20px, 600px);
+
+        padding-top: 20px;
+    }
+
+
+    .cafe-slots-header {
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 15px;
+    }
+
+
+    .cafe-slots-header
+    .game-secondary-button {
+        align-self: flex-start;
+    }
+
+
+    .cafe-slots-title {
+        text-align: center;
+    }
+
+
+    .cafe-slots-stats {
+        gap: 8px;
+    }
+
+
+    .slots-stat {
+        padding: 12px 8px;
+    }
+
+
+    .slots-stat-label {
+        font-size: .58rem;
+    }
+
+
+    .slots-stat strong {
+        font-size: 1.05rem;
+    }
+
+
+    .cafe-slot-machine {
+        padding: 18px 12px 22px;
+
+        border-radius: 24px;
+    }
+
+
+    .slot-reels {
+        gap: 7px;
+
+        padding: 12px;
+    }
+
+
+    .slot-reel {
+        height: 105px;
+
+        border-width: 2px;
+
+        border-radius: 13px;
+    }
+
+
+    .slot-symbol {
+        font-size: 2.7rem;
+    }
+
+
+    .slot-payline {
+        left: 12px;
+        right: 12px;
+    }
+
+
+    .slot-machine-bottom {
+        gap: 8px;
+
+        font-size: .58rem;
+        letter-spacing: .1em;
+    }
+
+
+    .slots-controls {
+        grid-template-columns:
+            1fr 1fr;
+
+        gap: 10px;
+    }
+
+
+    .bet-control {
+        grid-column: 1 / -1;
+    }
+
+
+    .slots-spin-button {
+        width: 100%;
+
+        min-width: 0;
+    }
+
+
+    .slots-reset-button {
+        width: 100%;
+    }
+
+
+    .paytable-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .slots-session {
+        grid-template-columns:
+            1fr;
+
+        gap: 8px;
+    }
+
+}
+
+
+/* =========================================================
+   25. SMALL PHONES
+========================================================= */
+
+@media (max-width: 430px) {
+
+    .cafe-slots-room {
+        width: min(100% - 14px, 430px);
+    }
+
+
+    .cafe-slots-stats {
+        grid-template-columns:
+            repeat(3, 1fr);
+    }
+
+
+    .cafe-slot-machine {
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+
+    .slot-reels {
+        gap: 5px;
+
+        padding: 9px;
+    }
+
+
+    .slot-reel {
+        height: 90px;
+
+        border-radius: 11px;
+    }
+
+
+    .slot-symbol {
+        font-size: 2.25rem;
+    }
+
+
+    .paytable-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .pay-item {
+        padding: 10px 12px;
+    }
+
+}
+
+
+/* =========================================================
+   26. REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .slot-machine-light,
+    .slot-reel.spinning .slot-symbol,
+    .slot-reel.slot-landed,
+    .slot-reel.winner,
+    .cafe-slot-machine.jackpot,
+    .slots-result.jackpot {
+
+        animation: none !important;
+
+    }
+
+}
+/* =========================================================
+   AUTO SPIN
+========================================================= */
+
+.slots-auto-button {
+    min-height: 50px;
+
+    padding: 0 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    border-radius: 14px;
+
+    border: 1px solid var(--border, #dfe6ef);
+
+    background: var(--card, #ffffff);
+
+    color: var(--navy-dark, #071426);
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    transition:
+        transform .15s ease,
+        background .15s ease,
+        color .15s ease,
+        box-shadow .15s ease;
+}
+
+.slots-auto-button:hover {
+    transform: translateY(-2px);
+}
+
+.slots-auto-button.active {
+    background:
+        var(--navy, #0d2038);
+
+    color: var(--gold-light, #f1d89b);
+
+    border-color:
+        var(--gold, #d6b36a);
+
+    box-shadow:
+        0 0 18px rgba(214,179,106,.25);
+}
+
+.slots-auto-button.active span:first-child {
+    animation:
+        autoSpinIcon 1s linear infinite;
+}
+
+@keyframes autoSpinIcon {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* =========================================================
+   01. BINGO VARIABLES
+========================================================= */
+
+.bingo-room {
+
+    --bingo-navy-dark: #071426;
+    --bingo-navy: #0d2038;
+    --bingo-navy-soft: #16304f;
+
+    --bingo-gold: #d6b36a;
+    --bingo-gold-light: #f1d89b;
+
+    --bingo-white: #ffffff;
+    --bingo-background: #f4f7fb;
+    --bingo-card: #ffffff;
+
+    --bingo-text: #172033;
+    --bingo-text-soft: #667085;
+
+    --bingo-border: #dfe6ef;
+
+    --bingo-success: #2f8f68;
+    --bingo-success-soft: #e8f5ef;
+
+    --bingo-red: #b94a48;
+    --bingo-red-soft: #fbeceb;
+
+    --bingo-shadow:
+        0 18px 45px rgba(7, 20, 38, 0.12);
+
+    --bingo-small-shadow:
+        0 8px 22px rgba(7, 20, 38, 0.10);
+
+    --bingo-radius: 22px;
+
+    --bingo-card-gap: 10px;
+
+    box-sizing: border-box;
+
+}
+
+
+/* =========================================================
+   02. RESET
+========================================================= */
+
+.bingo-room *,
+.bingo-room *::before,
+.bingo-room *::after {
+
+    box-sizing: border-box;
+
+}
+
+
+.bingo-room button {
+
+    font: inherit;
+
+}
+
+
+.bingo-room button:focus-visible {
+
+    outline:
+        3px solid
+        var(--bingo-gold);
+
+    outline-offset: 3px;
+
+}
+
+
+/* =========================================================
+   03. GAME ROOM
+========================================================= */
+
+.bingo-room {
+
+    width: 100%;
+
+    min-height: 100%;
+
+    background:
+        var(--bingo-background);
+
+    color:
+        var(--bingo-text);
+
+    position: relative;
+
+}
+
+
+/* =========================================================
+   04. GAME HEADER
+========================================================= */
+
+.bingo-game-header {
+
+    width: 100%;
+
+    min-height: 68px;
+
+    padding:
+        12px
+        16px;
+
+    display: grid;
+
+    grid-template-columns:
+        auto
+        1fr
+        auto;
+
+    align-items: center;
+
+    gap: 12px;
+
+    background:
+        var(--bingo-navy-dark);
+
+    color:
+        var(--bingo-white);
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 100;
+
+}
+
+
+/* =========================================================
+   05. BACK BUTTON
+========================================================= */
+
+.bingo-back-button {
+
+    border:
+        1px solid
+        rgba(255,255,255,0.20);
+
+    background:
+        rgba(255,255,255,0.08);
+
+    color:
+        var(--bingo-white);
+
+    border-radius:
+        999px;
+
+    padding:
+        8px 12px;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.bingo-back-button:hover {
+
+    background:
+        rgba(255,255,255,0.15);
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+/* =========================================================
+   06. TITLE
+========================================================= */
+
+.bingo-heading {
+
+    min-width: 0;
+
+}
+
+
+.bingo-heading .game-eyebrow {
+
+    color:
+        var(--bingo-gold-light);
+
+    font-size:
+        0.62rem;
+
+    letter-spacing:
+        0.14em;
+
+}
+
+
+.bingo-heading h2 {
+
+    margin:
+        2px 0 0;
+
+    color:
+        var(--bingo-white);
+
+    font-size:
+        1.15rem;
+
+    line-height:
+        1.1;
+
+}
+
+
+/* =========================================================
+   07. COFFEE METER
+========================================================= */
+
+.bingo-coffee-meter {
+
+    appearance: none;
+
+    border: 0;
+
+    background:
+        rgba(255,255,255,0.08);
+
+    color:
+        var(--bingo-white);
+
+    min-width:
+        68px;
+
+    min-height:
+        44px;
+
+    padding:
+        5px 8px;
+
+    border-radius:
+        14px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    cursor: default;
+
+    transition:
+        transform 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+
+}
+
+
+.bingo-coffee-icon {
+
+    font-size:
+        1.25rem;
+
+    line-height:
+        1;
+
+}
+
+
+/* =========================================================
+   08. COFFEE PROGRESS
+========================================================= */
+
+.bingo-coffee-progress {
+
+    width:
+        24px;
+
+    height:
+        6px;
+
+    border-radius:
+        999px;
+
+    background:
+        rgba(255,255,255,0.18);
+
+    overflow:
+        hidden;
+
+    flex-shrink: 0;
+
+}
+
+
+.bingo-coffee-fill {
+
+    display: block;
+
+    width: 0%;
+
+    height: 100%;
+
+    border-radius:
+        inherit;
+
+    background:
+        var(--bingo-gold);
+
+    transition:
+        width 0.35s ease;
+
+}
+
+
+/* =========================================================
+   09. COFFEE COUNT
+========================================================= */
+
+.bingo-coffee-count {
+
+    font-size:
+        0.68rem;
+
+    font-weight:
+        700;
+
+    white-space:
+        nowrap;
+
+}
+
+
+/* =========================================================
+   10. COFFEE READY STATE
+========================================================= */
+
+.bingo-coffee-meter.ready {
+
+    background:
+        var(--bingo-gold);
+
+    color:
+        var(--bingo-navy-dark);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(214,179,106,0.18),
+        0 8px 25px
+        rgba(214,179,106,0.25);
+
+    animation:
+        bingoCoffeePulse 1.5s ease-in-out infinite;
+
+}
+
+
+.bingo-coffee-meter.ready
+.bingo-coffee-fill {
+
+    background:
+        var(--bingo-navy-dark);
+
+}
+
+
+@keyframes bingoCoffeePulse {
+
+    0%,
+    100% {
+
+        transform:
+            scale(1);
+
+    }
+
+    50% {
+
+        transform:
+            scale(1.04);
+
+    }
+
+}
+
+
+/* =========================================================
+   11. SETUP
+========================================================= */
+
+.bingo-setup {
+
+    min-height:
+        calc(100vh - 68px);
+
+    padding:
+        30px 16px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+}
+
+
+.bingo-setup-card {
+
+    width:
+        min(100%, 460px);
+
+    background:
+        var(--bingo-card);
+
+    border:
+        1px solid
+        var(--bingo-border);
+
+    border-radius:
+        var(--bingo-radius);
+
+    padding:
+        28px 20px;
+
+    box-shadow:
+        var(--bingo-shadow);
+
+    text-align:
+        center;
+
+}
+
+
+.bingo-setup-card
+.game-eyebrow {
+
+    color:
+        var(--bingo-gold);
+
+}
+
+
+.bingo-setup-card h1 {
+
+    margin:
+        8px 0;
+
+    color:
+        var(--bingo-navy-dark);
+
+    font-size:
+        clamp(2rem, 8vw, 3rem);
+
+}
+
+
+.bingo-setup-card > p {
+
+    margin:
+        0 auto 25px;
+
+    color:
+        var(--bingo-text-soft);
+
+    max-width:
+        340px;
+
+    line-height:
+        1.6;
+
+}
+
+
+/* =========================================================
+   12. SETUP SECTIONS
+========================================================= */
+
+.bingo-setup-section {
+
+    margin-top:
+        22px;
+
+}
+
+
+.bingo-setup-label {
+
+    display:
+        block;
+
+    margin-bottom:
+        10px;
+
+    color:
+        var(--bingo-text-soft);
+
+    font-size:
+        0.7rem;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.12em;
+
+}
+
+
+/* =========================================================
+   13. CARD OPTIONS
+========================================================= */
+
+.bingo-card-options {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap:
+        8px;
+
+}
+
+
+.bingo-card-option {
+
+    min-height:
+        72px;
+
+    border:
+        1px solid
+        var(--bingo-border);
+
+    background:
+        var(--bingo-background);
+
+    color:
+        var(--bingo-text);
+
+    border-radius:
+        15px;
+
+    cursor:
+        pointer;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        2px;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.bingo-card-option strong {
+
+    font-size:
+        1.35rem;
+
+}
+
+
+.bingo-card-option small {
+
+    font-size:
+        0.62rem;
+
+    font-weight:
+        700;
+
+    color:
+        var(--bingo-text-soft);
+
+}
+
+
+.bingo-card-option:hover {
+
+    transform:
+        translateY(-2px);
+
+    border-color:
+        var(--bingo-gold);
+
+}
+
+
+.bingo-card-option.active {
+
+    background:
+        var(--bingo-navy);
+
+    border-color:
+        var(--bingo-navy);
+
+    color:
+        var(--bingo-white);
+
+}
+
+
+.bingo-card-option.active small {
+
+    color:
+        var(--bingo-gold-light);
+
+}
+
+
+/* =========================================================
+   14. DAUB OPTIONS
+========================================================= */
+
+.bingo-daub-options {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap:
+        8px;
+
+}
+
+
+.bingo-daub-option {
+
+    min-height:
+        56px;
+
+    border:
+        1px solid
+        var(--bingo-border);
+
+    background:
+        var(--bingo-background);
+
+    color:
+        var(--bingo-text);
+
+    border-radius:
+        15px;
+
+    cursor:
+        pointer;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        8px;
+
+    transition:
+        0.2s ease;
+
+}
+
+
+.bingo-daub-option.active {
+
+    background:
+        var(--bingo-navy);
+
+    border-color:
+        var(--bingo-navy);
+
+    color:
+        var(--bingo-white);
+
+}
+
+
+/* =========================================================
+   15. CREDIT INFO
+========================================================= */
+
+.bingo-credit-info {
+
+    margin-top:
+        20px;
+
+    padding:
+        12px 15px;
+
+    border-radius:
+        14px;
+
+    background:
+        var(--bingo-background);
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+}
+
+
+.bingo-credit-info span {
+
+    font-size:
+        0.68rem;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.08em;
+
+    color:
+        var(--bingo-text-soft);
+
+}
+
+
+.bingo-credit-info strong {
+
+    color:
+        var(--bingo-navy);
+
+}
+
+
+/* =========================================================
+   16. START BUTTON
+========================================================= */
+
+.bingo-start-button {
+
+    width:
+        100%;
+
+    min-height:
+        54px;
+
+    margin-top:
+        18px;
+
+    border:
+        0;
+
+    border-radius:
+        15px;
+
+    background:
+        var(--bingo-gold);
+
+    color:
+        var(--bingo-navy-dark);
+
+    cursor:
+        pointer;
+
+    font-weight:
+        800;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        8px;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.bingo-start-button:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(214,179,106,0.30);
+
+}
+
+
+/* =========================================================
+   17. PLAY AREA
+========================================================= */
+
+.bingo-play-area {
+
+    width:
+        min(100%, 1250px);
+
+    margin:
+        0 auto;
+
+    padding:
+        12px;
+
+    position:
+        relative;
+
+}
+
+
+/* =========================================================
+   18. TOP STATS
+========================================================= */
+
+.bingo-top-bar {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap:
+        7px;
+
+    margin-bottom:
+        12px;
+
+}
+
+
+.bingo-top-stat {
+
+    background:
+        var(--bingo-card);
+
+    border:
+        1px solid
+        var(--bingo-border);
+
+    border-radius:
+        12px;
+
+    padding:
+        7px;
+
+    text-align:
+        center;
+
+}
+
+
+.bingo-top-stat span {
+
+    display:
+        block;
+
+    color:
+        var(--bingo-text-soft);
+
+    font-size:
+        0.56rem;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.08em;
+
+}
+
+
+.bingo-top-stat strong {
+
+    display:
+        block;
+
+    margin-top:
+        2px;
+
+    color:
+        var(--bingo-navy);
+
+    font-size:
+        0.95rem;
+
+}
+
+
+/* =========================================================
+   19. CALLER
+========================================================= */
+
+.bingo-caller {
+
+    width:
+        100%;
+
+    max-width:
+        420px;
+
+    margin:
+        8px auto 16px;
+
+    text-align:
+        center;
+
+}
+
+
+.bingo-caller-label {
+
+    display:
+        block;
+
+    color:
+        var(--bingo-text-soft);
+
+    font-size:
+        0.65rem;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.14em;
+
+}
+
+
+.bingo-current-letter {
+
+    margin-top:
+        5px;
+
+    color:
+        var(--bingo-gold);
+
+    font-size:
+        0.9rem;
+
+    font-weight:
+        900;
+
+}
+
+
+.bingo-current-number {
+
+    margin:
+        0;
+
+    color:
+        var(--bingo-navy-dark);
+
+    font-size:
+        clamp(3rem, 15vw, 5rem);
+
+    line-height:
+        0.95;
+
+    font-weight:
+        900;
+
+}
+
+
+.bingo-result {
+
+    margin:
+        7px auto 0;
+
+    color:
+        var(--bingo-text-soft);
+
+    font-size:
+        0.8rem;
+
+    line-height:
+        1.4;
+
+}
+
+
+/* =========================================================
+   20. CARDS AREA
+========================================================= */
+
+.bingo-cards-area {
+
+    width:
+        100%;
+
+}
+
+
+.bingo-cards-heading {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    margin-bottom:
+        9px;
+
+    color:
+        var(--bingo-text-soft);
+
+    font-size:
+        0.65rem;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.08em;
+
+}
+
+
+.bingo-cards-heading span:last-child {
+
+    color:
+        var(--bingo-navy);
+
+}
+
+
+/* =========================================================
+   21. CARDS CONTAINER
+========================================================= */
+
+.bingo-cards {
+
+    width:
+        100%;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        minmax(0, 1fr);
+
+    gap:
+        18px;
+
+    align-items:
+        start;
+
+}
+
+
+/* =========================================================
+   22. INDIVIDUAL BINGO CARD
+========================================================= */
+
+.bingo-card {
+
+    width:
+        100%;
+
+    max-width:
+        440px;
+
+    margin:
+        0 auto;
+
+    padding:
+        8px;
+
+    background:
+        var(--bingo-card);
+
+    border:
+        1px solid
+        var(--bingo-border);
+
+    border-radius:
+        18px;
+
+    box-shadow:
+        var(--bingo-shadow);
+
+}
+
+
+/*
+   Some existing Bingo JS implementations
+   use different names for the actual grid.
+   These selectors support the common structures.
+*/
+
+.bingo-card-grid,
+.bingo-grid,
+.bingo-card-table {
+
+    width:
+        100%;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+
+    grid-template-rows:
+        repeat(5, minmax(0, 1fr));
+
+    gap:
+        4px;
+
+}
+
+
+/* =========================================================
+   23. BINGO HEADER LETTERS
+========================================================= */
+
+.bingo-letter,
+.bingo-column-header,
+.bingo-card-header {
+
+    min-width:
+        0;
+
+    aspect-ratio:
+        1 / 0.72;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border-radius:
+        8px;
+
+    background:
+        var(--bingo-navy);
+
+    color:
+        var(--bingo-white);
+
+    font-size:
+        clamp(0.7rem, 3vw, 1.1rem);
+
+    font-weight:
+        900;
+
+}
+
+
+/* =========================================================
+   24. BINGO CELLS
+========================================================= */
+
+.bingo-cell,
+.bingo-number,
+.bingo-square {
+
+    min-width:
+        0;
+
+    width:
+        100%;
+
+    aspect-ratio:
+        1 / 1;
+
+    border:
+        1px solid
+        var(--bingo-border);
+
+    border-radius:
+        8px;
+
+    background:
+        var(--bingo-white);
+
+    color:
+        var(--bingo-text);
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    text-align:
+        center;
+
+    font-size:
+        clamp(0.75rem, 3.7vw, 1.15rem);
+
+    font-weight:
+        800;
+
+    line-height:
+        1;
+
+    padding:
+        2px;
+
+    overflow:
+        hidden;
+
+    cursor:
+        pointer;
+
+    user-select:
+        none;
+
+    -webkit-tap-highlight-color:
+        transparent;
+
+    transition:
+        background 0.18s ease,
+        color 0.18s ease,
+        border-color 0.18s ease,
+        transform 0.18s ease;
+
+}
+
+
+/* =========================================================
+   25. CELL HOVER
+========================================================= */
+
+.bingo-cell:hover,
+.bingo-number:hover,
+.bingo-square:hover {
+
+    border-color:
+        var(--bingo-gold);
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+/* =========================================================
+   26. CALLED CELL
+========================================================= */
+
+.bingo-cell.called,
+.bingo-number.called,
+.bingo-square.called {
+
+    background:
+        #eef3f8;
+
+    border-color:
+        #cbd6e3;
+
+}
+
+
+/* =========================================================
+   27. MARKED CELL
+========================================================= */
+
+.bingo-cell.marked,
+.bingo-number.marked,
+.bingo-square.marked {
+
+    background:
+        var(--bingo-gold);
+
+    border-color:
+        var(--bingo-gold);
+
+    color:
+        var(--bingo-navy-dark);
+
+    box-shadow:
+        inset 0 0 0 2px
+        rgba(255,255,255,0.45);
+
+}
+
+
+/* =========================================================
+   28. FREE SPACE
+========================================================= */
+
+.bingo-cell.free,
+.bingo-number.free,
+.bingo-square.free {
+
+    background:
+        var(--bingo-navy);
+
+    border-color:
+        var(--bingo-navy);
+
+    color:
+        var(--bingo-gold-light);
+
+    cursor:
+        default;
+
+}
+
+
+/* =========================================================
+   29. AUTO-DAUB HIGHLIGHT
+========================================================= */
+
+.bingo-cell.auto-mark,
+.bingo-number.auto-mark,
+.bingo-square.auto-mark {
+
+    animation:
+        bingoAutoMark 0.45s ease;
+
+}
+
+
+@keyframes bingoAutoMark {
+
+    0% {
+
+        transform:
+            scale(0.88);
+
+    }
+
+    70% {
+
+        transform:
+            scale(1.06);
+
+    }
+
+    100% {
+
+        transform:
+            scale(1);
+
+    }
+
+}
+
+
+/* =========================================================
+   30. WINNING LINE
+========================================================= */
+
+.bingo-cell.winning,
+.bingo-number.winning,
+.bingo-square.winning {
+
+    background:
+        var(--bingo-success);
+
+    border-color:
+        var(--bingo-success);
+
+    color:
+        var(--bingo-white);
+
+    animation:
+        bingoWinningCell 0.9s ease-in-out infinite alternate;
+
+}
+
+
+@keyframes bingoWinningCell {
+
+    from {
+
+        transform:
+            scale(1);
+
+    }
+
+    to {
+
+        transform:
+            scale(1.04);
+
+    }
+
+}
+
+
+/* =========================================================
+   31. CARD LABEL
+========================================================= */
+
+.bingo-card-title,
+.bingo-card-label {
+
+    margin:
+        0 0 7px;
+
+    color:
+        var(--bingo-navy);
+
+    text-align:
+        center;
+
+    font-size:
+        0.7rem;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        0.08em;
+
+}
+
+
+/* =========================================================
+   32. CONTROLS
+========================================================= */
+
+.bingo-controls {
+
+    width:
+        100%;
+
+    max-width:
+        600px;
+
+    margin:
+        18px auto;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1.3fr
+        1fr
+        1fr;
+
+    gap:
+        8px;
+
+}
+
+
+.bingo-controls button {
+
+    min-height:
+        48px;
+
+    border-radius:
+        13px;
+
+    cursor:
+        pointer;
+
+    font-weight:
+        800;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        6px;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.bingo-controls button:hover {
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+/* =========================================================
+   33. CALL BUTTON
+========================================================= */
+
+.bingo-call-button {
+
+    border:
+        0;
+
+    background:
+        var(--bingo-gold);
+
+    color:
+        var(--bingo-navy-dark);
+
+    box-shadow:
+        var(--bingo-small-shadow);
+
+}
+
+
+.bingo-call-button:disabled {
+
+    opacity:
+        0.45;
+
+    cursor:
+        not-allowed;
+
+    transform:
+        none;
+
+}
+
+
+/* =========================================================
+   34. AUTO BUTTON
+========================================================= */
+
+.bingo-auto-button {
+
+    border:
+        1px solid
+        var(--bingo-border);
+
+    background:
+        var(--bingo-white);
+
+    color:
+        var(--bingo-navy);
+
+}
+
+
+.bingo-auto-button[aria-pressed="true"] {
+
+    background:
+        var(--bingo-navy);
+
+    border-color:
+        var(--bingo-navy);
+
+    color:
+        var(--bingo-white);
+
+}
+
+
+/* =========================================================
+   35. NEW GAME
+========================================================= */
+
+.bingo-new-button {
+
+    border:
+        1px solid
+        var(--bingo-border);
+
+    background:
+        var(--bingo-white);
+
+    color:
+        var(--bingo-navy);
+
+}
+
+
+/* =========================================================
+   36. CALLED NUMBERS
+========================================================= */
+
+.bingo-called-area {
+
+    width:
+        100%;
+
+    max-width:
+        900px;
+
+    margin:
+        12px auto;
+
+    background:
+        var(--bingo-card);
+
+    border:
+        1px solid
+        var(--bingo-border);
+
+    border-radius:
+        15px;
+
+}
+
+
+.bingo-called-summary {
+
+    min-height:
+        48px;
+
+    padding:
+        12px 14px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    cursor:
+        pointer;
+
+    list-style:
+        none;
+
+    color:
+        var(--bingo-navy);
+
+    font-size:
+        0.7rem;
+
+    font-weight:
+        800;
+
+}
+
+
+.bingo-called-summary::-webkit-details-marker {
+
+    display:
+        none;
+
+}
+
+
+/* =========================================================
+   37. CALLED NUMBERS GRID
+========================================================= */
+
+.bingo-called-numbers {
+
+    padding:
+        0 12px 12px;
+
+    display:
+        flex;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        5px;
+
+}
+
+
+.bingo-called-number {
+
+    min-width:
+        30px;
+
+    height:
+        30px;
+
+    padding:
+        0 7px;
+
+    border-radius:
+        8px;
+
+    background:
+        var(--bingo-background);
+
+    color:
+        var(--bingo-navy);
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size:
+        0.68rem;
+
+    font-weight:
+        800;
+
+}
+
+
+.bingo-no-numbers {
+
+    color:
+        var(--bingo-text-soft);
+
+    font-size:
+        0.75rem;
+
+}
+
+
+/* =========================================================
+   38. LEGEND
+========================================================= */
+
+.bingo-legend {
+
+    width:
+        100%;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        14px;
+
+    margin:
+        12px auto 18px;
+
+    color:
+        var(--bingo-text-soft);
+
+    font-size:
+        0.65rem;
+
+}
+
+
+.bingo-legend-item {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        5px;
+
+}
+
+
+.bingo-legend-dot {
+
+    width:
+        9px;
+
+    height:
+        9px;
+
+    border-radius:
+        50%;
+
+    display:
+        block;
+
+}
+
+
+.bingo-legend-dot.called {
+
+    background:
+        #cbd6e3;
+
+}
+
+
+.bingo-legend-dot.marked {
+
+    background:
+        var(--bingo-gold);
+
+}
+
+
+.bingo-legend-dot.free {
+
+    background:
+        var(--bingo-navy);
+
+}
+
+
+/* =========================================================
+   39. FLOATING COFFEE REWARD
+========================================================= */
+
+.bingo-coffee-reward {
+
+    position:
+        fixed;
+
+    left:
+        50%;
+
+    top:
+        50%;
+
+    transform:
+        translate(-50%, -50%);
+
+    width:
+        min(88vw, 330px);
+
+    padding:
+        24px 20px;
+
+    background:
+        var(--bingo-white);
+
+    border:
+        2px solid
+        var(--bingo-gold);
+
+    border-radius:
+        24px;
+
+    box-shadow:
+        0 25px 70px
+        rgba(7,20,38,0.25);
+
+    text-align:
+        center;
+
+    z-index:
+        500;
+
+    animation:
+        bingoRewardAppear 0.35s ease;
+
+}
+
+
+@keyframes bingoRewardAppear {
+
+    from {
+
+        opacity:
+            0;
+
+        transform:
+            translate(-50%, -46%)
+            scale(0.9);
+
+    }
+
+    to {
+
+        opacity:
+            1;
+
+        transform:
+            translate(-50%, -50%)
+            scale(1);
+
+    }
+
+}
+
+
+/* =========================================================
+   40. REWARD ICON
+========================================================= */
+
+.bingo-reward-icon {
+
+    font-size:
+        3rem;
+
+    line-height:
+        1;
+
+    margin-bottom:
+        8px;
+
+}
+
+
+.bingo-coffee-reward .game-eyebrow {
+
+    color:
+        var(--bingo-gold);
+
+}
+
+
+.bingo-coffee-reward h3 {
+
+    margin:
+        6px 0;
+
+    color:
+        var(--bingo-navy-dark);
+
+    font-size:
+        1.25rem;
+
+}
+
+
+.bingo-coffee-reward p {
+
+    margin:
+        0 auto 16px;
+
+    color:
+        var(--bingo-text-soft);
+
+    font-size:
+        0.8rem;
+
+    line-height:
+        1.5;
+
+    max-width:
+        260px;
+
+}
+
+
+/* =========================================================
+   41. USE POWER-UP
+========================================================= */
+
+.bingo-use-powerup {
+
+    min-width:
+        130px;
+
+    min-height:
+        44px;
+
+    padding:
+        0 22px;
+
+    border:
+        0;
+
+    border-radius:
+        999px;
+
+    background:
+        var(--bingo-gold);
+
+    color:
+        var(--bingo-navy-dark);
+
+    cursor:
+        pointer;
+
+    font-weight:
+        900;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.bingo-use-powerup:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(214,179,106,0.30);
+
+}
+
+
+/* =========================================================
+   42. POWER-UP COOLDOWN
+========================================================= */
+
+.bingo-powerup-cooldown {
+
+    position:
+        fixed;
+
+    top:
+        82px;
+
+    left:
+        50%;
+
+    transform:
+        translateX(-50%);
+
+    z-index:
+        300;
+
+    padding:
+        7px 12px;
+
+    border-radius:
+        999px;
+
+    background:
+        var(--bingo-navy);
+
+    color:
+        var(--bingo-white);
+
+    box-shadow:
+        var(--bingo-small-shadow);
+
+    font-size:
+        0.7rem;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        5px;
+
+}
+
+
+/* =========================================================
+   43. WIN SCREEN
+========================================================= */
+
+.bingo-win {
+
+    position:
+        fixed;
+
+    inset:
+        0;
+
+    z-index:
+        1000;
+
+    padding:
+        20px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    background:
+        rgba(7,20,38,0.72);
+
+    backdrop-filter:
+        blur(7px);
+
+}
+
+
+.bingo-win-card {
+
+    width:
+        min(100%, 430px);
+
+    padding:
+        30px 22px;
+
+    background:
+        var(--bingo-white);
+
+    border-radius:
+        25px;
+
+    box-shadow:
+        0 30px 80px
+        rgba(0,0,0,0.25);
+
+    text-align:
+        center;
+
+}
+
+
+.bingo-win-icon {
+
+    font-size:
+        3rem;
+
+    margin-bottom:
+        8px;
+
+}
+
+
+.bingo-win-card .game-eyebrow {
+
+    color:
+        var(--bingo-gold);
+
+}
+
+
+.bingo-win-card h2 {
+
+    margin:
+        5px 0;
+
+    color:
+        var(--bingo-navy-dark);
+
+    font-size:
+        2.4rem;
+
+}
+
+
+.bingo-win-card p {
+
+    color:
+        var(--bingo-text-soft);
+
+    line-height:
+        1.5;
+
+}
+
+
+/* =========================================================
+   44. FINAL STATS
+========================================================= */
+
+.bingo-final-stats {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap:
+        10px;
+
+    margin:
+        20px 0;
+
+}
+
+
+.bingo-final-stats div {
+
+    padding:
+        12px;
+
+    background:
+        var(--bingo-background);
+
+    border-radius:
+        13px;
+
+}
+
+
+.bingo-final-stats span {
+
+    display:
+        block;
+
+    color:
+        var(--bingo-text-soft);
+
+    font-size:
+        0.6rem;
+
+    font-weight:
+        800;
+
+}
+
+
+.bingo-final-stats strong {
+
+    display:
+        block;
+
+    margin-top:
+        3px;
+
+    color:
+        var(--bingo-navy);
+
+    font-size:
+        1.2rem;
+
+}
+
+
+/* =========================================================
+   45. NOTE
+========================================================= */
+
+.bingo-note {
+
+    max-width:
+        700px;
+
+    margin:
+        0 auto;
+
+    padding:
+        0 15px 25px;
+
+    text-align:
+        center;
+
+    color:
+        var(--bingo-text-soft);
+
+    font-size:
+        0.65rem;
+
+    line-height:
+        1.5;
+
+}
+
+
+/* =========================================================
+   46. TABLET
+========================================================= */
+
+@media (min-width: 600px) {
+
+    .bingo-game-header {
+
+        padding:
+            14px 24px;
+
+    }
+
+
+    .bingo-play-area {
+
+        padding:
+            18px 24px;
+
+    }
+
+
+    .bingo-cards {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap:
+            20px;
+
+    }
+
+
+    .bingo-card {
+
+        max-width:
+            none;
+
+    }
+
+
+    .bingo-cell,
+    .bingo-number,
+    .bingo-square {
+
+        font-size:
+            clamp(0.85rem, 2.2vw, 1.15rem);
+
+    }
+
+
+    .bingo-cards-heading {
+
+        max-width:
+            900px;
+
+        margin-left:
+            auto;
+
+        margin-right:
+            auto;
+
+    }
+
+}
+
+
+/* =========================================================
+   47. DESKTOP
+========================================================= */
+
+@media (min-width: 900px) {
+
+    .bingo-game-header {
+
+        min-height:
+            74px;
+
+        padding:
+            15px 32px;
+
+    }
+
+
+    .bingo-heading h2 {
+
+        font-size:
+            1.35rem;
+
+    }
+
+
+    .bingo-play-area {
+
+        padding:
+            24px 32px 35px;
+
+    }
+
+
+    .bingo-top-bar {
+
+        max-width:
+            600px;
+
+        margin:
+            0 auto 18px;
+
+    }
+
+
+    .bingo-caller {
+
+        margin:
+            15px auto 24px;
+
+    }
+
+
+    .bingo-current-number {
+
+        font-size:
+            5rem;
+
+    }
+
+
+    .bingo-cards {
+
+        grid-template-columns:
+            repeat(2, minmax(280px, 430px));
+
+        justify-content:
+            center;
+
+        gap:
+            24px;
+
+    }
+
+
+    .bingo-card {
+
+        padding:
+            10px;
+
+        border-radius:
+            20px;
+
+    }
+
+
+    .bingo-card-grid,
+    .bingo-grid,
+    .bingo-card-table {
+
+        gap:
+            5px;
+
+    }
+
+
+    .bingo-cell,
+    .bingo-number,
+    .bingo-square {
+
+        border-radius:
+            9px;
+
+        font-size:
+            1rem;
+
+    }
+
+
+    .bingo-controls {
+
+        margin-top:
+            24px;
+
+    }
+
+
+    .bingo-called-area {
+
+        max-width:
+            860px;
+
+    }
+
+
+    .bingo-note {
+
+        padding-bottom:
+            35px;
+
+    }
+
+}
+
+
+/* =========================================================
+   48. LARGE DESKTOP
+========================================================= */
+
+@media (min-width: 1200px) {
+
+    .bingo-play-area {
+
+        padding-left:
+            40px;
+
+        padding-right:
+            40px;
+
+    }
+
+
+    .bingo-cards {
+
+        grid-template-columns:
+            repeat(4, minmax(230px, 280px));
+
+        gap:
+            20px;
+
+    }
+
+
+    .bingo-card {
+
+        padding:
+            8px;
+
+    }
+
+
+    .bingo-cell,
+    .bingo-number,
+    .bingo-square {
+
+        font-size:
+            0.95rem;
+
+    }
+
+}
+
+
+/* =========================================================
+   49. VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .bingo-game-header {
+
+        grid-template-columns:
+            auto
+            1fr
+            auto;
+
+        gap:
+            6px;
+
+        padding:
+            9px 10px;
+
+    }
+
+
+    .bingo-back-button {
+
+        padding:
+            7px 9px;
+
+        font-size:
+            0.7rem;
+
+    }
+
+
+    .bingo-heading .game-eyebrow {
+
+        display:
+            none;
+
+    }
+
+
+    .bingo-heading h2 {
+
+        font-size:
+            1rem;
+
+    }
+
+
+    .bingo-coffee-meter {
+
+        min-width:
+            62px;
+
+        padding:
+            4px 6px;
+
+    }
+
+
+    .bingo-play-area {
+
+        padding:
+            9px;
+
+    }
+
+
+    .bingo-top-stat {
+
+        padding:
+            6px 3px;
+
+    }
+
+
+    .bingo-top-stat span {
+
+        font-size:
+            0.5rem;
+
+    }
+
+
+    .bingo-current-number {
+
+        font-size:
+            3.5rem;
+
+    }
+
+
+    .bingo-card {
+
+        padding:
+            6px;
+
+        border-radius:
+            14px;
+
+    }
+
+
+    .bingo-card-grid,
+    .bingo-grid,
+    .bingo-card-table {
+
+        gap:
+            3px;
+
+    }
+
+
+    .bingo-cell,
+    .bingo-number,
+    .bingo-square {
+
+        border-radius:
+            6px;
+
+        font-size:
+            0.72rem;
+
+    }
+
+
+    .bingo-controls {
+
+        gap:
+            5px;
+
+    }
+
+
+    .bingo-controls button {
+
+        min-height:
+            44px;
+
+        font-size:
+            0.7rem;
+
+    }
+
+}
+
+
+/* =========================================================
+   50. REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .bingo-room *,
+    .bingo-room *::before,
+    .bingo-room *::after {
+
+        animation-duration:
+            0.01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        transition-duration:
+            0.01ms !important;
+
+    }
+
+}
+/* =========================================================
+   DIGICAFE PLAYROOM
+   Inherits the main DigiCafe color system
+========================================================= */
+
+
+/* =========================================================
+   PLAYROOM BASE
+========================================================= */
+
+.playroom {
+
+    width: 100%;
+    max-width: 1200px;
+
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+
+    color: var(--text-color, #2f2a26);
+
+    background:
+        var(
+            --section-bg,
+            transparent
+        );
+
+}
+
+
+/* =========================================================
+   PLAYROOM LOUNGE
+========================================================= */
+
+.game-lounge {
+
+    width: 100%;
+
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.playroom-hero {
+
+    position: relative;
+
+    padding: 70px 30px;
+
+    margin-bottom: 30px;
+
+    border-radius: 28px;
+
+    background:
+        var(
+            --card-bg,
+            #f6efe6
+        );
+
+    border:
+        1px solid
+        var(
+            --border-color,
+            rgba(80, 60, 45, 0.15)
+        );
+
+    box-shadow:
+        0 15px 40px
+        rgba(50, 35, 25, 0.08);
+
+}
+
+
+.playroom-hero-content {
+
+    max-width: 700px;
+
+    margin: 0 auto;
+
+    text-align: center;
+
+}
+
+
+.playroom-eyebrow {
+
+    display: inline-block;
+
+    margin-bottom: 12px;
+
+    font-size: 0.78rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.12em;
+
+    text-transform: uppercase;
+
+    color:
+        var(
+            --accent-color,
+            #8a5a44
+        );
+
+}
+
+
+.playroom-hero h1 {
+
+    margin: 0 0 15px;
+
+    font-size: clamp(
+        2rem,
+        5vw,
+        3.5rem
+    );
+
+    line-height: 1.1;
+
+    color:
+        var(
+            --heading-color,
+            #3b2f2a
+        );
+
+}
+
+
+.playroom-hero p {
+
+    margin: 0;
+
+    font-size: 1.05rem;
+
+    line-height: 1.7;
+
+    color:
+        var(
+            --muted-text,
+            #6d625c
+        );
+
+}
+
+
+/* =========================================================
+   VISITOR NOTE
+========================================================= */
+
+.playroom-note {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    padding: 22px 25px;
+
+    margin-bottom: 45px;
+
+    border-radius: 18px;
+
+    background:
+        var(
+            --secondary-bg,
+            #eee2d3
+        );
+
+    border:
+        1px solid
+        var(
+            --border-color,
+            rgba(80, 60, 45, 0.12)
+        );
+
+}
+
+
+.playroom-note-icon {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 50px;
+    height: 50px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background:
+        var(
+            --accent-color,
+            #8a5a44
+        );
+
+    font-size: 1.4rem;
+
+}
+
+
+.playroom-note-content strong {
+
+    display: block;
+
+    margin-bottom: 5px;
+
+    color:
+        var(
+            --heading-color,
+            #3b2f2a
+        );
+
+}
+
+
+.playroom-note-content p {
+
+    margin: 0;
+
+    line-height: 1.6;
+
+    color:
+        var(
+            --muted-text,
+            #6d625c
+        );
+
+}
+
+
+/* =========================================================
+   SECTION HEADING
+========================================================= */
+
+.playroom-section-heading {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 25px;
+
+}
+
+
+.playroom-section-heading > span {
+
+    font-size: 1.8rem;
+
+}
+
+
+.playroom-section-heading h2 {
+
+    margin: 0 0 4px;
+
+    color:
+        var(
+            --heading-color,
+            #3b2f2a
+        );
+
+}
+
+
+.playroom-section-heading p {
+
+    margin: 0;
+
+    color:
+        var(
+            --muted-text,
+            #6d625c
+        );
+
+}
+
+
+/* =========================================================
+   GAME GRID
+========================================================= */
+
+.game-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(
+                260px,
+                1fr
+            )
+        );
+
+    gap: 18px;
+
+}
+
+
+/* =========================================================
+   GAME CARD
+========================================================= */
+
+.game-card {
+
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns:
+        auto 1fr auto;
+
+    align-items: center;
+
+    gap: 18px;
+
+    width: 100%;
+
+    padding: 22px;
+
+    text-align: left;
+
+    border: 1px solid
+        var(
+            --border-color,
+            rgba(80, 60, 45, 0.15)
+        );
+
+    border-radius: 20px;
+
+    background:
+        var(
+            --card-bg,
+            #f8f1e8
+        );
+
+    color:
+        var(
+            --text-color,
+            #2f2a26
+        );
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+
+}
+
+
+.game-card:hover {
+
+    transform:
+        translateY(-4px);
+
+    border-color:
+        var(
+            --accent-color,
+            #8a5a44
+        );
+
+    box-shadow:
+        0 12px 30px
+        rgba(50, 35, 25, 0.10);
+
+}
+
+
+.game-card:active {
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+/* =========================================================
+   GAME CARD ICON
+========================================================= */
+
+.game-card-icon {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 58px;
+    height: 58px;
+
+    flex-shrink: 0;
+
+    border-radius: 16px;
+
+    background:
+        var(
+            --accent-light,
+            #ead8c5
+        );
+
+    font-size: 1.8rem;
+
+}
+
+
+/* =========================================================
+   GAME CARD CONTENT
+========================================================= */
+
+.game-card-content {
+
+    min-width: 0;
+
+}
+
+
+.game-card-label {
+
+    display: block;
+
+    margin-bottom: 4px;
+
+    font-size: 0.72rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
+
+    color:
+        var(
+            --accent-color,
+            #8a5a44
+        );
+
+}
+
+
+.game-card h3 {
+
+    margin: 0 0 6px;
+
+    font-size: 1.15rem;
+
+    color:
+        var(
+            --heading-color,
+            #3b2f2a
+        );
+
+}
+
+
+.game-card p {
+
+    margin: 0;
+
+    font-size: 0.9rem;
+
+    line-height: 1.5;
+
+    color:
+        var(
+            --muted-text,
+            #6d625c
+        );
+
+}
+
+
+.game-card-arrow {
+
+    font-size: 1.4rem;
+
+    color:
+        var(
+            --accent-color,
+            #8a5a44
+        );
+
+}
+
+
+/* =========================================================
+   GAME ROOMS
+========================================================= */
+
+.game-room {
+
+    width: 100%;
+
+    margin: 0 auto;
+
+    padding: 0;
+
+    color:
+        var(
+            --text-color,
+            #2f2a26
+        );
+
+    background:
+        transparent;
+
+}
+
+
+.game-room[hidden] {
+
+    display: none !important;
+
+}
+
+
+/* =========================================================
+   GAME ROOM HEADER
+========================================================= */
+
+.game-room-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+    padding: 22px 25px;
+
+    margin-bottom: 25px;
+
+    border-radius: 20px;
+
+    background:
+        var(
+            --card-bg,
+            #f8f1e8
+        );
+
+    border:
+        1px solid
+        var(
+            --border-color,
+            rgba(80, 60, 45, 0.15)
+        );
+
+}
+
+
+.game-room-title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+}
+
+
+.game-room-title > span {
+
+    font-size: 1.8rem;
+
+}
+
+
+.game-room-title small {
+
+    display: block;
+
+    margin-bottom: 3px;
+
+    font-size: 0.7rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.1em;
+
+    text-transform: uppercase;
+
+    color:
+        var(
+            --accent-color,
+            #8a5a44
+        );
+
+}
+
+
+.game-room-title h2 {
+
+    margin: 0;
+
+    color:
+        var(
+            --heading-color,
+            #3b2f2a
+        );
+
+}
+
+
+/* =========================================================
+   BACK BUTTONS
+========================================================= */
+
+.game-back-button,
+.game-secondary-button {
+
+    appearance: none;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    min-height: 42px;
+
+    padding: 10px 16px;
+
+    border: 1px solid
+        var(
+            --border-color,
+            rgba(80, 60, 45, 0.18)
+        );
+
+    border-radius: 12px;
+
+    background:
+        var(
+            --secondary-bg,
+            #eee2d3
+        );
+
+    color:
+        var(
+            --text-color,
+            #3b302b
+        ) !important;
+
+    font-family: inherit;
+
+    font-size: 0.9rem;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.game-back-button:hover,
+.game-secondary-button:hover {
+
+    background:
+        var(
+            --accent-color,
+            #8a5a44
+        );
+
+    color:
+        #ffffff !important;
+
+    border-color:
+        var(
+            --accent-color,
+            #8a5a44
+        );
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+/* =========================================================
+   GAME ROOM CONTENT
+========================================================= */
+
+.game-room-content {
+
+    width: 100%;
+
+    color:
+        var(
+            --text-color,
+            #2f2a26
+        );
+
+}
+
+
+/* =========================================================
+   GAME ROOM TEXT
+========================================================= */
+
+.game-room h1,
+.game-room h2,
+.game-room h3,
+.game-room h4 {
+
+    color:
+        var(
+            --heading-color,
+            #3b2f2a
+        );
+
+}
+
+
+.game-room p {
+
+    color:
+        var(
+            --muted-text,
+            #6d625c
+        );
+
+}
+
+
+.game-room span,
+.game-room label {
+
+    color:
+        inherit;
+
+}
+
+
+/* =========================================================
+   GAME BUTTONS
+========================================================= */
+
+.game-button {
+
+    appearance: none;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    min-height: 44px;
+
+    padding: 11px 20px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background:
+        var(
+            --accent-color,
+            #8a5a44
+        );
+
+    color:
+        #ffffff !important;
+
+    font-family: inherit;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease,
+        box-shadow 0.2s ease;
+
+}
+
+
+.game-button:hover {
+
+    transform:
+        translateY(-2px);
+
+    opacity: 0.92;
+
+    box-shadow:
+        0 8px 20px
+        rgba(50, 35, 25, 0.15);
+
+}
+
+
+/* =========================================================
+   COMMON GAME PANELS
+========================================================= */
+
+.game-panel,
+.chess-panel,
+.dama-panel,
+.bingo-game,
+.cafe-slots-game {
+
+    color:
+        var(
+            --text-color,
+            #2f2a26
+        );
+
+}
+
+
+/* =========================================================
+   GAME ROOM ACTIVE STATE
+========================================================= */
+
+.game-room.game-active,
+.game-room.game-room-active {
+
+    display: block;
+
+}
+
+
+/* =========================================================
+   HIDDEN ELEMENT SAFETY
+========================================================= */
+
+.playroom [hidden] {
+
+    display: none !important;
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .playroom {
+
+        padding:
+            25px 14px 60px;
+
+    }
+
+
+    .playroom-hero {
+
+        padding:
+            50px 20px;
+
+        border-radius:
+            22px;
+
+    }
+
+
+    .playroom-note {
+
+        align-items: flex-start;
+
+        padding:
+            18px;
+
+    }
+
+
+    .game-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .game-card {
+
+        padding:
+            18px;
+
+    }
+
+
+    .game-room-header {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        padding:
+            18px;
+
+    }
+
+
+    .game-room-title {
+
+        width: 100%;
+
+    }
+
+
+    .game-back-button,
+    .game-secondary-button {
+
+        width: 100%;
+
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL SCREENS
+========================================================= */
+
+@media (max-width: 420px) {
+
+    .playroom-hero h1 {
+
+        font-size:
+            2rem;
+
+    }
+
+
+    .game-card {
+
+        grid-template-columns:
+            auto 1fr;
+
+    }
+
+
+    .game-card-arrow {
+
+        display: none;
+
+    }
+
+
+    .game-card-icon {
+
+        width: 50px;
+        height: 50px;
+
+        font-size:
+            1.5rem;
+
+    }
+
+}
