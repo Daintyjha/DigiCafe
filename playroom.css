@@ -15001,3 +15001,27 @@ and (
     }
 
 }
+.solitaire-touch-ghost {
+    position: fixed;
+    pointer-events: none;
+    z-index: 999999;
+    transform: scale(1.05);
+    opacity: .92;
+    box-shadow: 0 16px 30px rgba(0,0,0,.35);
+    transition: none !important;
+}
+
+.solitaire-touch-target {
+    outline: 3px solid rgba(216,184,120,.95) !important;
+    outline-offset: -3px;
+}
+
+@media (hover: none) {
+
+    .solitaire-card {
+        touch-action: none;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+}

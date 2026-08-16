@@ -2980,24 +2980,57 @@ function createSolitaireCardElement(
 
 
     /* =====================================================
-       DRAG
-    ===================================================== */
+   DRAG
+   -----------------------------------------------------
+   Desktop:
+   • HTML5 drag & drop
 
-    cardElement.draggable =
-        true;
+   Mobile:
+   • Pointer / touch drag
+   • Finger-following card
+===================================================== */
 
-
-    cardElement.addEventListener(
-        "dragstart",
-        event => {
-
-            const location =
-                findSolitaireCard(
-                    card.id
-                );
+cardElement.draggable =
+    true;
 
 
-            if (!location) {
+/* =====================================================
+   DESKTOP DRAG START
+===================================================== */
+
+cardElement.addEventListener(
+    "dragstart",
+    event => {
+
+        const location =
+            findSolitaireCard(
+                card.id
+            );
+
+
+        if (!location) {
+
+            event.preventDefault();
+
+            return;
+
+        }
+
+
+        /* -------------------------------------------------
+           WASTE
+           Only the top card can move.
+        ------------------------------------------------- */
+
+        if (
+            location.source ===
+            "waste"
+        ) {
+
+            if (
+                location.index !==
+                solitaire.waste.length - 1
+            ) {
 
                 event.preventDefault();
 
@@ -3005,144 +3038,223 @@ function createSolitaireCardElement(
 
             }
 
-
-            /*
-                WASTE:
-                only top card can move.
-            */
-
-            if (
-                location.source ===
-                "waste"
-            ) {
-
-                if (
-                    location.index !==
-                    solitaire.waste.length - 1
-                ) {
-
-                    event.preventDefault();
-
-                    return;
-
-                }
-
-            }
+        }
 
 
-            /*
-                TABLEAU:
-                selected card must begin
-                a valid sequence.
-            */
+        /* -------------------------------------------------
+           TABLEAU
+           Must be a valid movable sequence.
+        ------------------------------------------------- */
 
-            if (
-                location.source ===
-                "tableau"
-            ) {
+        if (
+            location.source ===
+            "tableau"
+        ) {
 
-                const sequence =
-                    getMovableSequence(
-                        location.column,
-                        location.index
-                    );
-
-
-                if (
-                    sequence.length === 0
-                ) {
-
-                    event.preventDefault();
-
-                    return;
-
-                }
-
-            }
-
-
-            solitaire.drag = {
-
-                source:
-                    location.source,
-
-                column:
+            const sequence =
+                getMovableSequence(
                     location.column,
-
-                index:
-                    location.index,
-
-                card:
-                    card
-
-            };
+                    location.index
+                );
 
 
-            event.dataTransfer.setData(
-                "text/plain",
-                card.id
-            );
+            if (
+                sequence.length === 0
+            ) {
 
+                event.preventDefault();
 
-            event.dataTransfer.effectAllowed =
-                "move";
+                return;
 
-
-            cardElement.classList.add(
-                "solitaire-card-dragging"
-            );
-
-
-            startSolitaireTimer();
-
-
-            console.log(
-                "🃏 Dragging:",
-                card.rank +
-                card.symbol
-            );
+            }
 
         }
-    );
 
 
-    cardElement.addEventListener(
-        "dragend",
-        () => {
+        solitaire.drag = {
 
-            cardElement.classList.remove(
-                "solitaire-card-dragging"
-            );
+            source:
+                location.source,
 
+            column:
+                location.column,
 
-            solitaire.drag = null;
+            index:
+                location.index,
 
-        }
-    );
-
-
-    /* =====================================================
-       DOUBLE CLICK
-       → FOUNDATION
-    ===================================================== */
-
-    cardElement.addEventListener(
-        "dblclick",
-        event => {
-
-            event.preventDefault();
-
-            event.stopPropagation();
-
-
-            tryDoubleClickFoundation(
+            card:
                 card
-            );
+
+        };
+
+
+        event.dataTransfer.setData(
+            "text/plain",
+            card.id
+        );
+
+
+        event.dataTransfer.effectAllowed =
+            "move";
+
+
+        cardElement.classList.add(
+            "solitaire-card-dragging"
+        );
+
+
+        startSolitaireTimer();
+
+
+        console.log(
+            "🃏 Desktop dragging:",
+            card.rank +
+            card.symbol
+        );
+
+    }
+);
+
+
+/* =====================================================
+   DESKTOP DRAG END
+===================================================== */
+
+cardElement.addEventListener(
+    "dragend",
+    () => {
+
+        cardElement.classList.remove(
+            "solitaire-card-dragging"
+        );
+
+
+        solitaire.drag =
+            null;
+
+    }
+);
+
+
+/* =====================================================
+   MOBILE / TOUCH DRAG
+===================================================== */
+
+cardElement.addEventListener(
+    "pointerdown",
+    event => {
+
+        /*
+            Only touch / pen.
+
+            Mouse continues to use the
+            normal HTML5 drag system.
+        */
+
+        if (
+            event.pointerType !== "touch" &&
+            event.pointerType !== "pen"
+        ) {
+
+            return;
 
         }
-    );
 
 
+        startSolitaireTouchDrag(
+            event,
+            cardElement,
+            card
+        );
+
+    }
+);
+
+
+cardElement.addEventListener(
+    "pointermove",
+    event => {
+
+        if (
+            event.pointerType !== "touch" &&
+            event.pointerType !== "pen"
+        ) {
+
+            return;
+
+        }
+
+
+        moveSolitaireTouchDrag(
+            event
+        );
+
+    }
+);
+
+
+cardElement.addEventListener(
+    "pointerup",
+    event => {
+
+        if (
+            event.pointerType !== "touch" &&
+            event.pointerType !== "pen"
+        ) {
+
+            return;
+
+        }
+
+
+        endSolitaireTouchDrag(
+            event
+        );
+
+    }
+);
+
+
+cardElement.addEventListener(
+    "pointercancel",
+    event => {
+
+        if (
+            event.pointerType !== "touch" &&
+            event.pointerType !== "pen"
+        ) {
+
+            return;
+
+        }
+
+
+        cancelSolitaireTouchDrag();
+
+    }
+);
+
+
+/* =====================================================
+   DOUBLE CLICK
+   → FOUNDATION
+===================================================== */
+
+cardElement.addEventListener(
+    "dblclick",
+    event => {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+
+        tryDoubleClickFoundation(
+            card
+        );
+
+    }
+);
     /* =====================================================
        TOP LEFT CORNER
     ===================================================== */
