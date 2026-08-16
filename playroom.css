@@ -1257,25 +1257,22 @@
     }
 
 }
-
 /* =========================================================
    DIGICAFE SOLITAIRE
-   RESPONSIVE KLONDIKE DRAW 3
-   =========================================================
-
-   DESIGN GOALS
+   COMPLETE RESPONSIVE KLONDIKE DRAW 3
    ---------------------------------------------------------
-   • DigiCafe visual language
-   • Desktop friendly
-   • Tablet friendly
-   • Mobile friendly
-   • 7 tableau columns never overlap sideways
-   • Cards preserve their aspect ratio
-   • Tableau grows naturally
-   • Controls never sit underneath cards
-   • Touch friendly
-   • Drag friendly
-   • Double-click friendly
+   Designed for:
+
+   • Current DigiCafe Solitaire HTML
+   • Current cleaned solitaire.js
+   • Desktop
+   • Tablet
+   • Mobile
+   • Touch dragging
+   • Draw 3 waste
+   • 7-column tableau
+   • Responsive cards
+   • No horizontal overflow
 ========================================================= */
 
 
@@ -1285,32 +1282,32 @@
 
 :root {
 
-    --solitaire-bg:
+    --solitaire-navy:
         #101a2b;
 
-    --solitaire-surface:
+    --solitaire-navy-2:
         #17243a;
 
-    --solitaire-surface-2:
-        #1d2d46;
+    --solitaire-navy-3:
+        #1e304c;
+
+    --solitaire-gold:
+        #d8b878;
+
+    --solitaire-gold-light:
+        #f1d89b;
+
+    --solitaire-card:
+        #fffaf1;
+
+    --solitaire-card-shadow:
+        rgba(0, 0, 0, 0.28);
 
     --solitaire-border:
         rgba(255,255,255,0.12);
 
     --solitaire-border-soft:
         rgba(255,255,255,0.07);
-
-    --solitaire-gold:
-        #d8b878;
-
-    --solitaire-gold-soft:
-        rgba(216,184,120,0.20);
-
-    --solitaire-card:
-        #fffaf1;
-
-    --solitaire-card-shadow:
-        rgba(0,0,0,0.32);
 
     --solitaire-red:
         #b33d4b;
@@ -1322,22 +1319,22 @@
 
 
 /* =========================================================
-   02. GAME WRAPPER
+   02. SOLITAIRE ROOM
 ========================================================= */
 
-#solitaireBoard {
+.solitaire-room {
 
-    width: 100%;
+    width:
+        100%;
 
-    max-width: 1120px;
+    max-width:
+        1180px;
 
     margin:
         0 auto;
 
     padding:
-        24px;
-
-    box-sizing: border-box;
+        0;
 
     color:
         var(--solitaire-card);
@@ -1346,48 +1343,267 @@
 
 
 /* =========================================================
-   03. TOP ROW
+   03. SOLITAIRE HEADER
 ========================================================= */
 
-.solitaire-top-row {
+.solitaire-header {
 
-    width: 100%;
+    position:
+        relative;
 
-    display: grid;
+    display:
+        grid;
 
     grid-template-columns:
-        90px
-        120px
-        minmax(30px, 1fr)
-        repeat(4, 90px);
-
-    gap:
-        16px;
+        auto
+        1fr
+        auto;
 
     align-items:
-        start;
+        center;
+
+    gap:
+        20px;
 
     margin-bottom:
-        30px;
+        20px;
+
+    padding:
+        18px 20px;
+
+    border:
+        1px solid
+        var(--solitaire-border);
+
+    border-radius:
+        20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            var(--solitaire-navy-2),
+            var(--solitaire-navy)
+        );
+
+    box-shadow:
+        0 18px 40px
+        rgba(0,0,0,0.18);
 
 }
 
 
 /* =========================================================
-   04. TOP PILES
+   04. SOLITAIRE TITLE
+========================================================= */
+
+.solitaire-title {
+
+    min-width:
+        0;
+
+    text-align:
+        center;
+
+}
+
+
+.solitaire-title .game-eyebrow {
+
+    margin-bottom:
+        5px;
+
+    color:
+        var(--solitaire-gold);
+
+}
+
+
+.solitaire-title h2 {
+
+    margin:
+        0;
+
+    color:
+        #ffffff;
+
+    font-size:
+        clamp(
+            1.45rem,
+            4vw,
+            2.15rem
+        );
+
+    line-height:
+        1.05;
+
+}
+
+
+/* =========================================================
+   05. SOLITAIRE STATS
+========================================================= */
+
+.solitaire-stats {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        9px;
+
+}
+
+
+.solitaire-stat {
+
+    min-width:
+        65px;
+
+    padding:
+        8px 10px;
+
+    border:
+        1px solid
+        var(--solitaire-border-soft);
+
+    border-radius:
+        11px;
+
+    background:
+        rgba(255,255,255,0.045);
+
+    text-align:
+        center;
+
+}
+
+
+.solitaire-stat span {
+
+    display:
+        block;
+
+    margin-bottom:
+        3px;
+
+    color:
+        rgba(255,255,255,0.48);
+
+    font-size:
+        0.52rem;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.12em;
+
+}
+
+
+.solitaire-stat strong {
+
+    display:
+        block;
+
+    color:
+        var(--solitaire-gold-light);
+
+    font-size:
+        0.9rem;
+
+    line-height:
+        1;
+
+}
+
+
+/* =========================================================
+   06. SOLITAIRE BOARD CONTAINER
+========================================================= */
+
+.game-room-content {
+
+    width:
+        100%;
+
+}
+
+
+#solitaireBoard {
+
+    position:
+        relative;
+
+    width:
+        100%;
+
+    max-width:
+        1120px;
+
+    margin:
+        0 auto;
+
+    padding:
+        20px;
+
+    box-sizing:
+        border-box;
+
+    overflow:
+        visible;
+
+}
+
+
+/* =========================================================
+   07. TOP ROW
+========================================================= */
+
+.solitaire-top-row {
+
+    width:
+        100%;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        88px
+        122px
+        minmax(20px, 1fr)
+        repeat(4, 88px);
+
+    align-items:
+        start;
+
+    gap:
+        14px;
+
+    margin-bottom:
+        28px;
+
+}
+
+
+/* =========================================================
+   08. TOP PILES
 ========================================================= */
 
 .solitaire-pile,
 .solitaire-foundation {
+
+    position:
+        relative;
 
     width:
         88px;
 
     height:
         124px;
-
-    position:
-        relative;
 
     box-sizing:
         border-box;
@@ -1399,7 +1615,19 @@
 
 
 /* =========================================================
-   05. EMPTY PILES
+   09. STOCK
+========================================================= */
+
+.solitaire-pile[data-pile="stock"] {
+
+    cursor:
+        pointer;
+
+}
+
+
+/* =========================================================
+   10. EMPTY PILES
 ========================================================= */
 
 .solitaire-pile:empty,
@@ -1419,38 +1647,62 @@
 
 
 /* =========================================================
-   06. EMPTY STOCK
+   11. EMPTY STOCK
 ========================================================= */
 
 .solitaire-stock-empty {
 
-    cursor:
-        pointer;
-
-    border:
-        2px dashed
+    border-color:
         var(--solitaire-gold);
 
     background:
-        var(--solitaire-gold-soft);
+        rgba(216,184,120,0.10);
+
+    cursor:
+        pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.solitaire-stock-empty:hover {
+
+    background:
+        rgba(216,184,120,0.16);
+
+    transform:
+        translateY(-2px);
 
 }
 
 
 /* =========================================================
-   07. WASTE
+   12. WASTE PILE
 ========================================================= */
 
 .solitaire-pile[data-pile="waste"] {
 
+    position:
+        relative;
+
     width:
         122px;
+
+    height:
+        124px;
+
+    overflow:
+        visible;
 
 }
 
 
 /* =========================================================
-   08. FOUNDATIONS
+   13. FOUNDATIONS
 ========================================================= */
 
 .solitaire-foundations {
@@ -1462,19 +1714,19 @@
 
 
 /* =========================================================
-   09. CARD
+   14. CARDS
 ========================================================= */
 
 .solitaire-card {
+
+    position:
+        absolute;
 
     width:
         88px;
 
     height:
         124px;
-
-    position:
-        absolute;
 
     box-sizing:
         border-box;
@@ -1498,15 +1750,20 @@
         none;
 
     transition:
-        transform 0.12s ease,
-        box-shadow 0.12s ease,
-        opacity 0.12s ease;
+        transform
+        0.12s ease,
+
+        box-shadow
+        0.12s ease,
+
+        opacity
+        0.12s ease;
 
 }
 
 
 /* =========================================================
-   10. FACE-UP CARD
+   15. FACE-UP CARD
 ========================================================= */
 
 .solitaire-card-face {
@@ -1519,14 +1776,14 @@
         rgba(0,0,0,0.18);
 
     box-shadow:
-        0 4px 9px
+        0 5px 10px
         var(--solitaire-card-shadow);
 
 }
 
 
 /* =========================================================
-   11. CARD BACK
+   16. FACE-DOWN CARD
 ========================================================= */
 
 .solitaire-card-back {
@@ -1543,14 +1800,34 @@
         rgba(216,184,120,0.35);
 
     box-shadow:
-        0 4px 9px
+        0 5px 10px
         var(--solitaire-card-shadow);
 
 }
 
 
 /* =========================================================
-   12. CARD CORNER
+   17. CARD COLORS
+========================================================= */
+
+.solitaire-red {
+
+    color:
+        var(--solitaire-red);
+
+}
+
+
+.solitaire-black {
+
+    color:
+        var(--solitaire-black);
+
+}
+
+
+/* =========================================================
+   18. CARD CORNER
 ========================================================= */
 
 .solitaire-card-corner {
@@ -1564,6 +1841,9 @@
     left:
         8px;
 
+    z-index:
+        3;
+
     display:
         flex;
 
@@ -1573,21 +1853,14 @@
     align-items:
         center;
 
+    font-weight:
+        800;
+
     line-height:
         1;
 
-    font-weight:
-        700;
-
-    z-index:
-        2;
-
 }
 
-
-/* =========================================================
-   13. CARD RANK
-========================================================= */
 
 .solitaire-card-rank {
 
@@ -1600,11 +1873,10 @@
 }
 
 
-/* =========================================================
-   14. CARD SUIT
-========================================================= */
-
 .solitaire-card-suit {
+
+    margin-top:
+        2px;
 
     font-size:
         15px;
@@ -1616,7 +1888,7 @@
 
 
 /* =========================================================
-   15. CARD CENTER
+   19. CARD CENTER
 ========================================================= */
 
 .solitaire-card-center {
@@ -1629,6 +1901,9 @@
 
     left:
         50%;
+
+    z-index:
+        1;
 
     transform:
         translate(
@@ -1649,46 +1924,23 @@
 
 
 /* =========================================================
-   16. CARD COLORS
+   20. FOUNDATION CARD
 ========================================================= */
 
-.solitaire-red {
+.solitaire-foundation
+.solitaire-card {
 
-    color:
-        var(--solitaire-red);
+    top:
+        0;
 
-}
-
-
-.solitaire-black {
-
-    color:
-        var(--solitaire-black);
+    left:
+        0;
 
 }
 
 
 /* =========================================================
-   17. CARD DRAGGING
-========================================================= */
-
-.solitaire-card-dragging {
-
-    opacity:
-        0.55;
-
-    transform:
-        translateX(-50%)
-        scale(1.04);
-
-    z-index:
-        9999;
-
-}
-
-
-/* =========================================================
-   18. WASTE CARDS
+   21. WASTE CARD
 ========================================================= */
 
 .solitaire-pile[data-pile="waste"]
@@ -1701,7 +1953,7 @@
 
 
 /* =========================================================
-   19. WASTE PLAYABLE CARD
+   22. WASTE PLAYABLE CARD
 ========================================================= */
 
 .solitaire-waste-top {
@@ -1724,23 +1976,7 @@
 
 
 /* =========================================================
-   20. FOUNDATION CARD
-========================================================= */
-
-.solitaire-foundation
-.solitaire-card {
-
-    top:
-        0;
-
-    left:
-        0;
-
-}
-
-
-/* =========================================================
-   21. TABLEAU
+   23. TABLEAU
 ========================================================= */
 
 .solitaire-tableau {
@@ -1766,27 +2002,23 @@
     align-items:
         start;
 
+    min-height:
+        420px;
+
+    padding-bottom:
+        100px;
+
     box-sizing:
         border-box;
 
-    /*
-        IMPORTANT:
-
-        Never give the tableau a fixed height.
-        The cards determine its height.
-    */
-
-    min-height:
-        400px;
-
-    padding-bottom:
-        90px;
+    overflow:
+        visible;
 
 }
 
 
 /* =========================================================
-   22. TABLEAU COLUMN
+   24. TABLEAU COLUMN
 ========================================================= */
 
 .solitaire-column {
@@ -1803,11 +2035,17 @@
     min-height:
         124px;
 
+    box-sizing:
+        border-box;
+
+    overflow:
+        visible;
+
 }
 
 
 /* =========================================================
-   23. TABLEAU CARD
+   25. TABLEAU CARDS
 ========================================================= */
 
 .solitaire-column >
@@ -1823,7 +2061,7 @@
 
 
 /* =========================================================
-   24. EMPTY TABLEAU
+   26. EMPTY TABLEAU
 ========================================================= */
 
 .solitaire-column >
@@ -1838,6 +2076,12 @@
     left:
         50%;
 
+    width:
+        88px;
+
+    height:
+        124px;
+
     transform:
         translateX(-50%);
 
@@ -1845,62 +2089,412 @@
 
 
 /* =========================================================
-   25. CARD STACK DEPTH
+   27. TABLEAU STACKING
 ========================================================= */
 
 .solitaire-column
 .solitaire-card:nth-child(1) {
-    z-index: 1;
+
+    z-index:
+        1;
+
 }
+
 
 .solitaire-column
 .solitaire-card:nth-child(2) {
-    z-index: 2;
+
+    z-index:
+        2;
+
 }
+
 
 .solitaire-column
 .solitaire-card:nth-child(3) {
-    z-index: 3;
+
+    z-index:
+        3;
+
 }
+
 
 .solitaire-column
 .solitaire-card:nth-child(4) {
-    z-index: 4;
+
+    z-index:
+        4;
+
 }
+
 
 .solitaire-column
 .solitaire-card:nth-child(5) {
-    z-index: 5;
+
+    z-index:
+        5;
+
 }
+
 
 .solitaire-column
 .solitaire-card:nth-child(6) {
-    z-index: 6;
+
+    z-index:
+        6;
+
 }
+
 
 .solitaire-column
 .solitaire-card:nth-child(7) {
-    z-index: 7;
+
+    z-index:
+        7;
+
 }
+
 
 .solitaire-column
 .solitaire-card:nth-child(8) {
-    z-index: 8;
+
+    z-index:
+        8;
+
 }
+
 
 .solitaire-column
 .solitaire-card:nth-child(9) {
-    z-index: 9;
+
+    z-index:
+        9;
+
 }
+
 
 .solitaire-column
 .solitaire-card:nth-child(10) {
-    z-index: 10;
+
+    z-index:
+        10;
+
 }
 
 
 /* =========================================================
-   26. TABLET
+   28. DRAG STATES
+========================================================= */
+
+.solitaire-card-dragging {
+
+    opacity:
+        0.55 !important;
+
+    z-index:
+        99999 !important;
+
+}
+
+
+.solitaire-card-touching {
+
+    opacity:
+        0.35;
+
+}
+
+
+.solitaire-touch-ghost {
+
+    position:
+        fixed !important;
+
+    pointer-events:
+        none !important;
+
+    z-index:
+        999999 !important;
+
+    margin:
+        0 !important;
+
+    opacity:
+        0.96;
+
+    box-shadow:
+        0 15px 35px
+        rgba(0,0,0,0.35);
+
+}
+
+
+/* =========================================================
+   29. TOUCH TARGET
+========================================================= */
+
+.solitaire-touch-target {
+
+    box-shadow:
+        0 0 0 3px
+        rgba(216,184,120,0.45);
+
+    border-radius:
+        12px;
+
+}
+
+
+/* =========================================================
+   30. CONTROLS
+========================================================= */
+
+.solitaire-controls {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        10px;
+
+    width:
+        100%;
+
+    margin:
+        8px auto 25px;
+
+    padding:
+        0 20px;
+
+}
+
+
+/* =========================================================
+   31. SOLITAIRE BUTTONS
+========================================================= */
+
+.solitaire-controls
+.game-button,
+.solitaire-controls
+.game-secondary-button {
+
+    min-height:
+        44px;
+
+}
+
+
+.solitaire-controls
+.game-button {
+
+    min-width:
+        150px;
+
+}
+
+
+/* =========================================================
+   32. WIN SCREEN
+========================================================= */
+
+.solitaire-win {
+
+    position:
+        fixed;
+
+    inset:
+        0;
+
+    z-index:
+        1000;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    padding:
+        20px;
+
+    background:
+        rgba(7,20,38,0.72);
+
+    backdrop-filter:
+        blur(7px);
+
+}
+
+
+.solitaire-win-card {
+
+    width:
+        min(
+            100%,
+            430px
+        );
+
+    padding:
+        30px 24px;
+
+    border:
+        1px solid
+        rgba(216,184,120,0.35);
+
+    border-radius:
+        24px;
+
+    background:
+        linear-gradient(
+            145deg,
+            var(--solitaire-navy-2),
+            var(--solitaire-navy)
+        );
+
+    box-shadow:
+        0 30px 80px
+        rgba(0,0,0,0.35);
+
+    text-align:
+        center;
+
+}
+
+
+.solitaire-win-icon {
+
+    margin-bottom:
+        10px;
+
+    font-size:
+        2.8rem;
+
+}
+
+
+.solitaire-win-card .game-eyebrow {
+
+    color:
+        var(--solitaire-gold-light);
+
+}
+
+
+.solitaire-win-card h2 {
+
+    margin:
+        6px 0 10px;
+
+    color:
+        #ffffff;
+
+    font-size:
+        2.2rem;
+
+}
+
+
+.solitaire-win-card p {
+
+    margin:
+        0 auto 20px;
+
+    max-width:
+        320px;
+
+    color:
+        rgba(255,255,255,0.65);
+
+    line-height:
+        1.6;
+
+}
+
+
+/* =========================================================
+   33. FINAL STATS
+========================================================= */
+
+.solitaire-final-stats {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap:
+        10px;
+
+    margin:
+        18px 0;
+
+}
+
+
+.solitaire-final-stats > div {
+
+    padding:
+        12px;
+
+    border:
+        1px solid
+        var(--solitaire-border-soft);
+
+    border-radius:
+        12px;
+
+    background:
+        rgba(255,255,255,0.04);
+
+}
+
+
+.solitaire-final-stats span {
+
+    display:
+        block;
+
+    margin-bottom:
+        4px;
+
+    color:
+        rgba(255,255,255,0.45);
+
+    font-size:
+        0.58rem;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.1em;
+
+}
+
+
+.solitaire-final-stats strong {
+
+    color:
+        var(--solitaire-gold-light);
+
+    font-size:
+        1.1rem;
+
+}
+
+
+/* =========================================================
+   34. TABLET
 ========================================================= */
 
 @media (max-width: 1000px) {
@@ -1916,12 +2510,12 @@
     .solitaire-top-row {
 
         grid-template-columns:
-            78px
+            76px
             104px
-            minmax(20px, 1fr)
+            minmax(15px, 1fr)
             repeat(
                 4,
-                78px
+                76px
             );
 
         gap:
@@ -1945,7 +2539,10 @@
     .solitaire-pile[data-pile="waste"] {
 
         width:
-            106px;
+            104px;
+
+        height:
+            107px;
 
     }
 
@@ -1975,7 +2572,7 @@
     .solitaire-card-suit {
 
         font-size:
-            14px;
+            13px;
 
     }
 
@@ -1988,23 +2585,21 @@
     }
 
 
-    .solitaire-tableau {
-
-        gap:
-            8px;
+    .solitaire-column {
 
         min-height:
-            350px;
-
-        padding-bottom:
-            100px;
+            107px;
 
     }
 
 
-    .solitaire-column {
+    .solitaire-column >
+    .solitaire-pile {
 
-        min-height:
+        width:
+            76px;
+
+        height:
             107px;
 
     }
@@ -2013,27 +2608,64 @@
 
 
 /* =========================================================
-   27. SMALL TABLET / LARGE PHONE
+   35. SMALL TABLET
 ========================================================= */
 
 @media (max-width: 760px) {
 
-    #solitaireBoard {
+    .solitaire-header {
+
+        grid-template-columns:
+            auto
+            1fr
+            auto;
+
+        gap:
+            10px;
 
         padding:
-            12px 8px 120px;
+            14px;
 
     }
 
 
-    /*
-        Top area becomes two rows.
-    */
+    .solitaire-header
+    .game-secondary-button {
+
+        width:
+            auto;
+
+    }
+
+
+    .solitaire-stats {
+
+        gap:
+            6px;
+
+    }
+
+
+    .solitaire-stat {
+
+        min-width:
+            55px;
+
+        padding:
+            7px 8px;
+
+    }
+
+
+    #solitaireBoard {
+
+        padding:
+            12px 8px 50px;
+
+    }
+
 
     .solitaire-top-row {
-
-        display:
-            grid;
 
         grid-template-columns:
             repeat(
@@ -2065,16 +2697,39 @@
     .solitaire-foundation {
 
         width:
-            min(
-                72px,
-                100%
-            );
+            72px;
 
         height:
             auto;
 
         aspect-ratio:
             0.71;
+
+        justify-self:
+            center;
+
+    }
+
+
+    /*
+       IMPORTANT:
+       Waste is now the same size
+       as the other cards.
+    */
+
+    .solitaire-pile[data-pile="waste"] {
+
+        width:
+            72px;
+
+        height:
+            auto;
+
+        aspect-ratio:
+            0.71;
+
+        overflow:
+            visible;
 
     }
 
@@ -2082,10 +2737,7 @@
     .solitaire-card {
 
         width:
-            min(
-                72px,
-                100%
-            );
+            72px;
 
         height:
             auto;
@@ -2096,61 +2748,28 @@
     }
 
 
-    .solitaire-pile[data-pile="waste"] {
+    .solitaire-pile[data-pile="waste"]
+    .solitaire-card {
 
         width:
-            min(
-                104px,
-                100%
-            );
+            72px;
+
+        height:
+            auto;
+
+        aspect-ratio:
+            0.71;
 
     }
 
-
-    .solitaire-card-rank {
-
-        font-size:
-            15px;
-
-    }
-
-
-    .solitaire-card-suit {
-
-        font-size:
-            13px;
-
-    }
-
-
-    .solitaire-card-center {
-
-        font-size:
-            30px;
-
-    }
-
-
-    /*
-        Seven columns remain separate.
-    */
 
     .solitaire-tableau {
-
-        grid-template-columns:
-            repeat(
-                7,
-                minmax(
-                    0,
-                    1fr
-                )
-            );
 
         gap:
             4px;
 
         min-height:
-            330px;
+            340px;
 
         padding-bottom:
             130px;
@@ -2165,79 +2784,176 @@
 
     }
 
-}
 
+    .solitaire-column >
+    .solitaire-pile {
 
-/* =========================================================
-   28. PHONE
-========================================================= */
+        width:
+            100%;
 
-@media (max-width: 600px) {
+        height:
+            auto;
 
-    #solitaireBoard {
-
-        padding:
-            8px 5px 130px;
+        aspect-ratio:
+            0.71;
 
     }
 
 
-    /* -----------------------------------------------------
-       TOP AREA
-    ----------------------------------------------------- */
+    .solitaire-card-corner {
+
+        top:
+            5px;
+
+        left:
+            5px;
+
+    }
+
+
+    .solitaire-card-rank {
+
+        font-size:
+            14px;
+
+        line-height:
+            1;
+
+    }
+
+
+    .solitaire-card-suit {
+
+        font-size:
+            12px;
+
+        line-height:
+            1;
+
+    }
+
+
+    .solitaire-card-center {
+
+        font-size:
+            28px;
+
+    }
+
+
+    .solitaire-controls {
+
+        display:
+            grid;
+
+        grid-template-columns:
+            1fr 1fr;
+
+        gap:
+            8px;
+
+        padding:
+            0 10px;
+
+    }
+
+
+    .solitaire-controls
+    .game-button,
+    .solitaire-controls
+    .game-secondary-button {
+
+        width:
+            100%;
+
+        min-width:
+            0;
+
+    }
+
+}
+
+
+/* =========================================================
+   36. PHONE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .solitaire-header {
+
+        grid-template-columns:
+            1fr;
+
+        text-align:
+            left;
+
+        padding:
+            13px;
+
+    }
+
+
+    .solitaire-header
+    .game-secondary-button {
+
+        justify-self:
+            start;
+
+    }
+
+
+    .solitaire-title {
+
+        text-align:
+            left;
+
+    }
+
+
+    .solitaire-stats {
+
+        justify-content:
+            flex-start;
+
+    }
+
+
+    #solitaireBoard {
+
+        padding:
+            8px 4px 40px;
+
+    }
+
 
     .solitaire-top-row {
 
         gap:
-            6px;
+            5px;
 
         margin-bottom:
-            20px;
+            18px;
 
     }
 
 
     .solitaire-pile,
-    .solitaire-foundation {
-
-        width:
-            100%;
-
-        max-width:
-            68px;
-
-        aspect-ratio:
-            0.71;
-
-        justify-self:
-            center;
-
-    }
-
-
+    .solitaire-foundation,
     .solitaire-pile[data-pile="waste"] {
 
         width:
-            100%;
-
-        max-width:
-            100px;
+            68px;
 
     }
 
 
-    /* -----------------------------------------------------
-       CARDS
-
-       The card width is calculated FROM THE COLUMN.
-
-       This is what prevents horizontal overlap.
-    ----------------------------------------------------- */
-
+    .solitaire-card,
+    .solitaire-pile[data-pile="waste"]
     .solitaire-card {
 
         width:
-            100%;
+            68px;
 
         height:
             auto;
@@ -2251,21 +2967,22 @@
     }
 
 
-    .solitaire-column >
-    .solitaire-card {
+    .solitaire-pile[data-pile="waste"] {
 
-        left:
-            0;
-
-        transform:
-            none;
+        height:
+            96px;
 
     }
 
 
-    /* -----------------------------------------------------
-       CARD TEXT
-    ----------------------------------------------------- */
+    .solitaire-pile[data-pile="waste"]
+    .solitaire-card {
+
+        height:
+            96px;
+
+    }
+
 
     .solitaire-card-corner {
 
@@ -2282,13 +2999,10 @@
 
         font-size:
             clamp(
-                11px,
-                3.6vw,
-                15px
+                10px,
+                3.4vw,
+                13px
             );
-
-        line-height:
-            1;
 
     }
 
@@ -2297,13 +3011,10 @@
 
         font-size:
             clamp(
-                10px,
+                9px,
                 3vw,
-                13px
+                12px
             );
-
-        line-height:
-            1;
 
     }
 
@@ -2312,91 +3023,97 @@
 
         font-size:
             clamp(
-                22px,
-                7vw,
-                30px
+                20px,
+                6.7vw,
+                27px
             );
 
     }
 
 
-    /* -----------------------------------------------------
-       TABLEAU
-    ----------------------------------------------------- */
-
     .solitaire-tableau {
-
-        width:
-            100%;
-
-        grid-template-columns:
-            repeat(
-                7,
-                minmax(
-                    0,
-                    1fr
-                )
-            );
 
         gap:
             3px;
 
         min-height:
-            340px;
+            330px;
 
         padding-bottom:
             150px;
-
-        overflow:
-            visible;
 
     }
 
 
     .solitaire-column {
 
-        width:
-            100%;
-
-        min-width:
-            0;
-
         min-height:
-            95px;
+            94px;
 
     }
 
 
-    /* -----------------------------------------------------
-       EMPTY COLUMN
-    ----------------------------------------------------- */
+    .solitaire-column >
+    .solitaire-card {
+
+        left:
+            0;
+
+        transform:
+            none;
+
+    }
+
 
     .solitaire-column >
     .solitaire-pile {
 
+        left:
+            0;
+
         width:
             100%;
 
-        max-width:
+        transform:
             none;
-
-        aspect-ratio:
-            0.71;
 
     }
 
 
-    /* -----------------------------------------------------
-       DRAGGING
-    ----------------------------------------------------- */
-
-    .solitaire-card-dragging {
+    .solitaire-touch-ghost {
 
         transform:
-            scale(1.05);
+            none !important;
 
-        z-index:
-            9999;
+    }
+
+
+    .solitaire-controls {
+
+        grid-template-columns:
+            1fr 1fr;
+
+        margin-top:
+            4px;
+
+        padding:
+            0 6px;
+
+    }
+
+
+    .solitaire-win {
+
+        padding:
+            14px;
+
+    }
+
+
+    .solitaire-win-card {
+
+        padding:
+            24px 18px;
 
     }
 
@@ -2404,7 +3121,7 @@
 
 
 /* =========================================================
-   29. VERY SMALL PHONE
+   37. VERY SMALL PHONE
 ========================================================= */
 
 @media (max-width: 400px) {
@@ -2412,7 +3129,7 @@
     #solitaireBoard {
 
         padding:
-            6px 3px 140px;
+            6px 2px 35px;
 
     }
 
@@ -2420,7 +3137,73 @@
     .solitaire-top-row {
 
         gap:
-            4px;
+            3px;
+
+    }
+
+
+    .solitaire-pile,
+    .solitaire-foundation,
+    .solitaire-pile[data-pile="waste"] {
+
+        width:
+            63px;
+
+    }
+
+
+    .solitaire-card,
+    .solitaire-pile[data-pile="waste"]
+    .solitaire-card {
+
+        width:
+            63px;
+
+        height:
+            89px;
+
+    }
+
+
+    .solitaire-pile[data-pile="waste"] {
+
+        height:
+            89px;
+
+    }
+
+
+    .solitaire-card-corner {
+
+        top:
+            3px;
+
+        left:
+            3px;
+
+    }
+
+
+    .solitaire-card-rank {
+
+        font-size:
+            9px;
+
+    }
+
+
+    .solitaire-card-suit {
+
+        font-size:
+            8px;
+
+    }
+
+
+    .solitaire-card-center {
+
+        font-size:
+            19px;
 
     }
 
@@ -2436,45 +3219,157 @@
     }
 
 
-    .solitaire-card {
+    .solitaire-controls {
 
-        border-radius:
+        gap:
             6px;
 
     }
 
 
-    .solitaire-card-corner {
+    .solitaire-controls
+    .game-button,
+    .solitaire-controls
+    .game-secondary-button {
 
-        top:
-            3px;
+        min-height:
+            42px;
 
-        left:
-            3px;
+        padding:
+            9px 10px;
+
+        font-size:
+            0.72rem;
+
+    }
+
+}
+
+
+/* =========================================================
+   38. LANDSCAPE PHONE
+========================================================= */
+
+@media (
+    max-width: 900px
+)
+and (
+    orientation: landscape
+) {
+
+    #solitaireBoard {
+
+        padding:
+            10px 14px 45px;
 
     }
 
 
-    .solitaire-card-rank {
+    .solitaire-top-row {
 
-        font-size:
-            10px;
-
-    }
-
-
-    .solitaire-card-suit {
-
-        font-size:
-            9px;
+        margin-bottom:
+            16px;
 
     }
 
 
-    .solitaire-card-center {
+    .solitaire-tableau {
 
-        font-size:
-            20px;
+        min-height:
+            290px;
+
+        padding-bottom:
+            105px;
+
+    }
+
+}
+
+
+/* =========================================================
+   39. DESKTOP HOVER
+========================================================= */
+
+@media (hover: hover) {
+
+    .solitaire-card-face:hover {
+
+        box-shadow:
+            0 8px 16px
+            rgba(0,0,0,0.34);
+
+    }
+
+
+    .solitaire-waste-top:hover {
+
+        transform:
+            translateY(-2px);
+
+    }
+
+
+    .solitaire-pile[data-pile="stock"]:hover {
+
+        transform:
+            translateY(-2px);
+
+    }
+
+}
+
+
+/* =========================================================
+   40. TOUCH DEVICES
+========================================================= */
+
+@media (hover: none) {
+
+    .solitaire-card {
+
+        -webkit-tap-highlight-color:
+            transparent;
+
+    }
+
+
+    .solitaire-card:active {
+
+        filter:
+            brightness(0.97);
+
+    }
+
+}
+
+
+/* =========================================================
+   41. ACCESSIBILITY
+========================================================= */
+
+.solitaire-card:focus-visible {
+
+    outline:
+        3px solid
+        var(--solitaire-gold);
+
+    outline-offset:
+        2px;
+
+}
+
+
+/* =========================================================
+   42. REDUCE MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .solitaire-card,
+    .solitaire-stock-empty {
+
+        transition:
+            none;
 
     }
 
