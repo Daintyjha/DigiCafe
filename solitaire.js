@@ -2703,35 +2703,65 @@ function createSolitairePile(
             solitaire.waste.slice(-3);
 
 
-        visibleCards.forEach(
-            (
-                card,
-                visibleIndex
-            ) => {
+       visibleCards.forEach(
+    (
+        card,
+        visibleIndex
+    ) => {
 
-                const cardElement =
-                    createSolitaireCardElement(
-                        card
-                    );
-                /*
-                    Only the newest / rightmost
-                    card is playable.
-                */
-
-                const isPlayable =
-                    visibleIndex ===
-                    visibleCards.length - 1;
+        const cardElement =
+            createSolitaireCardElement(
+                card
+            );
 
 
-                if (isPlayable) {
+        /* =================================================
+           DRAW 3 CARD POSITION + LAYER
+        ================================================= */
 
-                    cardElement.classList.add(
-                        "solitaire-waste-top"
-                    );
+        cardElement.style.position =
+            "absolute";
+
+        cardElement.style.top =
+            "0";
+
+        cardElement.style.left =
+            `${visibleIndex * 18}px`;
+
+        cardElement.style.zIndex =
+            String(
+                visibleIndex + 1
+            );
 
 
-                    cardElement.draggable =
-                        true;
+        /*
+            Only the newest / rightmost
+            card is playable.
+        */
+
+        const isPlayable =
+            visibleIndex ===
+            visibleCards.length - 1;
+
+
+        if (isPlayable) {
+
+            cardElement.classList.add(
+                "solitaire-waste-top"
+            );
+
+
+            /*
+                Always keep the newest
+                card above the others.
+            */
+
+            cardElement.style.zIndex =
+                "50";
+
+
+            cardElement.draggable =
+                true;
 /* =====================================================
    MOBILE TOUCH DRAG — WASTE CARD
 ===================================================== */
