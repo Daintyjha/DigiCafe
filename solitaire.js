@@ -1,12 +1,11 @@
 /* =========================================================
    DIGICAFE SOLITAIRE
    COMPLETE KLONDIKE — DRAW 3
-   =========================================================
-
-   FEATURES
    ---------------------------------------------------------
+   Features
+
    • Klondike Solitaire
-   • Draw 3 stock
+   • Draw 3
    • Waste recycling
    • Tableau → Tableau
    • Tableau → Foundation
@@ -19,7 +18,10 @@
    • Win detection
    • Timer
    • Move counter
-   • DigiCafe dynamic room compatible
+   • Undo
+   • Desktop drag & drop
+   • Mobile touch drag & drop
+   • DigiCafe dynamic-room compatible
 ========================================================= */
 
 
@@ -62,39 +64,23 @@ const solitaire = {
 
     initialized: false,
 
-    drag: null,
+    gameOver: false,
 
-    /*
-        TRUE = Klondike Draw 3
-    */
     drawCount: 3,
 
-    /*
-        Number of times the stock has been recycled.
-    */
     redeals: 0,
 
-    /*
-        Optional unlimited redeals.
-
-        Change to a number if you later want
-        a limited-redeal version.
-    */
     maxRedeals: Infinity,
 
-    /*
-        Prevent multiple automatic moves
-        from running at the same time.
-    */
     autoMoving: false,
 
-/*
-    UNDO HISTORY
-    Stores previous game states.
-*/
-history: [],
+    history: [],
 
-maxHistory: 100
+    maxHistory: 100,
+
+    drag: null,
+
+    touchDrag: null
 
 };
 
@@ -292,220 +278,15 @@ function shuffleSolitaireDeck(
 
 
 /* =========================================================
-   05. NEW GAME
-========================================================= */
-
-function startSolitaireGame() {
-
-    const board =
-        document.getElementById(
-            "solitaireBoard"
-        );
-
-
-    if (!board) {
-
-        console.warn(
-            "☕ Solitaire board is not loaded yet."
-        );
-
-        return false;
-
-    }
-
-
-    console.log(
-        "🃏 Starting DigiCafe Solitaire..."
-    );
-
-
-    stopSolitaireTimer();
-
-
-    /* -----------------------------------------------------
-       RESET GAME STATE
-    ----------------------------------------------------- */
-
-    solitaire.deck = [];
-
-    solitaire.stock = [];
-
-    solitaire.waste = [];
-
-    solitaire.foundations = [
-        [],
-        [],
-        [],
-        []
-    ];
-
-    solitaire.tableau = [
-        [],
-        [],
-        [],
-        [],
-        [],
-        [],
-        []
-    ];
-
-    solitaire.moves = 0;
-    solitaire.seconds = 0;
-    solitaire.history = [];
-    solitaire.started = false;
-    solitaire.drag = null;
-    solitaire.redeals = 0;
-    solitaire.autoMoving = false;
-
-
-    /* -----------------------------------------------------
-       CREATE DECK
-    ----------------------------------------------------- */
-
-    solitaire.deck =
-        shuffleSolitaireDeck(
-            createSolitaireDeck()
-        );
-
-
-    /* -----------------------------------------------------
-       DEAL TABLEAU
-    ----------------------------------------------------- */
-
-    dealSolitaireTableau();
-
-
-    /* -----------------------------------------------------
-       REMAINING CARDS → STOCK
-    ----------------------------------------------------- */
-
-    solitaire.stock =
-        solitaire.deck;
-
-
-    solitaire.deck = [];
-
-
-    /* -----------------------------------------------------
-       HIDE WIN SCREEN
-    ----------------------------------------------------- */
-
-    const winScreen =
-        document.getElementById(
-            "solitaireWin"
-        );
-
-
-    if (winScreen) {
-
-        winScreen.hidden = true;
-
-        winScreen.style.display = "";
-
-    }
-
-
-    updateSolitaireStats();
-
-    renderSolitaire();
-
-updateSolitaireUndoButton();
-    console.log(
-        "🃏 Solitaire ready."
-    );
-
-
-    console.log(
-        "Draw mode:",
-        `Draw ${solitaire.drawCount}`
-    );
-
-
-    console.log(
-        "Stock:",
-        solitaire.stock.length
-    );
-
-
-    console.log(
-        "Tableau:",
-        solitaire.tableau.reduce(
-            (
-                total,
-                column
-            ) =>
-                total +
-                column.length,
-            0
-        )
-    );
-
-
-    return true;
-
-}
-
-
-/* =========================================================
-   06. DEAL TABLEAU
-========================================================= */
-
-function dealSolitaireTableau() {
-
-    for (
-        let column = 0;
-        column < 7;
-        column++
-    ) {
-
-        for (
-            let row = 0;
-            row <= column;
-            row++
-        ) {
-
-            const card =
-                solitaire.deck.pop();
-
-
-            if (!card) {
-
-                console.error(
-                    "❌ Not enough cards to deal."
-                );
-
-                return;
-
-            }
-
-
-            /*
-                Only the final card in each
-                column begins face-up.
-            */
-
-            card.faceUp =
-                row === column;
-
-
-            solitaire.tableau[
-                column
-            ].push(card);
-
-        }
-
-    }
-
-}
-
-
-/* =========================================================
-   07. TIMER
+   05. TIMER
 ========================================================= */
 
 function startSolitaireTimer() {
 
-    if (solitaire.started) {
+    if (
+        solitaire.started ||
+        solitaire.gameOver
+    ) {
 
         return;
 
@@ -548,7 +329,44 @@ function stopSolitaireTimer() {
 
 
 /* =========================================================
-   08. STATS
+   06. TIME FORMAT
+========================================================= */
+
+function formatSolitaireTime(
+    seconds
+) {
+
+    const minutes =
+        Math.floor(
+            seconds / 60
+        );
+
+
+    const remainingSeconds =
+        seconds % 60;
+
+
+    return (
+
+        String(minutes)
+            .padStart(2, "0")
+
+        +
+
+        ":" +
+
+        String(
+            remainingSeconds
+        )
+        .padStart(2, "0")
+
+    );
+
+}
+
+
+/* =========================================================
+   07. UPDATE STATS
 ========================================================= */
 
 function updateSolitaireStats() {
@@ -586,44 +404,230 @@ function updateSolitaireStats() {
 
 
 /* =========================================================
-   09. FORMAT TIME
+   08. BOARD HELPERS
 ========================================================= */
 
-function formatSolitaireTime(
-    seconds
+function cloneSolitaireCard(
+    card
 ) {
 
-    const minutes =
-        Math.floor(
-            seconds / 60
-        );
+    return {
+        ...card
+    };
+
+}
 
 
-    const remainingSeconds =
-        seconds % 60;
+function cloneSolitaireBoard(
+    board
+) {
+
+    return board.map(
+        column =>
+            column.map(
+                cloneSolitaireCard
+            )
+    );
+
+}
 
 
-    return (
+function getFoundationIndexForSuit(
+    suit
+) {
 
-        String(minutes)
-            .padStart(2, "0")
-
-        +
-
-        ":" +
-
-        String(
-            remainingSeconds
-        )
-        .padStart(2, "0")
-
+    return solitaireSuits.findIndex(
+        item =>
+            item.name === suit
     );
 
 }
 
 
 /* =========================================================
-   10. GET MOVABLE TABLEAU SEQUENCE
+   09. NEW GAME
+========================================================= */
+
+function startSolitaireGame() {
+
+    const board =
+        document.getElementById(
+            "solitaireBoard"
+        );
+
+
+    if (!board) {
+
+        console.warn(
+            "☕ Solitaire board is not loaded yet."
+        );
+
+        return false;
+
+    }
+
+
+    stopSolitaireTimer();
+
+
+    solitaire.deck = [];
+
+    solitaire.stock = [];
+
+    solitaire.waste = [];
+
+    solitaire.foundations = [
+        [],
+        [],
+        [],
+        []
+    ];
+
+    solitaire.tableau = [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+    ];
+
+    solitaire.moves = 0;
+
+    solitaire.seconds = 0;
+
+    solitaire.started = false;
+
+    solitaire.gameOver = false;
+
+    solitaire.redeals = 0;
+
+    solitaire.autoMoving = false;
+
+    solitaire.history = [];
+
+    solitaire.drag = null;
+
+    solitaire.touchDrag = null;
+
+
+    /* -----------------------------------------------------
+       CREATE + SHUFFLE
+    ----------------------------------------------------- */
+
+    solitaire.deck =
+        shuffleSolitaireDeck(
+            createSolitaireDeck()
+        );
+
+
+    /* -----------------------------------------------------
+       DEAL TABLEAU
+    ----------------------------------------------------- */
+
+    dealSolitaireTableau();
+
+
+    /* -----------------------------------------------------
+       REMAINING → STOCK
+    ----------------------------------------------------- */
+
+    solitaire.stock =
+        solitaire.deck;
+
+
+    solitaire.deck = [];
+
+
+    /* -----------------------------------------------------
+       HIDE WIN SCREEN
+    ----------------------------------------------------- */
+
+    const winScreen =
+        document.getElementById(
+            "solitaireWin"
+        );
+
+
+    if (winScreen) {
+
+        winScreen.hidden = true;
+
+        winScreen.style.display = "";
+
+    }
+
+
+    updateSolitaireStats();
+
+    renderSolitaire();
+
+    updateSolitaireUndoButton();
+
+
+    console.log(
+        "🃏 New DigiCafe Solitaire game started."
+    );
+
+
+    return true;
+
+}
+
+
+/* =========================================================
+   10. DEAL TABLEAU
+========================================================= */
+
+function dealSolitaireTableau() {
+
+    for (
+        let column = 0;
+        column < 7;
+        column++
+    ) {
+
+        for (
+            let row = 0;
+            row <= column;
+            row++
+        ) {
+
+            const card =
+                solitaire.deck.pop();
+
+
+            if (!card) {
+
+                console.error(
+                    "❌ Not enough cards to deal."
+                );
+
+                return;
+
+            }
+
+
+            card.faceUp =
+                row === column;
+
+
+            solitaire.tableau[
+                column
+            ].push(
+                card
+            );
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   11. MOVABLE TABLEAU SEQUENCE
 ========================================================= */
 
 function getMovableSequence(
@@ -660,11 +664,6 @@ function getMovableSequence(
     }
 
 
-    /*
-        Validate every card after
-        the selected card.
-    */
-
     for (
         let i = cardIndex;
         i < column.length - 1;
@@ -688,19 +687,19 @@ function getMovableSequence(
         }
 
 
-        const alternatingColor =
-            current.color !==
-            next.color;
+        if (
+            current.color ===
+            next.color
+        ) {
 
+            return [];
 
-        const descending =
-            next.value ===
-            current.value - 1;
+        }
 
 
         if (
-            !alternatingColor ||
-            !descending
+            next.value !==
+            current.value - 1
         ) {
 
             return [];
@@ -718,21 +717,16 @@ function getMovableSequence(
 
 
 /* =========================================================
-   11. FIND CARD
+   12. FIND CARD
 ========================================================= */
 
 function findSolitaireCard(
     cardId
 ) {
 
-    /*
-        TABLEAU
-    */
-
     for (
         let column = 0;
-        column <
-        solitaire.tableau.length;
+        column < 7;
         column++
     ) {
 
@@ -741,8 +735,7 @@ function findSolitaireCard(
                 column
             ].findIndex(
                 card =>
-                    card.id ===
-                    cardId
+                    card.id === cardId
             );
 
 
@@ -771,19 +764,10 @@ function findSolitaireCard(
     }
 
 
-    /*
-        WASTE
-
-        IMPORTANT:
-        Only the LAST waste card
-        is playable.
-    */
-
     const wasteIndex =
         solitaire.waste.findIndex(
             card =>
-                card.id ===
-                cardId
+                card.id === cardId
         );
 
 
@@ -818,7 +802,7 @@ function findSolitaireCard(
 
 
 /* =========================================================
-   12. CAN MOVE TO TABLEAU
+   13. TABLEAU RULES
 ========================================================= */
 
 function canMoveToTableau(
@@ -853,13 +837,6 @@ function canMoveToTableau(
         movingCards[0];
 
 
-    /*
-        EMPTY COLUMN
-
-        Only King may be placed
-        into an empty tableau.
-    */
-
     if (
         targetColumn.length === 0
     ) {
@@ -886,41 +863,23 @@ function canMoveToTableau(
     }
 
 
-    /*
-        Opposite colours.
-    */
+    return (
 
-    if (
-        movingCard.color ===
+        movingCard.color !==
         targetCard.color
-    ) {
 
-        return false;
+        &&
 
-    }
-
-
-    /*
-        Descending by one.
-    */
-
-    if (
-        movingCard.value !==
+        movingCard.value ===
         targetCard.value - 1
-    ) {
 
-        return false;
-
-    }
-
-
-    return true;
+    );
 
 }
 
 
 /* =========================================================
-   13. CAN MOVE TO FOUNDATION
+   14. FOUNDATION RULES
 ========================================================= */
 
 function canMoveToFoundation(
@@ -948,19 +907,11 @@ function canMoveToFoundation(
     }
 
 
-    /*
-        EMPTY FOUNDATION
-
-        Only Ace.
-    */
-
     if (
         foundation.length === 0
     ) {
 
-        return (
-            card.value === 1
-        );
+        return card.value === 1;
 
     }
 
@@ -971,99 +922,23 @@ function canMoveToFoundation(
         ];
 
 
-    /*
-        Same suit.
-    */
+    return (
 
-    if (
-        card.suit !==
+        card.suit ===
         topCard.suit
-    ) {
 
-        return false;
+        &&
 
-    }
-
-
-    /*
-        Exactly one higher.
-    */
-
-    if (
-        card.value !==
+        card.value ===
         topCard.value + 1
-    ) {
 
-        return false;
-
-    }
-
-
-    return true;
-
-}
-
-
-/* =========================================================
-   14. GET FOUNDATION INDEX
-========================================================= */
-
-function getFoundationIndexForSuit(
-    suit
-) {
-
-    return solitaireSuits.findIndex(
-        item =>
-            item.name === suit
     );
 
 }
 
 
 /* =========================================================
-   15. REMOVE SOURCE CARDS
-========================================================= */
-
-function removeCardsFromSource(
-    source,
-    columnIndex,
-    cardIndex,
-    count
-) {
-
-    if (
-        source === "tableau"
-    ) {
-
-        return solitaire.tableau[
-            columnIndex
-        ].splice(
-            cardIndex,
-            count
-        );
-
-    }
-
-
-    if (
-        source === "waste"
-    ) {
-
-        return solitaire.waste.splice(
-            cardIndex,
-            count
-        );
-
-    }
-
-
-    return [];
-
-}
-
-
-/* =========================================================
-   16. REVEAL TOP TABLEAU CARD
+   15. REVEAL TABLEAU CARD
 ========================================================= */
 
 function revealTopCard(
@@ -1086,25 +961,17 @@ function revealTopCard(
     }
 
 
-    const topCard =
+    const card =
         column[
             column.length - 1
         ];
 
 
     if (
-        !topCard.faceUp
+        !card.faceUp
     ) {
 
-        topCard.faceUp = true;
-
-
-        console.log(
-            "🃏 Revealed:",
-            topCard.rank +
-            topCard.symbol
-        );
-
+        card.faceUp = true;
 
         return true;
 
@@ -1117,7 +984,204 @@ function revealTopCard(
 
 
 /* =========================================================
-   17. MOVE TABLEAU → TABLEAU
+   16. UNDO SNAPSHOT
+========================================================= */
+
+function saveSolitaireState() {
+
+    const state = {
+
+        stock:
+            solitaire.stock.map(
+                cloneSolitaireCard
+            ),
+
+        waste:
+            solitaire.waste.map(
+                cloneSolitaireCard
+            ),
+
+        foundations:
+            solitaire.foundations.map(
+                foundation =>
+                    foundation.map(
+                        cloneSolitaireCard
+                    )
+            ),
+
+        tableau:
+            cloneSolitaireBoard(
+                solitaire.tableau
+            ),
+
+        moves:
+            solitaire.moves,
+
+        seconds:
+            solitaire.seconds,
+
+        redeals:
+            solitaire.redeals
+
+    };
+
+
+    solitaire.history.push(
+        state
+    );
+
+
+    if (
+        solitaire.history.length >
+        solitaire.maxHistory
+    ) {
+
+        solitaire.history.shift();
+
+    }
+
+
+    updateSolitaireUndoButton();
+
+}
+
+
+/* =========================================================
+   17. UNDO
+========================================================= */
+
+function undoSolitaireMove() {
+
+    if (
+        solitaire.history.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    const state =
+        solitaire.history.pop();
+
+
+    solitaire.stock =
+        state.stock.map(
+            cloneSolitaireCard
+        );
+
+
+    solitaire.waste =
+        state.waste.map(
+            cloneSolitaireCard
+        );
+
+
+    solitaire.foundations =
+        state.foundations.map(
+            foundation =>
+                foundation.map(
+                    cloneSolitaireCard
+                )
+        );
+
+
+    solitaire.tableau =
+        cloneSolitaireBoard(
+            state.tableau
+        );
+
+
+    solitaire.moves =
+        state.moves;
+
+    solitaire.seconds =
+        state.seconds;
+
+    solitaire.redeals =
+        state.redeals;
+
+
+    solitaire.gameOver =
+        false;
+
+
+    if (
+        solitaire.started &&
+        solitaire.timer === null
+    ) {
+
+        startSolitaireTimer();
+
+    }
+
+
+    updateSolitaireStats();
+
+    renderSolitaire();
+
+    updateSolitaireUndoButton();
+
+}
+
+
+/* =========================================================
+   18. UPDATE UNDO BUTTON
+========================================================= */
+
+function updateSolitaireUndoButton() {
+
+    const button =
+        document.getElementById(
+            "solitaireUndo"
+        );
+
+
+    if (!button) {
+
+        return;
+
+    }
+
+
+    button.disabled =
+        solitaire.history.length === 0;
+
+}
+
+
+/* =========================================================
+   19. COMPLETE PLAYER MOVE
+========================================================= */
+
+function completeSolitaireMove() {
+
+    startSolitaireTimer();
+
+
+    solitaire.moves++;
+
+
+    updateSolitaireStats();
+
+    renderSolitaire();
+
+    updateSolitaireUndoButton();
+
+
+    setTimeout(
+        autoMoveSafeCardsToFoundation,
+        35
+    );
+
+
+    checkSolitaireWin();
+
+}
+
+
+/* =========================================================
+   20. TABLEAU → TABLEAU
 ========================================================= */
 
 function moveTableauToTableau(
@@ -1125,10 +1189,6 @@ function moveTableauToTableau(
     cardIndex,
     targetColumn
 ) {
-
-    /*
-        Cannot move onto itself.
-    */
 
     if (
         sourceColumn ===
@@ -1151,10 +1211,6 @@ function moveTableauToTableau(
         movingCards.length === 0
     ) {
 
-        console.log(
-            "❌ Invalid tableau sequence."
-        );
-
         return false;
 
     }
@@ -1167,42 +1223,22 @@ function moveTableauToTableau(
         )
     ) {
 
-        console.log(
-            "❌ Invalid tableau move."
-        );
-
         return false;
 
     }
 
 
-    /*
-        SAVE THE GAME BEFORE
-        MAKING THE MOVE.
-
-        This is what allows Undo
-        to restore the exact previous state.
-    */
-
     saveSolitaireState();
 
 
-    /*
-        Remove cards from source.
-    */
-
     const removed =
-        removeCardsFromSource(
-            "tableau",
-            sourceColumn,
+        solitaire.tableau[
+            sourceColumn
+        ].splice(
             cardIndex,
             movingCards.length
         );
 
-
-    /*
-        Add cards to target.
-    */
 
     solitaire.tableau[
         targetColumn
@@ -1211,34 +1247,21 @@ function moveTableauToTableau(
     );
 
 
-    /*
-        Reveal the newly exposed
-        card in the source column.
-    */
-
     revealTopCard(
         sourceColumn
     );
 
 
-    /*
-        Complete the move.
-    */
-
     completeSolitaireMove();
-
-
-    console.log(
-        "🃏 Tableau → Tableau"
-    );
 
 
     return true;
 
 }
 
+
 /* =========================================================
-   18. MOVE TABLEAU → FOUNDATION
+   21. TABLEAU → FOUNDATION
 ========================================================= */
 
 function moveTableauToFoundation(
@@ -1259,11 +1282,6 @@ function moveTableauToFoundation(
 
     }
 
-
-    /*
-        Only the top tableau card
-        may enter a foundation.
-    */
 
     if (
         cardIndex !==
@@ -1302,7 +1320,10 @@ function moveTableauToFoundation(
 
     }
 
-saveSolitaireState();
+
+    saveSolitaireState();
+
+
     column.pop();
 
 
@@ -1321,20 +1342,13 @@ saveSolitaireState();
     completeSolitaireMove();
 
 
-    console.log(
-        "🃏 Tableau → Foundation:",
-        card.rank +
-        card.symbol
-    );
-
-
     return true;
 
 }
 
 
 /* =========================================================
-   19. MOVE WASTE → TABLEAU
+   22. WASTE → TABLEAU
 ========================================================= */
 
 function moveWasteToTableau(
@@ -1349,11 +1363,6 @@ function moveWasteToTableau(
 
     }
 
-
-    /*
-        ONLY the top waste card
-        can be played.
-    */
 
     const card =
         solitaire.waste[
@@ -1381,7 +1390,10 @@ function moveWasteToTableau(
 
     }
 
-saveSolitaireState();
+
+    saveSolitaireState();
+
+
     solitaire.waste.pop();
 
 
@@ -1395,20 +1407,13 @@ saveSolitaireState();
     completeSolitaireMove();
 
 
-    console.log(
-        "🃏 Waste → Tableau:",
-        card.rank +
-        card.symbol
-    );
-
-
     return true;
 
 }
 
 
 /* =========================================================
-   20. MOVE WASTE → FOUNDATION
+   23. WASTE → FOUNDATION
 ========================================================= */
 
 function moveWasteToFoundation(
@@ -1423,10 +1428,6 @@ function moveWasteToFoundation(
 
     }
 
-
-    /*
-        ONLY top waste card.
-    */
 
     const card =
         solitaire.waste[
@@ -1455,6 +1456,9 @@ function moveWasteToFoundation(
     }
 
 
+    saveSolitaireState();
+
+
     solitaire.waste.pop();
 
 
@@ -1468,47 +1472,45 @@ function moveWasteToFoundation(
     completeSolitaireMove();
 
 
-    console.log(
-        "🃏 Waste → Foundation:",
-        card.rank +
-        card.symbol
-    );
-
-
     return true;
 
 }
 
 
 /* =========================================================
-   21. DRAW THREE CARDS
+   24. DRAW / RECYCLE
 ========================================================= */
 
 function drawFromSolitaireStock() {
 
+    if (
+        solitaire.gameOver
+    ) {
+
+        return;
+
+    }
+
+
     startSolitaireTimer();
 
 
-    /*
-        -----------------------------------------------------
-        STOCK HAS CARDS
-        -----------------------------------------------------
-    */
+    /* -----------------------------------------------------
+       DRAW
+    ----------------------------------------------------- */
 
     if (
         solitaire.stock.length > 0
     ) {
 
+        saveSolitaireState();
+
+
         let drawn = 0;
 
 
-        /*
-            Draw up to THREE cards.
-        */
-
         while (
-            drawn <
-            solitaire.drawCount &&
+            drawn < solitaire.drawCount &&
             solitaire.stock.length > 0
         ) {
 
@@ -1536,21 +1538,12 @@ function drawFromSolitaireStock() {
 
         renderSolitaire();
 
+        updateSolitaireUndoButton();
 
-        /*
-            After drawing, check whether
-            the exposed waste card can
-            safely move to a foundation.
-        */
 
         setTimeout(
             autoMoveSafeCardsToFoundation,
             50
-        );
-
-
-        console.log(
-            `🃏 Drew ${drawn} cards.`
         );
 
 
@@ -1559,68 +1552,54 @@ function drawFromSolitaireStock() {
     }
 
 
-    /*
-        -----------------------------------------------------
-        STOCK EMPTY
-        RECYCLE WASTE
-        -----------------------------------------------------
-    */
+    /* -----------------------------------------------------
+       RECYCLE WASTE
+    ----------------------------------------------------- */
 
     if (
-        solitaire.stock.length === 0 &&
         solitaire.waste.length > 0
     ) {
-
-        /*
-            Unlimited redeals for now.
-        */
 
         if (
             solitaire.redeals >=
             solitaire.maxRedeals
         ) {
 
-            console.log(
-                "🚫 No more redeals."
-            );
-
             return;
 
         }
 
 
+        saveSolitaireState();
+
+
         /*
-            Waste order:
+            IMPORTANT:
 
-            oldest → newest
+            Waste is stored oldest → newest.
 
-            [ A, B, C, D ]
+            Current top = last item.
 
-            Top playable card is D.
+            Stock uses pop().
 
-            To recycle correctly, we need
-            the stock to produce:
+            Therefore copying the waste
+            WITHOUT reversing it gives:
 
-            D → C → B → A
+            waste [A,B,C]
 
-            Since stock uses pop(),
-            we put:
+            stock [A,B,C]
 
-            [ D, C, B, A ]
+            pop() → C
+            then B
+            then A
 
-            so A is popped first?
-
-            Actually we want the original
-            oldest/newest relationship preserved
-            under the Draw-3 model.
-
-            The simplest correct representation
-            is to reverse the waste before
-            putting it into stock.
+            which preserves the Draw-3 order.
         */
 
         solitaire.stock =
-            solitaire.waste.reverse();
+            solitaire.waste.map(
+                cloneSolitaireCard
+            );
 
 
         solitaire.waste = [];
@@ -1645,80 +1624,19 @@ function drawFromSolitaireStock() {
 
         renderSolitaire();
 
-
-        console.log(
-            "♻️ Waste recycled."
-        );
+        updateSolitaireUndoButton();
 
 
         return;
 
     }
 
-
-    console.log(
-        "🃏 Nothing left to draw."
-    );
-
 }
 
 
 /* =========================================================
-   22. COMPLETE MOVE
+   25. SAFE FOUNDATION LOGIC
 ========================================================= */
-
-function completeSolitaireMove() {
-
-    startSolitaireTimer();
-
-
-    solitaire.moves++;
-
-
-    updateSolitaireStats();
-
-
-    renderSolitaire();
-
-
-    /*
-        Give the browser a moment to
-        render before attempting
-        automatic foundation moves.
-    */
-
-    setTimeout(
-        autoMoveSafeCardsToFoundation,
-        30
-    );
-
-
-    checkSolitaireWin();
-
-}
-
-
-/* =========================================================
-   23. AUTO FOUNDATION LOGIC
-========================================================= */
-
-/*
-    We do NOT blindly move every legal
-    card to the foundation.
-
-    That could make a strategic move
-    impossible in some games.
-
-    Instead we automatically move:
-
-    • Aces
-    • Twos
-    • Any card whose foundation move
-      is clearly safe
-
-    This makes the game feel natural
-    without taking control away from you.
-*/
 
 function isSafeFoundationMove(
     card
@@ -1731,10 +1649,6 @@ function isSafeFoundationMove(
     }
 
 
-    /*
-        Aces and Twos are always safe.
-    */
-
     if (
         card.value <= 2
     ) {
@@ -1744,22 +1658,6 @@ function isSafeFoundationMove(
     }
 
 
-    /*
-        For higher cards, compare
-        the opposite-colour suits.
-
-        A card is considered safe when
-        both opposite-colour foundation
-        suits have reached at least
-        two ranks below it.
-
-        Example:
-
-        7♥ can safely move when
-        black foundations have progressed
-        sufficiently.
-    */
-
     const oppositeSuits =
         solitaireSuits.filter(
             suit =>
@@ -1768,16 +1666,7 @@ function isSafeFoundationMove(
         );
 
 
-    if (
-        oppositeSuits.length !== 2
-    ) {
-
-        return false;
-
-    }
-
-
-    const foundationLevels =
+    const levels =
         oppositeSuits.map(
             suit => {
 
@@ -1788,21 +1677,18 @@ function isSafeFoundationMove(
 
 
                 return solitaire
-                    .foundations[index]
-                    .length;
+                    .foundations[
+                        index
+                    ].length;
 
             }
         );
 
 
-    const minimumLevel =
-        Math.min(
-            ...foundationLevels
-        );
-
-
     return (
-        minimumLevel >=
+        Math.min(
+            ...levels
+        ) >=
         card.value - 2
     );
 
@@ -1810,13 +1696,14 @@ function isSafeFoundationMove(
 
 
 /* =========================================================
-   24. AUTO MOVE TO FOUNDATION
+   26. AUTO FOUNDATION
 ========================================================= */
 
 function autoMoveSafeCardsToFoundation() {
 
     if (
-        solitaire.autoMoving
+        solitaire.autoMoving ||
+        solitaire.gameOver
     ) {
 
         return;
@@ -1827,31 +1714,21 @@ function autoMoveSafeCardsToFoundation() {
     solitaire.autoMoving = true;
 
 
-    let movedSomething = true;
+    let moved = true;
 
 
-    /*
-        Continue looking until there
-        are no more safe cards.
-    */
+    while (moved) {
 
-    while (
-        movedSomething
-    ) {
-
-        movedSomething = false;
+        moved = false;
 
 
-        /*
-            -------------------------------------------------
-            CHECK TABLEAU
-            -------------------------------------------------
-        */
+        /* -------------------------------------------------
+           TABLEAU
+        ------------------------------------------------- */
 
         for (
             let columnIndex = 0;
-            columnIndex <
-            solitaire.tableau.length;
+            columnIndex < 7;
             columnIndex++
         ) {
 
@@ -1895,7 +1772,8 @@ function autoMoveSafeCardsToFoundation() {
                 canMoveToFoundation(
                     card,
                     foundationIndex
-                ) &&
+                )
+                &&
                 isSafeFoundationMove(
                     card
                 )
@@ -1919,14 +1797,7 @@ function autoMoveSafeCardsToFoundation() {
                 solitaire.moves++;
 
 
-                movedSomething = true;
-
-
-                console.log(
-                    "✨ Auto foundation:",
-                    card.rank +
-                    card.symbol
-                );
+                moved = true;
 
 
                 break;
@@ -1936,20 +1807,16 @@ function autoMoveSafeCardsToFoundation() {
         }
 
 
-        if (
-            movedSomething
-        ) {
+        if (moved) {
 
             continue;
 
         }
 
 
-        /*
-            -------------------------------------------------
-            CHECK WASTE
-            -------------------------------------------------
-        */
+        /* -------------------------------------------------
+           WASTE
+        ------------------------------------------------- */
 
         if (
             solitaire.waste.length > 0
@@ -1971,7 +1838,8 @@ function autoMoveSafeCardsToFoundation() {
                 canMoveToFoundation(
                     card,
                     foundationIndex
-                ) &&
+                )
+                &&
                 isSafeFoundationMove(
                     card
                 )
@@ -1990,14 +1858,7 @@ function autoMoveSafeCardsToFoundation() {
                 solitaire.moves++;
 
 
-                movedSomething = true;
-
-
-                console.log(
-                    "✨ Auto foundation:",
-                    card.rank +
-                    card.symbol
-                );
+                moved = true;
 
             }
 
@@ -2013,6 +1874,7 @@ function autoMoveSafeCardsToFoundation() {
 
     renderSolitaire();
 
+    updateSolitaireUndoButton();
 
     checkSolitaireWin();
 
@@ -2020,29 +1882,22 @@ function autoMoveSafeCardsToFoundation() {
 
 
 /* =========================================================
-   25. DOUBLE CLICK → FOUNDATION
+   27. DOUBLE CLICK → FOUNDATION
 ========================================================= */
 
 function tryDoubleClickFoundation(
     card
 ) {
 
-    if (!card) {
+    if (
+        solitaire.gameOver ||
+        !card
+    ) {
 
         return false;
 
     }
 
-
-    const foundationIndex =
-        getFoundationIndexForSuit(
-            card.suit
-        );
-
-
-    /*
-        TABLEAU
-    */
 
     const location =
         findSolitaireCard(
@@ -2057,6 +1912,12 @@ function tryDoubleClickFoundation(
     }
 
 
+    const foundationIndex =
+        getFoundationIndexForSuit(
+            card.suit
+        );
+
+
     if (
         location.source ===
         "tableau"
@@ -2068,10 +1929,6 @@ function tryDoubleClickFoundation(
             ];
 
 
-        /*
-            Only top card.
-        */
-
         if (
             location.index !==
             column.length - 1
@@ -2082,33 +1939,29 @@ function tryDoubleClickFoundation(
         }
 
 
-        /*
-            First try normal move.
-        */
-
-        if (
-            moveTableauToFoundation(
-                location.column,
-                location.index,
-                foundationIndex
-            )
-        ) {
-
-            return true;
-
-        }
+        return moveTableauToFoundation(
+            location.column,
+            location.index,
+            foundationIndex
+        );
 
     }
 
-
-    /*
-        WASTE
-    */
 
     if (
         location.source ===
         "waste"
     ) {
+
+        if (
+            location.index !==
+            solitaire.waste.length - 1
+        ) {
+
+            return false;
+
+        }
+
 
         return moveWasteToFoundation(
             foundationIndex
@@ -2123,55 +1976,49 @@ function tryDoubleClickFoundation(
 
 
 /* =========================================================
-   26. CHECK WIN
+   28. WIN
 ========================================================= */
 
 function checkSolitaireWin() {
 
-    const totalCards =
+    const total =
         solitaire.foundations.reduce(
             (
-                total,
+                sum,
                 foundation
             ) =>
-                total +
+                sum +
                 foundation.length,
             0
         );
 
 
-    /*
-        All 52 cards are in
-        the foundations.
-    */
-
     if (
-        totalCards === 52
+        total !== 52
     ) {
 
-        stopSolitaireTimer();
-
-
-        console.log(
-            "🏆 DigiCafe Solitaire won!"
-        );
-
-
-        showSolitaireWin();
-
-
-        return true;
+        return false;
 
     }
 
 
-    return false;
+    solitaire.gameOver =
+        true;
+
+
+    stopSolitaireTimer();
+
+
+    showSolitaireWin();
+
+
+    return true;
 
 }
 
 
 /* =========================================================
-   27. SHOW WIN SCREEN
+   29. WIN SCREEN
 ========================================================= */
 
 function showSolitaireWin() {
@@ -2184,55 +2031,52 @@ function showSolitaireWin() {
 
     if (!winScreen) {
 
-        console.warn(
-            "🏆 Solitaire win screen not found."
-        );
-
         return;
 
     }
 
 
-    winScreen.hidden = false;
-
-    winScreen.style.display =
-        "flex";
-
-
-    const winMoves =
+    const finalMoves =
         document.getElementById(
-            "solitaireWinMoves"
+            "solitaireFinalMoves"
         );
 
 
-    const winTime =
+    const finalTime =
         document.getElementById(
-            "solitaireWinTime"
+            "solitaireFinalTime"
         );
 
 
-    if (winMoves) {
+    if (finalMoves) {
 
-        winMoves.textContent =
+        finalMoves.textContent =
             solitaire.moves;
 
     }
 
 
-    if (winTime) {
+    if (finalTime) {
 
-        winTime.textContent =
+        finalTime.textContent =
             formatSolitaireTime(
                 solitaire.seconds
             );
 
     }
 
+
+    winScreen.hidden =
+        false;
+
+    winScreen.style.display =
+        "flex";
+
 }
 
 
 /* =========================================================
-   28. RENDER GAME
+   30. RENDER GAME
 ========================================================= */
 
 function renderSolitaire() {
@@ -2253,9 +2097,9 @@ function renderSolitaire() {
     board.innerHTML = "";
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        TOP ROW
-    ===================================================== */
+    ----------------------------------------------------- */
 
     const topRow =
         document.createElement(
@@ -2267,9 +2111,9 @@ function renderSolitaire() {
         "solitaire-top-row";
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        STOCK
-    ===================================================== */
+    ----------------------------------------------------- */
 
     const stock =
         createSolitairePile(
@@ -2288,9 +2132,9 @@ function renderSolitaire() {
     );
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        WASTE
-    ===================================================== */
+    ----------------------------------------------------- */
 
     const waste =
         createSolitairePile(
@@ -2303,9 +2147,9 @@ function renderSolitaire() {
     );
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        SPACER
-    ===================================================== */
+    ----------------------------------------------------- */
 
     const spacer =
         document.createElement(
@@ -2322,9 +2166,9 @@ function renderSolitaire() {
     );
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        FOUNDATIONS
-    ===================================================== */
+    ----------------------------------------------------- */
 
     const foundations =
         document.createElement(
@@ -2405,7 +2249,8 @@ function renderSolitaire() {
                 }
 
 
-                solitaire.drag = null;
+                solitaire.drag =
+                    null;
 
             }
         );
@@ -2428,9 +2273,9 @@ function renderSolitaire() {
     );
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        TABLEAU
-    ===================================================== */
+    ----------------------------------------------------- */
 
     const tableau =
         document.createElement(
@@ -2462,11 +2307,6 @@ function renderSolitaire() {
                 columnIndex;
 
 
-            /*
-                Allow dropping into
-                the column itself.
-            */
-
             columnElement.addEventListener(
                 "dragover",
                 event => {
@@ -2497,47 +2337,33 @@ function renderSolitaire() {
                         solitaire.drag;
 
 
-                    let moved = false;
-
-
                     if (
                         drag.source ===
                         "tableau"
                     ) {
 
-                        moved =
-                            moveTableauToTableau(
-                                drag.column,
-                                drag.index,
-                                columnIndex
-                            );
+                        moveTableauToTableau(
+                            drag.column,
+                            drag.index,
+                            columnIndex
+                        );
 
                     }
-
 
                     else if (
                         drag.source ===
                         "waste"
                     ) {
 
-                        moved =
-                            moveWasteToTableau(
-                                columnIndex
-                            );
-
-                    }
-
-
-                    solitaire.drag = null;
-
-
-                    if (moved) {
-
-                        console.log(
-                            "🃏 Move completed."
+                        moveWasteToTableau(
+                            columnIndex
                         );
 
                     }
+
+
+                    solitaire.drag =
+                        null;
 
                 }
             );
@@ -2564,8 +2390,8 @@ function renderSolitaire() {
 }
 
 
-/* /* =========================================================
-   29. CREATE PILE
+/* =========================================================
+   31. CREATE PILE
 ========================================================= */
 
 function createSolitairePile(
@@ -2574,24 +2400,31 @@ function createSolitairePile(
 ) {
 
     const pile =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        FOUNDATION
-    ===================================================== */
+    ----------------------------------------------------- */
 
-    if (type === "foundation") {
+    if (
+        type === "foundation"
+    ) {
 
         pile.className =
             "solitaire-foundation";
+
 
         pile.dataset.foundation =
             index;
 
 
         const foundation =
-            solitaire.foundations[index];
+            solitaire.foundations[
+                index
+            ];
 
 
         if (
@@ -2599,14 +2432,12 @@ function createSolitairePile(
             foundation.length > 0
         ) {
 
-            const card =
-                foundation[
-                    foundation.length - 1
-                ];
-
-
             pile.appendChild(
-                createSolitaireCardElement(card)
+                createSolitaireCardElement(
+                    foundation[
+                        foundation.length - 1
+                    ]
+                )
             );
 
         }
@@ -2617,49 +2448,40 @@ function createSolitairePile(
     }
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        STOCK / WASTE
-    ===================================================== */
+    ----------------------------------------------------- */
 
     pile.className =
         "solitaire-pile";
+
 
     pile.dataset.pile =
         type;
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        STOCK
-    ===================================================== */
+    ----------------------------------------------------- */
 
-    if (type === "stock") {
+    if (
+        type === "stock"
+    ) {
 
-        /*
-            Show card back while stock
-            still contains cards.
-        */
-
-        if (solitaire.stock.length > 0) {
-
-            const card =
-                solitaire.stock[
-                    solitaire.stock.length - 1
-                ];
-
+        if (
+            solitaire.stock.length > 0
+        ) {
 
             pile.appendChild(
                 createSolitaireCardElement(
-                    card,
+                    solitaire.stock[
+                        solitaire.stock.length - 1
+                    ],
                     true
                 )
             );
 
         }
-
-        /*
-            Empty stock can still be clicked
-            to recycle the waste.
-        */
 
         else if (
             solitaire.waste.length > 0
@@ -2677,216 +2499,94 @@ function createSolitairePile(
     }
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        WASTE — DRAW 3
-    ===================================================== */
+    ----------------------------------------------------- */
 
     if (
-        type === "waste" &&
+        type === "waste"
+        &&
         solitaire.waste.length > 0
     ) {
 
-        /*
-            Show the last THREE waste cards.
-
-            Example:
-
-            [ 5♣ ][ 9♥ ][ Q♠ ]
-                      ↑
-                  playable
-
-            The newest card is always
-            the rightmost card.
-        */
-
         const visibleCards =
-            solitaire.waste.slice(-3);
-
-
-       visibleCards.forEach(
-    (
-        card,
-        visibleIndex
-    ) => {
-
-        const cardElement =
-            createSolitaireCardElement(
-                card
+            solitaire.waste.slice(
+                -solitaire.drawCount
             );
 
 
-        /* =================================================
-           DRAW 3 CARD POSITION + LAYER
-        ================================================= */
+        visibleCards.forEach(
+            (
+                card,
+                visibleIndex
+            ) => {
 
-        cardElement.style.position =
-            "absolute";
-
-        cardElement.style.top =
-            "0";
-
-        cardElement.style.left =
-            `${visibleIndex * 18}px`;
-
-        cardElement.style.zIndex =
-            String(
-                visibleIndex + 1
-            );
-
-
-        /*
-            Only the newest / rightmost
-            card is playable.
-        */
-
-        const isPlayable =
-            visibleIndex ===
-            visibleCards.length - 1;
-
-
-        if (isPlayable) {
-
-            cardElement.classList.add(
-                "solitaire-waste-top"
-            );
-
-
-            /*
-                Always keep the newest
-                card above the others.
-            */
-
-            cardElement.style.zIndex =
-                "50";
-
-
-            cardElement.draggable =
-                true;
-/* =====================================================
-   MOBILE TOUCH DRAG — WASTE CARD
-===================================================== */
-
-cardElement.addEventListener(
-    "touchstart",
-    event => {
-
-        startSolitaireTouch(
-            event,
-            cardElement,
-            card
-        );
-
-    },
-    {
-        passive: false
-    }
-);
-
-
-cardElement.addEventListener(
-    "touchmove",
-    event => {
-
-        moveSolitaireTouch(
-            event
-        );
-
-    },
-    {
-        passive: false
-    }
-);
-
-
-cardElement.addEventListener(
-    "touchend",
-    event => {
-
-        endSolitaireTouch(
-            event
-        );
-
-    },
-    {
-        passive: false
-    }
-);
-
-
-cardElement.addEventListener(
-    "touchcancel",
-    cancelSolitaireTouch,
-    {
-        passive: false
-    }
-);
-
-                    cardElement.addEventListener(
-                        "dragstart",
-                        event => {
-
-                            solitaire.drag = {
-
-                                source:
-                                    "waste",
-
-                                column:
-                                    null,
-
-                                index:
-                                    solitaire.waste.length - 1,
-
-                                card:
-                                    card
-
-                            };
-
-
-                            event.dataTransfer.setData(
-                                "text/plain",
-                                card.id
-                            );
-
-
-                            event.dataTransfer.effectAllowed =
-                                "move";
-
-
-                            cardElement.classList.add(
-                                "solitaire-card-dragging"
-                            );
-
-
-                            startSolitaireTimer();
-
-                        }
+                const cardElement =
+                    createSolitaireCardElement(
+                        card
                     );
 
 
-                    cardElement.addEventListener(
-                        "dragend",
-                        () => {
+                /*
+                    Position is controlled here,
+                    based on actual visible index.
 
-                            cardElement.classList.remove(
-                                "solitaire-card-dragging"
-                            );
+                    This avoids nth-child()
+                    problems on mobile.
+                */
+
+                cardElement.style.position =
+                    "absolute";
 
 
-                            solitaire.drag =
-                                null;
+                cardElement.style.top =
+                    "0";
 
-                        }
+
+                cardElement.style.left =
+                    `${visibleIndex * 18}px`;
+
+
+                /*
+                    The newest card is always
+                    the highest layer.
+                */
+
+                cardElement.style.zIndex =
+                    String(
+                        visibleIndex + 1
                     );
+
+
+                const isPlayable =
+                    visibleIndex ===
+                    visibleCards.length - 1;
+
+
+                if (
+                    isPlayable
+                ) {
+
+                    cardElement.classList.add(
+                        "solitaire-waste-top"
+                    );
+
+
+                    cardElement.style.zIndex =
+                        "50";
+
+
+                    /*
+                        Touch handlers are already
+                        attached by createCard().
+                    */
+
+                    cardElement.draggable =
+                        true;
 
                 }
 
                 else {
-
-                    /*
-                        The two cards underneath
-                        are visible but cannot
-                        be dragged.
-                    */
 
                     cardElement.draggable =
                         false;
@@ -2904,26 +2604,19 @@ cardElement.addEventListener(
     }
 
 
-    /*
-        IMPORTANT:
-        This closes createSolitairePile().
-    */
-
     return pile;
 
 }
+
+
 /* =========================================================
-   30. RENDER TABLEAU COLUMN
+   32. RENDER TABLEAU COLUMN
 ========================================================= */
 
 function renderSolitaireColumn(
     columnElement,
     cards
 ) {
-
-    /*
-        Empty tableau.
-    */
 
     if (
         cards.length === 0
@@ -2961,10 +2654,6 @@ function renderSolitaireColumn(
                 );
 
 
-            /*
-                Vertical overlap.
-            */
-
             cardElement.style.top =
                 `${cardIndex * 30}px`;
 
@@ -2977,15 +2666,10 @@ function renderSolitaireColumn(
     );
 
 }
-/* =========================================================
-   SOLITAIRE MOBILE TOUCH DRAG
-========================================================= */
-
-let solitaireTouch = null;
 
 
 /* =========================================================
-   TOUCH START
+   33. TOUCH DRAG
 ========================================================= */
 
 function startSolitaireTouch(
@@ -2995,17 +2679,15 @@ function startSolitaireTouch(
 ) {
 
     if (
+        solitaire.touchDrag ||
         !event.touches ||
-        event.touches.length !== 1
+        event.touches.length !== 1 ||
+        solitaire.gameOver
     ) {
 
         return;
 
     }
-
-
-    const touch =
-        event.touches[0];
 
 
     const location =
@@ -3022,11 +2704,12 @@ function startSolitaireTouch(
 
 
     /* -----------------------------------------------------
-       WASTE
+       WASTE VALIDATION
     ----------------------------------------------------- */
 
     if (
-        location.source === "waste"
+        location.source ===
+        "waste"
     ) {
 
         if (
@@ -3042,22 +2725,19 @@ function startSolitaireTouch(
 
 
     /* -----------------------------------------------------
-       TABLEAU
+       TABLEAU VALIDATION
     ----------------------------------------------------- */
 
     if (
-        location.source === "tableau"
+        location.source ===
+        "tableau"
     ) {
 
-        const sequence =
+        if (
             getMovableSequence(
                 location.column,
                 location.index
-            );
-
-
-        if (
-            sequence.length === 0
+            ).length === 0
         ) {
 
             return;
@@ -3070,16 +2750,18 @@ function startSolitaireTouch(
     event.preventDefault();
 
 
+    const touch =
+        event.touches[0];
+
+
     const rect =
         cardElement.getBoundingClientRect();
 
 
-    /* -----------------------------------------------------
-       CREATE DRAG GHOST
-    ----------------------------------------------------- */
-
     const ghost =
-        cardElement.cloneNode(true);
+        cardElement.cloneNode(
+            true
+        );
 
 
     ghost.classList.add(
@@ -3090,29 +2772,33 @@ function startSolitaireTouch(
     ghost.style.position =
         "fixed";
 
+
     ghost.style.left =
         `${rect.left}px`;
+
 
     ghost.style.top =
         `${rect.top}px`;
 
+
     ghost.style.width =
         `${rect.width}px`;
+
 
     ghost.style.height =
         `${rect.height}px`;
 
+
     ghost.style.margin =
         "0";
+
 
     ghost.style.pointerEvents =
         "none";
 
+
     ghost.style.zIndex =
         "999999";
-
-    ghost.style.opacity =
-        "0.95";
 
 
     document.body.appendChild(
@@ -3120,11 +2806,7 @@ function startSolitaireTouch(
     );
 
 
-    /* -----------------------------------------------------
-       SAVE TOUCH STATE
-    ----------------------------------------------------- */
-
-    solitaireTouch = {
+    solitaire.touchDrag = {
 
         card,
 
@@ -3168,13 +2850,6 @@ function startSolitaireTouch(
 
     startSolitaireTimer();
 
-
-    console.log(
-        "📱 Solitaire touch started:",
-        card.rank +
-        card.symbol
-    );
-
 }
 
 
@@ -3186,8 +2861,12 @@ function moveSolitaireTouch(
     event
 ) {
 
+    const drag =
+        solitaire.touchDrag;
+
+
     if (
-        !solitaireTouch ||
+        !drag ||
         !event.touches ||
         event.touches.length !== 1
     ) {
@@ -3201,33 +2880,18 @@ function moveSolitaireTouch(
         event.touches[0];
 
 
-    const drag =
-        solitaireTouch;
-
-
-    const distanceX =
-        Math.abs(
+    const distance =
+        Math.hypot(
             touch.clientX -
-            drag.startX
-        );
-
-
-    const distanceY =
-        Math.abs(
+            drag.startX,
             touch.clientY -
             drag.startY
         );
 
 
-    /*
-        Do not activate dragging for a tiny
-        accidental finger movement.
-    */
-
     if (
         !drag.moved &&
-        distanceX < 6 &&
-        distanceY < 6
+        distance < 8
     ) {
 
         return;
@@ -3245,33 +2909,13 @@ function moveSolitaireTouch(
     drag.ghost.style.left =
         `${touch.clientX - drag.offsetX}px`;
 
+
     drag.ghost.style.top =
         `${touch.clientY - drag.offsetY}px`;
 
 
-    /*
-        Remove previous target highlight.
-    */
+    clearSolitaireTouchTargets();
 
-    document
-        .querySelectorAll(
-            ".solitaire-touch-target"
-        )
-        .forEach(
-            element => {
-
-                element.classList.remove(
-                    "solitaire-touch-target"
-                );
-
-            }
-        );
-
-
-    /*
-        Temporarily hide ghost so we can
-        find the actual element underneath.
-    */
 
     drag.ghost.style.display =
         "none";
@@ -3307,7 +2951,9 @@ function moveSolitaireTouch(
         );
 
 
-    if (column) {
+    if (
+        column
+    ) {
 
         column.classList.add(
             "solitaire-touch-target"
@@ -3315,7 +2961,9 @@ function moveSolitaireTouch(
 
     }
 
-    else if (foundation) {
+    else if (
+        foundation
+    ) {
 
         foundation.classList.add(
             "solitaire-touch-target"
@@ -3328,17 +2976,24 @@ function moveSolitaireTouch(
 
 /* =========================================================
    TOUCH END
+   ---------------------------------------------------------
+   Remove the floating drag ghost BEFORE the game
+   re-renders the board.
 ========================================================= */
 
-function endSolitaireTouch(
-    event
-) {
+function endSolitaireTouch(event) {
+
+    const drag =
+        solitaire.touchDrag;
+
 
     if (
-        !solitaireTouch ||
+        !drag ||
         !event.changedTouches ||
         event.changedTouches.length !== 1
     ) {
+
+        cleanupSolitaireTouch();
 
         return;
 
@@ -3349,24 +3004,34 @@ function endSolitaireTouch(
         event.changedTouches[0];
 
 
-    const drag =
-        solitaireTouch;
-
-
     event.preventDefault();
 
 
-    let moved =
-        false;
+    /*
+        Save source information before cleanup.
+    */
+
+    const source =
+        drag.source;
+
+    const sourceColumn =
+        drag.column;
+
+    const sourceIndex =
+        drag.index;
 
 
     /*
-        Hide ghost while finding
-        the element underneath.
+        Hide the ghost while we find the
+        actual element underneath the finger.
     */
 
-    drag.ghost.style.display =
-        "none";
+    if (drag.ghost) {
+
+        drag.ghost.style.display =
+            "none";
+
+    }
 
 
     const target =
@@ -3376,8 +3041,16 @@ function endSolitaireTouch(
         );
 
 
-    drag.ghost.style.display =
-        "";
+    /*
+        Determine the destination before
+        removing the touch state.
+    */
+
+    let targetType =
+        null;
+
+    let targetIndex =
+        null;
 
 
     if (target) {
@@ -3394,93 +3067,125 @@ function endSolitaireTouch(
             );
 
 
-        /* =================================================
-           TABLEAU
-        ================================================= */
-
         if (targetColumn) {
 
-            const targetIndex =
+            targetType =
+                "tableau";
+
+            targetIndex =
                 Number(
                     targetColumn.dataset.column
                 );
 
-
-            if (
-                drag.source ===
-                "tableau"
-            ) {
-
-                moved =
-                    moveTableauToTableau(
-                        drag.column,
-                        drag.index,
-                        targetIndex
-                    );
-
-            }
-
-            else if (
-                drag.source ===
-                "waste"
-            ) {
-
-                moved =
-                    moveWasteToTableau(
-                        targetIndex
-                    );
-
-            }
-
         }
 
+        else if (targetFoundation) {
 
-        /* =================================================
-           FOUNDATION
-        ================================================= */
+            targetType =
+                "foundation";
 
-        else if (
-            targetFoundation
-        ) {
-
-            const foundationIndex =
+            targetIndex =
                 Number(
                     targetFoundation.dataset.foundation
                 );
-
-
-            if (
-                drag.source ===
-                "tableau"
-            ) {
-
-                moved =
-                    moveTableauToFoundation(
-                        drag.column,
-                        drag.index,
-                        foundationIndex
-                    );
-
-            }
-
-            else if (
-                drag.source ===
-                "waste"
-            ) {
-
-                moved =
-                    moveWasteToFoundation(
-                        foundationIndex
-                    );
-
-            }
 
         }
 
     }
 
 
+    /*
+        IMPORTANT:
+        Remove the ghost BEFORE the move.
+
+        renderSolitaire() may immediately rebuild
+        the Waste cards.
+    */
+
     cleanupSolitaireTouch();
+
+
+    let moved =
+        false;
+
+
+    /*
+        TABLEAU
+    */
+
+    if (
+        targetType === "tableau"
+    ) {
+
+        if (
+            source === "tableau"
+        ) {
+
+            moved =
+                moveTableauToTableau(
+                    sourceColumn,
+                    sourceIndex,
+                    targetIndex
+                );
+
+        }
+
+        else if (
+            source === "waste"
+        ) {
+
+            moved =
+                moveWasteToTableau(
+                    targetIndex
+                );
+
+        }
+
+    }
+
+
+    /*
+        FOUNDATION
+    */
+
+    else if (
+        targetType === "foundation"
+    ) {
+
+        if (
+            source === "tableau"
+        ) {
+
+            moved =
+                moveTableauToFoundation(
+                    sourceColumn,
+                    sourceIndex,
+                    targetIndex
+                );
+
+        }
+
+        else if (
+            source === "waste"
+        ) {
+
+            moved =
+                moveWasteToFoundation(
+                    targetIndex
+                );
+
+        }
+
+    }
+
+
+    /*
+        Never leave desktop drag state
+        behind after a mobile move.
+    */
+
+    solitaire.drag =
+        null;
 
 
     if (moved) {
@@ -3506,40 +3211,10 @@ function cancelSolitaireTouch() {
 
 
 /* =========================================================
-   CLEANUP
+   TOUCH TARGET CLEANUP
 ========================================================= */
 
-function cleanupSolitaireTouch() {
-
-    if (!solitaireTouch) {
-
-        return;
-
-    }
-
-
-    if (
-        solitaireTouch.ghost
-    ) {
-
-        solitaireTouch.ghost.remove();
-
-    }
-
-
-    if (
-        solitaireTouch.cardElement
-    ) {
-
-        solitaireTouch.cardElement.classList.remove(
-            "solitaire-card-touching"
-        );
-
-        solitaireTouch.cardElement.style.opacity =
-            "";
-
-    }
-
+function clearSolitaireTouchTargets() {
 
     document
         .querySelectorAll(
@@ -3555,14 +3230,64 @@ function cleanupSolitaireTouch() {
             }
         );
 
+}
 
-    solitaireTouch =
+
+/* =========================================================
+   TOUCH CLEANUP
+========================================================= */
+
+function cleanupSolitaireTouch() {
+
+    const drag =
+        solitaire.touchDrag;
+
+
+    /*
+        Remove the floating ghost immediately.
+    */
+
+    if (
+        drag &&
+        drag.ghost
+    ) {
+
+        drag.ghost.remove();
+
+        drag.ghost =
+            null;
+
+    }
+
+
+    /*
+        Restore the original card.
+    */
+
+    if (
+        drag &&
+        drag.cardElement
+    ) {
+
+        drag.cardElement.classList.remove(
+            "solitaire-card-touching"
+        );
+
+        drag.cardElement.style.opacity =
+            "";
+
+    }
+
+
+    clearSolitaireTouchTargets();
+
+
+    solitaire.touchDrag =
         null;
 
 }
-
 /* =========================================================
-   31. CREATE CARD
+   34. CREATE CARD
 ========================================================= */
 
 function createSolitaireCardElement(
@@ -3584,9 +3309,9 @@ function createSolitaireCardElement(
         card.id;
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        FACE DOWN
-    ===================================================== */
+    ----------------------------------------------------- */
 
     if (
         forceBack ||
@@ -3598,10 +3323,6 @@ function createSolitaireCardElement(
         );
 
 
-        /*
-            Face-down cards are not draggable.
-        */
-
         cardElement.draggable =
             false;
 
@@ -3611,9 +3332,9 @@ function createSolitaireCardElement(
     }
 
 
-    /* =====================================================
+    /* -----------------------------------------------------
        FACE UP
-    ===================================================== */
+    ----------------------------------------------------- */
 
     cardElement.classList.add(
         "solitaire-card-face"
@@ -3621,352 +3342,217 @@ function createSolitaireCardElement(
 
 
     cardElement.classList.add(
-
         card.color === "red"
-
             ? "solitaire-red"
-
             : "solitaire-black"
-
     );
 
 
-    /* =====================================================
-   DRAG
-   -----------------------------------------------------
-   Desktop:
-   • HTML5 drag & drop
+    /* -----------------------------------------------------
+       DESKTOP DRAG
+    ----------------------------------------------------- */
 
-   Mobile:
-   • Pointer / touch drag
-   • Finger-following card
-===================================================== */
-
-cardElement.draggable =
-    true;
-
-/* =====================================================
-   MOBILE TOUCH EVENTS
-===================================================== */
-
-cardElement.addEventListener(
-    "touchstart",
-    event => {
-
-        startSolitaireTouch(
-            event,
-            cardElement,
-            card
-        );
-
-    },
-    {
-        passive: false
-    }
-);
+    cardElement.draggable =
+        true;
 
 
-cardElement.addEventListener(
-    "touchmove",
-    event => {
+    cardElement.addEventListener(
+        "dragstart",
+        event => {
 
-        moveSolitaireTouch(
-            event
-        );
-
-    },
-    {
-        passive: false
-    }
-);
+            const location =
+                findSolitaireCard(
+                    card.id
+                );
 
 
-cardElement.addEventListener(
-    "touchend",
-    event => {
+            if (!location) {
 
-        endSolitaireTouch(
-            event
-        );
+                event.preventDefault();
 
-    },
-    {
-        passive: false
-    }
-);
+                return;
+
+            }
 
 
-cardElement.addEventListener(
-    "touchcancel",
-    cancelSolitaireTouch,
-    {
-        passive: false
-    }
-);
-/* =====================================================
-   DESKTOP DRAG START
-===================================================== */
+            if (
+                location.source ===
+                "waste"
+            ) {
 
-cardElement.addEventListener(
-    "dragstart",
-    event => {
+                if (
+                    location.index !==
+                    solitaire.waste.length - 1
+                ) {
 
-        const location =
-            findSolitaireCard(
+                    event.preventDefault();
+
+                    return;
+
+                }
+
+            }
+
+
+            if (
+                location.source ===
+                "tableau"
+            ) {
+
+                if (
+                    getMovableSequence(
+                        location.column,
+                        location.index
+                    ).length === 0
+                ) {
+
+                    event.preventDefault();
+
+                    return;
+
+                }
+
+            }
+
+
+            solitaire.drag = {
+
+                source:
+                    location.source,
+
+                column:
+                    location.column,
+
+                index:
+                    location.index,
+
+                card:
+                    card
+
+            };
+
+
+            event.dataTransfer.setData(
+                "text/plain",
                 card.id
             );
 
 
-        if (!location) {
+            event.dataTransfer.effectAllowed =
+                "move";
+
+
+            cardElement.classList.add(
+                "solitaire-card-dragging"
+            );
+
+
+            startSolitaireTimer();
+
+        }
+    );
+
+
+    cardElement.addEventListener(
+        "dragend",
+        () => {
+
+            cardElement.classList.remove(
+                "solitaire-card-dragging"
+            );
+
+
+            solitaire.drag =
+                null;
+
+        }
+    );
+
+
+    /* -----------------------------------------------------
+       MOBILE TOUCH
+    ----------------------------------------------------- */
+
+    cardElement.addEventListener(
+        "touchstart",
+        event => {
+
+            startSolitaireTouch(
+                event,
+                cardElement,
+                card
+            );
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    cardElement.addEventListener(
+        "touchmove",
+        event => {
+
+            moveSolitaireTouch(
+                event
+            );
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    cardElement.addEventListener(
+        "touchend",
+        event => {
+
+            endSolitaireTouch(
+                event
+            );
+
+        },
+        {
+            passive: false
+        }
+    );
+
+
+    cardElement.addEventListener(
+        "touchcancel",
+        cancelSolitaireTouch,
+        {
+            passive: false
+        }
+    );
+
+
+    /* -----------------------------------------------------
+       DOUBLE CLICK
+    ----------------------------------------------------- */
+
+    cardElement.addEventListener(
+        "dblclick",
+        event => {
 
             event.preventDefault();
 
-            return;
-
-        }
+            event.stopPropagation();
 
 
-        /* -------------------------------------------------
-           WASTE
-           Only the top card can move.
-        ------------------------------------------------- */
-
-        if (
-            location.source ===
-            "waste"
-        ) {
-
-            if (
-                location.index !==
-                solitaire.waste.length - 1
-            ) {
-
-                event.preventDefault();
-
-                return;
-
-            }
-
-        }
-
-
-        /* -------------------------------------------------
-           TABLEAU
-           Must be a valid movable sequence.
-        ------------------------------------------------- */
-
-        if (
-            location.source ===
-            "tableau"
-        ) {
-
-            const sequence =
-                getMovableSequence(
-                    location.column,
-                    location.index
-                );
-
-
-            if (
-                sequence.length === 0
-            ) {
-
-                event.preventDefault();
-
-                return;
-
-            }
-
-        }
-
-
-        solitaire.drag = {
-
-            source:
-                location.source,
-
-            column:
-                location.column,
-
-            index:
-                location.index,
-
-            card:
+            tryDoubleClickFoundation(
                 card
-
-        };
-
-
-        event.dataTransfer.setData(
-            "text/plain",
-            card.id
-        );
-
-
-        event.dataTransfer.effectAllowed =
-            "move";
-
-
-        cardElement.classList.add(
-            "solitaire-card-dragging"
-        );
-
-
-        startSolitaireTimer();
-
-
-        console.log(
-            "🃏 Desktop dragging:",
-            card.rank +
-            card.symbol
-        );
-
-    }
-);
-
-
-/* =====================================================
-   DESKTOP DRAG END
-===================================================== */
-
-cardElement.addEventListener(
-    "dragend",
-    () => {
-
-        cardElement.classList.remove(
-            "solitaire-card-dragging"
-        );
-
-
-        solitaire.drag =
-            null;
-
-    }
-);
-
-
-/* =====================================================
-   MOBILE / TOUCH DRAG
-===================================================== */
-
-cardElement.addEventListener(
-    "pointerdown",
-    event => {
-
-        /*
-            Only touch / pen.
-
-            Mouse continues to use the
-            normal HTML5 drag system.
-        */
-
-        if (
-            event.pointerType !== "touch" &&
-            event.pointerType !== "pen"
-        ) {
-
-            return;
+            );
 
         }
+    );
 
 
-        startSolitaireTouchDrag(
-            event,
-            cardElement,
-            card
-        );
-
-    }
-);
-
-
-cardElement.addEventListener(
-    "pointermove",
-    event => {
-
-        if (
-            event.pointerType !== "touch" &&
-            event.pointerType !== "pen"
-        ) {
-
-            return;
-
-        }
-
-
-        moveSolitaireTouchDrag(
-            event
-        );
-
-    }
-);
-
-
-cardElement.addEventListener(
-    "pointerup",
-    event => {
-
-        if (
-            event.pointerType !== "touch" &&
-            event.pointerType !== "pen"
-        ) {
-
-            return;
-
-        }
-
-
-        endSolitaireTouchDrag(
-            event
-        );
-
-    }
-);
-
-
-cardElement.addEventListener(
-    "pointercancel",
-    event => {
-
-        if (
-            event.pointerType !== "touch" &&
-            event.pointerType !== "pen"
-        ) {
-
-            return;
-
-        }
-
-
-        cancelSolitaireTouchDrag();
-
-    }
-);
-
-
-/* =====================================================
-   DOUBLE CLICK
-   → FOUNDATION
-===================================================== */
-
-cardElement.addEventListener(
-    "dblclick",
-    event => {
-
-        event.preventDefault();
-
-        event.stopPropagation();
-
-
-        tryDoubleClickFoundation(
-            card
-        );
-
-    }
-);
-    /* =====================================================
-       TOP LEFT CORNER
-    ===================================================== */
+    /* -----------------------------------------------------
+       CARD CORNER
+    ----------------------------------------------------- */
 
     const corner =
         document.createElement(
@@ -4016,9 +3602,14 @@ cardElement.addEventListener(
     );
 
 
-    /* =====================================================
-       CENTER SYMBOL
-    ===================================================== */
+    cardElement.appendChild(
+        corner
+    );
+
+
+    /* -----------------------------------------------------
+       CENTER SUIT
+    ----------------------------------------------------- */
 
     const center =
         document.createElement(
@@ -4034,15 +3625,6 @@ cardElement.addEventListener(
         card.symbol;
 
 
-    /* =====================================================
-       ADD CONTENT
-    ===================================================== */
-
-    cardElement.appendChild(
-        corner
-    );
-
-
     cardElement.appendChild(
         center
     );
@@ -4052,233 +3634,12 @@ cardElement.addEventListener(
 
 }
 
-/* =========================================================
-   UNDO SYSTEM
-========================================================= */
-
-function saveSolitaireState() {
-
-    /*
-        Save only the actual game state.
-        Timer and UI references are NOT saved.
-    */
-
-    const state = {
-
-        stock:
-            solitaire.stock.map(card => ({
-                ...card
-            })),
-
-        waste:
-            solitaire.waste.map(card => ({
-                ...card
-            })),
-
-        foundations:
-            solitaire.foundations.map(
-                foundation =>
-                    foundation.map(card => ({
-                        ...card
-                    }))
-            ),
-
-        tableau:
-            solitaire.tableau.map(
-                column =>
-                    column.map(card => ({
-                        ...card
-                    }))
-            ),
-
-        moves:
-            solitaire.moves,
-
-        seconds:
-            solitaire.seconds,
-
-        redeals:
-            solitaire.redeals
-
-    };
-
-
-    solitaire.history.push(state);
-
-
-    /*
-        Prevent unlimited memory growth.
-    */
-
-    if (
-        solitaire.history.length >
-        solitaire.maxHistory
-    ) {
-
-        solitaire.history.shift();
-
-    }
-
-
-    updateSolitaireUndoButton();
-
-}
-
 
 /* =========================================================
-   RESTORE PREVIOUS STATE
-========================================================= */
-
-function undoSolitaireMove() {
-
-    if (
-        solitaire.history.length === 0
-    ) {
-
-        console.log(
-            "↩️ Nothing to undo."
-        );
-
-        return;
-
-    }
-
-
-    /*
-        Stop automatic foundation movement
-        while restoring the previous state.
-    */
-
-    solitaire.autoMoving = true;
-
-
-    const previousState =
-        solitaire.history.pop();
-
-
-    solitaire.stock =
-        previousState.stock.map(
-            card => ({
-                ...card
-            })
-        );
-
-
-    solitaire.waste =
-        previousState.waste.map(
-            card => ({
-                ...card
-            })
-        );
-
-
-    solitaire.foundations =
-        previousState.foundations.map(
-            foundation =>
-                foundation.map(
-                    card => ({
-                        ...card
-                    })
-                )
-        );
-
-
-    solitaire.tableau =
-        previousState.tableau.map(
-            column =>
-                column.map(
-                    card => ({
-                        ...card
-                    })
-                )
-        );
-
-
-    solitaire.moves =
-        previousState.moves;
-
-
-    solitaire.seconds =
-        previousState.seconds;
-
-
-    solitaire.redeals =
-        previousState.redeals;
-
-
-    solitaire.autoMoving = false;
-
-
-    /*
-        Restart timer if the game is still active.
-    */
-
-    if (
-        solitaire.started &&
-        solitaire.timer === null
-    ) {
-
-        startSolitaireTimer();
-
-    }
-
-
-    updateSolitaireStats();
-
-    renderSolitaire();
-
-    updateSolitaireUndoButton();
-
-
-    console.log(
-        "↩️ Solitaire move undone."
-    );
-
-}
-
-
-/* =========================================================
-   UPDATE UNDO BUTTON
-========================================================= */
-
-function updateSolitaireUndoButton() {
-
-    const undoButton =
-        document.getElementById(
-            "solitaireUndo"
-        );
-
-
-    if (!undoButton) {
-
-        return;
-
-    }
-
-
-    const hasHistory =
-        solitaire.history.length > 0;
-
-
-    undoButton.disabled =
-        !hasHistory;
-
-
-    undoButton.classList.toggle(
-        "disabled",
-        !hasHistory
-    );
-
-}
-/* =========================================================
-   32. CONTROLS
+   35. CONTROLS
 ========================================================= */
 
 function setupSolitaireControls() {
-
-    /* =====================================================
-       NEW GAME
-    ===================================================== */
 
     const newGame =
         document.getElementById(
@@ -4288,7 +3649,7 @@ function setupSolitaireControls() {
 
     if (
         newGame &&
-        !newGame.dataset.solitaireBound
+        newGame.dataset.solitaireBound !== "true"
     ) {
 
         newGame.dataset.solitaireBound =
@@ -4301,35 +3662,30 @@ function setupSolitaireControls() {
         );
 
     }
-/* =====================================================
-   UNDO
-===================================================== */
-
-const undoButton =
-    document.getElementById(
-        "solitaireUndo"
-    );
 
 
-if (
-    undoButton &&
-    !undoButton.dataset.solitaireBound
-) {
-
-    undoButton.dataset.solitaireBound =
-        "true";
+    const undo =
+        document.getElementById(
+            "solitaireUndo"
+        );
 
 
-    undoButton.addEventListener(
-        "click",
-        undoSolitaireMove
-    );
+    if (
+        undo &&
+        undo.dataset.solitaireBound !== "true"
+    ) {
 
-}
+        undo.dataset.solitaireBound =
+            "true";
 
-    /* =====================================================
-       PLAY AGAIN
-    ===================================================== */
+
+        undo.addEventListener(
+            "click",
+            undoSolitaireMove
+        );
+
+    }
+
 
     const playAgain =
         document.getElementById(
@@ -4339,7 +3695,7 @@ if (
 
     if (
         playAgain &&
-        !playAgain.dataset.solitaireBound
+        playAgain.dataset.solitaireBound !== "true"
     ) {
 
         playAgain.dataset.solitaireBound =
@@ -4357,7 +3713,7 @@ if (
 
 
 /* =========================================================
-   33. INITIALIZE
+   36. INITIALIZE
 ========================================================= */
 
 function initSolitaire() {
@@ -4367,10 +3723,6 @@ function initSolitaire() {
             "solitaireBoard"
         );
 
-
-    /*
-        Playroom has not loaded yet.
-    */
 
     if (!board) {
 
@@ -4383,18 +3735,8 @@ function initSolitaire() {
     }
 
 
-    console.log(
-        "🃏 Initializing DigiCafe Solitaire..."
-    );
-
-
     setupSolitaireControls();
 
-
-    /*
-        First initialization:
-        start a completely new game.
-    */
 
     if (
         !solitaire.initialized
@@ -4408,16 +3750,13 @@ function initSolitaire() {
 
     }
 
-
-    /*
-        Room was recreated.
-    */
-
     else {
 
         renderSolitaire();
 
-        setupSolitaireControls();
+        updateSolitaireStats();
+
+        updateSolitaireUndoButton();
 
     }
 
@@ -4428,30 +3767,36 @@ function initSolitaire() {
 
 
 /* =========================================================
-   34. RESET INITIALIZATION
+   37. RESET INITIALIZATION
 ========================================================= */
 
 function resetSolitaireInitialization() {
 
     stopSolitaireTimer();
 
+    cleanupSolitaireTouch();
+
 
     solitaire.initialized =
         false;
 
+    solitaire.started =
+        false;
+
+    solitaire.gameOver =
+        false;
 
     solitaire.drag =
         null;
 
-
-    solitaire.autoMoving =
-        false;
+    solitaire.touchDrag =
+        null;
 
 }
 
 
 /* =========================================================
-   35. GLOBAL ACCESS
+   38. GLOBAL API
 ========================================================= */
 
 window.solitaire =
@@ -4478,7 +3823,10 @@ window.autoMoveSafeCardsToFoundation =
     autoMoveSafeCardsToFoundation;
 
 
+window.undoSolitaireMove =
+    undoSolitaireMove;
+
+
 console.log(
     "🃏 DigiCafe Solitaire engine loaded — Draw 3."
 );
-
