@@ -66,16 +66,12 @@ body {
     margin: 0;
     min-height: 100vh;
     overflow-x: hidden;
-
     font-family: "Kumbh Sans", Arial, sans-serif;
     font-size: 16px;
     line-height: 1.7;
-
     background: var(--background);
     color: var(--text);
-
     padding-top: var(--navbar-height);
-
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
 }
@@ -140,32 +136,25 @@ h6 {
     position: fixed;
     inset: 0 0 auto 0;
     z-index: 9999;
-
     min-height: var(--navbar-height);
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     padding: 12px clamp(18px, 4vw, 50px);
-
     background: rgba(5,13,26,.97);
     border-bottom: 1px solid rgba(214,179,106,.20);
     box-shadow: 0 6px 25px rgba(0,0,0,.20);
-
     backdrop-filter: blur(12px);
 }
 
 .logo {
     flex-shrink: 0;
-
     font-family: Georgia, "Times New Roman", serif;
     font-size: clamp(1.3rem, 2.5vw, 1.75rem);
     font-weight: 700;
     letter-spacing: 1.5px;
-
     color: var(--gold-light);
     white-space: nowrap;
-
     transition: transform var(--transition);
 }
 
@@ -177,7 +166,6 @@ h6 {
     display: flex;
     align-items: center;
     gap: clamp(18px, 3vw, 38px);
-
     margin: 0;
     padding: 0;
     list-style: none;
@@ -190,33 +178,25 @@ h6 {
 
 .navbar__links {
     position: relative;
-
     display: inline-flex;
     align-items: center;
-
     min-height: 44px;
     padding: 8px 2px;
-
     color: var(--cream);
     font-size: clamp(1rem, 1.4vw, 1.12rem);
     font-weight: 600;
     white-space: nowrap;
-
     transition: color var(--transition);
 }
 
 .navbar__links::after {
     content: "";
-
     position: absolute;
     left: 0;
     bottom: 3px;
-
     width: 0;
     height: 2px;
-
     background: var(--gold);
-
     transition: width var(--transition);
 }
 
@@ -232,26 +212,19 @@ h6 {
 
 #mobile-menu {
     display: none;
-
     width: 44px;
     height: 44px;
-
     padding: 8px;
-
     border: 1px solid rgba(214,179,106,.25);
     border-radius: 10px;
-
     background: var(--navy);
 }
 
 #mobile-menu .bar {
     display: block;
-
     width: 100%;
     height: 3px;
-
     margin: 4px 0;
-
     border-radius: 5px;
     background: var(--gold-light);
 }
@@ -264,13 +237,10 @@ h6 {
 .card,
 .content-box {
     padding: 24px;
-
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-
     box-shadow: var(--shadow-sm);
-
     transition:
         transform var(--transition),
         box-shadow var(--transition);
@@ -288,18 +258,13 @@ h6 {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     min-height: 44px;
     padding: 10px 20px;
-
     border: 0;
     border-radius: 999px;
-
     background: var(--gold);
     color: var(--navy-dark);
-
     font-weight: 700;
-
     transition:
         transform var(--transition),
         background var(--transition),
@@ -316,132 +281,616 @@ h6 {
 
 
 /* =========================================================
-   05. HOME PAGE
+   DIGICAFE HOME / LOBBY
 ========================================================= */
 
-.cafe-home {
-    width: 100%;
-    padding: 25px 20px 70px;
+/* HOME BACKGROUND */
+
+main.cafe-home {
+    position: relative;
+
+    min-height: 100vh;
+
+    background-color: #07111f;
+
+    background-image:
+        linear-gradient(
+            rgba(5, 14, 25, 0.25),
+            rgba(5, 14, 25, 0.38)
+        ),
+        url("Asset/photo/home-backgound.png");
+
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    box-sizing: border-box;
+
+    padding:
+        55px 25px 90px;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.cafe-home #cafe {
+    width: min(1050px, 100%);
+
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.cafe-home .hero {
+    width: min(900px, 100%);
+
+    margin:
+        20px auto 55px;
+
     text-align: center;
 }
 
-.hero {
-    width: min(100%, 850px);
-    margin: 25px auto 50px;
+
+.cafe-home .hero h1 {
+    margin: 0;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        clamp(2.6rem, 6vw, 4.8rem);
+
+    font-weight: 500;
+
+    line-height: 1.1;
+
+    color: #fff8ea;
+
+    text-shadow:
+        0 3px 12px rgba(0,0,0,.8),
+        0 0 25px rgba(0,0,0,.4);
 }
 
-.hero h1 {
-    margin-bottom: 15px;
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    color: var(--navy-dark);
+
+/* Gold line */
+
+.cafe-home .hero h1::after {
+    content: "";
+
+    display: block;
+
+    width: 80px;
+    height: 2px;
+
+    margin: 22px auto 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #d6b36a,
+            transparent
+        );
 }
 
-.hero .subtitle {
-    margin-bottom: 15px;
-    color: var(--gold-dark);
-    font-size: clamp(1.05rem, 2vw, 1.25rem);
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.cafe-home .status {
+    display: inline-block;
+
+    margin: 22px auto 0;
+
+    padding: 10px 20px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.25);
+
+    border-radius: 50px;
+
+    background:
+        rgba(5,15,27,.58);
+
+    color: #f5ead7;
+
+    font-size: .9rem;
+
+    line-height: 1.5;
+
+    text-shadow:
+        0 2px 7px rgba(0,0,0,.7);
 }
 
-.hero .intro {
-    max-width: 700px;
-    margin: 0 auto 18px;
-    color: var(--text-soft);
-}
 
-.hero .status {
-    color: var(--text-light);
-    font-size: .98rem;
-}
+/* =========================================================
+   ROOM GRID
+========================================================= */
 
-.card-grid {
-    width: min(100%, 900px);
-    margin: 40px auto;
+.cafe-home .card-grid {
+    width: 100%;
+
+    margin: 0 auto;
 
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
 
-    text-align: left;
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 24px;
 }
 
-.card-grid a {
+
+/* =========================================================
+   ROOM CARDS
+========================================================= */
+
+.cafe-home .cafe-card {
+    position: relative;
+
     display: flex;
+
     flex-direction: column;
 
-    min-height: 235px;
-    padding: 26px;
+    min-height: 245px;
 
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
+    padding: 30px;
 
-    box-shadow: var(--shadow-sm);
+    box-sizing: border-box;
+
+    text-decoration: none;
+
+    color: #f5eee3;
+
+    background:
+        rgba(7,19,33,.78);
+
+    border:
+        1px solid
+        rgba(255,255,255,.18);
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 15px 40px
+        rgba(0,0,0,.35);
+
+    overflow: hidden;
 
     transition:
-        transform var(--transition),
-        box-shadow var(--transition),
-        border-color var(--transition);
+        transform .3s ease,
+        box-shadow .3s ease,
+        border-color .3s ease,
+        background .3s ease;
 }
 
-.card-grid a:hover {
-    transform: translateY(-5px);
-    border-color: rgba(214,179,106,.55);
-    box-shadow: var(--shadow);
+
+.cafe-home .cafe-card:hover {
+    transform:
+        translateY(-7px);
+
+    background:
+        rgba(8,24,41,.88);
+
+    border-color:
+        rgba(214,179,106,.48);
+
+    box-shadow:
+        0 23px 55px
+        rgba(0,0,0,.45);
 }
 
-.card-grid h2 {
-    margin-bottom: 12px;
-    color: var(--navy-dark);
+
+/* =========================================================
+   CARD TITLES
+========================================================= */
+
+.cafe-home .cafe-card h2 {
+    margin:
+        0 0 15px;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        1.45rem;
+
+    font-weight:
+        500;
+
+    color:
+        #fff4df;
+
+    text-shadow:
+        0 2px 8px rgba(0,0,0,.65);
 }
 
-.card-grid p {
+
+/* =========================================================
+   CARD TEXT
+========================================================= */
+
+.cafe-home .cafe-card p {
     flex: 1;
-    color: var(--text-soft);
+
+    margin: 0;
+
+    color:
+        rgba(255,255,255,.8);
+
+    font-size:
+        .94rem;
+
+    line-height:
+        1.75;
 }
 
-.card-grid span {
-    color: var(--gold-dark);
+
+/* =========================================================
+   CARD LINK
+========================================================= */
+
+.cafe-home .cafe-card span {
+    margin-top: 22px;
+
+    color:
+        #e2c27d;
+
+    font-size:
+        .9rem;
+
     font-weight: 700;
+
+    transition:
+        transform .25s ease,
+        color .25s ease;
 }
 
-.feature {
-    width: min(100%, 760px);
-    margin: 60px auto;
-    padding: 35px;
 
-    background: linear-gradient(135deg, var(--navy-dark), var(--navy));
+.cafe-home .cafe-card:hover span {
+    color:
+        #fff1c9;
 
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
-
-    color: var(--cream);
+    transform:
+        translateX(6px);
 }
 
-.feature h2 {
-    color: var(--gold-light);
+
+/* =========================================================
+   FEATURE
+========================================================= */
+
+.cafe-home .feature {
+    width: min(850px, 100%);
+
+    margin:
+        65px auto 0;
+
+    padding:
+        42px 40px;
+
+    box-sizing: border-box;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(5,18,31,.92),
+            rgba(12,31,49,.88)
+        );
+
+    border:
+        1px solid
+        rgba(214,179,106,.3);
+
+    border-radius:
+        25px;
+
+    box-shadow:
+        0 22px 55px
+        rgba(0,0,0,.4);
 }
 
-.feature p {
-    max-width: 650px;
-    margin-inline: auto;
-    color: rgba(255,255,255,.86);
+
+/* =========================================================
+   FEATURE TITLE
+========================================================= */
+
+.cafe-home .feature h2 {
+    margin:
+        0 0 18px;
+
+    font-family:
+        Georgia,
+        "Times New Roman",
+        serif;
+
+    font-size:
+        clamp(1.5rem,3vw,2rem);
+
+    font-weight:
+        500;
+
+    color:
+        #e7c983;
 }
 
-.quote {
-    width: min(100%, 700px);
-    margin: 60px auto 20px;
-    padding: 25px;
 
-    border-top: 1px solid rgba(214,179,106,.45);
-    border-bottom: 1px solid rgba(214,179,106,.45);
+/* =========================================================
+   FEATURE TEXT
+========================================================= */
 
-    color: var(--navy-soft);
+.cafe-home .feature p {
+    max-width:
+        680px;
 
-    font-family: Georgia, serif;
-    font-size: 1.15rem;
-    font-style: italic;
+    margin:
+        0 auto 28px;
+
+    color:
+        rgba(255,255,255,.84);
+
+    font-size:
+        .97rem;
+
+    line-height:
+        1.8;
 }
 
+
+/* =========================================================
+   FEATURE BUTTON
+========================================================= */
+
+.cafe-home .feature-button {
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    min-width:
+        190px;
+
+    padding:
+        13px 25px;
+
+    border-radius:
+        50px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #e5ca89,
+            #bd9450
+        );
+
+    color:
+        #081522;
+
+    text-decoration:
+        none;
+
+    font-size:
+        .9rem;
+
+    font-weight:
+        700;
+
+    box-shadow:
+        0 8px 25px
+        rgba(0,0,0,.3);
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease,
+        filter .25s ease;
+}
+
+
+.cafe-home .feature-button:hover {
+    transform:
+        translateY(-3px);
+
+    filter:
+        brightness(1.08);
+
+    box-shadow:
+        0 13px 32px
+        rgba(0,0,0,.4);
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 950px) {
+
+    main.cafe-home {
+        padding:
+            45px 25px 75px;
+    }
+
+    .cafe-home .card-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .cafe-home .cafe-card:last-child {
+        grid-column:
+            1 / -1;
+
+        width:
+            min(100%, 500px);
+
+        justify-self:
+            center;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    main.cafe-home {
+        padding:
+            35px 15px 60px;
+
+        background-attachment:
+            scroll;
+
+        background-position:
+            center top;
+    }
+
+
+    .cafe-home .hero {
+        margin:
+            10px auto 40px;
+    }
+
+
+    .cafe-home .hero h1 {
+        font-size:
+            clamp(2.2rem,11vw,3rem);
+    }
+
+
+    .cafe-home .status {
+        max-width:
+            100%;
+
+        padding:
+            9px 15px;
+
+        border-radius:
+            18px;
+
+        font-size:
+            .78rem;
+    }
+
+
+    .cafe-home .card-grid {
+        grid-template-columns:
+            1fr;
+
+        gap:
+            16px;
+    }
+
+
+    .cafe-home .cafe-card,
+    .cafe-home .cafe-card:last-child {
+        grid-column:
+            auto;
+
+        width:
+            100%;
+
+        min-height:
+            205px;
+
+        padding:
+            24px;
+    }
+
+
+    .cafe-home .cafe-card h2 {
+        font-size:
+            1.3rem;
+    }
+
+
+    .cafe-home .cafe-card p {
+        font-size:
+            .9rem;
+
+        line-height:
+            1.7;
+    }
+
+
+    .cafe-home .feature {
+        margin-top:
+            45px;
+
+        padding:
+            32px 22px;
+
+        border-radius:
+            22px;
+    }
+
+
+    .cafe-home .feature p {
+        font-size:
+            .9rem;
+
+        line-height:
+            1.7;
+    }
+
+
+    .cafe-home .feature-button {
+        width:
+            100%;
+    }
+}
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media (max-width: 400px) {
+
+    main.cafe-home {
+        padding-left:
+            12px;
+
+        padding-right:
+            12px;
+    }
+
+
+    .cafe-home .hero h1 {
+        font-size:
+            2.15rem;
+    }
+
+
+    .cafe-home .cafe-card {
+        padding:
+            22px 20px;
+    }
+
+
+    .cafe-home .feature {
+        padding:
+            28px 18px;
+    }
+}
 
 /* =========================================================
    06. ABOUT / CONTACT
