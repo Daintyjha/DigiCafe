@@ -3869,7 +3869,7 @@ and (
 }
 /* =========================================================
    DIGICAFE BINGO
-   FINAL MATCHED CSS
+   COMPLETE RESPONSIVE CSS
 ========================================================= */
 
 .bingo-room {
@@ -3900,20 +3900,23 @@ and (
     --bingo-coffee: #7a4b35;
 
     --bingo-shadow:
-        0 18px 45px rgba(7,20,38,0.12);
+        0 12px 30px rgba(7,20,38,0.10);
 
     --bingo-small-shadow:
-        0 8px 22px rgba(7,20,38,0.10);
+        0 5px 15px rgba(7,20,38,0.09);
 
-    --bingo-radius: 20px;
+    --bingo-radius: 18px;
 
     width: 100%;
     min-height: 100%;
 
     position: relative;
 
-    background: var(--bingo-background);
-    color: var(--bingo-text);
+    background:
+        var(--bingo-background);
+
+    color:
+        var(--bingo-text);
 
     box-sizing: border-box;
 }
@@ -3922,18 +3925,26 @@ and (
 .bingo-room *,
 .bingo-room *::before,
 .bingo-room *::after {
+
     box-sizing: border-box;
 }
 
 
 .bingo-room button {
+
     font: inherit;
+
 }
 
 
 .bingo-room button:focus-visible {
-    outline: 3px solid var(--bingo-gold);
+
+    outline:
+        3px solid
+        var(--bingo-gold);
+
     outline-offset: 3px;
+
 }
 
 
@@ -3965,12 +3976,17 @@ and (
 
     z-index: 100;
 
-    background: var(--bingo-navy-dark);
-    color: var(--bingo-white);
+    background:
+        var(--bingo-navy-dark);
+
+    color:
+        var(--bingo-white);
+
 }
 
 
-.bingo-app-header .game-secondary-button {
+.bingo-app-header
+.game-secondary-button {
 
     width: 36px;
     height: 36px;
@@ -3986,7 +4002,8 @@ and (
     background:
         rgba(255,255,255,0.07);
 
-    color: var(--bingo-white);
+    color:
+        var(--bingo-white);
 
     display: flex;
 
@@ -3996,8 +4013,8 @@ and (
     cursor: pointer;
 
     transition:
-        background 0.2s ease,
-        transform 0.2s ease;
+        0.2s ease;
+
 }
 
 
@@ -4009,6 +4026,7 @@ and (
 
     transform:
         translateY(-1px);
+
 }
 
 
@@ -4021,17 +4039,18 @@ and (
     align-items: center;
 
     gap: 6px;
+
 }
 
 
-.bingo-app-title .game-eyebrow {
+.bingo-app-title
+.game-eyebrow {
 
     color:
         var(--bingo-gold-light);
 
     font-size: 1rem;
 
-    line-height: 1;
 }
 
 
@@ -4045,6 +4064,7 @@ and (
     font-size: 1.15rem;
 
     line-height: 1;
+
 }
 
 
@@ -4055,6 +4075,7 @@ and (
     align-items: center;
 
     gap: 5px;
+
 }
 
 
@@ -4079,15 +4100,15 @@ and (
     flex-direction: column;
 
     align-items: center;
-
     justify-content: center;
+
 }
 
 
 .bingo-mini-stat span {
 
     font-size: 0.7rem;
-    line-height: 1;
+
 }
 
 
@@ -4095,10 +4116,11 @@ and (
 
     margin-top: 2px;
 
-    color: var(--bingo-white);
+    color:
+        var(--bingo-white);
 
     font-size: 0.72rem;
-    line-height: 1;
+
 }
 
 
@@ -4108,11 +4130,14 @@ and (
 
 .bingo-app-layout {
 
-    width: min(100%,1500px);
+    width:
+        min(100%,1500px);
 
-    margin: 0 auto;
+    margin:
+        0 auto;
 
-    padding: 16px;
+    padding:
+        16px;
 
     display: grid;
 
@@ -4124,8 +4149,13 @@ and (
     gap: 16px;
 
     align-items: start;
+
 }
 
+
+/* =========================================================
+   SIDEBARS
+========================================================= */
 
 .bingo-sidebar {
 
@@ -4136,6 +4166,7 @@ and (
     flex-direction: column;
 
     gap: 12px;
+
 }
 
 
@@ -4153,10 +4184,11 @@ and (
         var(--bingo-radius);
 
     background:
-        rgba(255,255,255,0.92);
+        rgba(255,255,255,0.94);
 
     box-shadow:
         var(--bingo-small-shadow);
+
 }
 
 
@@ -4168,11 +4200,11 @@ and (
     flex-direction: column;
 
     align-items: center;
+
 }
 
 
 .bingo-sidebar-left
-.bingo-mini-panel
 .game-eyebrow {
 
     color:
@@ -4180,7 +4212,6 @@ and (
 
     font-size: 0.9rem;
 
-    line-height: 1;
 }
 
 
@@ -4198,6 +4229,7 @@ and (
         repeat(4,1fr);
 
     gap: 5px;
+
 }
 
 
@@ -4213,7 +4245,7 @@ and (
         1px solid
         var(--bingo-border);
 
-    border-radius: 11px;
+    border-radius: 10px;
 
     background:
         var(--bingo-background);
@@ -4232,10 +4264,6 @@ and (
 
     cursor: pointer;
 
-    transition:
-        transform 0.2s ease,
-        background 0.2s ease,
-        border-color 0.2s ease;
 }
 
 
@@ -4246,6 +4274,7 @@ and (
 
     transform:
         translateY(-1px);
+
 }
 
 
@@ -4259,6 +4288,7 @@ and (
 
     color:
         var(--bingo-white);
+
 }
 
 
@@ -4266,7 +4296,6 @@ and (
 
     font-size: 1.05rem;
 
-    line-height: 1;
 }
 
 
@@ -4277,7 +4306,6 @@ and (
 
     font-size: 0.52rem;
 
-    line-height: 1;
 }
 
 
@@ -4285,6 +4313,7 @@ and (
 
     color:
         var(--bingo-gold-light);
+
 }
 
 
@@ -4314,14 +4343,6 @@ and (
 
     justify-content: space-between;
 
-    gap: 6px;
-}
-
-
-.bingo-credit-info span,
-.bingo-reset-info span {
-
-    font-size: 0.9rem;
 }
 
 
@@ -4332,6 +4353,7 @@ and (
         var(--bingo-navy);
 
     font-size: 0.9rem;
+
 }
 
 
@@ -4339,6 +4361,7 @@ and (
 
     color:
         var(--bingo-gold);
+
 }
 
 
@@ -4356,6 +4379,7 @@ and (
         repeat(2,1fr);
 
     gap: 6px;
+
 }
 
 
@@ -4363,13 +4387,11 @@ and (
 
     min-height: 48px;
 
-    padding: 6px;
-
     border:
         1px solid
         var(--bingo-border);
 
-    border-radius: 11px;
+    border-radius: 10px;
 
     background:
         var(--bingo-background);
@@ -4383,6 +4405,7 @@ and (
     justify-content: center;
 
     cursor: pointer;
+
 }
 
 
@@ -4396,6 +4419,7 @@ and (
 
     color:
         var(--bingo-white);
+
 }
 
 
@@ -4403,7 +4427,6 @@ and (
 
     font-size: 1.15rem;
 
-    line-height: 1;
 }
 
 
@@ -4414,16 +4437,7 @@ and (
 .bingo-caller-panel {
 
     text-align: center;
-}
 
-
-.bingo-caller-panel
-.game-eyebrow {
-
-    color:
-        var(--bingo-gold);
-
-    font-size: 0.9rem;
 }
 
 
@@ -4437,6 +4451,7 @@ and (
     font-size: 0.8rem;
 
     font-weight: 900;
+
 }
 
 
@@ -4453,6 +4468,7 @@ and (
     line-height: 0.9;
 
     font-weight: 900;
+
 }
 
 
@@ -4469,9 +4485,6 @@ and (
 
     font-weight: 800;
 
-    line-height: 1.35;
-
-    text-align: center;
 }
 
 
@@ -4504,8 +4517,6 @@ and (
 
     font-size: 1.25rem;
 
-    box-shadow:
-        var(--bingo-small-shadow);
 }
 
 
@@ -4514,6 +4525,7 @@ and (
     opacity: 0.45;
 
     cursor: not-allowed;
+
 }
 
 
@@ -4529,6 +4541,7 @@ and (
         1fr 1fr;
 
     gap: 6px;
+
 }
 
 
@@ -4541,7 +4554,7 @@ and (
         1px solid
         var(--bingo-border);
 
-    border-radius: 11px;
+    border-radius: 10px;
 
     background:
         var(--bingo-white);
@@ -4555,6 +4568,7 @@ and (
     justify-content: center;
 
     cursor: pointer;
+
 }
 
 
@@ -4563,11 +4577,9 @@ and (
     background:
         var(--bingo-navy);
 
-    border-color:
-        var(--bingo-navy);
-
     color:
         var(--bingo-white);
+
 }
 
 
@@ -4580,6 +4592,7 @@ and (
     min-width: 0;
 
     width: 100%;
+
 }
 
 
@@ -4592,7 +4605,9 @@ and (
     display: flex;
 
     align-items: center;
+
     justify-content: space-between;
+
 }
 
 
@@ -4602,7 +4617,6 @@ and (
     color:
         var(--bingo-gold);
 
-    font-size: 0.9rem;
 }
 
 
@@ -4630,8 +4644,13 @@ and (
     font-size: 0.72rem;
 
     font-weight: 900;
+
 }
 
+
+/* =========================================================
+   CARDS
+========================================================= */
 
 .bingo-cards {
 
@@ -4645,6 +4664,7 @@ and (
     gap: 16px;
 
     align-items: start;
+
 }
 
 
@@ -4667,6 +4687,7 @@ and (
 
     box-shadow:
         var(--bingo-shadow);
+
 }
 
 
@@ -4686,11 +4707,12 @@ and (
 
     letter-spacing:
         0.08em;
+
 }
 
 
 /* =========================================================
-   GRID
+   BINGO GRID
 ========================================================= */
 
 .bingo-grid {
@@ -4702,9 +4724,8 @@ and (
     grid-template-columns:
         repeat(5,minmax(0,1fr));
 
-    grid-auto-rows: 1fr;
-
     gap: 4px;
+
 }
 
 
@@ -4732,6 +4753,7 @@ and (
         clamp(0.65rem,1.7vw,1rem);
 
     font-weight: 900;
+
 }
 
 
@@ -4745,7 +4767,8 @@ and (
 
     width: 100%;
 
-    aspect-ratio: 1 / 1;
+    aspect-ratio:
+        1 / 1;
 
     padding: 2px;
 
@@ -4782,11 +4805,8 @@ and (
     -webkit-tap-highlight-color: transparent;
 
     transition:
-        background 0.18s ease,
-        color 0.18s ease,
-        border-color 0.18s ease,
-        transform 0.18s ease,
-        box-shadow 0.18s ease;
+        0.18s ease;
+
 }
 
 
@@ -4797,6 +4817,7 @@ and (
 
     border-color:
         #cbd6e3;
+
 }
 
 
@@ -4811,9 +4832,6 @@ and (
     color:
         var(--bingo-navy-dark);
 
-    box-shadow:
-        inset 0 0 0 2px
-        rgba(255,255,255,0.42);
 }
 
 
@@ -4829,8 +4847,13 @@ and (
         var(--bingo-gold-light);
 
     cursor: default;
+
 }
 
+
+/* =========================================================
+   DAUBABLE
+========================================================= */
 
 .bingo-cell.daubable {
 
@@ -4838,69 +4861,40 @@ and (
         bingoDaubablePulse
         1.2s ease-in-out
         infinite;
+
 }
 
 
 @keyframes bingoDaubablePulse {
 
     0%,100% {
+
         box-shadow:
             0 0 0
             rgba(214,179,106,0);
+
     }
 
     50% {
+
         box-shadow:
             0 0 0 2px
             rgba(214,179,106,0.22);
+
     }
+
 }
 
 
 /* =========================================================
-   WILD
-========================================================= */
-
-.bingo-cell.wild-selectable {
-
-    border-color:
-        var(--bingo-gold);
-
-    box-shadow:
-        0 0 0 2px
-        rgba(214,179,106,0.18);
-
-    animation:
-        bingoWildPulse
-        0.9s ease-in-out
-        infinite;
-}
-
-
-@keyframes bingoWildPulse {
-
-    0%,100% {
-        box-shadow:
-            0 0 0 2px
-            rgba(214,179,106,0.18);
-    }
-
-    50% {
-        box-shadow:
-            0 0 0 4px
-            rgba(214,179,106,0.34);
-    }
-}
-
-
-/* =========================================================
-   SECRET TARGETS
+   POWER-UP TARGETS
 ========================================================= */
 
 .bingo-cell.has-treasure {
 
     border-color:
         var(--bingo-treasure);
+
 }
 
 
@@ -4908,6 +4902,7 @@ and (
 
     border-color:
         var(--bingo-instant);
+
 }
 
 
@@ -4930,36 +4925,14 @@ and (
 
     pointer-events: none;
 
-    font-size: 1.5rem;
-
-    line-height: 1;
-
-    opacity: 0.95;
+    font-size:
+        clamp(1rem,3vw,1.5rem);
 
     animation:
         bingoTargetPulse
         1.15s ease-in-out
         infinite;
-}
 
-
-.bingo-cell.has-treasure::after {
-
-    filter:
-        drop-shadow(
-            0 0 7px
-            rgba(201,148,24,0.75)
-        );
-}
-
-
-.bingo-cell.has-instant-bingo::after {
-
-    filter:
-        drop-shadow(
-            0 0 7px
-            rgba(118,85,217,0.75)
-        );
 }
 
 
@@ -4972,6 +4945,7 @@ and (
 
         opacity:
             0.70;
+
     }
 
     50% {
@@ -4981,19 +4955,23 @@ and (
 
         opacity:
             1;
+
     }
+
 }
 
 
 /* =========================================================
-   POWER-UP LANDING ANIMATION
+   POWER-UP LANDING
 ========================================================= */
 
 .bingo-cell.powerup-landing {
 
     animation:
         bingoPowerupLanding
-        0.95s cubic-bezier(.2,.8,.2,1);
+        0.95s
+        cubic-bezier(.2,.8,.2,1);
+
 }
 
 
@@ -5012,10 +4990,7 @@ and (
     background:
         radial-gradient(
             circle,
-            rgba(255,255,255,0.95)
-            0%,
-            rgba(255,255,255,0.45)
-            28%,
+            rgba(255,255,255,0.95),
             transparent 68%
         );
 
@@ -5023,19 +4998,10 @@ and (
 
     animation:
         bingoPowerupFlash
-        0.8s ease-out
+        0.8s
+        ease-out
         forwards;
-}
 
-
-.bingo-cell.powerup-landing::after {
-
-    animation:
-        bingoPowerupIconLand
-        0.85s cubic-bezier(.18,.89,.32,1.28)
-        forwards !important;
-
-    z-index: 7;
 }
 
 
@@ -5046,9 +5012,6 @@ and (
         transform:
             scale(0.74);
 
-        box-shadow:
-            0 0 0
-            rgba(214,179,106,0);
     }
 
     35% {
@@ -5067,10 +5030,6 @@ and (
         transform:
             scale(0.96);
 
-        box-shadow:
-            0 0 0 3px
-            rgba(214,179,106,0.18);
-
     }
 
     100% {
@@ -5078,72 +5037,40 @@ and (
         transform:
             scale(1);
 
-        box-shadow:
-            0 0 0 0
-            rgba(214,179,106,0);
-
     }
+
 }
 
 
 @keyframes bingoPowerupFlash {
 
     0% {
+
         opacity: 0;
-        transform: scale(0.3);
+
+        transform:
+            scale(0.3);
+
     }
 
     30% {
-        opacity: 1;
-        transform: scale(1.1);
-    }
-
-    100% {
-        opacity: 0;
-        transform: scale(1.5);
-    }
-}
-
-
-@keyframes bingoPowerupIconLand {
-
-    0% {
-
-        transform:
-            translateY(-18px)
-            scale(0.25)
-            rotate(-12deg);
-
-        opacity: 0;
-    }
-
-    50% {
-
-        transform:
-            translateY(3px)
-            scale(1.25)
-            rotate(4deg);
 
         opacity: 1;
-    }
-
-    75% {
 
         transform:
-            translateY(-2px)
-            scale(0.94)
-            rotate(0deg);
+            scale(1.1);
 
     }
 
     100% {
 
-        transform:
-            translateY(0)
-            scale(1);
+        opacity: 0;
 
-        opacity: 0.95;
+        transform:
+            scale(1.5);
+
     }
+
 }
 
 
@@ -5166,18 +5093,26 @@ and (
         bingoWinningCell
         0.9s ease-in-out
         infinite alternate;
+
 }
 
 
 @keyframes bingoWinningCell {
 
     from {
-        transform: scale(1);
+
+        transform:
+            scale(1);
+
     }
 
     to {
-        transform: scale(1.04);
+
+        transform:
+            scale(1.04);
+
     }
+
 }
 
 
@@ -5189,7 +5124,8 @@ and (
 
     width: 100%;
 
-    margin: 10px auto 6px;
+    margin:
+        10px auto 6px;
 
     display: flex;
 
@@ -5199,6 +5135,7 @@ and (
     gap: 7px 13px;
 
     flex-wrap: wrap;
+
 }
 
 
@@ -5207,7 +5144,9 @@ and (
     display: flex;
 
     align-items: center;
+
     justify-content: center;
+
 }
 
 
@@ -5218,22 +5157,30 @@ and (
 
     border-radius: 50%;
 
-    display: block;
 }
 
 
 .bingo-legend-dot.called {
-    background: #cbd6e3;
+
+    background:
+        #cbd6e3;
+
 }
 
 
 .bingo-legend-dot.marked {
-    background: var(--bingo-gold);
+
+    background:
+        var(--bingo-gold);
+
 }
 
 
 .bingo-legend-dot.free {
-    background: var(--bingo-navy);
+
+    background:
+        var(--bingo-navy);
+
 }
 
 
@@ -5242,9 +5189,6 @@ and (
     background:
         var(--bingo-treasure);
 
-    box-shadow:
-        0 0 6px
-        rgba(201,148,24,0.45);
 }
 
 
@@ -5253,14 +5197,11 @@ and (
     background:
         var(--bingo-instant);
 
-    box-shadow:
-        0 0 6px
-        rgba(118,85,217,0.45);
 }
 
 
 /* =========================================================
-   COFFEE
+   COFFEE BREWER
 ========================================================= */
 
 .bingo-coffee-panel {
@@ -5273,7 +5214,6 @@ and (
 
     align-items: center;
 
-    overflow: visible;
 }
 
 
@@ -5288,6 +5228,7 @@ and (
     align-items: center;
 
     justify-content: center;
+
 }
 
 
@@ -5307,9 +5248,6 @@ and (
 
     cursor: pointer;
 
-    transition:
-        transform 0.25s ease,
-        filter 0.25s ease;
 }
 
 
@@ -5329,7 +5267,7 @@ and (
         var(--bingo-coffee-dark);
 
     color:
-        #ffffff;
+        white;
 
     display: flex;
 
@@ -5338,9 +5276,6 @@ and (
 
     font-size: 1.85rem;
 
-    box-shadow:
-        0 8px 18px
-        rgba(74,45,34,0.16);
 }
 
 
@@ -5362,7 +5297,6 @@ and (
 
     border-radius: 50%;
 
-    pointer-events: none;
 }
 
 
@@ -5386,6 +5320,7 @@ and (
 
     border-radius:
         0 14px 14px 0;
+
 }
 
 
@@ -5406,7 +5341,6 @@ and (
     border-radius:
         6px 6px 13px 13px;
 
-    pointer-events: none;
 }
 
 
@@ -5421,16 +5355,12 @@ and (
 
     height: 0%;
 
-    border-radius: inherit;
-
     background:
         var(--bingo-coffee);
 
-    opacity: 0.62;
-
     transition:
-        height 0.4s ease,
-        background 0.35s ease;
+        height 0.4s ease;
+
 }
 
 
@@ -5454,11 +5384,14 @@ and (
         bingoSteam
         2s ease-in-out
         infinite;
+
 }
 
 
 .steam-one {
+
     left: 26px;
+
 }
 
 
@@ -5468,6 +5401,7 @@ and (
 
     animation-delay:
         0.5s;
+
 }
 
 
@@ -5479,6 +5413,7 @@ and (
 
         transform:
             translateY(5px);
+
     }
 
     50% {
@@ -5487,30 +5422,14 @@ and (
 
         transform:
             translateY(-2px);
+
     }
+
 }
 
 
 /* =========================================================
-   BREWING
-========================================================= */
-
-.bingo-coffee-cup.brewing {
-
-    cursor: default;
-}
-
-
-.bingo-coffee-cup.brewing
-.bingo-coffee-cup-body {
-
-    background:
-        var(--bingo-coffee-dark);
-}
-
-
-/* =========================================================
-   READY
+   READY COFFEE
 ========================================================= */
 
 .bingo-coffee-cup.ready {
@@ -5520,56 +5439,16 @@ and (
 
     filter:
         drop-shadow(
-            0 0 9px
-            rgba(214,179,106,0.80)
-        )
-        drop-shadow(
-            0 0 20px
-            rgba(214,179,106,0.55)
+            0 0 10px
+            rgba(214,179,106,0.8)
         );
 
     animation:
         bingoReadyPulse
-        0.9s ease-in-out
+        0.9s
+        ease-in-out
         infinite;
-}
 
-
-.bingo-coffee-cup.ready::before {
-
-    content:
-        "READY!";
-
-    position: absolute;
-
-    z-index: 20;
-
-    top: -17px;
-
-    left: 50%;
-
-    transform:
-        translateX(-50%);
-
-    padding: 3px 8px;
-
-    border-radius: 999px;
-
-    background:
-        var(--bingo-gold);
-
-    color:
-        var(--bingo-navy-dark);
-
-    font-size: 0.55rem;
-
-    font-weight: 900;
-
-    white-space: nowrap;
-
-    box-shadow:
-        0 0 12px
-        rgba(214,179,106,0.55);
 }
 
 
@@ -5582,20 +5461,6 @@ and (
     color:
         var(--bingo-navy-dark);
 
-    box-shadow:
-        0 0 0 5px
-        rgba(214,179,106,0.25),
-
-        0 0 32px
-        rgba(214,179,106,0.75);
-}
-
-
-.bingo-coffee-cup.ready
-.bingo-coffee-cup-rim {
-
-    border-color:
-        var(--bingo-white);
 }
 
 
@@ -5605,13 +5470,16 @@ and (
 
         transform:
             scale(1.06);
+
     }
 
     50% {
 
         transform:
             scale(1.13);
+
     }
+
 }
 
 
@@ -5621,9 +5489,9 @@ and (
 
 .bingo-coffee-cup.cooldown {
 
-    opacity: 0.72;
+    opacity:
+        0.65;
 
-    cursor: default;
 }
 
 
@@ -5632,6 +5500,7 @@ and (
 
     background:
         var(--bingo-navy-soft);
+
 }
 
 
@@ -5667,14 +5536,6 @@ and (
 
     font-size: 0.62rem;
 
-    box-shadow:
-        var(--bingo-small-shadow);
-}
-
-
-.bingo-powerup-cooldown strong {
-
-    font-size: 0.72rem;
 }
 
 
@@ -5688,7 +5549,8 @@ and (
 
     margin-top: 2px;
 
-    padding: 7px 8px 9px;
+    padding:
+        7px 8px 9px;
 
     border-radius: 12px;
 
@@ -5697,9 +5559,6 @@ and (
 
     text-align: center;
 
-    transition:
-        background 0.25s ease,
-        box-shadow 0.25s ease;
 }
 
 
@@ -5708,9 +5567,6 @@ and (
     background:
         rgba(214,179,106,0.14);
 
-    box-shadow:
-        0 0 0 1px
-        rgba(214,179,106,0.22);
 }
 
 
@@ -5722,6 +5578,7 @@ and (
     font-size: 0.65rem;
 
     font-weight: 900;
+
 }
 
 
@@ -5737,14 +5594,7 @@ and (
     font-size: 0.70rem;
 
     font-weight: 900;
-}
 
-
-.bingo-powerup-status.ready
-.bingo-powerup-status-title {
-
-    color:
-        var(--bingo-gold);
 }
 
 
@@ -5760,6 +5610,7 @@ and (
     font-size: 0.58rem;
 
     line-height: 1.25;
+
 }
 
 
@@ -5770,6 +5621,7 @@ and (
 .bingo-called-panel {
 
     min-height: 120px;
+
 }
 
 
@@ -5786,13 +5638,7 @@ and (
         var(--bingo-text-soft);
 
     font-size: 0.72rem;
-}
 
-
-.bingo-section-heading strong {
-
-    color:
-        var(--bingo-navy);
 }
 
 
@@ -5811,6 +5657,7 @@ and (
     gap: 5px;
 
     overflow-y: auto;
+
 }
 
 
@@ -5838,6 +5685,7 @@ and (
     font-size: 0.58rem;
 
     font-weight: 800;
+
 }
 
 
@@ -5848,6 +5696,7 @@ and (
 
     color:
         var(--bingo-navy-dark);
+
 }
 
 
@@ -5857,11 +5706,12 @@ and (
         var(--bingo-text-soft);
 
     font-size: 0.75rem;
+
 }
 
 
 /* =========================================================
-   WIN
+   WIN SCREEN
 ========================================================= */
 
 .bingo-win {
@@ -5882,7 +5732,9 @@ and (
     background:
         rgba(7,20,38,0.72);
 
-    backdrop-filter: blur(7px);
+    backdrop-filter:
+        blur(7px);
+
 }
 
 
@@ -5903,11 +5755,8 @@ and (
     background:
         var(--bingo-white);
 
-    box-shadow:
-        0 30px 80px
-        rgba(0,0,0,0.25);
-
     text-align: center;
+
 }
 
 
@@ -5916,6 +5765,7 @@ and (
     margin-bottom: 6px;
 
     font-size: 2.8rem;
+
 }
 
 
@@ -5925,24 +5775,24 @@ and (
     color:
         var(--bingo-gold);
 
-    font-size: 0.9rem;
 }
 
 
 .bingo-win-card h2 {
 
-    margin: 4px 0 8px;
+    margin:
+        4px 0 8px;
 
     color:
         var(--bingo-navy-dark);
 
-    font-size: 2.3rem;
 }
 
 
 .bingo-win-card p {
 
-    margin: 8px auto;
+    margin:
+        8px auto;
 
     max-width: 320px;
 
@@ -5952,12 +5802,14 @@ and (
     font-size: 0.78rem;
 
     line-height: 1.5;
+
 }
 
 
 .bingo-final-stats {
 
-    margin: 18px 0;
+    margin:
+        18px 0;
 
     display: grid;
 
@@ -5965,14 +5817,13 @@ and (
         repeat(3,1fr);
 
     gap: 7px;
+
 }
 
 
 .bingo-final-stats div {
 
     min-height: 58px;
-
-    padding: 8px 5px;
 
     border-radius: 11px;
 
@@ -5985,6 +5836,7 @@ and (
 
     align-items: center;
     justify-content: center;
+
 }
 
 
@@ -5995,49 +5847,82 @@ and (
     color:
         var(--bingo-navy);
 
-    font-size: 0.95rem;
 }
 
 
-.bingo-win .game-button {
+/* =========================================================
+   TABLET
+========================================================= */
 
-    width: 48px;
-    height: 48px;
+@media (max-width: 1100px) {
 
-    padding: 0;
+    .bingo-app-layout {
 
-    border: 0;
+        grid-template-columns:
+            190px
+            minmax(0,1fr)
+            220px;
 
-    border-radius: 50%;
+        gap: 10px;
 
-    background:
-        var(--bingo-gold);
+        padding: 10px;
 
-    color:
-        var(--bingo-navy-dark);
+    }
 
-    display: inline-flex;
 
-    align-items: center;
-    justify-content: center;
+    .bingo-cards {
 
-    cursor: pointer;
+        gap: 10px;
+
+    }
+
+
+    .bingo-card {
+
+        padding: 6px;
+
+    }
+
+
+    .bingo-grid {
+
+        gap: 3px;
+
+    }
+
 }
 
 
 /* =========================================================
    MOBILE
+   IMPORTANT:
+   KEEP 2 × 2 CARD LAYOUT
 ========================================================= */
 
 @media (max-width: 700px) {
 
+    .bingo-room {
+
+        width: 100%;
+
+        overflow-x: hidden;
+
+    }
+
+
+    /* -----------------------------------------------------
+       HEADER
+    ----------------------------------------------------- */
+
     .bingo-app-header {
 
-        min-height: 55px;
+        min-height: 52px;
 
-        padding: 7px 8px;
+        padding:
+            6px 8px;
 
-        gap: 6px;
+        gap: 5px;
+
     }
 
 
@@ -6046,6 +5931,7 @@ and (
 
         width: 32px;
         height: 32px;
+
     }
 
 
@@ -6053,418 +5939,785 @@ and (
     .game-eyebrow {
 
         display: none;
+
     }
 
 
     .bingo-app-title h2 {
 
-        font-size: 0.95rem;
+        font-size:
+            0.9rem;
+
     }
 
 
     .bingo-mini-stats {
 
         gap: 3px;
+
     }
 
 
     .bingo-mini-stat {
 
-        min-width: 31px;
-        min-height: 30px;
+        min-width: 34px;
+
+        min-height: 28px;
 
         padding: 3px;
+
     }
 
 
     .bingo-mini-stat span {
 
-        font-size: 0.58rem;
+        font-size:
+            0.55rem;
+
     }
 
 
     .bingo-mini-stat strong {
 
-        font-size: 0.62rem;
+        font-size:
+            0.6rem;
+
     }
 
 
+    /* -----------------------------------------------------
+       MAIN CONTAINER
+    ----------------------------------------------------- */
+
     .bingo-app-layout {
+
+        position: relative;
 
         width: 100%;
 
-        padding: 7px;
+        min-height: 100%;
+
+        padding:
+            8px;
+
+        display: block;
+
+    }
+
+
+    /* -----------------------------------------------------
+       HIDE DESKTOP SIDE PANELS
+       We will use their contents as floating controls.
+    ----------------------------------------------------- */
+
+    .bingo-sidebar {
+
+        position: static;
+
+    }
+
+
+    /* -----------------------------------------------------
+       LEFT FLOATING AREA
+    ----------------------------------------------------- */
+
+    .bingo-sidebar-left {
+
+        position: absolute;
+
+        top: 8px;
+
+        left: 8px;
+
+        z-index: 50;
+
+        width:
+            118px;
 
         display: flex;
 
         flex-direction: column;
 
-        gap: 7px;
-    }
+        gap: 5px;
 
+        pointer-events: none;
 
-    /* COFFEE + CALLED */
+        background: transparent;
 
-    .bingo-sidebar-right {
-
-        order: 1;
-
-        width: 100%;
-
-        display: grid;
-
-        grid-template-columns:
-            0.88fr
-            1.12fr;
-
-        gap: 6px;
-    }
-
-
-    .bingo-coffee-panel {
-
-        min-height: 135px;
-
-        padding: 7px;
-
-        justify-content: center;
-    }
-
-
-    .bingo-called-panel {
-
-        min-height: 135px;
-
-        padding: 7px;
-    }
-
-
-    .bingo-coffee-meter {
-
-        min-height: 62px;
-    }
-
-
-    .bingo-coffee-cup {
-
-        width: 58px;
-        height: 58px;
-    }
-
-
-    .bingo-coffee-cup-body {
-
-        width: 44px;
-        height: 38px;
-
-        font-size: 1.48rem;
-    }
-
-
-    .bingo-coffee-cup-rim {
-
-        top: 11px;
-        left: 7px;
-
-        width: 44px;
-        height: 10px;
-
-        border-width: 2px;
-    }
-
-
-    .bingo-coffee-liquid {
-
-        left: 9px;
-        top: 14px;
-
-        width: 39px;
-        height: 30px;
-    }
-
-
-    .bingo-coffee-handle {
-
-        top: 21px;
-        right: 2px;
-
-        width: 16px;
-        height: 20px;
-
-        border-width: 4px;
-
-        border-left: 0;
-    }
-
-
-    .bingo-coffee-cup.ready::before {
-
-        top: -15px;
-
-        font-size: 0.48rem;
-    }
-
-
-    .bingo-powerup-status {
-
-        padding: 6px 5px;
-    }
-
-
-    .bingo-powerup-timer {
-
-        font-size: 0.58rem;
-    }
-
-
-    .bingo-powerup-status-title {
-
-        font-size: 0.61rem;
-    }
-
-
-    .bingo-powerup-status-text {
-
-        font-size: 0.52rem;
-    }
-
-
-    .bingo-called-numbers {
-
-        max-height: 78px;
-
-        margin-top: 4px;
-
-        gap: 3px;
-    }
-
-
-    .bingo-called-number {
-
-        min-width: 24px;
-
-        height: 23px;
-
-        padding: 0 4px;
-
-        border-radius: 6px;
-
-        font-size: 0.48rem;
-    }
-
-
-    /* LEFT */
-
-    .bingo-sidebar-left {
-
-        order: 2;
-
-        width: 100%;
-
-        display: grid;
-
-        grid-template-columns:
-            1fr 1fr;
-
-        gap: 6px;
     }
 
 
     .bingo-sidebar-left
     .bingo-mini-panel {
 
-        padding: 8px;
+        width: 100%;
+
+        padding: 5px;
+
+        border: 0;
+
+        border-radius: 12px;
+
+        background:
+            rgba(255,255,255,0.68);
+
+        box-shadow:
+            0 4px 14px
+            rgba(7,20,38,0.08);
+
+        backdrop-filter:
+            blur(8px);
+
+        pointer-events: auto;
+
     }
 
+
+    /* card selector */
 
     .bingo-sidebar-left
     .bingo-mini-panel:first-child {
 
-        grid-column: 1 / -1;
+        display: block;
+
+    }
+
+
+    .bingo-sidebar-left
+    .bingo-mini-panel:first-child
+    > .game-eyebrow {
+
+        display: none;
+
+    }
+
+
+    .bingo-card-options {
+
+        gap: 3px;
+
     }
 
 
     .bingo-card-option {
 
-        min-height: 39px;
+        min-height: 30px;
 
-        border-radius: 8px;
+        padding: 2px;
+
+        border-radius: 6px;
+
     }
 
 
     .bingo-card-option strong {
 
-        font-size: 0.84rem;
+        font-size:
+            0.68rem;
+
     }
 
 
     .bingo-card-option small {
 
-        font-size: 0.46rem;
+        font-size:
+            0.38rem;
+
     }
 
 
     .bingo-credit-info,
     .bingo-reset-info {
 
-        display: inline-flex;
+        min-height: 22px;
 
-        width:
-            calc(50% - 3px);
+        margin-top: 3px;
 
-        min-height: 29px;
+        padding:
+            3px 5px;
 
-        margin-top: 5px;
+        border-radius: 6px;
 
-        padding: 4px 6px;
+        font-size:
+            0.55rem;
+
     }
 
 
     .bingo-credit-info span,
     .bingo-reset-info span {
 
-        font-size: 0.78rem;
+        font-size:
+            0.6rem;
+
     }
 
 
     .bingo-credit-info strong,
     .bingo-reset-info strong {
 
-        font-size: 0.68rem;
+        font-size:
+            0.55rem;
+
+    }
+
+
+    /* daub panel */
+
+    .bingo-sidebar-left
+    .bingo-mini-panel:nth-child(2) {
+
+        display: flex;
+
+        flex-direction: row;
+
+        gap: 4px;
+
+    }
+
+
+    .bingo-sidebar-left
+    .bingo-mini-panel:nth-child(2)
+    > .game-eyebrow {
+
+        display: none;
+
+    }
+
+
+    .bingo-daub-options {
+
+        gap: 3px;
+
     }
 
 
     .bingo-daub-option {
 
-        min-height: 40px;
+        min-height: 27px;
+
+        border-radius: 6px;
+
     }
 
 
     .bingo-daub-icon {
 
-        font-size: 0.95rem;
+        font-size:
+            0.72rem;
+
+    }
+
+
+    /* caller */
+
+    .bingo-sidebar-left
+    .bingo-caller-panel {
+
+        padding:
+            4px;
+
+    }
+
+
+    .bingo-sidebar-left
+    .bingo-caller-panel
+    .game-eyebrow {
+
+        display: none;
+
+    }
+
+
+    .bingo-current-letter {
+
+        margin: 0;
+
+        font-size:
+            0.52rem;
+
     }
 
 
     .bingo-current-number {
 
-        font-size: 2.45rem;
+        margin: 1px 0;
+
+        font-size:
+            1.65rem;
+
     }
 
 
     .bingo-result {
 
-        display: block;
+        min-height: 12px;
+
+        margin: 1px 0;
+
+        font-size:
+            0.45rem;
+
+    }
+
+
+    /* -----------------------------------------------------
+       RIGHT FLOATING AREA
+    ----------------------------------------------------- */
+
+    .bingo-sidebar-right {
+
+        position: absolute;
+
+        top: 8px;
+
+        right: 8px;
+
+        z-index: 50;
+
+        width:
+            88px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 5px;
+
+        pointer-events: none;
+
+        background: transparent;
+
+    }
+
+
+    /* -----------------------------------------------------
+       COFFEE PANEL
+       SMALL + TRANSPARENT
+    ----------------------------------------------------- */
+
+    .bingo-coffee-panel {
+
+        width: 100%;
+
+        min-height: auto;
+
+        padding: 4px;
+
+        border: 0;
+
+        border-radius: 12px;
+
+        background:
+            rgba(255,255,255,0.58);
+
+        box-shadow:
+            0 4px 14px
+            rgba(7,20,38,0.07);
+
+        backdrop-filter:
+            blur(7px);
+
+        pointer-events: auto;
+
+    }
+
+
+    /* ONLY SHOW COFFEE ICON */
+    .bingo-coffee-meter {
+
+        min-height: 44px;
+
+        width: 100%;
+
+    }
+
+
+    .bingo-coffee-cup {
+
+        width: 42px;
+        height: 42px;
+
+    }
+
+
+    .bingo-coffee-cup-body {
+
+        width: 34px;
+        height: 29px;
+
+        font-size:
+            1.05rem;
+
+    }
+
+
+    .bingo-coffee-cup-rim {
+
+        top: 8px;
+        left: 5px;
+
+        width: 34px;
+        height: 8px;
+
+        border-width:
+            2px;
+
+    }
+
+
+    .bingo-coffee-liquid {
+
+        left: 7px;
+        top: 10px;
+
+        width: 30px;
+        height: 23px;
+
+    }
+
+
+    .bingo-coffee-handle {
+
+        top: 15px;
+        right: 1px;
+
+        width: 13px;
+        height: 15px;
+
+        border-width:
+            3px;
+
+    }
+
+
+    .bingo-coffee-steam {
+
+        width: 3px;
+        height: 11px;
+
+    }
+
+
+    .steam-one {
+
+        left: 15px;
+
+    }
+
+
+    .steam-two {
+
+        left: 24px;
+
+    }
+
+
+    /* Hide all brewer text on mobile */
+
+    .bingo-powerup-status {
+
+        display: none;
+
+    }
+
+
+    .bingo-powerup-cooldown {
+
+        top: -4px;
+
+        right: -4px;
+
+        min-width: 31px;
 
         min-height: 18px;
 
-        font-size: 0.58rem;
+        padding: 2px 4px;
+
+        font-size:
+            0.45rem;
+
+    }
+
+
+    .bingo-powerup-cooldown strong {
+
+        font-size:
+            0.5rem;
+
+    }
+
+
+    /* -----------------------------------------------------
+       CALL + AUTO BUTTONS
+    ----------------------------------------------------- */
+
+    .bingo-sidebar-left
+    .bingo-control-panel {
+
+        display: none;
+
+    }
+
+
+    .bingo-sidebar-right
+    .bingo-called-panel {
+
+        display: none;
+
+    }
+
+
+    /* Put control buttons into compact floating row
+       using the left floating area's control panel */
+
+    .bingo-sidebar-left
+    .bingo-mini-panel.bingo-control-panel {
+
+        display: block;
+
     }
 
 
     .bingo-control-panel {
 
-        grid-column: 1 / -1;
+        width: 100%;
 
-        padding: 7px;
+        padding: 4px;
+
+        border: 0;
+
+        background:
+            rgba(255,255,255,0.58);
+
+        box-shadow:
+            0 4px 14px
+            rgba(7,20,38,0.07);
+
+        backdrop-filter:
+            blur(7px);
+
     }
 
 
     .bingo-call-button {
 
-        min-height: 40px;
+        min-height: 29px;
+
+        border-radius: 7px;
+
+        font-size:
+            0.85rem;
+
+    }
+
+
+    .bingo-secondary-controls {
+
+        margin-top: 3px;
+
+        gap: 3px;
+
     }
 
 
     .bingo-auto-button,
     .bingo-new-button {
 
-        min-height: 34px;
+        min-height: 27px;
 
-        font-size: 0.9rem;
+        border-radius: 6px;
+
+        font-size:
+            0.65rem;
+
     }
 
 
-    /* BOARD */
+    /* -----------------------------------------------------
+       BOARD
+       THIS IS THE IMPORTANT PART.
+
+       The board gets TOP SPACE so the floating controls
+       sit ABOVE the cards instead of covering Card 1.
+    ----------------------------------------------------- */
 
     .bingo-main-board {
 
-        order: 3;
-
         width: 100%;
+
+        min-width: 0;
+
+        padding-top:
+            132px;
+
     }
 
 
     .bingo-board-heading {
 
-        min-height: 32px;
+        min-height: 28px;
 
-        margin-bottom: 6px;
+        margin-bottom: 5px;
+
+    }
+
+
+    .bingo-board-heading
+    .game-eyebrow {
+
+        font-size:
+            0.65rem;
+
     }
 
 
     .bingo-card-count-label {
 
-        min-width: 52px;
+        min-width: 48px;
 
-        height: 28px;
+        height: 25px;
 
-        font-size: 0.65rem;
+        font-size:
+            0.58rem;
+
     }
 
 
+    /* -----------------------------------------------------
+       2 × 2 CARDS
+    ----------------------------------------------------- */
+
     .bingo-cards {
 
-        grid-template-columns: 1fr;
+        width: 100%;
 
-        gap: 9px;
+        display: grid;
+
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+
+        gap: 7px;
+
+        align-items: start;
+
     }
 
 
     .bingo-card {
 
-        width:
-            min(100%,430px);
+        width: 100%;
 
-        margin: 0 auto;
+        min-width: 0;
 
-        padding: 6px;
+        padding: 5px;
 
-        border-radius: 14px;
+        margin: 0;
+
+        border-radius:
+            11px;
+
     }
 
 
+    .bingo-card-title {
+
+        margin:
+            0 0 4px;
+
+        font-size:
+            0.45rem;
+
+    }
+
+
+    /* -----------------------------------------------------
+       GRID
+    ----------------------------------------------------- */
+
     .bingo-grid {
 
-        gap: 3px;
+        width: 100%;
+
+        grid-template-columns:
+            repeat(5,minmax(0,1fr));
+
+        gap: 2px;
+
     }
 
 
     .bingo-grid-header {
 
-        border-radius: 5px;
+        aspect-ratio:
+            1 / 0.72;
 
-        font-size: 0.7rem;
+        border-radius:
+            4px;
+
+        font-size:
+            clamp(
+                0.42rem,
+                2vw,
+                0.65rem
+            );
+
     }
 
 
     .bingo-cell {
 
-        border-radius: 5px;
+        aspect-ratio:
+            1 / 1;
+
+        padding: 1px;
+
+        border-radius:
+            4px;
 
         font-size:
             clamp(
-                0.66rem,
-                3.9vw,
-                0.92rem
+                0.48rem,
+                2.6vw,
+                0.72rem
             );
+
     }
 
 
     .bingo-cell.has-treasure::after,
     .bingo-cell.has-instant-bingo::after {
 
-        font-size: 1.15rem;
+        font-size:
+            clamp(
+                0.72rem,
+                4vw,
+                1rem
+            );
+
+    }
+
+
+    /* -----------------------------------------------------
+       LEGEND
+    ----------------------------------------------------- */
+
+    .bingo-legend {
+
+        margin:
+            6px auto 3px;
+
+        gap:
+            5px 9px;
+
+    }
+
+
+    .bingo-legend-dot {
+
+        width: 6px;
+        height: 6px;
+
     }
 
 }
@@ -6476,92 +6729,109 @@ and (
 
 @media (max-width: 420px) {
 
-    .bingo-mini-stat {
+    .bingo-app-layout {
 
-        min-width: 28px;
+        padding:
+            6px;
+
+    }
+
+
+    .bingo-sidebar-left {
+
+        left: 6px;
+
+        top: 6px;
+
+        width:
+            108px;
+
     }
 
 
     .bingo-sidebar-right {
 
-        grid-template-columns:
-            0.84fr
-            1.16fr;
+        right: 6px;
+
+        top: 6px;
+
+        width:
+            78px;
+
     }
 
 
-    .bingo-coffee-panel,
-    .bingo-called-panel {
+    .bingo-main-board {
 
-        min-height: 128px;
+        padding-top:
+            124px;
+
     }
 
 
-    .bingo-coffee-cup {
+    .bingo-cards {
 
-        width: 52px;
-        height: 52px;
+        gap:
+            5px;
+
     }
 
 
-    .bingo-coffee-cup-body {
+    .bingo-card {
 
-        width: 40px;
-        height: 35px;
+        padding:
+            4px;
 
-        font-size: 1.32rem;
+        border-radius:
+            9px;
+
     }
 
 
-    .bingo-coffee-cup-rim {
+    .bingo-grid {
 
-        top: 10px;
-        left: 6px;
+        gap:
+            2px;
 
-        width: 40px;
-        height: 9px;
     }
 
 
-    .bingo-coffee-liquid {
+    .bingo-cell {
 
-        left: 8px;
-        top: 13px;
+        border-radius:
+            3px;
 
-        width: 35px;
-        height: 27px;
+        font-size:
+            clamp(
+                0.44rem,
+                2.8vw,
+                0.65rem
+            );
+
     }
 
 
-    .bingo-coffee-handle {
+    .bingo-grid-header {
 
-        top: 18px;
-        right: 1px;
+        font-size:
+            0.42rem;
 
-        width: 15px;
-        height: 18px;
-
-        border-width: 4px;
-    }
-
-
-    .bingo-current-number {
-
-        font-size: 2.1rem;
     }
 
 }
 
 
 /* =========================================================
-   VERY SMALL
+   VERY SMALL MOBILE
 ========================================================= */
 
 @media (max-width: 350px) {
 
     .bingo-mini-stats {
 
-        display: none;
+        display:
+            none;
+
     }
 
 
@@ -6569,51 +6839,70 @@ and (
 
         grid-template-columns:
             auto 1fr;
-    }
 
-
-    .bingo-app-title {
-
-        justify-content: flex-end;
-    }
-
-
-    .bingo-sidebar-right {
-
-        grid-template-columns: 1fr;
-    }
-
-
-    .bingo-coffee-panel,
-    .bingo-called-panel {
-
-        min-height: 110px;
     }
 
 
     .bingo-sidebar-left {
 
-        grid-template-columns: 1fr;
+        width:
+            98px;
+
     }
 
 
-    .bingo-sidebar-left
-    .bingo-mini-panel:first-child {
+    .bingo-sidebar-right {
 
-        grid-column: auto;
+        width:
+            68px;
+
     }
 
 
-    .bingo-current-number {
+    .bingo-main-board {
 
-        font-size: 2.3rem;
+        padding-top:
+            116px;
+
+    }
+
+
+    .bingo-card {
+
+        padding:
+            3px;
+
+    }
+
+
+    .bingo-card-title {
+
+        font-size:
+            0.4rem;
+
+    }
+
+
+    .bingo-cell {
+
+        font-size:
+            0.43rem;
+
+    }
+
+
+    .bingo-grid-header {
+
+        font-size:
+            0.38rem;
+
     }
 
 }
 
 
 /* =========================================================
-   DESKTOP
+   DESKTOP CARD SIZING
 ========================================================= */
 
 @media (min-width: 1101px) {
@@ -6623,7 +6912,9 @@ and (
         grid-template-columns:
             repeat(2,minmax(280px,430px));
 
-        justify-content: center;
+        justify-content:
+            center;
+
     }
 
 
@@ -6635,6 +6926,7 @@ and (
                 1.15vw,
                 1rem
             );
+
     }
 
 }
@@ -6653,33 +6945,44 @@ and (
             minmax(500px,1fr)
             290px;
 
-        gap: 20px;
+        gap:
+            20px;
 
-        padding: 20px;
+        padding:
+            20px;
+
     }
 
 
     .bingo-cards {
 
-        gap: 20px;
+        gap:
+            20px;
+
     }
 
 
     .bingo-card {
 
-        padding: 9px;
+        padding:
+            9px;
+
     }
 
 
     .bingo-grid {
 
-        gap: 5px;
+        gap:
+            5px;
+
     }
 
 
     .bingo-cell {
 
-        font-size: 1rem;
+        font-size:
+            1rem;
+
     }
 
 }
@@ -6703,6 +7006,1181 @@ and (
 
         transition-duration:
             0.01ms !important;
+
+    }
+
+}
+/* =========================================================
+   DIGICAFE BINGO
+   MOBILE FLOATING CONTROL LAYOUT
+   ---------------------------------------------------------
+   MOBILE:
+   • Bingo cards remain 2 × 2
+   • Left controls float at top-left
+   • Brewer + called numbers + Auto Call float top-right
+   • Brewer shows ONLY coffee icon
+   • Ready brewer changes appearance
+========================================================= */
+
+@media (max-width: 700px) {
+
+    /* -----------------------------------------------------
+       MAIN ROOM
+    ----------------------------------------------------- */
+
+    .bingo-app-layout {
+
+        position: relative;
+
+        display: block !important;
+
+        width: 100%;
+
+        min-height: 100vh;
+
+        padding:
+            62px 4px 8px;
+
+    }
+
+
+    /* -----------------------------------------------------
+       LEFT FLOATING CONTROLS
+    ----------------------------------------------------- */
+
+    .bingo-sidebar-left {
+
+        position: absolute;
+
+        top: 6px;
+
+        left: 4px;
+
+        z-index: 200;
+
+        width: auto;
+
+        display: flex;
+
+        flex-direction: row;
+
+        align-items: flex-start;
+
+        gap: 4px;
+
+        pointer-events: none;
+
+    }
+
+
+    .bingo-sidebar-left
+    .bingo-mini-panel {
+
+        pointer-events: auto;
+
+    }
+
+
+    /*
+       Hide the larger text-heavy panels
+       on the mobile floating version.
+    */
+
+    .bingo-sidebar-left
+    .bingo-mini-panel:first-child,
+    .bingo-sidebar-left
+    .bingo-mini-panel:nth-child(2),
+    .bingo-sidebar-left
+    .bingo-caller-panel {
+
+        width: auto;
+
+        min-width: 0;
+
+        padding: 5px;
+
+    }
+
+
+    /* -----------------------------------------------------
+       CARD SELECTOR
+    ----------------------------------------------------- */
+
+    .bingo-sidebar-left
+    .bingo-mini-panel:first-child {
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        gap: 3px;
+
+        border-radius: 10px;
+
+    }
+
+
+    .bingo-card-options {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, 22px);
+
+        gap: 2px;
+
+    }
+
+
+    .bingo-card-option {
+
+        width: 22px;
+
+        min-width: 22px;
+
+        height: 22px;
+
+        min-height: 22px;
+
+        padding: 0;
+
+        border-radius: 5px;
+
+    }
+
+
+    .bingo-card-option strong {
+
+        font-size: 0.55rem;
+
+    }
+
+
+    .bingo-card-option small {
+
+        display: none;
+
+    }
+
+
+    .bingo-credit-info,
+    .bingo-reset-info {
+
+        width: auto;
+
+        min-height: 18px;
+
+        margin: 0;
+
+        padding: 2px 4px;
+
+        border-radius: 5px;
+
+        gap: 3px;
+
+    }
+
+
+    .bingo-credit-info span,
+    .bingo-reset-info span {
+
+        font-size: 0.5rem;
+
+    }
+
+
+    .bingo-credit-info strong,
+    .bingo-reset-info strong {
+
+        font-size: 0.48rem;
+
+    }
+
+
+    /* -----------------------------------------------------
+       DAUB MODE
+    ----------------------------------------------------- */
+
+    .bingo-sidebar-left
+    .bingo-mini-panel:nth-child(2) {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+    }
+
+
+    .bingo-daub-options {
+
+        width: auto;
+
+        display: flex;
+
+        gap: 2px;
+
+    }
+
+
+    .bingo-daub-option {
+
+        width: 23px;
+
+        min-width: 23px;
+
+        min-height: 23px;
+
+        height: 23px;
+
+        padding: 0;
+
+        border-radius: 5px;
+
+    }
+
+
+    .bingo-daub-icon {
+
+        font-size: 0.62rem;
+
+    }
+
+
+    /* -----------------------------------------------------
+       CALLER
+    ----------------------------------------------------- */
+
+    .bingo-caller-panel {
+
+        width: auto;
+
+        min-width: 34px;
+
+        min-height: 46px;
+
+        padding: 4px;
+
+        border-radius: 9px;
+
+    }
+
+
+    .bingo-caller-panel
+    .game-eyebrow {
+
+        font-size: 0.5rem;
+
+    }
+
+
+    .bingo-current-letter {
+
+        margin: 1px 0;
+
+        font-size: 0.42rem;
+
+    }
+
+
+    .bingo-current-number {
+
+        margin: 0;
+
+        font-size: 1.15rem;
+
+    }
+
+
+    /*
+       Result text moves out of the floating
+       compact caller panel.
+    */
+
+    .bingo-result {
+
+        display: none;
+
+    }
+
+
+    /* -----------------------------------------------------
+       CALL BUTTON
+    ----------------------------------------------------- */
+
+    .bingo-control-panel {
+
+        position: absolute;
+
+        top: 6px;
+
+        left: 50%;
+
+        transform:
+            translateX(-50%);
+
+        width: auto;
+
+        min-width: 0;
+
+        padding: 0;
+
+        border: 0;
+
+        background: transparent;
+
+        box-shadow: none;
+
+        pointer-events: none;
+
+    }
+
+
+    .bingo-call-button {
+
+        pointer-events: auto;
+
+        width: 32px;
+
+        min-width: 32px;
+
+        height: 32px;
+
+        min-height: 32px;
+
+        padding: 0;
+
+        border-radius: 50%;
+
+        font-size: 0.75rem;
+
+        box-shadow:
+            0 5px 14px
+            rgba(7,20,38,0.18);
+
+    }
+
+
+    .bingo-secondary-controls {
+
+        margin-top: 3px;
+
+        display: flex;
+
+        gap: 3px;
+
+    }
+
+
+    .bingo-auto-button,
+    .bingo-new-button {
+
+        pointer-events: auto;
+
+        width: 27px;
+
+        min-width: 27px;
+
+        height: 27px;
+
+        min-height: 27px;
+
+        padding: 0;
+
+        border-radius: 50%;
+
+        font-size: 0.65rem;
+
+    }
+
+
+    /*
+       The NEW GAME button stays available,
+       but Auto Call is the more important
+       floating button.
+    */
+
+    /* -----------------------------------------------------
+       CENTER BOARD
+    ----------------------------------------------------- */
+
+    .bingo-main-board {
+
+        width: 100%;
+
+        margin: 0;
+
+        padding: 0;
+
+    }
+
+
+    .bingo-board-heading {
+
+        min-height: 20px;
+
+        margin-bottom: 4px;
+
+    }
+
+
+    .bingo-board-heading
+    .game-eyebrow {
+
+        font-size: 0.55rem;
+
+    }
+
+
+    .bingo-card-count-label {
+
+        min-width: 38px;
+
+        height: 20px;
+
+        padding: 0 4px;
+
+        font-size: 0.42rem;
+
+    }
+
+
+    /* -----------------------------------------------------
+       CARDS ALWAYS 2 × 2
+    ----------------------------------------------------- */
+
+    .bingo-cards {
+
+        width: 100% !important;
+
+        display: grid !important;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr)) !important;
+
+        gap: 5px !important;
+
+    }
+
+
+    .bingo-card {
+
+        width: 100% !important;
+
+        min-width: 0 !important;
+
+        margin: 0 !important;
+
+        padding: 3px;
+
+        border-radius: 8px;
+
+    }
+
+
+    .bingo-card-title {
+
+        margin-bottom: 3px;
+
+        font-size: 0.38rem;
+
+    }
+
+
+    .bingo-grid {
+
+        gap: 2px;
+
+    }
+
+
+    .bingo-grid-header {
+
+        border-radius: 3px;
+
+        font-size: 0.45rem;
+
+    }
+
+
+    .bingo-cell {
+
+        border-radius: 3px;
+
+        font-size:
+            clamp(
+                0.45rem,
+                2.5vw,
+                0.68rem
+            );
+
+    }
+
+
+    /* -----------------------------------------------------
+       RIGHT FLOATING AREA
+       -----------------------------------------------------
+       ONLY:
+       ☕ Brewer
+       📢 Called
+       🔄 Auto Call
+    ----------------------------------------------------- */
+
+    .bingo-sidebar-right {
+
+        position: absolute;
+
+        top: 6px;
+
+        right: 4px;
+
+        z-index: 210;
+
+        width: auto;
+
+        display: flex;
+
+        flex-direction: row;
+
+        align-items: center;
+
+        gap: 3px;
+
+        pointer-events: none;
+
+    }
+
+
+    .bingo-sidebar-right
+    .bingo-mini-panel {
+
+        pointer-events: auto;
+
+    }
+
+
+    /* -----------------------------------------------------
+       BREWER ICON ONLY
+    ----------------------------------------------------- */
+
+    .bingo-coffee-panel {
+
+        position: relative;
+
+        width: 38px;
+
+        min-width: 38px;
+
+        height: 38px;
+
+        min-height: 38px;
+
+        padding: 0;
+
+        border-radius: 50%;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        overflow: visible;
+
+    }
+
+
+    .bingo-coffee-meter {
+
+        width: 100%;
+
+        height: 100%;
+
+        min-height: 0;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+    }
+
+
+    .bingo-coffee-cup {
+
+        width: 34px;
+
+        height: 34px;
+
+    }
+
+
+    .bingo-coffee-cup-body {
+
+        width: 27px;
+
+        height: 23px;
+
+        font-size: 0.88rem;
+
+        border-radius:
+            5px 5px 8px 8px;
+
+    }
+
+
+    .bingo-coffee-cup-rim {
+
+        top: 6px;
+
+        left: 4px;
+
+        width: 27px;
+
+        height: 6px;
+
+        border-width: 2px;
+
+    }
+
+
+    .bingo-coffee-liquid {
+
+        left: 6px;
+
+        top: 8px;
+
+        width: 23px;
+
+        height: 18px;
+
+    }
+
+
+    .bingo-coffee-handle {
+
+        top: 12px;
+
+        right: 0;
+
+        width: 10px;
+
+        height: 12px;
+
+        border-width: 3px;
+
+        border-left: 0;
+
+    }
+
+
+    .bingo-coffee-steam {
+
+        width: 2px;
+
+        height: 8px;
+
+    }
+
+
+    .steam-one {
+
+        left: 14px;
+
+    }
+
+
+    .steam-two {
+
+        left: 21px;
+
+    }
+
+
+    /*
+       Hide ALL brewer text on mobile.
+    */
+
+    .bingo-powerup-status {
+
+        display: none;
+
+    }
+
+
+    /*
+       Hide the cooldown bubble from the panel.
+       The coffee itself communicates its state.
+    */
+
+    .bingo-powerup-cooldown {
+
+        display: none !important;
+
+    }
+
+
+    /*
+       Brewing state
+    */
+
+    .bingo-coffee-cup.brewing
+    .bingo-coffee-cup-body {
+
+        background:
+            var(--bingo-coffee-dark);
+
+    }
+
+
+    /*
+       READY state
+       Bright gold instead of brown.
+    */
+
+    .bingo-coffee-cup.ready {
+
+        transform:
+            scale(1.08);
+
+        filter:
+            drop-shadow(
+                0 0 7px
+                rgba(214,179,106,0.9)
+            );
+
+    }
+
+
+    .bingo-coffee-cup.ready::before {
+
+        content: "";
+
+        position: absolute;
+
+        inset: -4px;
+
+        z-index: 0;
+
+        border-radius: 50%;
+
+        border:
+            2px solid
+            var(--bingo-gold);
+
+        animation:
+            bingoMobileReadyRing
+            1s ease-in-out
+            infinite;
+
+    }
+
+
+    /*
+       No READY text.
+       Just a different colour.
+    */
+
+    .bingo-coffee-cup.ready
+    .bingo-coffee-cup-body {
+
+        background:
+            var(--bingo-gold);
+
+        color:
+            var(--bingo-navy-dark);
+
+        box-shadow:
+            0 0 0 2px
+            rgba(214,179,106,0.3),
+
+            0 0 15px
+            rgba(214,179,106,0.75);
+
+    }
+
+
+    /*
+       Cooldown
+    */
+
+    .bingo-coffee-cup.cooldown {
+
+        opacity: 0.5;
+
+    }
+
+
+    .bingo-coffee-cup.cooldown
+    .bingo-coffee-cup-body {
+
+        background:
+            var(--bingo-navy-soft);
+
+    }
+
+
+    @keyframes bingoMobileReadyRing {
+
+        0%,
+        100% {
+
+            transform: scale(0.9);
+
+            opacity: 0.35;
+
+        }
+
+        50% {
+
+            transform: scale(1.15);
+
+            opacity: 0.9;
+
+        }
+
+    }
+
+
+    /* -----------------------------------------------------
+       CALLED NUMBERS ICON ONLY
+    ----------------------------------------------------- */
+
+    .bingo-called-panel {
+
+        position: relative;
+
+        width: 38px;
+
+        min-width: 38px;
+
+        height: 38px;
+
+        min-height: 38px;
+
+        padding: 0;
+
+        border-radius: 50%;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+    }
+
+
+    /*
+       Hide the number list itself.
+    */
+
+    .bingo-called-numbers {
+
+        display: none;
+
+    }
+
+
+    /*
+       Keep the 📢 + count.
+    */
+
+    .bingo-section-heading {
+
+        width: 100%;
+
+        height: 100%;
+
+        min-height: 0;
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 1px;
+
+        font-size: 0.52rem;
+
+    }
+
+
+    .bingo-section-heading > span:first-child {
+
+        font-size: 0.9rem;
+
+        line-height: 1;
+
+    }
+
+
+    .bingo-section-heading strong {
+
+        font-size: 0.48rem;
+
+    }
+
+
+    /* -----------------------------------------------------
+       AUTO CALL FLOATING BUTTON
+    ----------------------------------------------------- */
+
+    .bingo-sidebar-right
+    .bingo-called-panel::after {
+
+        content: "↻";
+
+        position: absolute;
+
+        right: -4px;
+
+        bottom: -4px;
+
+        width: 16px;
+
+        height: 16px;
+
+        border-radius: 50%;
+
+        background:
+            var(--bingo-white);
+
+        color:
+            var(--bingo-navy);
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        font-size: 0.55rem;
+
+        font-weight: 900;
+
+        box-shadow:
+            0 3px 8px
+            rgba(7,20,38,0.18);
+
+    }
+
+
+    /*
+       The actual Auto Call button is
+       moved visually beside the icons.
+    */
+
+    .bingo-sidebar-right
+    #bingoAutoCall {
+
+        position: absolute;
+
+        right: -28px;
+
+        top: 6px;
+
+        width: 24px;
+
+        min-width: 24px;
+
+        height: 24px;
+
+        min-height: 24px;
+
+        padding: 0;
+
+        border-radius: 50%;
+
+        font-size: 0.65rem;
+
+        z-index: 220;
+
+    }
+
+
+    /* -----------------------------------------------------
+       LEGEND
+    ----------------------------------------------------- */
+
+    .bingo-legend {
+
+        margin:
+            4px auto;
+
+        gap:
+            4px 7px;
+
+    }
+
+
+    .bingo-legend-dot {
+
+        width:
+            5px;
+
+        height:
+            5px;
+
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .bingo-app-layout {
+
+        padding:
+            55px 3px 6px;
+
+    }
+
+
+    .bingo-sidebar-left {
+
+        top:
+            4px;
+
+        left:
+            3px;
+
+    }
+
+
+    .bingo-sidebar-right {
+
+        top:
+            4px;
+
+        right:
+            3px;
+
+    }
+
+
+    .bingo-card-options {
+
+        grid-template-columns:
+            repeat(4,19px);
+
+    }
+
+
+    .bingo-card-option {
+
+        width:
+            19px;
+
+        min-width:
+            19px;
+
+        height:
+            19px;
+
+        min-height:
+            19px;
+
+    }
+
+
+    .bingo-daub-option {
+
+        width:
+            20px;
+
+        min-width:
+            20px;
+
+        height:
+            20px;
+
+        min-height:
+            20px;
+
+    }
+
+
+    .bingo-call-button {
+
+        width:
+            28px;
+
+        min-width:
+            28px;
+
+        height:
+            28px;
+
+        min-height:
+            28px;
+
+    }
+
+
+    .bingo-auto-button,
+    .bingo-new-button {
+
+        width:
+            24px;
+
+        min-width:
+            24px;
+
+        height:
+            24px;
+
+        min-height:
+            24px;
+
+    }
+
+
+    .bingo-coffee-panel,
+    .bingo-called-panel {
+
+        width:
+            34px;
+
+        min-width:
+            34px;
+
+        height:
+            34px;
+
+        min-height:
+            34px;
+
+    }
+
+
+    .bingo-coffee-cup {
+
+        width:
+            30px;
+
+        height:
+            30px;
+
+    }
+
+
+    .bingo-cards {
+
+        gap:
+            3px !important;
+
     }
 
 }
