@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 
 <html lang="en">
-<head>
 
+<head>
 <!-- =========================
-     GOOGLE ANALYTICS 4
+     GOOGLE CONSENT MODE v2
 ========================== -->
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-W3YQ2E3Q1D"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
 
@@ -16,12 +14,56 @@
         dataLayer.push(arguments);
     }
 
+    gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        functionality_storage: 'denied',
+        personalization_storage: 'denied',
+        security_storage: 'granted',
+        wait_for_update: 2000
+    });
+
+    gtag('set', 'ads_data_redaction', true);
+    gtag('set', 'url_passthrough', true);
+</script>
+
+
+<!-- =========================
+     GOOGLE ANALYTICS 4
+========================== -->
+
+<script async
+    src="https://www.googletagmanager.com/gtag/js?id=G-W3YQ2E3Q1D">
+</script>
+
+<script>
     gtag('js', new Date());
 
     gtag('config', 'G-W3YQ2E3Q1D');
 </script>
 
 
+<!-- =========================
+     COOKIEYES
+========================== -->
+
+<!-- Start CookieYes banner -->
+
+<script
+    id="cookieyes"
+    type="text/javascript"
+    src="https://cdn-cookieyes.com/client_data/dc407ac7b170aed1c0a980ccf6e65b48/script.js">
+</script>
+
+<!-- End CookieYes banner -->
+
+
+<!-- =========================
+     BASIC META
+========================== -->
+
 <meta charset="UTF-8">
 
 <meta
@@ -29,27 +71,12 @@
     content="width=device-width, initial-scale=1.0"
 >
 
-<!-- =========================
-     PAGE TITLE
-========================== -->
-
-<title>
-    DigiCafe | A Cozy Digital Café
-</title>
-<meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
 
 <!-- =========================
      PAGE TITLE
 ========================== -->
 
-<title>
-    DigiCafe | A Cozy Digital Café
-</title>
+<title>DigiCafe | A Cozy Digital Café</title>
 
 
 <!-- =========================
@@ -112,6 +139,17 @@
 ========================== -->
 
 <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+>
+
+<link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+>
+
+<link
     href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@300;400;600&display=swap"
     rel="stylesheet"
 >
@@ -125,12 +163,9 @@
     rel="stylesheet"
     href="style.css"
 >
-
-
 </head>
 
 <body data-beshy-page="home">
-
 <!-- =========================
      GLOBAL NAVBAR
 ========================== -->
@@ -179,25 +214,23 @@
 
 
 <!-- =========================
-     DIGICAFE SHELL
-
-     This must load FIRST.
-
-     It loads:
-     - navbar.html
-     - music-player.html
-     - footer.html
-     - room pages
+     GAME SCRIPTS
 ========================== -->
+
+<script src="solitaire.js"></script>
+
+<script src="cafe-slots.js"></script>
+
+<script src="bingo.js"></script>
+
+<script src="chess.js"></script>
+
+<script src="dama.js"></script>
+
 
 <!-- =========================
      DIGICAFE SHELL
 ========================== -->
-<script src="solitaire.js"></script>
-<script src="cafe-slots.js"></script>
-<script src="bingo.js"></script>
-<script src="chess.js"></script>
-<script src="dama.js"></script>
 
 <script src="script.js"></script>
 
@@ -233,14 +266,20 @@
      Reader is an ES module.
 ========================== -->
 
-<script type="module" src="reader.js"></script>
+<script
+    type="module"
+    src="reader.js">
+</script>
 
 
 <!-- =========================
      BESHY
 ========================== -->
 
-<script type="module" src="Beshy/beshy.js"></script>
+<script
+    type="module"
+    src="Beshy/beshy.js">
+</script>
 
 </body>
 
