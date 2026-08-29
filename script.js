@@ -15,6 +15,7 @@ console.log("☕ DigiCafe Shell Loaded");
    • Library rendering
    • Playroom module loading
    • Browser back / forward navigation
+   • Google Analytics 4 room tracking
 
    PLAYROOM GAME LOGIC IS NOT HERE.
 
@@ -60,7 +61,184 @@ const pages = {
 
 
 /* =========================================================
-   02. READER MODULE
+   02. GOOGLE ANALYTICS 4
+   ---------------------------------------------------------
+   The main Google Analytics tag is installed in index.html.
+
+   This function tracks DigiCafe's dynamically loaded rooms.
+
+   IMPORTANT:
+   Do NOT add another Google Analytics tag here.
+========================================================= */
+
+function trackDigiCafePageView(
+    page,
+    story = null,
+    chapter = null
+) {
+
+    /* -----------------------------------------------------
+       Make sure Google Analytics is available
+    ----------------------------------------------------- */
+
+    if (
+        typeof window.gtag !== "function"
+    ) {
+
+        console.warn(
+            "⚠️ Google Analytics is not available yet."
+        );
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------------------
+       Human-friendly room names
+    ----------------------------------------------------- */
+
+    const roomNames = {
+
+        home: "Lobby",
+
+        music: "Music Lounge",
+
+        library: "Library",
+
+        romance: "Romance",
+
+        comedy: "Comedy",
+
+        scifi: "Sci-Fi",
+
+        reader: "Reader",
+
+        about: "Creative Studio",
+
+        playroom: "Playroom",
+
+        account: "Account"
+
+    };
+
+
+    const roomName =
+        roomNames[page] ||
+        page;
+
+
+    /* -----------------------------------------------------
+       Build page path
+
+       Example:
+
+       index.html?page=music
+    ----------------------------------------------------- */
+
+    let pagePath =
+        window.location.pathname;
+
+
+    if (
+        page !== "home"
+    ) {
+
+        pagePath +=
+            `?page=${encodeURIComponent(
+                page
+            )}`;
+
+    }
+
+
+    /* -----------------------------------------------------
+       Reader details
+    ----------------------------------------------------- */
+
+    if (
+        page === "reader"
+    ) {
+
+        const params =
+            new URLSearchParams();
+
+
+        params.set(
+            "page",
+            "reader"
+        );
+
+
+        if (story) {
+
+            params.set(
+                "story",
+                story
+            );
+
+        }
+
+
+        if (
+            chapter !== null &&
+            chapter !== undefined &&
+            chapter !== ""
+        ) {
+
+            params.set(
+                "chapter",
+                chapter
+            );
+
+        }
+
+
+        pagePath =
+            `${window.location.pathname}?${params.toString()}`;
+
+    }
+
+
+    /* -----------------------------------------------------
+       Send virtual page view to GA4
+    ----------------------------------------------------- */
+
+    window.gtag(
+        "event",
+        "page_view",
+        {
+
+            page_title:
+                `DigiCafe | ${roomName}`,
+
+            page_location:
+                window.location.origin +
+                pagePath,
+
+            page_path:
+                pagePath
+
+        }
+    );
+
+
+    console.log(
+        "📊 GA4 page view:",
+        {
+            room: roomName,
+            page,
+            story,
+            chapter,
+            path: pagePath
+        }
+    );
+
+}
+
+
+/* =========================================================
+   03. READER MODULE
 ========================================================= */
 
 let readerModuleLoaded = false;
@@ -117,7 +295,7 @@ async function loadReaderModule() {
 
 
 /* =========================================================
-   03. MUSIC LOUNGE MODULE
+   04. MUSIC LOUNGE MODULE
 ========================================================= */
 
 let musicModuleLoaded = false;
@@ -232,7 +410,7 @@ async function loadMusicModule() {
 
 
 /* =========================================================
-   04. PLAYROOM MODULE
+   05. PLAYROOM MODULE
 ========================================================= */
 
 let playroomModuleLoaded = false;
@@ -322,7 +500,7 @@ async function loadPlayroomModule() {
                         error
                     );
 
-                    playroomModuleLoading = null;
+                    musicModuleLoading = null;
 
                     reject(
                         new Error(
@@ -347,7 +525,7 @@ async function loadPlayroomModule() {
 
 
 /* =========================================================
-   05. DIGICAFE STARTUP
+   06. DIGICAFE STARTUP
 ========================================================= */
 
 document.addEventListener(
@@ -443,7 +621,7 @@ document.addEventListener(
 
 
 /* =========================================================
-   06. COMPONENT LOADER
+   07. COMPONENT LOADER
 ========================================================= */
 
 async function loadComponent(
@@ -513,7 +691,7 @@ async function loadComponent(
 
 
 /* =========================================================
-   07. INITIAL PAGE
+   08. INITIAL PAGE
 ========================================================= */
 
 async function loadInitialPage() {
@@ -579,7 +757,7 @@ async function loadInitialPage() {
 
 
 /* =========================================================
-   08. LIBRARY
+   09. LIBRARY
 ========================================================= */
 
 window.initLibrary =
@@ -899,7 +1077,7 @@ window.initLibrary =
 
 
 /* =========================================================
-   09. ESCAPE HTML
+   10. ESCAPE HTML
 ========================================================= */
 
 function escapeHTML(
@@ -924,7 +1102,7 @@ function escapeHTML(
 
 
 /* =========================================================
-   10. FORMAT PUBLISHED DATE
+   11. FORMAT PUBLISHED DATE
 ========================================================= */
 
 function formatPublishedDate(
@@ -969,7 +1147,7 @@ function formatPublishedDate(
 
 
 /* =========================================================
-   11. MAIN NAVIGATION
+   12. MAIN NAVIGATION
 ========================================================= */
 
 async function navigateTo(
@@ -1526,6 +1704,19 @@ async function navigateTo(
 
 
         /* =================================================
+           GOOGLE ANALYTICS 4
+           -------------------------------------------------
+           Track the room AFTER it has successfully loaded.
+        ================================================= */
+
+        trackDigiCafePageView(
+            page,
+            story,
+            chapter
+        );
+
+
+        /* =================================================
            UPDATE GLOBAL MUSIC PLAYER
         ================================================= */
 
@@ -1587,7 +1778,7 @@ async function navigateTo(
 
 
 /* =========================================================
-   12. GLOBAL NAVIGATION
+   13. GLOBAL NAVIGATION
 ========================================================= */
 
 function initGlobalNavigation() {
@@ -1680,7 +1871,7 @@ function initGlobalNavigation() {
 
 
 /* =========================================================
-   13. NAVBAR
+   14. NAVBAR
 ========================================================= */
 
 function initNavbar() {
@@ -1751,7 +1942,7 @@ function initNavbar() {
 
 
 /* =========================================================
-   14. ACTIVE NAVIGATION
+   15. ACTIVE NAVIGATION
 ========================================================= */
 
 function highlightActiveLink(
@@ -1788,7 +1979,7 @@ function highlightActiveLink(
 
 
 /* =========================================================
-   15. CLOSE MOBILE MENU
+   16. CLOSE MOBILE MENU
 ========================================================= */
 
 function closeMobileMenu() {
@@ -1834,7 +2025,7 @@ function closeMobileMenu() {
 
 
 /* =========================================================
-   16. BROWSER BACK / FORWARD
+   17. BROWSER BACK / FORWARD
 ========================================================= */
 
 window.addEventListener(
@@ -1887,7 +2078,7 @@ window.addEventListener(
 
 
 /* =========================================================
-   17. GLOBAL NAVIGATION API
+   18. GLOBAL NAVIGATION API
 ========================================================= */
 
 window.navigateTo =
@@ -1895,7 +2086,7 @@ window.navigateTo =
 
 
 /* =========================================================
-   18. GLOBAL SHELL API
+   19. GLOBAL SHELL API
 ========================================================= */
 
 window.loadComponent =
@@ -1915,7 +2106,7 @@ window.loadPlayroomModule =
 
 
 /* =========================================================
-   19. SHELL READY
+   20. SHELL READY
 ========================================================= */
 
 console.log(
