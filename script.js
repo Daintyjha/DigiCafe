@@ -68,10 +68,12 @@ const pages = {
    This function tracks DigiCafe's dynamically loaded rooms.
 
    IMPORTANT:
-   Do NOT add another Google Analytics tag here.
+   • Do NOT add another Google Analytics tag here.
+   • We use a custom event called "digi_room_view".
+   • We do NOT send another standard "page_view" event.
 ========================================================= */
 
-function trackDigiCafePageView(
+function trackDigiCafeRoom(
     page,
     story = null,
     chapter = null
@@ -95,7 +97,7 @@ function trackDigiCafePageView(
 
 
     /* -----------------------------------------------------
-       Human-friendly room names
+       Human-friendly DigiCafe room names
     ----------------------------------------------------- */
 
     const roomNames = {
@@ -129,53 +131,34 @@ function trackDigiCafePageView(
 
 
     /* -----------------------------------------------------
-       Build page path
+       Send custom DigiCafe room event
 
-       Example:
-
-       index.html?page=music
+       This avoids creating duplicate page_view events.
     ----------------------------------------------------- */
 
-    let pagePath =
-        window.location.pathname;
+    const eventData = {
 
+        room_name:
+            roomName,
 
-    if (
-        page !== "home"
-    ) {
+        room_id:
+            page
 
-        pagePath +=
-            `?page=${encodeURIComponent(
-                page
-            )}`;
-
-    }
+    };
 
 
     /* -----------------------------------------------------
-       Reader details
+       Add Reader information when available
     ----------------------------------------------------- */
 
     if (
         page === "reader"
     ) {
 
-        const params =
-            new URLSearchParams();
-
-
-        params.set(
-            "page",
-            "reader"
-        );
-
-
         if (story) {
 
-            params.set(
-                "story",
-                story
-            );
+            eventData.story =
+                story;
 
         }
 
@@ -186,52 +169,30 @@ function trackDigiCafePageView(
             chapter !== ""
         ) {
 
-            params.set(
-                "chapter",
-                chapter
-            );
+            eventData.chapter =
+                String(
+                    chapter
+                );
 
         }
-
-
-        pagePath =
-            `${window.location.pathname}?${params.toString()}`;
 
     }
 
 
     /* -----------------------------------------------------
-       Send virtual page view to GA4
+       Send event to Google Analytics
     ----------------------------------------------------- */
 
     window.gtag(
         "event",
-        "page_view",
-        {
-
-            page_title:
-                `DigiCafe | ${roomName}`,
-
-            page_location:
-                window.location.origin +
-                pagePath,
-
-            page_path:
-                pagePath
-
-        }
+        "digi_room_view",
+        eventData
     );
 
 
     console.log(
-        "📊 GA4 page view:",
-        {
-            room: roomName,
-            page,
-            story,
-            chapter,
-            path: pagePath
-        }
+        "📊 GA4 DigiCafe room:",
+        eventData
     );
 
 }
@@ -500,7 +461,11 @@ async function loadPlayroomModule() {
                         error
                     );
 
-                    musicModuleLoading = null;
+                    /* FIX:
+                       Reset the correct loading variable.
+                    */
+
+                    playroomModuleLoading = null;
 
                     reject(
                         new Error(
@@ -1611,7 +1576,7 @@ async function navigateTo(
                             chapterNumber =
                                 parsedChapter;
 
-                        }
+                            }
 
                     }
 
@@ -1706,10 +1671,10 @@ async function navigateTo(
         /* =================================================
            GOOGLE ANALYTICS 4
            -------------------------------------------------
-           Track the room AFTER it has successfully loaded.
+           Track the room after it has successfully loaded.
         ================================================= */
 
-        trackDigiCafePageView(
+        trackDigiCafeRoom(
             page,
             story,
             chapter
