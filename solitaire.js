@@ -2,26 +2,7 @@
    DIGICAFE SOLITAIRE
    COMPLETE KLONDIKE — DRAW 3
    ---------------------------------------------------------
-   Features
-
-   • Klondike Solitaire
-   • Draw 3
-   • Waste recycling
-   • Tableau → Tableau
-   • Tableau → Foundation
-   • Waste → Tableau
-   • Waste → Foundation
-   • Double-click → Foundation
-   • Safe automatic foundation moves
-   • Automatic card revealing
-   • King → empty column
-   • Win detection
-   • Timer
-   • Move counter
-   • Undo
-   • Desktop drag & drop
-   • Mobile touch drag & drop
-   • DigiCafe dynamic-room compatible
+   
 ========================================================= */
 
 

@@ -533,17 +533,8 @@
         <!-- LOGO -->
         <div class="bingo-app-title">
 
-            <span
-                class="bingo-logo"
-                aria-hidden="true"
-            >
-                🎱
-            </span>
-
-            <h2 id="bingoTitle">
-                Bingo
-            </h2>
-
+          <h2 id="bingoTitle"> DigiCafe Bingo</h2>
+ <span  class="bingo-logo" aria-hidden="true"  > 🎱 </span>
         </div>
 
 
@@ -552,7 +543,12 @@
             class="bingo-mini-stats"
             aria-label="Game statistics"
         >
-
+<div
+                    id="bingoCurrentNumber"
+                    class="bingo-current-number"
+                >
+                    —
+                </div>
             <div
                 class="bingo-mini-stat"
                 title="Numbers called"
@@ -604,9 +600,7 @@
                 aria-label="Card selection"
             >
 
-                <div class="bingo-panel-icon" aria-hidden="true">
-                    🎟️
-                </div>
+
 
 
                 <div
@@ -675,7 +669,7 @@
                     class="bingo-resource"
                     title="Café Credits"
                 >
-                    <span aria-hidden="true">☕</span>
+                    <span aria-hidden="true"> 🎟️</span>
 
                     <strong data-bingo-credit-balance>
                         300
@@ -707,7 +701,7 @@
             >
 
                 <div class="bingo-panel-icon" aria-hidden="true">
-                    ✋
+                    Daub mode
                 </div>
 
 
@@ -725,7 +719,7 @@
                         aria-label="Manual daub"
                         title="Manual"
                     >
-                        <span aria-hidden="true">✋</span>
+                        <span aria-hidden="true">Manual</span>
                     </button>
 
 
@@ -737,7 +731,7 @@
                         aria-label="Automatic daub"
                         title="Auto"
                     >
-                        <span aria-hidden="true">✨</span>
+                        <span aria-hidden="true">Auto</span>
                     </button>
 
                 </div>
@@ -759,7 +753,7 @@
                     aria-label="Call next Bingo number"
                     title="Call Number"
                 >
-                    🎱
+                    🎱Call
                 </button>
 
 
@@ -773,7 +767,7 @@
                         aria-label="Automatic calling"
                         title="Auto Call"
                     >
-                        ↻
+                        Auto
                     </button>
 
 
@@ -784,7 +778,7 @@
                         aria-label="Start new game"
                         title="New Game"
                     >
-                        +
+                        🔄
                     </button>
 
                 </div>
@@ -799,39 +793,6 @@
         ================================================== -->
 
         <main class="bingo-main-board">
-
-
-            <!-- CURRENT CALL -->
-
-            <div
-                class="bingo-current-call"
-                aria-live="polite"
-                aria-atomic="true"
-            >
-
-                <div
-                    id="bingoCurrentLetter"
-                    class="bingo-current-letter"
-                >
-                    READY
-                </div>
-
-
-                <div
-                    id="bingoCurrentNumber"
-                    class="bingo-current-number"
-                >
-                    —
-                </div>
-
-
-                <p
-                    id="bingoResult"
-                    class="bingo-result"
-                ></p>
-
-            </div>
-
 
             <!-- CARDS -->
 
@@ -914,7 +875,31 @@
                 ></span>
 
             </div>
+<!-- CURRENT CALL -->
 
+            <div
+                class="bingo-current-call"
+                aria-live="polite"
+                aria-atomic="true"
+            >
+
+                <div
+                    id="bingoCurrentLetter"
+                    class="bingo-current-letter"
+                >
+                    READY
+                </div>
+
+
+
+
+
+                <p
+                    id="bingoResult"
+                    class="bingo-result"
+                ></p>
+
+            </div>
         </main>
 
 
@@ -1037,7 +1022,7 @@
                     <span aria-hidden="true">⏳</span>
 
                     <strong id="bingoPowerupCooldownTime">
-                        5:00
+                        00:05
                     </strong>
 
                 </div>
