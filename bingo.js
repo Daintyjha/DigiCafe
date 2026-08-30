@@ -1,26 +1,8 @@
 /* =========================================================
    DIGICAFE BINGO
-   COMPLETE CLEAN ENGINE
+   COMPLETE REBUILT ENGINE
    ---------------------------------------------------------
-   DESIGNED FOR:
-   • DigiCafe Playroom
-   • Dynamic Bingo room creation
-   • Current Bingo HTML
-   • Current Bingo CSS
-
-   POWER-UPS:
-   🎁 Treasure
-   ☕ Single Daub
-   ☕☕ Double Daub
-   ⭐ Instant Bingo
-
-   BREWER:
-   • 3 successful daubs
-   • Ready state
-   • Random power-up reveal
-   • Random card + random number target
-   • 5-minute cooldown
-========================================================= */
+ ========================================================= */
 
 (() => {
 
@@ -48,8 +30,11 @@
 
         brewerRequiredDaubs: 3,
 
+        /*
+            FIVE MINUTES
+        */
         brewerCooldownMs:
-            0.1 * 60 * 1000,
+            10 * 1000,
 
         autoCallInterval:
             3000,
@@ -100,7 +85,7 @@
             name: "SINGLE DAUB",
 
             description:
-                "This target number will be daubed for you."
+                "One number on one card will be daubed for you."
 
         },
 
@@ -112,7 +97,7 @@
             name: "DOUBLE DAUB",
 
             description:
-                "This target number receives a double daub."
+                "Two different numbers on one card will be daubed for you."
 
         },
 
@@ -224,9 +209,7 @@
 
     function getElement(id) {
 
-        return document.getElementById(
-            id
-        );
+        return document.getElementById(id);
 
     }
 
@@ -242,9 +225,7 @@
 
         }
 
-        return room.querySelector(
-            selector
-        );
+        return room.querySelector(selector);
 
     }
 
@@ -311,13 +292,20 @@
        07. RANDOM HELPERS
     ===================================================== */
 
-    function randomInt(
-        min,
-        max
-    ) {
+    function randomInt(min, max) {
+
+        min =
+            Math.ceil(
+                Number(min)
+            );
+
+        max =
+            Math.floor(
+                Number(max)
+            );
 
         if (
-            max <= min
+            max < min
         ) {
 
             return min;
@@ -334,13 +322,10 @@
     }
 
 
-    function shuffle(
-        array
-    ) {
+    function shuffle(array) {
 
         const copy =
             [...array];
-
 
         for (
             let index =
@@ -354,11 +339,8 @@
             const randomIndex =
                 Math.floor(
                     Math.random() *
-                    (
-                        index + 1
-                    )
+                    (index + 1)
                 );
-
 
             [
                 copy[index],
@@ -371,7 +353,6 @@
 
         }
 
-
         return copy;
 
     }
@@ -381,9 +362,7 @@
        08. BINGO LETTERS
     ===================================================== */
 
-    function getBingoLetter(
-        number
-    ) {
+    function getBingoLetter(number) {
 
         if (
             number >= 1 &&
@@ -394,7 +373,6 @@
 
         }
 
-
         if (
             number >= 16 &&
             number <= 30
@@ -403,7 +381,6 @@
             return "I";
 
         }
-
 
         if (
             number >= 31 &&
@@ -414,7 +391,6 @@
 
         }
 
-
         if (
             number >= 46 &&
             number <= 60
@@ -423,7 +399,6 @@
             return "G";
 
         }
-
 
         if (
             number >= 61 &&
@@ -434,24 +409,22 @@
 
         }
 
-
         return "";
 
     }
 
 
-    function getNumberLabel(
-        number
-    ) {
+    function getNumberLabel(number) {
 
         if (
-            !Number.isInteger(number)
+            !Number.isInteger(
+                number
+            )
         ) {
 
             return "—";
 
         }
-
 
         return (
             `${getBingoLetter(number)} ${number}`
@@ -461,7 +434,7 @@
 
 
     /* =====================================================
-       09. STORAGE
+       09. WALLET
     ===================================================== */
 
     function loadWallet() {
@@ -469,14 +442,12 @@
         const today =
             getDateKey();
 
-
         try {
 
             const saved =
                 localStorage.getItem(
                     CONFIG.storageKey
                 );
-
 
             if (!saved) {
 
@@ -495,41 +466,44 @@
 
             }
 
-
             const wallet =
                 JSON.parse(
                     saved
                 );
 
+            const savedCredits =
+                Number(
+                    wallet.credits
+                );
+
+            const savedResets =
+                Number(
+                    wallet.dailyResetsUsed
+                );
 
             bingo.credits =
                 Number.isFinite(
-                    Number(
-                        wallet.credits
-                    )
+                    savedCredits
                 )
-                    ? Number(
-                        wallet.credits
+                    ? Math.max(
+                        0,
+                        savedCredits
                     )
                     : CONFIG.startingCredits;
 
-
             bingo.dailyResetsUsed =
                 Number.isFinite(
-                    Number(
-                        wallet.dailyResetsUsed
-                    )
+                    savedResets
                 )
-                    ? Number(
-                        wallet.dailyResetsUsed
+                    ? Math.max(
+                        0,
+                        savedResets
                     )
                     : 0;
-
 
             bingo.resetDate =
                 wallet.resetDate ||
                 today;
-
 
             if (
                 bingo.resetDate !==
@@ -543,7 +517,6 @@
                     today;
 
             }
-
 
             saveWallet();
 
@@ -618,7 +591,6 @@
                 "[data-bingo-credit-balance]"
             );
 
-
         if (balance) {
 
             balance.textContent =
@@ -626,12 +598,10 @@
 
         }
 
-
         const reset =
             getElement(
                 "bingoDailyResets"
             );
-
 
         if (reset) {
 
@@ -647,13 +617,10 @@
     }
 
 
-    function addBingoCredits(
-        amount
-    ) {
+    function addBingoCredits(amount) {
 
         amount =
             Number(amount);
-
 
         if (
             !Number.isFinite(amount) ||
@@ -664,28 +631,22 @@
 
         }
 
-
         bingo.credits +=
             amount;
-
 
         updateCreditsUI();
 
         saveWallet();
-
 
         return true;
 
     }
 
 
-    function spendBingoCredits(
-        amount
-    ) {
+    function spendBingoCredits(amount) {
 
         amount =
             Number(amount);
-
 
         if (
             !Number.isFinite(amount) ||
@@ -695,7 +656,6 @@
             return false;
 
         }
-
 
         if (
             bingo.credits <
@@ -710,15 +670,12 @@
 
         }
 
-
         bingo.credits -=
             amount;
-
 
         updateCreditsUI();
 
         saveWallet();
-
 
         return true;
 
@@ -740,27 +697,21 @@
 
         }
 
-
         bingo.credits =
             CONFIG.startingCredits;
 
-
         bingo.dailyResetsUsed++;
-
 
         bingo.resetDate =
             getDateKey();
-
 
         updateCreditsUI();
 
         saveWallet();
 
-
         showResult(
             `☕ Credits reset to ${CONFIG.startingCredits}.`
         );
-
 
         return true;
 
@@ -775,22 +726,21 @@
 
         const ranges = [
 
-            [1,15],
+            [1, 15],
 
-            [16,30],
+            [16, 30],
 
-            [31,45],
+            [31, 45],
 
-            [46,60],
+            [46, 60],
 
-            [61,75]
+            [61, 75]
 
         ];
 
-
         const columns =
             ranges.map(
-                ([min,max]) => {
+                ([min, max]) => {
 
                     const numbers =
                         Array.from(
@@ -802,7 +752,6 @@
                                 min + index
                         );
 
-
                     return shuffle(
                         numbers
                     ).slice(
@@ -813,9 +762,7 @@
                 }
             );
 
-
         const card = [];
-
 
         for (
             let row = 0;
@@ -824,7 +771,6 @@
         ) {
 
             const currentRow = [];
-
 
             for (
                 let column = 0;
@@ -857,10 +803,8 @@
 
                 }
 
-
                 const number =
                     columns[column][row];
-
 
                 currentRow.push({
 
@@ -881,13 +825,11 @@
 
             }
 
-
             card.push(
                 currentRow
             );
 
         }
-
 
         return card;
 
@@ -897,7 +839,6 @@
     function generateBingoCards() {
 
         bingo.cards = [];
-
 
         for (
             let index = 0;
@@ -910,7 +851,6 @@
             );
 
         }
-
 
         renderBingoCards();
 
@@ -928,17 +868,14 @@
                 "bingoCards"
             );
 
-
         if (!container) {
 
             return;
 
         }
 
-
         container.innerHTML =
             "";
-
 
         bingo.cards.forEach(
             (
@@ -951,43 +888,34 @@
                         "article"
                     );
 
-
                 article.className =
                     "bingo-card";
 
-
                 article.dataset.cardIndex =
                     cardIndex;
-
 
                 const title =
                     document.createElement(
                         "div"
                     );
 
-
                 title.className =
                     "bingo-card-title";
-
 
                 title.textContent =
                     `CARD ${cardIndex + 1}`;
 
-
                 article.appendChild(
                     title
                 );
-
 
                 const grid =
                     document.createElement(
                         "div"
                     );
 
-
                 grid.className =
                     "bingo-grid";
-
 
                 [
                     "B",
@@ -1003,14 +931,11 @@
                                 "div"
                             );
 
-
                         header.className =
                             "bingo-grid-header";
 
-
                         header.textContent =
                             letter;
-
 
                         grid.appendChild(
                             header
@@ -1018,7 +943,6 @@
 
                     }
                 );
-
 
                 card.forEach(
                     (
@@ -1037,26 +961,20 @@
                                         "button"
                                     );
 
-
                                 button.type =
                                     "button";
-
 
                                 button.className =
                                     "bingo-cell";
 
-
                                 button.dataset.cardIndex =
                                     cardIndex;
-
 
                                 button.dataset.row =
                                     rowIndex;
 
-
                                 button.dataset.column =
                                     columnIndex;
-
 
                                 if (
                                     cell.free
@@ -1066,10 +984,8 @@
                                         "free"
                                     );
 
-
                                     button.textContent =
                                         "FREE";
-
 
                                     button.disabled =
                                         true;
@@ -1081,12 +997,10 @@
                                     button.textContent =
                                         cell.number;
 
-
                                     button.dataset.number =
                                         cell.number;
 
                                 }
-
 
                                 if (
                                     cell.marked
@@ -1098,7 +1012,6 @@
 
                                 }
 
-
                                 grid.appendChild(
                                     button
                                 );
@@ -1109,11 +1022,9 @@
                     }
                 );
 
-
                 article.appendChild(
                     grid
                 );
-
 
                 container.appendChild(
                     article
@@ -1121,7 +1032,6 @@
 
             }
         );
-
 
         updateBingoCardSelectionUI();
 
@@ -1134,9 +1044,6 @@
 
     /* =====================================================
        13. CARD SELECTION
-       -----------------------------------------------------
-       SELECTING CARDS DOES NOT CHARGE.
-       NEW GAME CHARGES.
     ===================================================== */
 
     function updateBingoCardSelectionUI() {
@@ -1153,17 +1060,14 @@
                             button.dataset.cardCount
                         );
 
-
                     const active =
                         count ===
                         bingo.cardCount;
-
 
                     button.classList.toggle(
                         "active",
                         active
                     );
-
 
                     button.setAttribute(
                         "aria-pressed",
@@ -1173,12 +1077,10 @@
                 }
             );
 
-
         const label =
             getElement(
                 "bingoCardCountLabel"
             );
-
 
         if (label) {
 
@@ -1192,13 +1094,10 @@
     }
 
 
-    function selectBingoCardCount(
-        count
-    ) {
+    function selectBingoCardCount(count) {
 
         count =
             Number(count);
-
 
         if (
             !Number.isInteger(count) ||
@@ -1209,7 +1108,6 @@
             return false;
 
         }
-
 
         if (
             bingo.gameStarted &&
@@ -1225,24 +1123,17 @@
 
         }
 
-
         bingo.cardCount =
             count;
 
-
         generateBingoCards();
 
-
         const cost =
-            CONFIG.cardCosts[
-                count
-            ];
-
+            CONFIG.cardCosts[count];
 
         showResult(
             `${count} card${count === 1 ? "" : "s"} selected. New game costs ${cost} Café Credits.`
         );
-
 
         return true;
 
@@ -1250,7 +1141,24 @@
 
 
     /* =====================================================
-       14. START NEW GAME
+       14. POWER-UP RESET
+    ===================================================== */
+
+    function resetPowerUpState() {
+
+        bingo.currentPowerUp =
+            null;
+
+        bingo.powerUpTarget =
+            null;
+
+        clearPowerUpVisuals();
+
+    }
+
+
+    /* =====================================================
+       15. START NEW GAME
     ===================================================== */
 
     function startBingoGame() {
@@ -1259,7 +1167,6 @@
             CONFIG.cardCosts[
                 bingo.cardCount
             ];
-
 
         if (
             !spendBingoCredits(
@@ -1271,13 +1178,12 @@
 
         }
 
-
         stopBingoAutoCall();
 
+        resetPowerUpState();
 
         bingo.calledNumbers =
             [];
-
 
         bingo.availableNumbers =
             shuffle(
@@ -1291,57 +1197,50 @@
                 )
             );
 
-
         bingo.currentNumber =
             null;
-
 
         bingo.currentLetter =
             null;
 
-
         bingo.gameStarted =
             true;
-
 
         bingo.gameOver =
             false;
 
-
         bingo.totalDaubs =
             0;
-
 
         bingo.brewerDaubs =
             0;
 
-
         bingo.brewerReady =
             false;
-
 
         bingo.brewerCooldownUntil =
             0;
 
-
-        bingo.currentPowerUp =
-            null;
-
-
-        bingo.powerUpTarget =
-            null;
-
-
         bingo.wildActive =
             false;
-
 
         bingo.lastWinReward =
             0;
 
+        if (
+            brewerRefreshTimer
+        ) {
+
+            clearInterval(
+                brewerRefreshTimer
+            );
+
+            brewerRefreshTimer =
+                null;
+
+        }
 
         generateBingoCards();
-
 
         resetBingoCaller();
 
@@ -1353,14 +1252,11 @@
 
         hideBingoWin();
 
-
         showResult(
             `🎱 New Bingo game started with ${bingo.cardCount} card${bingo.cardCount === 1 ? "" : "s"}. ${cost} credits used.`
         );
 
-
         saveWallet();
-
 
         return true;
 
@@ -1368,7 +1264,7 @@
 
 
     /* =====================================================
-       15. CALLER
+       16. CALLER
     ===================================================== */
 
     function resetBingoCaller() {
@@ -1378,12 +1274,10 @@
                 "bingoCurrentLetter"
             );
 
-
         const number =
             getElement(
                 "bingoCurrentNumber"
             );
-
 
         if (letter) {
 
@@ -1391,7 +1285,6 @@
                 "READY";
 
         }
-
 
         if (number) {
 
@@ -1410,12 +1303,10 @@
                 "bingoCurrentLetter"
             );
 
-
         const number =
             getElement(
                 "bingoCurrentNumber"
             );
-
 
         if (letter) {
 
@@ -1424,7 +1315,6 @@
                 "READY";
 
         }
-
 
         if (number) {
 
@@ -1438,7 +1328,7 @@
 
 
     /* =====================================================
-       16. STATS
+       17. STATS
     ===================================================== */
 
     function updateBingoStats() {
@@ -1448,24 +1338,20 @@
                 "bingoCalledCount"
             );
 
-
         const remaining =
             getElement(
                 "bingoRemainingCount"
             );
-
 
         const wins =
             getElement(
                 "bingoWins"
             );
 
-
         const total =
             getElement(
                 "bingoCalledTotal"
             );
-
 
         if (called) {
 
@@ -1474,17 +1360,13 @@
 
         }
 
-
         if (remaining) {
 
             remaining.textContent =
-                (
-                    CONFIG.totalNumbers -
-                    bingo.calledNumbers.length
-                );
+                CONFIG.totalNumbers -
+                bingo.calledNumbers.length;
 
         }
-
 
         if (wins) {
 
@@ -1492,7 +1374,6 @@
                 bingo.wins;
 
         }
-
 
         if (total) {
 
@@ -1505,7 +1386,7 @@
 
 
     /* =====================================================
-       17. GET DOM CELL
+       18. DOM CELL
     ===================================================== */
 
     function getDomBingoCell(
@@ -1517,13 +1398,11 @@
         const room =
             getRoom();
 
-
         if (!room) {
 
             return null;
 
         }
-
 
         return room.querySelector(
 
@@ -1535,7 +1414,7 @@
 
 
     /* =====================================================
-       18. MARK CALLED VISUALS
+       19. CALLED VISUALS
     ===================================================== */
 
     function applyCalledVisuals() {
@@ -1543,13 +1422,11 @@
         const room =
             getRoom();
 
-
         if (!room) {
 
             return;
 
         }
-
 
         room
             .querySelectorAll(
@@ -1568,24 +1445,20 @@
 
                     }
 
-
                     const number =
                         Number(
                             cell.dataset.number
                         );
-
 
                     const called =
                         bingo.calledNumbers.includes(
                             number
                         );
 
-
                     cell.classList.toggle(
                         "called",
                         called
                     );
-
 
                     const daubable =
                         bingo.gameStarted &&
@@ -1596,7 +1469,6 @@
                         ) &&
                         bingo.daubMode ===
                         "manual";
-
 
                     cell.classList.toggle(
                         "daubable",
@@ -1610,7 +1482,7 @@
 
 
     /* =====================================================
-       19. MANUAL DAUB
+       20. MANUAL DAUB
     ===================================================== */
 
     function daubBingoCell(
@@ -1628,12 +1500,10 @@
 
         }
 
-
         const card =
             bingo.cards[
                 cardIndex
             ];
-
 
         const cell =
             card?.[
@@ -1641,7 +1511,6 @@
             ]?.[
                 columnIndex
             ];
-
 
         if (
             !cell ||
@@ -1653,9 +1522,8 @@
 
         }
 
-
         /*
-            Wild lets the player choose
+            WILD lets the player choose
             any unmarked number.
         */
 
@@ -1671,7 +1539,6 @@
 
         }
 
-
         if (
             !bingo.calledNumbers.includes(
                 cell.number
@@ -1682,11 +1549,9 @@
                 `${getNumberLabel(cell.number)} has not been called yet.`
             );
 
-
             return false;
 
         }
-
 
         const success =
             markBingoCell(
@@ -1696,10 +1561,7 @@
                 true
             );
 
-
-        if (
-            success
-        ) {
+        if (success) {
 
             showResult(
                 `☑️ You daubed ${getNumberLabel(cell.number)}.`
@@ -1707,9 +1569,7 @@
 
         }
 
-
         checkBingo();
-
 
         return success;
 
@@ -1717,7 +1577,7 @@
 
 
     /* =====================================================
-       20. MARK CELL
+       21. MARK CELL
     ===================================================== */
 
     function markBingoCell(
@@ -1732,14 +1592,12 @@
                 cardIndex
             ];
 
-
         const cell =
             card?.[
                 rowIndex
             ]?.[
                 columnIndex
             ];
-
 
         if (
             !cell ||
@@ -1751,10 +1609,8 @@
 
         }
 
-
         cell.marked =
             true;
-
 
         const domCell =
             getDomBingoCell(
@@ -1763,37 +1619,36 @@
                 columnIndex
             );
 
-
         if (domCell) {
 
             domCell.classList.add(
                 "marked"
             );
 
-
             domCell.classList.remove(
                 "daubable"
             );
-
 
             domCell.classList.add(
                 "auto-mark"
             );
 
-
             setTimeout(
                 () => {
 
-                    domCell.classList.remove(
-                        "auto-mark"
-                    );
+                    if (domCell) {
+
+                        domCell.classList.remove(
+                            "auto-mark"
+                        );
+
+                    }
 
                 },
                 450
             );
 
         }
-
 
         if (
             countBrewer
@@ -1803,19 +1658,16 @@
 
         }
 
-
         return true;
 
     }
 
 
     /* =====================================================
-       21. AUTO DAUB
+       22. AUTO DAUB
     ===================================================== */
 
-    function autoDaubCalledNumber(
-        number
-    ) {
+    function autoDaubCalledNumber(number) {
 
         if (
             bingo.gameOver
@@ -1825,10 +1677,8 @@
 
         }
 
-
         let successful =
             0;
-
 
         for (
             let cardIndex = 0;
@@ -1840,7 +1690,6 @@
                 bingo.cards[
                     cardIndex
                 ];
-
 
             for (
                 let rowIndex = 0;
@@ -1861,7 +1710,6 @@
                             columnIndex
                         ];
 
-
                     if (
                         cell.free ||
                         cell.marked
@@ -1871,7 +1719,6 @@
 
                     }
 
-
                     if (
                         cell.number !==
                         number
@@ -1880,7 +1727,6 @@
                         continue;
 
                     }
-
 
                     if (
                         markBingoCell(
@@ -1901,7 +1747,6 @@
 
         }
 
-
         if (
             successful > 0
         ) {
@@ -1912,19 +1757,16 @@
 
         }
 
-
         applyCalledVisuals();
 
     }
 
 
     /* =====================================================
-       22. DAUB MODE
+       23. DAUB MODE
     ===================================================== */
 
-    function setBingoDaubMode(
-        mode
-    ) {
+    function setBingoDaubMode(mode) {
 
         if (
             mode !== "manual" &&
@@ -1935,10 +1777,8 @@
 
         }
 
-
         bingo.daubMode =
             mode;
-
 
         document
             .querySelectorAll(
@@ -1951,12 +1791,10 @@
                         button.dataset.daubMode ===
                         mode;
 
-
                     button.classList.toggle(
                         "active",
                         active
                     );
-
 
                     button.setAttribute(
                         "aria-pressed",
@@ -1966,7 +1804,6 @@
                 }
             );
 
-
         if (
             mode === "auto" &&
             bingo.gameStarted
@@ -1975,16 +1812,20 @@
             bingo.calledNumbers.forEach(
                 number => {
 
-                    autoDaubCalledNumber(
-                        number
-                    );
+                    if (
+                        !bingo.gameOver
+                    ) {
+
+                        autoDaubCalledNumber(
+                            number
+                        );
+
+                    }
 
                 }
             );
 
-
             checkBingo();
-
 
             showResult(
                 "✨ Auto-Daub is ON. Called numbers are being marked automatically."
@@ -1996,13 +1837,11 @@
 
             applyCalledVisuals();
 
-
             showResult(
                 "✋ Manual Daub is ON. Tap called numbers yourself."
             );
 
         }
-
 
         return true;
 
@@ -2010,17 +1849,19 @@
 
 
     /* =====================================================
-       23. SUCCESSFUL DAUB
+       24. SUCCESSFUL PLAYER DAUB
     ===================================================== */
 
     function rewardSuccessfulBingoDaub() {
 
         bingo.totalDaubs++;
 
-
         /*
-            Brewer does not collect daubs
-            while READY or cooling.
+            Brewer only counts player/automatic
+            successful daubs while it is charging.
+
+            It does not continue charging while READY.
+            It does not charge during cooldown.
         */
 
         if (
@@ -2031,7 +1872,6 @@
 
         }
 
-
         if (
             bingo.brewerCooldownUntil >
             Date.now()
@@ -2041,9 +1881,7 @@
 
         }
 
-
         bingo.brewerDaubs++;
-
 
         if (
             bingo.brewerDaubs >=
@@ -2053,17 +1891,14 @@
             bingo.brewerDaubs =
                 CONFIG.brewerRequiredDaubs;
 
-
             bingo.brewerReady =
                 true;
 
-
             showResult(
-                "☕ Your Coffee Brewer is READY! Tap the coffee to reveal a random power-up."
+                "☕✨ Your Coffee Brewer is READY! Tap the coffee to reveal a random power-up."
             );
 
         }
-
 
         updateBingoBrewerUI();
 
@@ -2071,7 +1906,7 @@
 
 
     /* =====================================================
-       24. CALL NUMBER
+       25. CALL NUMBER
     ===================================================== */
 
     function callBingoNumber() {
@@ -2088,7 +1923,6 @@
 
         }
 
-
         if (
             !bingo.gameStarted
         ) {
@@ -2101,7 +1935,6 @@
 
         }
 
-
         if (
             bingo.calledNumbers.length >=
             CONFIG.totalNumbers
@@ -2109,58 +1942,42 @@
 
             stopBingoAutoCall();
 
-
             showResult(
                 "📢 All 75 numbers have been called."
             );
-
 
             return null;
 
         }
 
+        const number =
+            bingo.availableNumbers.shift();
 
-        let number;
+        if (
+            !Number.isInteger(number)
+        ) {
 
+            stopBingoAutoCall();
 
-        do {
-
-            number =
-                randomInt(
-                    1,
-                    CONFIG.totalNumbers
-                );
-
-        }
-        while (
-            bingo.calledNumbers.includes(
-                number
-            )
-        );
-
-
-        bingo.availableNumbers =
-            bingo.availableNumbers.filter(
-                available =>
-                    available !==
-                    number
+            showResult(
+                "📢 No numbers remain."
             );
 
+            return null;
+
+        }
 
         bingo.calledNumbers.push(
             number
         );
 
-
         bingo.currentNumber =
             number;
-
 
         bingo.currentLetter =
             getBingoLetter(
                 number
             );
-
 
         updateBingoCaller();
 
@@ -2171,16 +1988,20 @@
         applyCalledVisuals();
 
 
-        /*
-            First check whether a power-up
-            target was hit.
-        */
+        /* -------------------------------------------------
+           POWER-UP TARGETS FIRST
+
+           Treasure and Instant Bingo must trigger
+           BEFORE normal Auto-Daub.
+
+           This is important because the target number
+           may also be marked by Auto-Daub.
+        ------------------------------------------------- */
 
         const powerUpHit =
             checkPowerUpTarget(
                 number
             );
-
 
         if (
             powerUpHit &&
@@ -2192,11 +2013,9 @@
         }
 
 
-        /*
-            Auto-Daub after the power-up
-            check so special targets always
-            get priority.
-        */
+        /* -------------------------------------------------
+           AUTO DAUB
+        ------------------------------------------------- */
 
         if (
             bingo.daubMode ===
@@ -2210,6 +2029,10 @@
 
         }
 
+
+        /* -------------------------------------------------
+           NORMAL BINGO CHECK
+        ------------------------------------------------- */
 
         if (
             !bingo.gameOver
@@ -2230,26 +2053,49 @@
 
         }
 
-
         return number;
 
     }
 
 
     /* =====================================================
-       25. RANDOM POWER-UP TARGET
+       26. FIND POWER-UP TARGET
+       -----------------------------------------------------
+       CRITICAL RULE:
+
+       Select ONE CARD first.
+
+       Then select target(s) only from that card.
+
+       NEVER create a target for every card.
     ===================================================== */
 
-    function findRandomPowerUpTarget() {
+    function findRandomPowerUpTarget(
+        powerUpId
+    ) {
 
-        const targets = [];
+        if (
+            bingo.cards.length === 0
+        ) {
 
+            return null;
+
+        }
+
+        /*
+            Find cards that still have enough
+            unmarked playable cells.
+        */
+
+        const eligibleCards = [];
 
         bingo.cards.forEach(
             (
                 card,
                 cardIndex
             ) => {
+
+                const availableCells = [];
 
                 card.forEach(
                     (
@@ -2264,15 +2110,15 @@
                             ) => {
 
                                 if (
-                                    cell.free
+                                    cell.free ||
+                                    cell.marked
                                 ) {
 
                                     return;
 
                                 }
 
-
-                                targets.push({
+                                availableCells.push({
 
                                     cardIndex,
 
@@ -2293,12 +2139,34 @@
                     }
                 );
 
+                const minimum =
+                    powerUpId ===
+                    "double-daub"
+                        ? 2
+                        : 1;
+
+                if (
+                    availableCells.length >=
+                    minimum
+                ) {
+
+                    eligibleCards.push({
+
+                        cardIndex,
+
+                        cells:
+                            availableCells
+
+                    });
+
+                }
+
             }
         );
 
 
         if (
-            targets.length === 0
+            eligibleCards.length === 0
         ) {
 
             return null;
@@ -2306,18 +2174,81 @@
         }
 
 
-        return targets[
-            randomInt(
-                0,
-                targets.length - 1
-            )
-        ];
+        /*
+            STEP 1:
+            Select ONE random card.
+        */
+
+        const selectedCard =
+            eligibleCards[
+                randomInt(
+                    0,
+                    eligibleCards.length - 1
+                )
+            ];
+
+
+        /*
+            STEP 2:
+            Select target(s) from that
+            SAME card.
+        */
+
+        if (
+            powerUpId ===
+            "double-daub"
+        ) {
+
+            const selectedTargets =
+                shuffle(
+                    selectedCard.cells
+                ).slice(
+                    0,
+                    2
+                );
+
+            return {
+
+                cardIndex:
+                    selectedCard.cardIndex,
+
+                targets:
+                    selectedTargets
+
+            };
+
+        }
+
+
+        const selectedTarget =
+            selectedCard.cells[
+                randomInt(
+                    0,
+                    selectedCard.cells.length - 1
+                )
+            ];
+
+        return {
+
+            cardIndex:
+                selectedCard.cardIndex,
+
+            row:
+                selectedTarget.row,
+
+            column:
+                selectedTarget.column,
+
+            number:
+                selectedTarget.number
+
+        };
 
     }
 
 
     /* =====================================================
-       26. BREWER
+       27. BREWER UI
     ===================================================== */
 
     function updateBingoBrewerUI() {
@@ -2327,48 +2258,40 @@
                 "bingoCoffeeCup"
             );
 
-
         const fill =
             getElement(
                 "bingoCoffeeFill"
             );
-
 
         const timer =
             getElement(
                 "bingoPowerupTimer"
             );
 
-
         const title =
             getElement(
                 "bingoPowerupStatusTitle"
             );
-
 
         const text =
             getElement(
                 "bingoPowerupStatusText"
             );
 
-
         const status =
             getElement(
                 "bingoPowerupStatus"
             );
-
 
         const cooldownBox =
             getElement(
                 "bingoPowerupCooldown"
             );
 
-
         const cooldownTime =
             getElement(
                 "bingoPowerupCooldownTime"
             );
-
 
         if (!cup) {
 
@@ -2376,14 +2299,13 @@
 
         }
 
-
         const now =
             Date.now();
 
 
-        /*
-            COOLDOWN
-        */
+        /* -------------------------------------------------
+           COOLDOWN
+        ------------------------------------------------- */
 
         if (
             bingo.brewerCooldownUntil >
@@ -2394,24 +2316,20 @@
                 bingo.brewerCooldownUntil -
                 now;
 
-
             const remainingSeconds =
                 Math.ceil(
                     remainingMs /
                     1000
                 );
 
-
             cup.classList.remove(
                 "ready",
                 "brewing"
             );
 
-
             cup.classList.add(
                 "cooldown"
             );
-
 
             if (fill) {
 
@@ -2419,7 +2337,6 @@
                     "0%";
 
             }
-
 
             if (timer) {
 
@@ -2430,7 +2347,6 @@
 
             }
 
-
             if (title) {
 
                 title.textContent =
@@ -2438,14 +2354,12 @@
 
             }
 
-
             if (text) {
 
                 text.textContent =
-                    "The brewer is recharging. You can brew another power-up when the timer reaches zero.";
+                    "The brewer is recharging. Come back when the five-minute timer reaches zero.";
 
             }
-
 
             if (status) {
 
@@ -2455,14 +2369,12 @@
 
             }
 
-
             if (cooldownBox) {
 
                 cooldownBox.hidden =
                     false;
 
             }
-
 
             if (cooldownTime) {
 
@@ -2473,7 +2385,6 @@
 
             }
 
-
             startBrewerCooldownRefresh();
 
             return;
@@ -2481,9 +2392,9 @@
         }
 
 
-        /*
-            NO COOLDOWN
-        */
+        /* -------------------------------------------------
+           NO COOLDOWN
+        ------------------------------------------------- */
 
         if (cooldownBox) {
 
@@ -2493,9 +2404,9 @@
         }
 
 
-        /*
-            READY
-        */
+        /* -------------------------------------------------
+           READY
+        ------------------------------------------------- */
 
         if (
             bingo.brewerReady
@@ -2506,11 +2417,9 @@
                 "cooldown"
             );
 
-
             cup.classList.add(
                 "ready"
             );
-
 
             if (fill) {
 
@@ -2519,14 +2428,12 @@
 
             }
 
-
             if (timer) {
 
                 timer.textContent =
                     "READY";
 
             }
-
 
             if (title) {
 
@@ -2535,14 +2442,12 @@
 
             }
 
-
             if (text) {
 
                 text.textContent =
                     "A random mystery power-up is waiting.";
 
             }
-
 
             if (status) {
 
@@ -2552,33 +2457,29 @@
 
             }
 
-
             return;
 
         }
 
 
-        /*
-            BREWING
-        */
+        /* -------------------------------------------------
+           BREWING
+        ------------------------------------------------- */
 
         cup.classList.remove(
             "ready",
             "cooldown"
         );
 
-
         cup.classList.add(
             "brewing"
         );
-
 
         const progress =
             (
                 bingo.brewerDaubs /
                 CONFIG.brewerRequiredDaubs
             ) * 100;
-
 
         if (fill) {
 
@@ -2587,14 +2488,12 @@
 
         }
 
-
         if (timer) {
 
             timer.textContent =
                 `${bingo.brewerDaubs}/${CONFIG.brewerRequiredDaubs}`;
 
         }
-
 
         if (title) {
 
@@ -2603,7 +2502,6 @@
 
         }
 
-
         const remaining =
             Math.max(
                 0,
@@ -2611,18 +2509,14 @@
                 bingo.brewerDaubs
             );
 
-
         if (text) {
 
             text.textContent =
                 remaining === 0
-
                     ? "Coffee is ready."
-
                     : `${remaining} more successful daub${remaining === 1 ? "" : "s"} needed to brew a surprise.`;
 
         }
-
 
         if (status) {
 
@@ -2645,20 +2539,17 @@
                 Number(totalSeconds)
             );
 
-
         const minutes =
             Math.floor(
                 totalSeconds / 60
             );
 
-
         const seconds =
             totalSeconds %
             60;
 
-
         return (
-            `${minutes}:${String(seconds).padStart(2,"0")}`
+            `${minutes}:${String(seconds).padStart(2, "0")}`
         );
 
     }
@@ -2674,7 +2565,6 @@
 
         }
 
-
         brewerRefreshTimer =
             setInterval(
                 () => {
@@ -2688,35 +2578,27 @@
                             brewerRefreshTimer
                         );
 
-
                         brewerRefreshTimer =
                             null;
-
 
                         bingo.brewerCooldownUntil =
                             0;
 
-
                         bingo.brewerDaubs =
                             0;
-
 
                         bingo.brewerReady =
                             false;
 
-
                         updateBingoBrewerUI();
 
-
                         showResult(
-                            "☕ The brewer has finished recharging. Three successful daubs will brew your next surprise."
+                            "☕✨ The brewer is ready to start brewing again. Three successful daubs will unlock your next surprise."
                         );
-
 
                         return;
 
                     }
-
 
                     updateBingoBrewerUI();
 
@@ -2728,7 +2610,7 @@
 
 
     /* =====================================================
-       27. ACTIVATE BREWER
+       28. ACTIVATE BREWER
     ===================================================== */
 
     function activateBingoPowerUp() {
@@ -2742,10 +2624,8 @@
 
         }
 
-
         const now =
             Date.now();
-
 
         if (
             bingo.brewerCooldownUntil >
@@ -2763,11 +2643,9 @@
                 )} remaining.`
             );
 
-
             return false;
 
         }
-
 
         if (
             !bingo.brewerReady
@@ -2780,16 +2658,18 @@
                     bingo.brewerDaubs
                 );
 
-
             showResult(
                 `☕ The brewer is still brewing. ${needed} more successful daub${needed === 1 ? "" : "s"} needed.`
             );
-
 
             return false;
 
         }
 
+
+        /*
+            Pick random power-up.
+        */
 
         const powerUp =
             POWER_UPS[
@@ -2800,37 +2680,51 @@
             ];
 
 
+        /*
+            Pick ONE CARD + target(s).
+        */
+
         const target =
-            findRandomPowerUpTarget();
+            findRandomPowerUpTarget(
+                powerUp.id
+            );
 
 
         if (!target) {
 
             showResult(
-                "☕ The brewer could not find a target number."
+                "☕ The brewer could not find enough unmarked numbers."
             );
-
 
             return false;
 
         }
 
 
+        /*
+            Store active power-up.
+        */
+
         bingo.currentPowerUp =
             powerUp;
-
 
         bingo.powerUpTarget =
             target;
 
 
+        /*
+            Brewer consumed.
+        */
+
         bingo.brewerReady =
             false;
-
 
         bingo.brewerDaubs =
             0;
 
+        /*
+            FIVE MINUTE COOLDOWN.
+        */
 
         bingo.brewerCooldownUntil =
             Date.now() +
@@ -2841,7 +2735,7 @@
 
 
         /*
-            Show the target landing.
+            Animate landing.
         */
 
         animatePowerUpLanding(
@@ -2850,13 +2744,78 @@
         );
 
 
-        showResult(
-            `${powerUp.icon} ${powerUp.name} landed on Card ${target.cardIndex + 1} — ${getNumberLabel(target.number)}.`
-        );
+        /*
+            Display reveal message.
+        */
+
+        if (
+            powerUp.id ===
+            "double-daub"
+        ) {
+
+            showResult(
+                `☕☕ DOUBLE DAUB landed on Card ${target.cardIndex + 1} — ${getNumberLabel(target.targets[0].number)} and ${getNumberLabel(target.targets[1].number)}!`
+            );
+
+        }
+
+        else {
+
+            showResult(
+                `${powerUp.icon} ${powerUp.name} landed on Card ${target.cardIndex + 1} — ${getNumberLabel(target.number)}.`
+            );
+
+        }
+
+
+        /*
+            Single/Double activate immediately.
+
+            Treasure/Instant wait for call.
+
+            HOWEVER:
+            If Treasure/Instant landed on a number
+            that was already called, activate now.
+        */
+
+        if (
+            powerUp.id ===
+            "single-daub" ||
+            powerUp.id ===
+            "double-daub"
+        ) {
+
+            activatePowerUp(
+                powerUp,
+                target
+            );
+
+        }
+
+        else if (
+            powerUp.id ===
+            "treasure" ||
+            powerUp.id ===
+            "instant-bingo"
+        ) {
+
+            if (
+                bingo.calledNumbers.includes(
+                    target.number
+                )
+            ) {
+
+                activatePowerUp(
+                    powerUp,
+                    target
+                );
+
+            }
+
+        }
 
 
         startBrewerCooldownRefresh();
-
 
         return true;
 
@@ -2864,16 +2823,12 @@
 
 
     /* =====================================================
-       28. POWER-UP TARGET CLASS
+       29. POWER-UP CLASS
     ===================================================== */
 
-    function getPowerUpClass(
-        id
-    ) {
+    function getPowerUpClass(id) {
 
-        switch (
-            id
-        ) {
+        switch (id) {
 
             case "treasure":
                 return "has-treasure";
@@ -2896,13 +2851,135 @@
 
 
     /* =====================================================
-       29. POWER-UP LANDING
+       30. POWER-UP LANDING ANIMATION
     ===================================================== */
 
     function animatePowerUpLanding(
         powerUp,
         target
     ) {
+
+        if (
+            !target
+        ) {
+
+            return;
+
+        }
+
+
+        /*
+            DOUBLE DAUB
+        */
+
+        if (
+            powerUp.id ===
+            "double-daub"
+        ) {
+
+            if (
+                !Array.isArray(
+                    target.targets
+                )
+            ) {
+
+                return;
+
+            }
+
+            target.targets.forEach(
+                singleTarget => {
+
+                    const cell =
+                        getDomBingoCell(
+                            singleTarget.cardIndex,
+                            singleTarget.row,
+                            singleTarget.column
+                        );
+
+                    if (!cell) {
+
+                        return;
+
+                    }
+
+                    cell.classList.add(
+                        getPowerUpClass(
+                            powerUp.id
+                        )
+                    );
+
+                    cell.classList.add(
+                        "powerup-target"
+                    );
+
+                    cell.dataset.mysteryIcon =
+                        powerUp.icon;
+
+                    const landing =
+                        document.createElement(
+                            "div"
+                        );
+
+                    landing.className =
+                        "bingo-powerup-landing powerup-double-daub";
+
+                    landing.innerHTML = `
+
+                        <span class="double-coffee">
+
+                            <span class="cup-one">
+                                ☕
+                            </span>
+
+                            <span class="cup-two">
+                                ☕
+                            </span>
+
+                        </span>
+
+                    `;
+
+                    cell.appendChild(
+                        landing
+                    );
+
+                    requestAnimationFrame(
+                        () => {
+
+                            landing.classList.add(
+                                "landed"
+                            );
+
+                        }
+                    );
+
+                    setTimeout(
+                        () => {
+
+                            if (
+                                landing.parentNode
+                            ) {
+
+                                landing.remove();
+
+                            }
+
+                        },
+                        2200
+                    );
+
+                }
+            );
+
+            return;
+
+        }
+
+
+        /*
+            SINGLE TARGET
+        */
 
         const cell =
             getDomBingoCell(
@@ -2911,17 +2988,11 @@
                 target.column
             );
 
-
         if (!cell) {
 
             return;
 
         }
-
-
-        /*
-            Persistent target state.
-        */
 
         cell.classList.add(
             getPowerUpClass(
@@ -2929,69 +3000,27 @@
             )
         );
 
-
         cell.classList.add(
             "powerup-target"
         );
 
-
         cell.dataset.mysteryIcon =
             powerUp.icon;
-
-
-        /*
-            Animated object.
-        */
 
         const landing =
             document.createElement(
                 "div"
             );
 
-
         landing.className =
             `bingo-powerup-landing powerup-${powerUp.id}`;
 
-
-        if (
-            powerUp.id ===
-            "double-daub"
-        ) {
-
-            /*
-                Attached / overlapping cups.
-            */
-
-            landing.innerHTML = `
-
-                <span class="double-coffee">
-
-                    <span class="cup-one">
-                        ☕
-                    </span>
-
-                    <span class="cup-two">
-                        ☕
-                    </span>
-
-                </span>
-
-            `;
-
-        }
-
-        else {
-
-            landing.textContent =
-                powerUp.icon;
-
-        }
-
+        landing.textContent =
+            powerUp.icon;
 
         cell.appendChild(
             landing
         );
-
 
         requestAnimationFrame(
             () => {
@@ -3002,14 +3031,6 @@
 
             }
         );
-
-
-        /*
-            Remove ONLY the temporary
-            landing animation.
-
-            The target itself stays visible.
-        */
 
         setTimeout(
             () => {
@@ -3030,7 +3051,7 @@
 
 
     /* =====================================================
-       30. RESTORE POWER-UP VISUAL
+       31. RESTORE POWER-UP VISUALS
     ===================================================== */
 
     function applyPowerUpVisuals() {
@@ -3044,10 +3065,67 @@
 
         }
 
+        const powerUp =
+            bingo.currentPowerUp;
 
         const target =
             bingo.powerUpTarget;
 
+
+        /*
+            DOUBLE
+        */
+
+        if (
+            powerUp.id ===
+            "double-daub"
+        ) {
+
+            if (
+                !Array.isArray(
+                    target.targets
+                )
+            ) {
+
+                return;
+
+            }
+
+            target.targets.forEach(
+                singleTarget => {
+
+                    const cell =
+                        getDomBingoCell(
+                            singleTarget.cardIndex,
+                            singleTarget.row,
+                            singleTarget.column
+                        );
+
+                    if (!cell) {
+
+                        return;
+
+                    }
+
+                    cell.classList.add(
+                        "has-double-daub",
+                        "powerup-target"
+                    );
+
+                    cell.dataset.mysteryIcon =
+                        powerUp.icon;
+
+                }
+            );
+
+            return;
+
+        }
+
+
+        /*
+            SINGLE TARGET
+        */
 
         const cell =
             getDomBingoCell(
@@ -3056,39 +3134,77 @@
                 target.column
             );
 
-
         if (!cell) {
 
             return;
 
         }
 
-
         cell.classList.add(
             getPowerUpClass(
-                bingo.currentPowerUp.id
+                powerUp.id
             )
         );
-
 
         cell.classList.add(
             "powerup-target"
         );
 
-
         cell.dataset.mysteryIcon =
-            bingo.currentPowerUp.icon;
+            powerUp.icon;
 
     }
 
 
     /* =====================================================
-       31. CHECK POWER-UP TARGET
+       32. CLEAR POWER-UP VISUALS
     ===================================================== */
 
-    function checkPowerUpTarget(
-        number
-    ) {
+    function clearPowerUpVisuals() {
+
+        const room =
+            getRoom();
+
+        if (!room) {
+
+            return;
+
+        }
+
+        room
+            .querySelectorAll(
+                ".powerup-target, .has-treasure, .has-single-daub, .has-double-daub, .has-instant-bingo"
+            )
+            .forEach(
+                cell => {
+
+                    cell.classList.remove(
+
+                        "powerup-target",
+
+                        "has-treasure",
+
+                        "has-single-daub",
+
+                        "has-double-daub",
+
+                        "has-instant-bingo"
+
+                    );
+
+                    delete cell.dataset.mysteryIcon;
+
+                }
+            );
+
+    }
+
+
+    /* =====================================================
+       33. CHECK POWER-UP TARGET
+    ===================================================== */
+
+    function checkPowerUpTarget(number) {
 
         if (
             !bingo.currentPowerUp ||
@@ -3099,10 +3215,23 @@
 
         }
 
+        const powerUp =
+            bingo.currentPowerUp;
+
+        const target =
+            bingo.powerUpTarget;
+
+
+        /*
+            Single and Double are already consumed
+            immediately when they land.
+        */
 
         if (
-            bingo.powerUpTarget.number !==
-            number
+            powerUp.id ===
+            "single-daub" ||
+            powerUp.id ===
+            "double-daub"
         ) {
 
             return false;
@@ -3110,19 +3239,24 @@
         }
 
 
-        const powerUp =
-            bingo.currentPowerUp;
+        /*
+            Treasure and Instant only care
+            about their exact target number.
+        */
 
+        if (
+            target.number !==
+            number
+        ) {
 
-        const target =
-            bingo.powerUpTarget;
+            return false;
 
+        }
 
         activatePowerUp(
             powerUp,
             target
         );
-
 
         return true;
 
@@ -3130,7 +3264,7 @@
 
 
     /* =====================================================
-       32. ACTIVATE POWER-UP
+       34. ACTIVATE POWER-UP
     ===================================================== */
 
     function activatePowerUp(
@@ -3138,34 +3272,114 @@
         target
     ) {
 
-        const cell =
-            getDomBingoCell(
-                target.cardIndex,
-                target.row,
-                target.column
-            );
+        if (
+            !powerUp ||
+            !target
+        ) {
+
+            return false;
+
+        }
 
 
-        if (cell) {
+        /*
+            Capture cells before state is cleared.
+        */
 
-            cell.classList.add(
-                "powerup-active"
-            );
+        const targetCells = [];
 
 
-            setTimeout(
-                () => {
+        if (
+            powerUp.id ===
+            "double-daub"
+        ) {
 
-                    cell.classList.remove(
-                        "powerup-active"
-                    );
+            if (
+                !Array.isArray(
+                    target.targets
+                )
+            ) {
 
-                },
-                1800
+                return false;
+
+            }
+
+            target.targets.forEach(
+                singleTarget => {
+
+                    const cell =
+                        getDomBingoCell(
+                            singleTarget.cardIndex,
+                            singleTarget.row,
+                            singleTarget.column
+                        );
+
+                    if (cell) {
+
+                        targetCells.push(
+                            cell
+                        );
+
+                    }
+
+                }
             );
 
         }
 
+        else {
+
+            const cell =
+                getDomBingoCell(
+                    target.cardIndex,
+                    target.row,
+                    target.column
+                );
+
+            if (cell) {
+
+                targetCells.push(
+                    cell
+                );
+
+            }
+
+        }
+
+
+        /*
+            Activation animation.
+        */
+
+        targetCells.forEach(
+            cell => {
+
+                cell.classList.add(
+                    "powerup-active"
+                );
+
+                setTimeout(
+                    () => {
+
+                        if (cell) {
+
+                            cell.classList.remove(
+                                "powerup-active"
+                            );
+
+                        }
+
+                    },
+                    1800
+                );
+
+            }
+        );
+
+
+        /*
+            Execute effect.
+        */
 
         switch (
             powerUp.id
@@ -3210,50 +3424,61 @@
 
 
         /*
-            Remove persistent target decoration.
+            Remove persistent target visuals.
         */
 
-        if (cell) {
+        targetCells.forEach(
+            cell => {
 
-            cell.classList.remove(
-                "has-treasure",
-                "has-single-daub",
-                "has-double-daub",
-                "has-instant-bingo",
-                "powerup-target"
-            );
+                cell.classList.remove(
+
+                    "has-treasure",
+
+                    "has-single-daub",
+
+                    "has-double-daub",
+
+                    "has-instant-bingo",
+
+                    "powerup-target"
+
+                );
+
+                delete cell.dataset.mysteryIcon;
+
+            }
+        );
 
 
-            delete cell.dataset.mysteryIcon;
-
-        }
-
+        /*
+            Clear active power-up.
+        */
 
         bingo.currentPowerUp =
             null;
 
-
         bingo.powerUpTarget =
             null;
+
+        return true;
 
     }
 
 
     /* =====================================================
-       33. TREASURE
+       35. TREASURE
     ===================================================== */
 
-    function activateTreasure(
-        target
-    ) {
+    function activateTreasure(target) {
 
         /*
-            75% = credits
-            25% = Wild
+            75% = Café Credits
+            25% = WILD
         */
 
         if (
-            Math.random() < 0.75
+            Math.random() <
+            0.75
         ) {
 
             const reward =
@@ -3262,30 +3487,29 @@
                     CONFIG.treasureCoinMax
                 );
 
-
             addBingoCredits(
                 reward
             );
 
-
             showResult(
-                `🎁 TREASURE! Card ${target.cardIndex + 1} — ${getNumberLabel(target.number)} gave you ${reward} Café Credits!`
+                `🎁 Treasure found! Card ${target.cardIndex + 1} won ${reward} Café Credits!`
             );
-
 
             return;
 
         }
 
 
+        /*
+            WILD
+        */
+
         bingo.wildActive =
             true;
 
-
         showResult(
-            `🎁 TREASURE! Card ${target.cardIndex + 1} — ${getNumberLabel(target.number)} gave you a WILD! Choose any unmarked number.`
+            `🎁 Treasure found! Card ${target.cardIndex + 1} found a WILD! Choose any unmarked number.`
         );
-
 
         applyCalledVisuals();
 
@@ -3293,12 +3517,10 @@
 
 
     /* =====================================================
-       34. SINGLE DAUB
+       36. SINGLE DAUB
     ===================================================== */
 
-    function activateSingleDaub(
-        target
-    ) {
+    function activateSingleDaub(target) {
 
         const success =
             markBingoCell(
@@ -3308,10 +3530,7 @@
                 false
             );
 
-
-        if (
-            success
-        ) {
+        if (success) {
 
             showResult(
                 `☕ SINGLE DAUB! Card ${target.cardIndex + 1} — ${getNumberLabel(target.number)} was daubed for you.`
@@ -3322,11 +3541,10 @@
         else {
 
             showResult(
-                `☕ SINGLE DAUB landed on Card ${target.cardIndex + 1} — ${getNumberLabel(target.number)}.`
+                `☕ SINGLE DAUB landed on Card ${target.cardIndex + 1}.`
             );
 
         }
-
 
         applyCalledVisuals();
 
@@ -3336,28 +3554,62 @@
 
 
     /* =====================================================
-       35. DOUBLE DAUB
+       37. DOUBLE DAUB
     ===================================================== */
 
-    function activateDoubleDaub(
-        target
-    ) {
+    function activateDoubleDaub(target) {
 
-        const success =
-            markBingoCell(
-                target.cardIndex,
-                target.row,
-                target.column,
-                false
-            );
+        if (
+            !target ||
+            !Array.isArray(
+                target.targets
+            )
+        ) {
+
+            return;
+
+        }
+
+        let successful =
+            0;
+
+        target.targets.forEach(
+            singleTarget => {
+
+                const success =
+                    markBingoCell(
+                        singleTarget.cardIndex,
+                        singleTarget.row,
+                        singleTarget.column,
+                        false
+                    );
+
+                if (success) {
+
+                    successful++;
+
+                }
+
+            }
+        );
 
 
         if (
-            success
+            successful === 2
         ) {
 
             showResult(
-                `☕☕ DOUBLE DAUB! Card ${target.cardIndex + 1} — ${getNumberLabel(target.number)} received a double daub!`
+                `☕☕ DOUBLE DAUB! Card ${target.cardIndex + 1} — ${getNumberLabel(target.targets[0].number)} and ${getNumberLabel(target.targets[1].number)} were daubed for you!`
+            );
+
+        }
+
+        else if (
+            successful === 1
+        ) {
+
+            showResult(
+                `☕☕ DOUBLE DAUB! Card ${target.cardIndex + 1} received one successful daub.`
             );
 
         }
@@ -3365,11 +3617,10 @@
         else {
 
             showResult(
-                `☕☕ DOUBLE DAUB landed on Card ${target.cardIndex + 1} — ${getNumberLabel(target.number)}!`
+                `☕☕ DOUBLE DAUB landed on Card ${target.cardIndex + 1}.`
             );
 
         }
-
 
         applyCalledVisuals();
 
@@ -3379,12 +3630,10 @@
 
 
     /* =====================================================
-       36. INSTANT BINGO
+       38. INSTANT BINGO
     ===================================================== */
 
-    function activateInstantBingo(
-        target
-    ) {
+    function activateInstantBingo(target) {
 
         const reward =
             randomInt(
@@ -3392,30 +3641,23 @@
                 CONFIG.instantWinMax
             );
 
-
         bingo.gameOver =
             true;
 
-
         bingo.wins++;
-
 
         bingo.lastWinReward =
             reward;
-
 
         addBingoCredits(
             reward
         );
 
-
         stopBingoAutoCall();
-
 
         showResult(
             `⭐ INSTANT BINGO! Card ${target.cardIndex + 1} — ${getNumberLabel(target.number)} triggered an instant win. You won ${reward} Café Credits!`
         );
-
 
         setTimeout(
             () => {
@@ -3432,7 +3674,7 @@
 
 
     /* =====================================================
-       37. WILD
+       39. WILD
     ===================================================== */
 
     function useBingoWild(
@@ -3449,7 +3691,6 @@
 
         }
 
-
         const cell =
             bingo.cards[
                 cardIndex
@@ -3458,7 +3699,6 @@
             ]?.[
                 columnIndex
             ];
-
 
         if (
             !cell ||
@@ -3470,17 +3710,13 @@
 
         }
 
-
         cell.marked =
             true;
-
 
         bingo.wildActive =
             false;
 
-
         bingo.totalDaubs++;
-
 
         const domCell =
             getDomBingoCell(
@@ -3488,7 +3724,6 @@
                 rowIndex,
                 columnIndex
             );
-
 
         if (domCell) {
 
@@ -3500,16 +3735,28 @@
                 "daubable"
             );
 
-        }
+            domCell.classList.add(
+                "auto-mark"
+            );
 
+            setTimeout(
+                () => {
+
+                    domCell.classList.remove(
+                        "auto-mark"
+                    );
+
+                },
+                450
+            );
+
+        }
 
         showResult(
             `🃏 WILD placed on Card ${cardIndex + 1} — ${getNumberLabel(cell.number)}.`
         );
 
-
         checkBingo();
-
 
         return true;
 
@@ -3517,7 +3764,7 @@
 
 
     /* =====================================================
-       38. BINGO CHECK
+       40. BINGO CHECK
     ===================================================== */
 
     function checkBingo() {
@@ -3529,7 +3776,6 @@
             return false;
 
         }
-
 
         for (
             let cardIndex = 0;
@@ -3544,20 +3790,16 @@
                     ]
                 );
 
-
             if (!line) {
 
                 continue;
 
             }
 
-
             bingo.gameOver =
                 true;
 
-
             bingo.wins++;
-
 
             const reward =
                 randomInt(
@@ -3565,10 +3807,8 @@
                     CONFIG.normalWinMax
                 );
 
-
             bingo.lastWinReward =
                 reward;
-
 
             line.forEach(
                 ({
@@ -3583,7 +3823,6 @@
                             column
                         );
 
-
                     if (cell) {
 
                         cell.classList.add(
@@ -3595,19 +3834,15 @@
                 }
             );
 
-
             addBingoCredits(
                 reward
             );
 
-
             stopBingoAutoCall();
-
 
             showResult(
                 `🎉 BINGO! Card ${cardIndex + 1} completed a winning line. You won ${reward} Café Credits!`
             );
-
 
             setTimeout(
                 () => {
@@ -3620,11 +3855,9 @@
                 900
             );
 
-
             return true;
 
         }
-
 
         return false;
 
@@ -3632,12 +3865,10 @@
 
 
     /* =====================================================
-       39. WINNING LINE
+       41. WINNING LINE
     ===================================================== */
 
-    function findWinningLine(
-        card
-    ) {
+    function findWinningLine(card) {
 
         const lines = [];
 
@@ -3697,32 +3928,26 @@
         */
 
         lines.push([
-
             {
                 row: 0,
                 column: 0
             },
-
             {
                 row: 1,
                 column: 1
             },
-
             {
                 row: 2,
                 column: 2
             },
-
             {
                 row: 3,
                 column: 3
             },
-
             {
                 row: 4,
                 column: 4
             }
-
         ]);
 
 
@@ -3731,32 +3956,26 @@
         */
 
         lines.push([
-
             {
                 row: 0,
                 column: 4
             },
-
             {
                 row: 1,
                 column: 3
             },
-
             {
                 row: 2,
                 column: 2
             },
-
             {
                 row: 3,
                 column: 1
             },
-
             {
                 row: 4,
                 column: 0
             }
-
         ]);
 
 
@@ -3778,7 +3997,6 @@
                                 column
                             ];
 
-
                         if (
                             cell.free
                         ) {
@@ -3787,16 +4005,12 @@
 
                         }
 
-
                         return cell.marked;
 
                     }
                 );
 
-
-            if (
-                complete
-            ) {
+            if (complete) {
 
                 return line;
 
@@ -3804,14 +4018,13 @@
 
         }
 
-
         return null;
 
     }
 
 
     /* =====================================================
-       40. CALLED NUMBERS
+       42. CALLED NUMBERS
     ===================================================== */
 
     function renderCalledNumbers() {
@@ -3821,17 +4034,14 @@
                 "bingoCalledNumbers"
             );
 
-
         if (!container) {
 
             return;
 
         }
 
-
         container.innerHTML =
             "";
-
 
         if (
             bingo.calledNumbers.length === 0
@@ -3842,24 +4052,19 @@
                     "span"
                 );
 
-
             empty.className =
                 "bingo-no-numbers";
 
-
             empty.textContent =
                 "No numbers called yet.";
-
 
             container.appendChild(
                 empty
             );
 
-
             return;
 
         }
-
 
         [
             ...bingo.calledNumbers
@@ -3873,10 +4078,8 @@
                             "span"
                         );
 
-
                     item.className =
                         "bingo-called-number";
-
 
                     if (
                         number ===
@@ -3889,12 +4092,10 @@
 
                     }
 
-
                     item.textContent =
                         getNumberLabel(
                             number
                         );
-
 
                     container.appendChild(
                         item
@@ -3907,18 +4108,15 @@
 
 
     /* =====================================================
-       41. WIN SCREEN
+       43. WIN SCREEN
     ===================================================== */
 
-    function showBingoWin(
-        message
-    ) {
+    function showBingoWin(message) {
 
         const screen =
             getElement(
                 "bingoWin"
             );
-
 
         if (!screen) {
 
@@ -3926,30 +4124,25 @@
 
         }
 
-
         const messageElement =
             getElement(
                 "bingoWinMessage"
             );
-
 
         const cards =
             getElement(
                 "bingoFinalCards"
             );
 
-
         const called =
             getElement(
                 "bingoFinalCalled"
             );
 
-
         const reward =
             getElement(
                 "bingoFinalReward"
             );
-
 
         if (messageElement) {
 
@@ -3958,7 +4151,6 @@
 
         }
 
-
         if (cards) {
 
             cards.textContent =
@@ -3966,14 +4158,12 @@
 
         }
 
-
         if (called) {
 
             called.textContent =
                 bingo.calledNumbers.length;
 
         }
-
 
         if (reward) {
 
@@ -3983,10 +4173,8 @@
 
         }
 
-
         screen.hidden =
             false;
-
 
         screen.style.display =
             "flex";
@@ -4001,17 +4189,14 @@
                 "bingoWin"
             );
 
-
         if (!screen) {
 
             return;
 
         }
 
-
         screen.hidden =
             true;
-
 
         screen.style.display =
             "";
@@ -4020,10 +4205,7 @@
 
 
     /* =====================================================
-       42. AUTO CALL
-       -----------------------------------------------------
-       Self-scheduling instead of setInterval.
-       Prevents multiple timers from stacking.
+       44. AUTO CALL
     ===================================================== */
 
     function startBingoAutoCall() {
@@ -4035,7 +4217,6 @@
             return;
 
         }
-
 
         if (
             !bingo.gameStarted
@@ -4049,7 +4230,6 @@
 
         }
 
-
         if (
             bingo.gameOver
         ) {
@@ -4062,18 +4242,14 @@
 
         }
 
-
         bingo.autoCall =
             true;
 
-
         updateBingoAutoCallButton();
-
 
         showResult(
             "🔄 Auto Call is running. The first number is being called now."
         );
-
 
         performAutoCallStep();
 
@@ -4090,7 +4266,6 @@
 
         }
 
-
         if (
             bingo.gameOver
         ) {
@@ -4101,7 +4276,6 @@
 
         }
 
-
         if (
             bingo.calledNumbers.length >=
             CONFIG.totalNumbers
@@ -4109,19 +4283,15 @@
 
             stopBingoAutoCall();
 
-
             showResult(
                 "📢 All 75 numbers have been called."
             );
-
 
             return;
 
         }
 
-
         callBingoNumber();
-
 
         if (
             !bingo.autoCall ||
@@ -4131,7 +4301,6 @@
             return;
 
         }
-
 
         bingo.autoCallTimer =
             setTimeout(
@@ -4159,16 +4328,13 @@
                 bingo.autoCallTimer
             );
 
-
             bingo.autoCallTimer =
                 null;
 
         }
 
-
         bingo.autoCall =
             false;
-
 
         updateBingoAutoCallButton();
 
@@ -4183,16 +4349,13 @@
 
             stopBingoAutoCall();
 
-
             showResult(
                 "⏸ Auto Call has been paused."
             );
 
-
             return;
 
         }
-
 
         startBingoAutoCall();
 
@@ -4206,19 +4369,16 @@
                 "bingoAutoCall"
             );
 
-
         if (!button) {
 
             return;
 
         }
 
-
         button.classList.toggle(
             "active",
             bingo.autoCall
         );
-
 
         button.setAttribute(
             "aria-pressed",
@@ -4231,7 +4391,7 @@
 
 
     /* =====================================================
-       43. BREWER CLICK
+       45. BREWER CLICK
     ===================================================== */
 
     function handleBrewerInteraction() {
@@ -4245,11 +4405,9 @@
 
         }
 
-
         const remainingMs =
             bingo.brewerCooldownUntil -
             Date.now();
-
 
         if (
             remainingMs > 0
@@ -4263,11 +4421,9 @@
                 )} remaining.`
             );
 
-
             return;
 
         }
-
 
         if (
             !bingo.brewerReady
@@ -4280,16 +4436,13 @@
                     bingo.brewerDaubs
                 );
 
-
             showResult(
                 `☕ The brewer is still brewing. ${needed} more successful daub${needed === 1 ? "" : "s"} needed.`
             );
 
-
             return;
 
         }
-
 
         activateBingoPowerUp();
 
@@ -4297,7 +4450,7 @@
 
 
     /* =====================================================
-       44. EVENT DELEGATION
+       46. EVENT DELEGATION
     ===================================================== */
 
     function setupBingoEvents() {
@@ -4309,7 +4462,6 @@
             return;
 
         }
-
 
         bingo.eventsAttached =
             true;
@@ -4324,7 +4476,6 @@
                         "#bingoGame"
                     );
 
-
                 if (!room) {
 
                     return;
@@ -4332,47 +4483,47 @@
                 }
 
 
+                /* CARD COUNT */
+
                 const cardOption =
                     event.target.closest(
                         "[data-card-count]"
                     );
 
-
                 if (cardOption) {
 
                     event.preventDefault();
-
 
                     selectBingoCardCount(
                         cardOption.dataset.cardCount
                     );
 
-
                     return;
 
                 }
 
+
+                /* DAUB MODE */
 
                 const daubOption =
                     event.target.closest(
                         "[data-daub-mode]"
                     );
 
-
                 if (daubOption) {
 
                     event.preventDefault();
-
 
                     setBingoDaubMode(
                         daubOption.dataset.daubMode
                     );
 
-
                     return;
 
                 }
 
+
+                /* CALL */
 
                 if (
                     event.target.closest(
@@ -4382,14 +4533,14 @@
 
                     event.preventDefault();
 
-
                     callBingoNumber();
-
 
                     return;
 
                 }
 
+
+                /* AUTO CALL */
 
                 if (
                     event.target.closest(
@@ -4399,14 +4550,14 @@
 
                     event.preventDefault();
 
-
                     toggleBingoAutoCall();
-
 
                     return;
 
                 }
 
+
+                /* NEW GAME */
 
                 if (
                     event.target.closest(
@@ -4416,14 +4567,14 @@
 
                     event.preventDefault();
 
-
                     startBingoGame();
-
 
                     return;
 
                 }
 
+
+                /* PLAY AGAIN */
 
                 if (
                     event.target.closest(
@@ -4433,42 +4584,39 @@
 
                     event.preventDefault();
 
-
                     hideBingoWin();
 
-
                     startBingoGame();
-
 
                     return;
 
                 }
 
+
+                /* COFFEE BREWER */
 
                 const coffee =
                     event.target.closest(
                         "#bingoCoffeeCup"
                     );
 
-
                 if (coffee) {
 
                     event.preventDefault();
 
-
                     handleBrewerInteraction();
-
 
                     return;
 
                 }
 
 
+                /* BINGO CELL */
+
                 const cell =
                     event.target.closest(
                         ".bingo-cell"
                     );
-
 
                 if (
                     cell &&
@@ -4478,7 +4626,6 @@
                 ) {
 
                     event.preventDefault();
-
 
                     daubBingoCell(
                         Number(
@@ -4498,6 +4645,8 @@
         );
 
 
+        /* KEYBOARD SUPPORT */
+
         document.addEventListener(
             "keydown",
             event => {
@@ -4507,13 +4656,11 @@
                         "#bingoCoffeeCup"
                     );
 
-
                 if (!coffee) {
 
                     return;
 
                 }
-
 
                 if (
                     event.key === "Enter" ||
@@ -4521,7 +4668,6 @@
                 ) {
 
                     event.preventDefault();
-
 
                     handleBrewerInteraction();
 
@@ -4534,7 +4680,7 @@
 
 
     /* =====================================================
-       45. PLAYROOM SYNC
+       47. PLAYROOM SYNC
     ===================================================== */
 
     function syncBingoUI() {
@@ -4542,13 +4688,11 @@
         const room =
             getRoom();
 
-
         if (!room) {
 
             return;
 
         }
-
 
         updateCreditsUI();
 
@@ -4581,10 +4725,8 @@
 
         }
 
-
         bingo.syncScheduled =
             true;
-
 
         requestAnimationFrame(
             () => {
@@ -4601,7 +4743,7 @@
 
 
     /* =====================================================
-       46. PLAYROOM MUTATION OBSERVER
+       48. MUTATION OBSERVER
     ===================================================== */
 
     function setupBingoMutationObserver() {
@@ -4614,7 +4756,6 @@
 
         }
 
-
         if (
             !document.body
         ) {
@@ -4623,10 +4764,8 @@
 
         }
 
-
         bingo.observerAttached =
             true;
-
 
         window.__digicafeBingoObserver =
             new MutationObserver(
@@ -4634,7 +4773,6 @@
 
                     let relevant =
                         false;
-
 
                     for (
                         const mutation of mutations
@@ -4649,10 +4787,8 @@
 
                         }
 
-
                         const mutationTarget =
                             mutation.target;
-
 
                         if (
                             mutationTarget.closest?.(
@@ -4667,7 +4803,6 @@
 
                         }
 
-
                         const nodes = [
 
                             ...mutation.addedNodes,
@@ -4675,7 +4810,6 @@
                             ...mutation.removedNodes
 
                         ];
-
 
                         if (
                             nodes.some(
@@ -4701,7 +4835,6 @@
 
                     }
 
-
                     if (
                         relevant
                     ) {
@@ -4712,7 +4845,6 @@
 
                 }
             );
-
 
         window.__digicafeBingoObserver.observe(
             document.body,
@@ -4726,14 +4858,13 @@
 
 
     /* =====================================================
-       47. INITIALIZATION
+       49. INITIALIZATION
     ===================================================== */
 
     function initBingo() {
 
         const room =
             getRoom();
-
 
         if (!room) {
 
@@ -4746,10 +4877,6 @@
         }
 
 
-        /*
-            Only initialize the game itself once.
-        */
-
         if (
             !bingo.initialized
         ) {
@@ -4760,10 +4887,8 @@
 
             setupBingoMutationObserver();
 
-
             bingo.initialized =
                 true;
-
 
             bingo.cardCount =
                 1;
@@ -4771,7 +4896,8 @@
 
             /*
                 Automatic first game.
-                1 card = 10 credits.
+
+                One card = 10 credits.
             */
 
             const started =
@@ -4779,8 +4905,8 @@
 
 
             /*
-                If player has no credits,
-                show a free preview.
+                If player has insufficient credits,
+                show a free preview instead.
             */
 
             if (
@@ -4790,36 +4916,35 @@
                 bingo.gameStarted =
                     false;
 
-
                 bingo.gameOver =
                     false;
-
 
                 bingo.calledNumbers =
                     [];
 
+                bingo.availableNumbers =
+                    [];
 
                 bingo.currentNumber =
                     null;
 
-
                 bingo.currentLetter =
                     null;
-
 
                 bingo.brewerDaubs =
                     0;
 
-
                 bingo.brewerReady =
                     false;
 
+                bingo.brewerCooldownUntil =
+                    0;
+
+                resetPowerUpState();
 
                 generateBingoCards();
 
-
                 resetBingoCaller();
-
 
                 showResult(
                     "🎱 Choose your cards and press NEW GAME to play."
@@ -4831,8 +4956,8 @@
 
 
         /*
-            Render the current cards whenever
-            Playroom recreates the Bingo room.
+            Re-render cards when Playroom
+            recreates the room.
         */
 
         if (
@@ -4843,9 +4968,7 @@
 
         }
 
-
         syncBingoUI();
-
 
         return true;
 
@@ -4853,7 +4976,7 @@
 
 
     /* =====================================================
-       48. BOOT
+       50. BOOT
     ===================================================== */
 
     function bootDigiCafeBingo() {
@@ -4888,63 +5011,51 @@
 
 
     /* =====================================================
-       49. GLOBAL ACCESS
+       51. GLOBAL ACCESS
     ===================================================== */
 
     window.bingo =
         bingo;
 
-
     window.initBingo =
         initBingo;
-
 
     window.startBingoGame =
         startBingoGame;
 
-
     window.callBingoNumber =
         callBingoNumber;
-
 
     window.toggleBingoAutoCall =
         toggleBingoAutoCall;
 
-
     window.startBingoAutoCall =
         startBingoAutoCall;
-
 
     window.stopBingoAutoCall =
         stopBingoAutoCall;
 
-
     window.daubBingoCell =
         daubBingoCell;
-
 
     window.activateBingoPowerUp =
         activateBingoPowerUp;
 
-
     window.resetBingoCredits =
         resetBingoCredits;
-
 
     window.addBingoCredits =
         addBingoCredits;
 
-
     window.spendBingoCredits =
         spendBingoCredits;
-
 
     window.selectBingoCardCount =
         selectBingoCardCount;
 
 
     /* =====================================================
-       50. DEBUG
+       52. DEBUG
     ===================================================== */
 
     window.debugBingo =
@@ -4986,6 +5097,9 @@
                 autoCall:
                     bingo.autoCall,
 
+                totalDaubs:
+                    bingo.totalDaubs,
+
                 brewerProgress:
                     `${bingo.brewerDaubs}/${CONFIG.brewerRequiredDaubs}`,
 
@@ -5013,9 +5127,27 @@
                     bingo.currentPowerUp?.name ||
                     "none",
 
+                powerUpId:
+                    bingo.currentPowerUp?.id ||
+                    "none",
+
                 powerUpTarget:
                     bingo.powerUpTarget
-                        ? `Card ${bingo.powerUpTarget.cardIndex + 1} — ${getNumberLabel(bingo.powerUpTarget.number)}`
+                        ? (
+                            bingo.currentPowerUp?.id ===
+                            "double-daub"
+
+                                ? `Card ${bingo.powerUpTarget.cardIndex + 1} — ${bingo.powerUpTarget.targets.map(
+                                    target =>
+                                        getNumberLabel(
+                                            target.number
+                                        )
+                                ).join(" + ")}`
+
+                                : `Card ${bingo.powerUpTarget.cardIndex + 1} — ${getNumberLabel(
+                                    bingo.powerUpTarget.number
+                                )}`
+                        )
                         : "none",
 
                 wild:
@@ -5027,11 +5159,11 @@
 
 
     /* =====================================================
-       51. LOADED
+       53. LOADED
     ===================================================== */
 
     console.log(
-        "🎱 DigiCafe Bingo — CLEAN COMPLETE ENGINE LOADED ☕"
+        "🎱 DigiCafe Bingo — REBUILT POWER-UP ENGINE LOADED ☕"
     );
 
 })();
