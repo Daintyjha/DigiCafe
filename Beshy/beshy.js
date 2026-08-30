@@ -1,93 +1,20 @@
 /* =====================================================
-BESHY.JS
-DigiCafe AI Bestie
+   BESHY.JS
+   DigiCafe AI Bestie
 ===================================================== */
+
 import { db } from "../firebase.js";
 
 import {
-collection,
-getDocs,
-addDoc,
-serverTimestamp
+    collection,
+    getDocs,
+    addDoc,
+    serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+
 /* =====================================================
-PENDING KNOWLEDGE
-===================================================== */
-function isKnowledgeSuggestion(message){
-
-const keywords = [
-
-    "you should",
-    "you could",
-    "it would be nice",
-    "i suggest",
-    "i suggest that",
-    "my suggestion",
-    "i have an idea",
-    "i think digicafe should",
-    "i think beshy should",
-    "you should add",
-    "maybe add"
-
-];
-
-return keywords.some(
-    word =>
-    normalizeText(message)
-    .includes(word)
-);
-
-}
-
-async function savePendingKnowledge(message){
-
-try {
-
-await addDoc(
-    collection(
-        db,
-        "pendingKnowledge"
-    ),
-    {
-
-        suggestion:
-            message,
-
-        source:
-            "visitor",
-
-        status:
-            "pending",
-
-        createdAt:
-            serverTimestamp()
-
-    }
-);
-
-
-console.log(
-"☕ Pending knowledge saved"
-);
-
-
-return true;
-
-
-}catch(error){
-
-console.error(
-"Could not save pending knowledge:",
-error
-);
-
-return false;
-
-}
-
-}
-/* =====================================================
-STATE
+   STATE
 ===================================================== */
 
 let knowledge = [];
@@ -98,374 +25,359 @@ let localKnowledge = [];
 let conversationMemory = [];
 let isThinking = false;
 
+
 /* =====================================================
-LOAD BESHY HTML
+   TEXT HELPERS
 ===================================================== */
 
-async function loadBeshyInterface() {
+function normalizeText(text) {
 
-const container =
-    document.querySelector("#beshy-container");
-
-if (!container) {
-
-    console.error("❌ #beshy-container was not found.");
-
-    return false;
+    return String(text || "")
+        .toLowerCase()
+        .trim()
+        .replace(/[!?.,]/g, "");
 
 }
 
-try {
 
-    const response =
-        await fetch("Beshy/beshy.html");
+function containsAny(text, words) {
 
-    if (!response.ok) {
+    return words.some(word =>
+        text.includes(word.toLowerCase())
+    );
 
-        throw new Error(
-            `Could not load beshy.html: ${response.status}`
+}
+
+
+function randomItem(array) {
+
+    if (!Array.isArray(array) || array.length === 0) {
+        return null;
+    }
+
+    return array[
+        Math.floor(Math.random() * array.length)
+    ];
+
+}
+
+
+/* =====================================================
+   PENDING KNOWLEDGE
+===================================================== */
+
+function isKnowledgeSuggestion(message) {
+
+    const keywords = [
+
+        "you should",
+        "you could",
+        "it would be nice",
+        "i suggest",
+        "i suggest that",
+        "my suggestion",
+        "i have an idea",
+        "i think digicafe should",
+        "i think beshy should",
+        "you should add",
+        "maybe add"
+
+    ];
+
+    const text = normalizeText(message);
+
+    return keywords.some(word =>
+        text.includes(word)
+    );
+
+}
+
+
+async function savePendingKnowledge(message) {
+
+    try {
+
+        await addDoc(
+            collection(db, "pendingKnowledge"),
+            {
+                suggestion: message,
+                source: "visitor",
+                status: "pending",
+                createdAt: serverTimestamp()
+            }
         );
+
+        console.log("☕ Pending knowledge saved");
+
+        return true;
+
+    } catch (error) {
+
+        console.error(
+            "Could not save pending knowledge:",
+            error
+        );
+
+        return false;
 
     }
 
-    container.innerHTML =
-        await response.text();
-
-    return true;
-
-} catch (error) {
-
-    console.error(
-        "❌ Could not load Beshy interface:",
-        error
-    );
-
-    return false;
-
 }
 
-}
 
 /* =====================================================
-MEMORY
+   MEMORY
 ===================================================== */
 
 function loadMemory() {
 
-try {
+    try {
 
-    const saved =
-        localStorage.getItem("beshyMemory");
+        const saved =
+            localStorage.getItem("beshyMemory");
 
-    if (saved) {
+        if (saved) {
 
-        conversationMemory =
-            JSON.parse(saved);
+            const parsed = JSON.parse(saved);
+
+            conversationMemory =
+                Array.isArray(parsed)
+                    ? parsed
+                    : [];
+
+        }
+
+    } catch (error) {
+
+        console.warn(
+            "Could not load Beshy memory:",
+            error
+        );
+
+        conversationMemory = [];
 
     }
 
-} catch {
-
-    conversationMemory = [];
-
 }
 
-}
 
 function saveMemory() {
 
-try {
+    try {
 
-    localStorage.setItem(
-        "beshyMemory",
-        JSON.stringify(
-            conversationMemory.slice(-20)
-        )
-    );
-
-} catch (error) {
-
-    console.error(
-        "Could not save Beshy memory:",
-        error
-    );
-
-}
-
-}
-
-function rememberConversation(
-userMessage,
-beshyReply
-) {
-
-conversationMemory.push({
-
-    user: userMessage,
-
-    beshy: beshyReply,
-
-    timestamp:
-        new Date().toISOString()
-
-});
-
-conversationMemory =
-    conversationMemory.slice(-20);
-
-saveMemory();
-
-}
-
-/* =====================================================
-FIREBASE
-===================================================== */
-
-async function loadCollection(
-collectionName
-) {
-
-try {
-
-    const snapshot =
-        await getDocs(
-            collection(
-                db,
-                collectionName
+        localStorage.setItem(
+            "beshyMemory",
+            JSON.stringify(
+                conversationMemory.slice(-20)
             )
         );
 
-    return snapshot.docs.map(
-        document => ({
+    } catch (error) {
 
-            id: document.id,
+        console.error(
+            "Could not save Beshy memory:",
+            error
+        );
 
-            ...document.data()
-
-        })
-    );
-
-} catch (error) {
-
-    console.warn(
-        `⚠️ Could not load ${collectionName}. Beshy will continue using local responses.`,
-        error
-    );
-
-    return [];
+    }
 
 }
 
+
+function rememberConversation(
+    userMessage,
+    beshyReply
+) {
+
+    conversationMemory.push({
+
+        user: userMessage,
+
+        beshy: beshyReply,
+
+        timestamp:
+            new Date().toISOString()
+
+    });
+
+    conversationMemory =
+        conversationMemory.slice(-20);
+
+    saveMemory();
+
 }
+
+
+/* =====================================================
+   FIREBASE
+===================================================== */
+
+async function loadCollection(collectionName) {
+
+    try {
+
+        const snapshot =
+            await getDocs(
+                collection(
+                    db,
+                    collectionName
+                )
+            );
+
+        return snapshot.docs.map(
+            document => ({
+                id: document.id,
+                ...document.data()
+            })
+        );
+
+    } catch (error) {
+
+        console.warn(
+            `⚠️ Could not load ${collectionName}.`,
+            error
+        );
+
+        return [];
+
+    }
+
+}
+
 
 async function loadFirebaseData() {
 
-const results =
-    await Promise.all([
+    const results =
+        await Promise.all([
 
-        loadCollection(
-            "beshyKnowledge"
-        ),
+            loadCollection("beshyKnowledge"),
 
-        loadCollection(
-            "beshyPersonality"
-        ),
+            loadCollection("beshyPersonality"),
 
-        loadCollection(
-            "beshyReactions"
-        )
+            loadCollection("beshyReactions")
 
-    ]);
+        ]);
 
-knowledge =
-    results[0];
+    knowledge = results[0];
 
-personality =
-    results[1];
+    personality = results[1];
 
-reactions =
-    results[2];
+    reactions = results[2];
 
-console.log(
-    "☕ Beshy Firebase data loaded."
-);
+    console.log(
+        "☕ Beshy Firebase data loaded."
+    );
 
 }
 
+
 /* =====================================================
-LOCAL KNOWLEDGE
+   LOCAL KNOWLEDGE
 ===================================================== */
 
 async function loadLocalKnowledge() {
 
-try {
+    try {
 
-    const response =
-        await fetch(
-            "Beshy/Knowledge.json"
+        const response =
+            await fetch(
+                "Beshy/Knowledge.json"
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                `Knowledge.json: ${response.status}`
+            );
+
+        }
+
+        const data =
+            await response.json();
+
+        localKnowledge =
+            Array.isArray(data)
+                ? data
+                : [];
+
+    } catch (error) {
+
+        console.warn(
+            "Could not load Beshy Knowledge.json:",
+            error
         );
 
-    if (!response.ok) {
-
-        throw new Error(
-            "Knowledge.json could not be loaded."
-        );
+        localKnowledge = [];
 
     }
 
-    localKnowledge =
-        await response.json();
-
-} catch {
-
-    localKnowledge = [];
-
 }
 
-}
 
 /* =====================================================
-TEXT HELPERS
+   SEARCH KNOWLEDGE
 ===================================================== */
 
-function normalizeText(
-text
-) {
+function searchKnowledge(userMessage) {
 
-return text
-    .toLowerCase()
-    .trim()
-    .replace(/[!?.,]/g, "");
+    const message =
+        normalizeText(userMessage);
 
-}
+    const allKnowledge = [
 
-function containsAny(
-text,
-words
-) {
+        ...knowledge,
+        ...localKnowledge
 
-return words.some(
-    word =>
-        text.includes(
-            word.toLowerCase()
-        )
-);
+    ];
 
-}
+    for (const item of allKnowledge) {
 
-function randomItem(
-array
-) {
+        if (!item) {
+            continue;
+        }
 
-if (
-    !array ||
-    array.length === 0
-) {
+        const text = [
+
+            item.topic,
+            item.title,
+            item.question,
+            item.answer,
+            item.content,
+            item.knowledge,
+            item.fact,
+            item.text
+
+        ]
+
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+        const words =
+            text
+                .split(/\s+/)
+                .filter(word => word.length > 3);
+
+        const matches =
+            words.filter(word =>
+                message.includes(word)
+            );
+
+        if (matches.length >= 2) {
+
+            return item;
+
+        }
+
+    }
 
     return null;
 
 }
 
-return array[
-    Math.floor(
-        Math.random() *
-        array.length
-    )
-];
-
-}
-function getCurrentPage() {
-
-    return document.body.dataset.beshyPage || "unknown";
-
-}
-const currentPage =
-    getCurrentPage();
-/* =====================================================
-SEARCH KNOWLEDGE
-===================================================== */
-
-function searchKnowledge(
-userMessage
-) {
-
-
-const message =
-    normalizeText(
-        userMessage
-    );
-
-const allKnowledge = [
-
-    ...knowledge,
-
-    ...localKnowledge
-
-];
-
-for (
-    const item
-    of allKnowledge
-) {
-
-    const text = [
-
-        item.topic,
-
-        item.title,
-
-        item.question,
-
-        item.answer,
-
-        item.content,
-
-        item.knowledge,
-
-        item.fact,
-
-        item.text
-
-    ]
-
-    .filter(Boolean)
-
-    .join(" ")
-
-    .toLowerCase();
-
-    const words =
-        text
-            .split(/\s+/)
-            .filter(
-                word =>
-                    word.length > 3
-            );
-
-    const matches =
-        words.filter(
-            word =>
-                message.includes(
-                    word
-                )
-        );
-
-    if (
-        matches.length >= 2
-    ) {
-
-        return item;
-
-    }
-
-}
-
-return null;
-
-}
 
 /* =====================================================
-FIREBASE RESPONSE SEARCH
+   DATABASE RESPONSE SEARCH
 ===================================================== */
 
 function findDatabaseResponse(
@@ -482,86 +394,52 @@ function findDatabaseResponse(
 
     }
 
-
     const message =
-        normalizeText(
-            userMessage
-        );
+        normalizeText(userMessage);
 
+    for (const item of data) {
 
-    for (
-        const item
-        of data
-    ) {
-
-        if (
-            !item
-        ) {
-
+        if (!item) {
             continue;
-
         }
-
 
         const triggers = [
 
             item.trigger,
-
             item.keyword,
-
             item.keywords,
-
             item.when,
-
             item.input
 
         ]
-
         .flat()
-
-        .filter(
-            Boolean
-        );
-
+        .filter(Boolean);
 
         const matched =
-            triggers.some(
-                trigger => {
+            triggers.some(trigger => {
 
-                    if (
-                        typeof trigger !==
-                        "string"
-                    ) {
+                if (
+                    typeof trigger !== "string"
+                ) {
 
-                        return false;
-
-                    }
-
-
-                    return message.includes(
-                        normalizeText(
-                            trigger
-                        )
-                    );
+                    return false;
 
                 }
-            );
 
+                return message.includes(
+                    normalizeText(trigger)
+                );
 
-        if (
-            matched
-        ) {
+            });
+
+        if (matched) {
 
             return (
 
                 item.response ||
-
                 item.reply ||
-
                 item.text ||
-
                 item.message ||
-
                 null
 
             );
@@ -570,61 +448,52 @@ function findDatabaseResponse(
 
     }
 
-
     return null;
 
 }
+
+
 /* =====================================================
-BESHY BRAIN
+   BESHY BRAIN
 ===================================================== */
+
 function createResponse(userMessage) {
 
     const personalityResponse =
-       findDatabaseResponse(
-    personality,
-    userMessage
-)
+        findDatabaseResponse(
+            personality,
+            userMessage
+        );
 
     if (personalityResponse) {
-
         return personalityResponse;
-
     }
 
+
     const reactionResponse =
-    findDatabaseResponse(
-        reactions,
-        userMessage
-    );
+        findDatabaseResponse(
+            reactions,
+            userMessage
+        );
 
     if (reactionResponse) {
-
         return reactionResponse;
-
     }
 
 
     const knownInformation =
-        searchKnowledge(
-            userMessage
-        );
+        searchKnowledge(userMessage);
 
     if (knownInformation) {
 
         return (
 
             knownInformation.answer ||
-
             knownInformation.response ||
-
             knownInformation.reply ||
-
             knownInformation.content ||
-
             knownInformation.knowledge ||
-
             knownInformation.fact ||
-
             knownInformation.text
 
         );
@@ -633,9 +502,7 @@ function createResponse(userMessage) {
 
 
     const message =
-        normalizeText(
-            userMessage
-        );
+        normalizeText(userMessage);
 
 
     if (
@@ -679,13 +546,9 @@ function createResponse(userMessage) {
     ) {
 
         return (
-
             "I'm Beshy Ey Ay 🤖☕ — your DigiCafe digital bestie! " +
-
             "I'm here for conversations, random thoughts, music vibes, " +
-
             "stories, and occasional dramatic reactions 😂"
-
         );
 
     }
@@ -806,364 +669,408 @@ function createResponse(userMessage) {
 
 }
 
+
 /* =====================================================
-CHAT MESSAGES
+   CHAT MESSAGES
 ===================================================== */
 
-function addMessage(
-text,
-sender
-) {
+function addMessage(text, sender) {
 
+    const messages =
+        document.querySelector(
+            "#beshyMessages"
+        );
 
-const messages =
-    document.querySelector(
-        "#beshyMessages"
-    );
+    if (!messages) {
+        return;
+    }
 
-if (!messages) {
+    const message =
+        document.createElement("div");
 
-    return;
+    message.className =
+        `beshy-message ${sender}`;
 
-}
+    message.textContent =
+        text;
 
-const message =
-    document.createElement(
-        "div"
-    );
+    messages.appendChild(message);
 
-message.className =
-    `beshy-message ${sender}`;
-
-message.textContent =
-    text;
-
-messages.appendChild(
-    message
-);
-
-messages.scrollTop =
-    messages.scrollHeight;
+    messages.scrollTop =
+        messages.scrollHeight;
 
 }
+
 
 function showTyping() {
 
-const messages =
-    document.querySelector(
-        "#beshyMessages"
-    );
+    const messages =
+        document.querySelector(
+            "#beshyMessages"
+        );
 
-if (!messages) {
+    if (!messages) {
+        return;
+    }
 
-    return;
+    removeTyping();
 
-}
+    const typing =
+        document.createElement("div");
 
-const typing =
-    document.createElement(
-        "div"
-    );
+    typing.id =
+        "beshyTyping";
 
-typing.id =
-    "beshyTyping";
+    typing.className =
+        "beshy-message beshy";
 
-typing.className =
-    "beshy-message beshy";
+    typing.textContent =
+        "Beshy is typing... ☕";
 
-typing.textContent =
-    "Beshy is typing... ☕";
+    messages.appendChild(typing);
 
-messages.appendChild(
-    typing
-);
-
-messages.scrollTop =
-    messages.scrollHeight;
+    messages.scrollTop =
+        messages.scrollHeight;
 
 }
+
 
 function removeTyping() {
 
-const typing =
-    document.querySelector(
-        "#beshyTyping"
-    );
+    const typing =
+        document.querySelector(
+            "#beshyTyping"
+        );
 
-if (
-    typing
-) {
-
-    typing.remove();
+    if (typing) {
+        typing.remove();
+    }
 
 }
 
-}
 
 /* =====================================================
-SEND MESSAGE
+   SEND MESSAGE
 ===================================================== */
 
 async function sendMessage() {
 
-if (
-    isThinking
-) {
+    if (isThinking) {
+        return;
+    }
 
-    return;
+    const input =
+        document.querySelector(
+            "#beshyInput"
+        );
 
-}
+    if (!input) {
+        return;
+    }
 
-const input =
-    document.querySelector(
-        "#beshyInput"
+    const userMessage =
+        input.value.trim();
+
+    if (!userMessage) {
+        return;
+    }
+
+    isThinking = true;
+
+    input.value = "";
+
+    addMessage(
+        userMessage,
+        "user"
     );
 
-if (!input) {
+    showTyping();
 
-    return;
-
-}
-
-const userMessage =
-    input.value.trim();
-
-if (!userMessage) {
-
-    return;
-
-}
-
-isThinking =
-    true;
-
-input.value =
-    "";
-
-addMessage(
-    userMessage,
-    "user"
-);
-
-showTyping();
+    await new Promise(resolve =>
+        setTimeout(resolve, 500)
+    );
 
 
-await new Promise(
-    resolve =>
-        setTimeout(
-            resolve,
-            500
+    let reply;
+
+
+    if (
+        isKnowledgeSuggestion(
+            userMessage
         )
-);
+    ) {
+
+        const saved =
+            await savePendingKnowledge(
+                userMessage
+            );
+
+        if (saved) {
+
+            reply =
+                "Oooh ☕✨ that's an interesting idea! I saved it in my little notebook for review. My café owner will check if it should become part of my knowledge 😆";
+
+        } else {
+
+            reply =
+                "Hmm besh 😅 I couldn't save that idea right now, but tell me about it anyway!";
+
+        }
+
+    } else {
+
+        reply =
+            createResponse(
+                userMessage
+            );
+
+    }
 
 
-let reply;
+    removeTyping();
 
-
-if(
-    isKnowledgeSuggestion(
-        userMessage
-    )
-){
-
-const saved =
-    await savePendingKnowledge(
-        userMessage
+    addMessage(
+        reply,
+        "beshy"
     );
 
-
-if(saved){
-
-reply =
-"Oooh ☕✨ that's an interesting idea! I saved it in my little notebook for review. My café owner will check if it should become part of my knowledge 😆";
-
-}
-
-}else{
-
-reply =
-    createResponse(
-        userMessage
+    rememberConversation(
+        userMessage,
+        reply
     );
 
-}
-
-removeTyping();
-
-addMessage(
-    reply,
-    "beshy"
-);
-
-rememberConversation(
-    userMessage,
-    reply
-);
-
-isThinking =
-    false;
+    isThinking = false;
 
 }
+
 
 /* =====================================================
-OPEN / CLOSE CHAT
+   OPEN / CLOSE CHAT
 ===================================================== */
 
 function setupToggle() {
 
-const toggle =
-    document.querySelector(
-        "#beshyToggle"
+    const toggle =
+        document.querySelector(
+            "#beshyToggle"
+        );
+
+    const chat =
+        document.querySelector(
+            "#beshyChat"
+        );
+
+    const closeButton =
+        document.querySelector(
+            "#beshyClose"
+        );
+
+
+    console.log(
+        "🔎 Beshy toggle:",
+        toggle
     );
 
-const chat =
-    document.querySelector(
-        "#beshyChat"
+    console.log(
+        "🔎 Beshy chat:",
+        chat
     );
 
-const close =
-    document.querySelector(
-        "#beshyClose"
+
+    if (!toggle) {
+
+        console.error(
+            "❌ Beshy toggle #beshyToggle was not found."
+        );
+
+        return false;
+
+    }
+
+
+    if (!chat) {
+
+        console.error(
+            "❌ Beshy chat #beshyChat was not found."
+        );
+
+        return false;
+
+    }
+
+
+    if (toggle.dataset.beshyBound === "true") {
+
+        console.log(
+            "☕ Beshy toggle already connected."
+        );
+
+        return true;
+
+    }
+
+
+    function openChat() {
+
+        chat.classList.add("open");
+
+        chat.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        toggle.setAttribute(
+            "aria-expanded",
+            "true"
+        );
+
+    }
+
+
+    function closeChat() {
+
+        chat.classList.remove("open");
+
+        chat.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        toggle.setAttribute(
+            "aria-expanded",
+            "false"
+        );
+
+    }
+
+
+    toggle.addEventListener(
+        "click",
+        openChat
     );
 
-if (
-    !toggle ||
-    !chat ||
-    !close
-) {
 
-    return;
+    if (closeButton) {
+
+        closeButton.addEventListener(
+            "click",
+            closeChat
+        );
+
+    }
+
+
+    toggle.dataset.beshyBound =
+        "true";
+
+
+    console.log(
+        "✅ Beshy toggle is now clickable!"
+    );
+
+    return true;
 
 }
 
-
-function openChat() {
-
-    chat.classList.add(
-        "open"
-    );
-
-    chat.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-    toggle.setAttribute(
-        "aria-expanded",
-        "true"
-    );
-
-}
-
-
-function closeChat() {
-
-    chat.classList.remove(
-        "open"
-    );
-
-    chat.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-    toggle.setAttribute(
-        "aria-expanded",
-        "false"
-    );
-
-}
-
-
-toggle.addEventListener(
-    "click",
-    openChat
-);
-
-close.addEventListener(
-    "click",
-    closeChat
-);
-
-}
 
 /* =====================================================
-EMOJI PICKER
+   EMOJI PICKER
 ===================================================== */
 
 function setupEmojiPicker() {
 
-const button =
-    document.querySelector(
-        "#beshyEmoji"
-    );
-
-const panel =
-    document.querySelector(
-        "#beshyEmojiPanel"
-    );
-
-const input =
-    document.querySelector(
-        "#beshyInput"
-    );
-
-if (
-    !button ||
-    !panel ||
-    !input
-) {
-
-    return;
-
-}
-
-
-button.addEventListener(
-    "click",
-    () => {
-
-        panel.classList.toggle(
-            "show"
+    const button =
+        document.querySelector(
+            "#beshyEmoji"
         );
 
+    const panel =
+        document.querySelector(
+            "#beshyEmojiPanel"
+        );
+
+    const input =
+        document.querySelector(
+            "#beshyInput"
+        );
+
+    if (
+        !button ||
+        !panel ||
+        !input
+    ) {
+
+        return;
+
     }
-);
 
 
-panel.addEventListener(
-    "click",
-    event => {
+    if (
+        button.dataset.beshyBound === "true"
+    ) {
 
-        if (
-            event.target.tagName ===
-            "BUTTON"
-        ) {
+        return;
 
-            input.value +=
-                event.target.textContent;
+    }
 
-            input.focus();
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            panel.classList.toggle("show");
 
         }
+    );
 
-    }
-);
+
+    panel.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target.tagName ===
+                "BUTTON"
+            ) {
+
+                input.value +=
+                    event.target.textContent;
+
+                input.focus();
+
+            }
+
+        }
+    );
+
+
+    button.dataset.beshyBound =
+        "true";
 
 }
 
+
 /* =====================================================
-QUICK BUTTONS
+   QUICK BUTTONS
 ===================================================== */
 
 function setupQuickButtons() {
 
-document
-    .querySelectorAll(
-        "[data-message]"
-    )
-    .forEach(
-        button => {
+    document
+        .querySelectorAll(
+            "#beshyChat [data-message]"
+        )
+        .forEach(button => {
+
+            if (
+                button.dataset.beshyBound ===
+                "true"
+            ) {
+
+                return;
+
+            }
+
 
             button.addEventListener(
                 "click",
@@ -1175,9 +1082,7 @@ document
                         );
 
                     if (!input) {
-
                         return;
-
                     }
 
                     input.value =
@@ -1188,166 +1093,230 @@ document
                 }
             );
 
-        }
-    );
+
+            button.dataset.beshyBound =
+                "true";
+
+        });
 
 }
 
+
 /* =====================================================
-INPUT
+   INPUT
 ===================================================== */
 
 function setupInput() {
 
-const input =
-    document.querySelector(
-        "#beshyInput"
-    );
+    const input =
+        document.querySelector(
+            "#beshyInput"
+        );
 
-const send =
-    document.querySelector(
-        "#beshySend"
-    );
+    const send =
+        document.querySelector(
+            "#beshySend"
+        );
 
-if (input) {
 
-    input.addEventListener(
-        "keydown",
-        event => {
+    if (input) {
 
-            if (
-                event.key ===
-                "Enter"
-            ) {
+        if (
+            input.dataset.beshyBound !==
+            "true"
+        ) {
 
-                event.preventDefault();
+            input.addEventListener(
+                "keydown",
+                event => {
 
-                sendMessage();
+                    if (
+                        event.key ===
+                        "Enter"
+                    ) {
 
-            }
+                        event.preventDefault();
+
+                        sendMessage();
+
+                    }
+
+                }
+            );
+
+            input.dataset.beshyBound =
+                "true";
+
+        }
+
+    }
+
+
+    if (send) {
+
+        if (
+            send.dataset.beshyBound !==
+            "true"
+        ) {
+
+            send.addEventListener(
+                "click",
+                sendMessage
+            );
+
+            send.dataset.beshyBound =
+                "true";
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   CLEAR MEMORY
+===================================================== */
+
+function setupMemoryButton() {
+
+    const button =
+        document.querySelector(
+            "#beshyForget"
+        );
+
+    if (!button) {
+        return;
+    }
+
+
+    if (
+        button.dataset.beshyBound ===
+        "true"
+    ) {
+
+        return;
+
+    }
+
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            conversationMemory = [];
+
+            localStorage.removeItem(
+                "beshyMemory"
+            );
+
+            addMessage(
+                "Okay besh 😌🧠 Beshy's memory has been cleared.",
+                "beshy"
+            );
 
         }
     );
 
-}
 
-if (send) {
-
-    send.addEventListener(
-        "click",
-        sendMessage
-    );
+    button.dataset.beshyBound =
+        "true";
 
 }
 
-}
 
 /* =====================================================
-CLEAR MEMORY
-===================================================== */
-
-function setupMemoryButton() {
-const button =
-    document.querySelector(
-        "#beshyForget"
-    );
-
-if (!button) {
-
-    return;
-
-}
-
-button.addEventListener(
-    "click",
-    () => {
-
-        conversationMemory =
-            [];
-
-        localStorage.removeItem(
-            "beshyMemory"
-        );
-
-        addMessage(
-            "Okay besh 😌🧠 Beshy's memory has been cleared.",
-            "beshy"
-        );
-
-    }
-);
-
-}
-
-/* =====================================================
-INITIALIZE
+   INITIALIZE
 ===================================================== */
 
 async function initializeBeshy() {
 
-console.log(
-    "☕ Initializing Beshy..."
-);
+    console.log(
+        "☕ Initializing Beshy..."
+    );
 
 
-const loaded =
-    await loadBeshyInterface();
+    /*
+       IMPORTANT:
+       beshy.html is loaded by script.js.
+       We therefore wait until the actual
+       Beshy elements exist before binding events.
+    */
 
-if (!loaded) {
+    let attempts = 0;
 
-    return;
+    const maxAttempts = 50;
+
+
+    while (
+        !document.querySelector("#beshyToggle") &&
+        attempts < maxAttempts
+    ) {
+
+        await new Promise(resolve =>
+            setTimeout(resolve, 100)
+        );
+
+        attempts++;
+
+    }
+
+
+    const toggle =
+        document.querySelector(
+            "#beshyToggle"
+        );
+
+
+    if (!toggle) {
+
+        console.error(
+            "❌ Beshy HTML did not become available."
+        );
+
+        return;
+
+    }
+
+
+    console.log(
+        "✅ Beshy HTML detected."
+    );
+
+
+    loadMemory();
+
+    setupToggle();
+
+    setupEmojiPicker();
+
+    setupQuickButtons();
+
+    setupInput();
+
+    setupMemoryButton();
+
+
+    await loadLocalKnowledge();
+
+    await loadFirebaseData();
+
+
+    addMessage(
+        "Hiii besh ☕💚 I'm Beshy! Welcome to DigiCafe 😆",
+        "beshy"
+    );
+
+
+    console.log(
+        "🤖 Beshy is ready!"
+    );
 
 }
 
 
-loadMemory();
-
-
-setupToggle();
-
-setupEmojiPicker();
-
-setupQuickButtons();
-
-setupInput();
-
-setupMemoryButton();
-
-
-await loadLocalKnowledge();
-
-await loadFirebaseData();
-
-
-addMessage(
-
-    "Hiii besh ☕💚 I'm Beshy! Welcome to DigiCafe 😆",
-
-    "beshy"
-
-);
-
-
-console.log(
-    "🤖 Beshy is ready!"
-);
-
-}
-
-if (
-document.readyState ===
-"loading"
-) {
-
-document.addEventListener(
-    "DOMContentLoaded",
-    initializeBeshy
-);
-
-} else {
-
+/* =====================================================
+   START
+===================================================== */
 
 initializeBeshy();
-
-
-}
