@@ -387,5 +387,41 @@
 "category": "Sad",
 "file": "Asset/MusicFiles/Sad/I Was There, You Just Never Noticed.mp3",
 "dateAdded": "2026-08-15"
+},
+  {
+ "id": 44,
+"title": "Disco Nonsense",
+"artist": "DaintyJha",
+"album": "DancePop Collection",
+"category": "DancePop",
+"file": "Asset/MusicFiles/DancePop/Disco Nonsense.mp3",
+"dateAdded": "2026-09-16"
+},
+  {
+ "id": 45,
+"title": "No Sitting Down",
+"artist": "DaintyJha",
+"album": "DancePop Collection",
+"category": "DancePop",
+"file": "Asset/MusicFiles/DancePop/No Sitting Down.mp3",
+"dateAdded": "2026-09-16"
+},
+ {
+ "id": 46,
+"title": "Too Much Groove",
+"artist": "DaintyJha",
+"album": "DancePop Collection",
+"category": "DancePop",
+"file": "Asset/MusicFiles/DancePop/Too Much Groove.mp3",
+"dateAdded": "2026-09-16"
+},
+{
+ "id": 47,
+"title": "WHEN WE WERE YOUNG",
+"artist": "DaintyJha",
+"album": "DancePop Collection",
+"category": "DancePop",
+"file": "Asset/MusicFiles/DancePop/WHEN WE WERE YOUNG.mp3",
+"dateAdded": "2026-09-16"
 }
 ]
