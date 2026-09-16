@@ -431,7 +431,7 @@
 "album": "Sad Collection",
 "category": "Sad",
 "file": "Asset/MusicFiles/Sad/Please Don't Leave Me Yet.mp3",
-"dateAdded": "2026-08-15"
+"dateAdded": "2026-09-16"
 },
 {
  "id": 49,
@@ -449,6 +449,15 @@
 "album": "DancePop Collection",
 "category": "DancePop",
 "file": "Asset/MusicFiles/DancePop/WHEN WE WERE YOUNG.mp3",
+"dateAdded": "2026-09-16"
+},
+{
+"id": 48,
+"title": "I'm Tired of Being Strong",
+"artist": "DaintyJha",
+"album": "Sad Collection",
+"category": "Sad",
+"file": "Asset/MusicFiles/Sad/I'm Tired of Being Strong.mp3",
 "dateAdded": "2026-09-16"
 }
 ]
