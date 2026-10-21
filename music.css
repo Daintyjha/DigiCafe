@@ -839,3 +839,59 @@ SMALL PHONES
 }
 
 }
+
+/* ==========================================
+   DIGICAFE CATEGORY PLAYBACK
+========================================== */
+
+.player-category-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  max-width: 100%;
+}
+
+.player-category-label {
+  font-size: 0.8rem;
+}
+
+.player-category-select {
+  max-width: 100%;
+  min-width: 0;
+  padding: 0.4rem;
+  border-radius: 0.5rem;
+}
+
+.player-category-play,
+.collection-play-category {
+  cursor: pointer;
+  padding: 0.45rem 0.7rem;
+  border-radius: 0.5rem;
+  font: inherit;
+}
+
+.player-category-play:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.collection-play-category {
+  margin: 0.5rem 0;
+}
+
+@media (max-width: 600px) {
+  .player-category-controls {
+    gap: 0.3rem;
+  }
+
+  .player-category-select {
+    flex: 1 1 8rem;
+  }
+
+  .player-category-play,
+  .collection-play-category {
+    min-height: 2.5rem;
+  }
+}
