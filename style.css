@@ -3719,3 +3719,887 @@ body.account-page-body .account-card {
         border-radius: 16px;
     }
 }
+
+/* =========================================================
+   DIGICAFE MASTER CSS — MOBILE CORRECTION LAYER
+   Preserve existing HTML classes, IDs and JavaScript.
+   Add this entire section at the END of DigiCafe_master_style.css.
+   Playroom-specific styling remains in playroom.css.
+========================================================= */
+
+
+/* ---------------------------------------------------------
+   1. MOBILE-SAFE GLOBAL BASE
+--------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+}
+
+img,
+video,
+iframe,
+canvas,
+svg {
+    max-width: 100%;
+}
+
+input,
+textarea,
+select,
+button {
+    max-width: 100%;
+}
+
+button,
+a,
+input,
+textarea,
+select {
+    touch-action: manipulation;
+}
+
+:focus-visible {
+    outline: 3px solid var(--gold-light, #f3d99a);
+    outline-offset: 3px;
+}
+
+
+/* ---------------------------------------------------------
+   2. SHARED CONTENT AND CARDS
+--------------------------------------------------------- */
+
+main,
+section,
+article,
+.content-wrapper,
+.music-content,
+.music-container {
+    min-width: 0;
+}
+
+.card-grid,
+.card-container,
+.card-grid,
+.feature-grid,
+.creative-highlight {
+    min-width: 0;
+}
+
+.card,
+.content-box,
+.library-panel,
+.song-card,
+.collection,
+.account-card {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.card img,
+.song-card img,
+.collection img {
+    height: auto;
+    max-width: 100%;
+    object-fit: cover;
+}
+
+pre,
+code {
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+table {
+    max-width: 100%;
+}
+
+button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+/* ---------------------------------------------------------
+   3. TABLETS AND SMALLER LAPTOPS
+--------------------------------------------------------- */
+
+@media (max-width: 900px) {
+
+    .music-app {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+    }
+
+    .sidebar {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .music-content {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .now-playing {
+        min-width: 0;
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   4. MOBILE NAVIGATION
+--------------------------------------------------------- */
+
+@media (max-width: 768px) {
+
+    :root {
+        --navbar-height: 70px;
+    }
+
+    body {
+        padding-top: var(--navbar-height);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 10000;
+
+        width: 100%;
+        min-height: var(--navbar-height);
+        padding: 10px 14px;
+    }
+
+    .navbar__menu {
+        max-width: calc(100vw - 20px);
+        max-height: calc(100dvh - var(--navbar-height) - 16px);
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+
+    .navbar__links {
+        overflow-wrap: anywhere;
+    }
+
+    #mobile-menu {
+        min-width: 44px;
+        min-height: 44px;
+    }
+
+    main {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .content-wrapper {
+        width: calc(100% - 24px);
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 18px;
+    }
+
+    .hero,
+    .music-hero,
+    .about-hero {
+        padding: clamp(20px, 5vw, 32px);
+        border-radius: 22px;
+        overflow-wrap: anywhere;
+    }
+
+    h1 {
+        font-size: clamp(1.65rem, 6vw, 2.5rem);
+        overflow-wrap: anywhere;
+    }
+
+    h2 {
+        font-size: clamp(1.35rem, 5vw, 2rem);
+        overflow-wrap: anywhere;
+    }
+
+    p {
+        overflow-wrap: anywhere;
+    }
+
+    .card-grid,
+    .card-container,
+    .feature-grid,
+    .creative-highlight {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .card,
+    .content-box,
+    .library-panel,
+    .song-card,
+    .collection,
+    .account-card {
+        max-width: 100%;
+        border-radius: 16px;
+    }
+
+    button,
+    .btn,
+    .read-btn,
+    .account-button {
+        min-height: 42px;
+    }
+
+    input,
+    textarea,
+    select {
+        min-width: 0;
+        font-size: 16px;
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   5. MUSIC LOUNGE LAYOUT
+   Preserve existing music page classes and controls.
+--------------------------------------------------------- */
+
+@media (max-width: 768px) {
+
+    .music-app {
+        display: block;
+        width: 100%;
+        min-height: auto;
+        padding-bottom: 150px;
+    }
+
+    .music-app .sidebar {
+        position: relative;
+        top: auto;
+        left: auto;
+
+        width: 100%;
+        height: auto;
+        max-height: none;
+
+        padding: 16px;
+        overflow: visible;
+    }
+
+    .music-app .sidebar nav {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .music-app .sidebar nav a {
+        flex: 1 1 130px;
+        min-width: 0;
+    }
+
+    .music-content {
+        width: 100%;
+        margin-left: 0;
+        padding: 20px 14px 30px;
+    }
+
+    .music-content section {
+        margin-bottom: 28px;
+    }
+
+    .music-hero {
+        padding: 24px 18px;
+    }
+
+    .song-row {
+        min-width: 0;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .song-title {
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+    .stream-links {
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   6. GLOBAL MUSIC PLAYER
+   Keep the original .player and control IDs.
+--------------------------------------------------------- */
+
+.player {
+    z-index: 9998;
+    padding-bottom: max(10px, env(safe-area-inset-bottom, 0px));
+}
+
+.player *,
+.player *::before,
+.player *::after {
+    min-width: 0;
+}
+
+.now-playing h3,
+#trackTitle,
+#trackArtist,
+#playbackSource {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    overflow-wrap: anywhere;
+}
+
+#progressBar,
+#volumeSlider {
+    accent-color: var(--gold, #d6b36a);
+}
+
+@media (max-width: 768px) {
+
+    body {
+        padding-bottom: 155px;
+    }
+
+    .player {
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        width: 100%;
+        max-width: 100%;
+
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-rows: auto auto;
+        align-items: center;
+
+        gap: 8px 10px;
+        padding: 10px 12px;
+        padding-bottom: max(10px, env(safe-area-inset-bottom, 0px));
+
+        min-height: 0;
+    }
+
+    .now-playing {
+        grid-column: 1;
+        grid-row: 1;
+
+        width: 100%;
+        min-width: 0;
+        flex-shrink: 1;
+    }
+
+    .now-playing h3,
+    #trackTitle {
+        margin-bottom: 2px;
+        font-size: .9rem;
+        line-height: 1.3;
+    }
+
+    .now-playing p,
+    #trackArtist,
+    #playbackSource {
+        font-size: .72rem;
+        line-height: 1.3;
+    }
+
+    .controls {
+        grid-column: 2;
+        grid-row: 1;
+
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 4px;
+        flex-wrap: nowrap;
+    }
+
+    .controls button,
+    .player-actions button {
+        width: 34px;
+        height: 38px;
+        min-width: 34px;
+        min-height: 38px;
+        padding: 3px;
+        font-size: .9rem;
+    }
+
+    #playBtn {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+        min-height: 42px;
+    }
+
+    .progress {
+        grid-column: 1 / -1;
+        grid-row: 2;
+
+        display: flex;
+        width: 100%;
+        min-width: 0;
+        gap: 6px;
+    }
+
+    .progress span {
+        width: auto;
+        min-width: 34px;
+        font-size: .7rem;
+    }
+
+    .progress input {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .volume {
+        display: none;
+    }
+
+    .player-actions {
+        display: flex;
+        flex-shrink: 0;
+        gap: 4px;
+    }
+
+    #favoriteBtn {
+        font-size: 1.1rem;
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   7. BESHY CHAT
+   Preserve the existing open class and chat functionality.
+--------------------------------------------------------- */
+
+.beshy-toggle {
+    z-index: 10001;
+    right: max(14px, env(safe-area-inset-right, 0px));
+    bottom: calc(90px + env(safe-area-inset-bottom, 0px));
+    touch-action: manipulation;
+}
+
+.beshy-chat {
+    z-index: 10002;
+    overscroll-behavior: contain;
+}
+
+.beshy-messages {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    overflow-wrap: anywhere;
+    -webkit-overflow-scrolling: touch;
+}
+
+.beshy-message {
+    max-width: 90%;
+    overflow-wrap: anywhere;
+    word-break: normal;
+}
+
+.beshy-options {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.beshy-input-area {
+    flex-shrink: 0;
+}
+
+.beshy-input-area input,
+.beshy-input-area textarea {
+    min-width: 0;
+    width: 100%;
+    font-size: 16px;
+}
+
+.beshy-input-area button,
+.beshy-close {
+    flex-shrink: 0;
+    min-width: 40px;
+    min-height: 40px;
+}
+
+@media (max-width: 768px) {
+
+    .beshy-toggle {
+        width: 52px;
+        height: 52px;
+        min-width: 52px;
+        min-height: 52px;
+        font-size: 24px;
+
+        right: 12px;
+        bottom: calc(165px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .beshy-chat {
+        position: fixed;
+
+        left: 10px;
+        right: 10px;
+        top: auto;
+
+        bottom: calc(225px + env(safe-area-inset-bottom, 0px));
+
+        width: auto;
+        max-width: none;
+
+        height: min(58dvh, 500px);
+        max-height: calc(100dvh - 250px - env(safe-area-inset-bottom, 0px));
+        min-height: 220px;
+
+        border-radius: 20px;
+    }
+
+    .beshy-header {
+        min-height: 54px;
+        padding: 8px 12px;
+    }
+
+    .beshy-messages {
+        padding: 10px;
+    }
+
+    .beshy-message {
+        max-width: 92%;
+        padding: 9px 11px;
+        font-size: .9rem;
+    }
+
+    .beshy-options {
+        gap: 6px;
+        padding: 7px;
+    }
+
+    .beshy-options button {
+        min-height: 40px;
+        font-size: .85rem;
+    }
+
+    .beshy-input-area {
+        gap: 6px;
+        padding: 8px;
+    }
+
+    .beshy-memory-controls {
+        flex-wrap: wrap;
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   8. CAFÉ ENTRANCE / WELCOME SCREEN
+   Preserve entrance dimensions on desktop and existing effects.
+--------------------------------------------------------- */
+
+#welcome-screen {
+    max-width: 100%;
+    overflow-x: clip;
+    padding-left: max(12px, env(safe-area-inset-left, 0px));
+    padding-right: max(12px, env(safe-area-inset-right, 0px));
+}
+
+.cafe-entrance {
+    flex-shrink: 0;
+    max-width: 100%;
+}
+
+.cafe-door {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.cafe-door:focus-visible {
+    outline: 3px solid var(--cafe-gold-light, #f3d99a);
+    outline-offset: 4px;
+}
+
+@media (max-width: 768px) {
+
+    #welcome-screen {
+        min-height: calc(100svh - var(--navbar-height, 70px));
+        padding-top: 20px;
+        padding-bottom: 24px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .welcome-title {
+        max-width: 100%;
+        margin-bottom: 16px;
+
+        font-size: clamp(1rem, 4.5vw, 1.5rem);
+        line-height: 1.4;
+        letter-spacing: .12em;
+        overflow-wrap: anywhere;
+    }
+
+    .welcome-title::before,
+    .welcome-title::after {
+        margin: 0 5px;
+    }
+
+    .cafe-entrance {
+        width: min(340px, 88vw);
+        height: clamp(330px, 58svh, 430px);
+        padding-top: clamp(22px, 5vh, 30px);
+    }
+
+    .cafe-window {
+        top: 24%;
+        width: clamp(38px, 13vw, 52px);
+        height: clamp(52px, 17vw, 70px);
+    }
+
+    .cafe-window.left {
+        left: 9%;
+    }
+
+    .cafe-window.right {
+        right: 9%;
+    }
+
+    .cafe-door {
+        width: clamp(105px, 37vw, 135px);
+        height: clamp(175px, 31vh, 225px);
+        max-width: 75%;
+    }
+
+    .door-text {
+        overflow-wrap: anywhere;
+        text-align: center;
+    }
+
+    .welcome-tagline {
+        max-width: 90vw;
+        margin-top: 12px;
+        font-size: clamp(.72rem, 3vw, .88rem);
+        text-align: center;
+        overflow-wrap: anywhere;
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   9. SMALL PHONES
+--------------------------------------------------------- */
+
+@media (max-width: 480px) {
+
+    html {
+        font-size: 16px;
+    }
+
+    body {
+        font-size: 16px;
+        line-height: 1.65;
+    }
+
+    .content-wrapper {
+        width: calc(100% - 16px);
+        padding: 14px;
+        border-radius: 18px;
+    }
+
+    .hero,
+    .music-hero,
+    .about-hero {
+        padding: 20px 14px;
+        border-radius: 18px;
+    }
+
+    .card,
+    .content-box,
+    .library-panel,
+    .song-card,
+    .collection,
+    .account-card {
+        padding: 14px;
+        border-radius: 14px;
+    }
+
+    .music-content {
+        padding: 16px 10px 24px;
+    }
+
+    .music-app {
+        padding-bottom: 145px;
+    }
+
+    .player {
+        gap: 7px;
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .controls {
+        gap: 3px;
+    }
+
+    .controls button,
+    .player-actions button {
+        width: 31px;
+        min-width: 31px;
+        height: 36px;
+        min-height: 36px;
+        font-size: .82rem;
+    }
+
+    #playBtn {
+        width: 39px;
+        min-width: 39px;
+        height: 39px;
+        min-height: 39px;
+    }
+
+    .now-playing h3,
+    #trackTitle {
+        font-size: .82rem;
+    }
+
+    #trackArtist,
+    #playbackSource {
+        font-size: .68rem;
+    }
+
+    .progress span {
+        min-width: 30px;
+        font-size: .66rem;
+    }
+
+    .beshy-chat {
+        left: 8px;
+        right: 8px;
+        bottom: calc(218px + env(safe-area-inset-bottom, 0px));
+        height: min(55dvh, 440px);
+        max-height: calc(100dvh - 235px - env(safe-area-inset-bottom, 0px));
+    }
+
+    .beshy-toggle {
+        right: 10px;
+    }
+
+    .footer__container {
+        padding: 28px 14px;
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   10. VERY SHORT PHONE SCREENS
+--------------------------------------------------------- */
+
+@media (max-height: 650px) and (max-width: 600px) {
+
+    #welcome-screen {
+        justify-content: flex-start;
+        padding-top: 10px;
+        padding-bottom: 14px;
+    }
+
+    .welcome-title {
+        margin-bottom: 8px;
+        font-size: 1rem;
+    }
+
+    .cafe-entrance {
+        width: min(280px, 72vw);
+        height: min(315px, 52svh);
+        min-height: 245px;
+        padding-top: 18px;
+    }
+
+    .cafe-window {
+        top: 23%;
+        width: 38px;
+        height: 50px;
+    }
+
+    .cafe-door {
+        width: 100px;
+        height: min(170px, 29svh);
+        min-height: 125px;
+    }
+
+    .door-icon {
+        font-size: 1.2rem;
+    }
+
+    .door-text {
+        font-size: .55rem;
+    }
+
+    .welcome-tagline {
+        margin-top: 8px;
+        font-size: .68rem;
+    }
+
+    .beshy-chat {
+        height: min(48dvh, 340px);
+        min-height: 200px;
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   11. ACCESSIBILITY AND REDUCED MOTION
+--------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   END OF MOBILE CORRECTION LAYER
+--------------------------------------------------------- */
