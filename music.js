@@ -1,1328 +1,516 @@
+
 console.log("🎵 DigiCafe Music Lounge JS Loaded");
 
+/*
+ * DigiCafe Music Lounge
+ * Handles song cards, categories, recent songs,
+ * favorites, collections, and player integration.
+ */
 
-/* =========================================================
-   DIGICAFE MUSIC LOUNGE
-   =========================================================
+(function () {
+    "use strict";
 
-   This file controls ONLY the Music Lounge interface.
+    let initializationPromise = null;
 
-   music-player.js controls:
-   - audio
-   - play / pause
-   - next / previous
-   - shuffle
-   - progress
-   - volume
-   - media session
-   - current track
+    window.initMusicLounge = function () {
+        if (initializationPromise) {
+            return initializationPromise;
+        }
 
-   music.js controls:
-   - music library display
-   - categories
-   - song cards
-   - recent songs
-   - favorites
-   - collections
-   - sending songs to global player
-========================================================= */
+        initializationPromise = initializeMusicLounge().catch(error => {
+            initializationPromise = null;
+            console.error("❌ Music Lounge initialization failed:", error);
+            throw error;
+        });
 
+        return initializationPromise;
+    };
 
-window.initMusicLounge = async function () {
+    async function initializeMusicLounge() {
+        console.log("🎵 Initializing Music Lounge");
 
-    console.log("🎵 Initializing Music Lounge");
+        const libraryBox = document.getElementById("musicLibrary");
+        const recentBox = document.getElementById("recentSongs");
+        const favoriteList = document.getElementById("favoriteList");
+        const clearFavoritesBtn = document.getElementById("clearFavoritesBtn");
+        const collectionsBox = document.getElementById("musicCollections");
 
+        if (!libraryBox) {
+            throw new Error(
+                'Could not find "#musicLibrary" in music.html.'
+            );
+        }
 
-    /* =====================================================
-       STATE
-    ===================================================== */
+        let musicLibrary = [];
+        let activeCategory = "All";
+        let favorites = [];
 
-    let musicLibrary = [];
+        function loadFavorites() {
+            try {
+                const saved = localStorage.getItem("musicFavorites");
+                const parsed = saved ? JSON.parse(saved) : [];
 
-    let activeCategory = "All";
-
-    let favorites = [];
-
-
-    /* =====================================================
-       ELEMENTS
-    ===================================================== */
-
-    const musicLibraryBox =
-        document.getElementById("musicLibrary");
-
-    const recentSongs =
-        document.getElementById("recentSongs");
-
-    const favoriteList =
-        document.getElementById("favoriteList");
-
-    const clearFavoritesBtn =
-        document.getElementById("clearFavoritesBtn");
-
-
-    /* =====================================================
-       LOAD FAVORITES
-    ===================================================== */
-
-    function loadFavorites() {
-
-        try {
-
-            const saved =
-                localStorage.getItem(
-                    "musicFavorites"
-                );
-
-            favorites =
-                saved
-                    ? JSON.parse(saved)
-                    : [];
-
-
-            if (!Array.isArray(favorites)) {
-
+                favorites = Array.isArray(parsed) ? parsed : [];
+            } catch (error) {
+                console.warn("⚠️ Could not read favorites:", error);
                 favorites = [];
+            }
+        }
 
+        function saveFavorites() {
+            try {
+                localStorage.setItem(
+                    "musicFavorites",
+                    JSON.stringify(favorites)
+                );
+            } catch (error) {
+                console.error("❌ Could not save favorites:", error);
+            }
+        }
+
+        function isFavorite(song) {
+            return favorites.some(
+                item => String(item.id) === String(song.id)
+            );
+        }
+
+        function getActiveSongs() {
+            if (activeCategory === "All") {
+                return musicLibrary;
             }
 
-        } catch (error) {
-
-            console.warn(
-                "⚠️ Could not load favorites:",
-                error
+            return musicLibrary.filter(
+                song => song.category === activeCategory
             );
-
-            favorites = [];
-
         }
 
-    }
+        function getCurrentTrack() {
+            const player = window.DigiCafePlayer;
 
-
-    /* =====================================================
-       SAVE FAVORITES
-    ===================================================== */
-
-    function saveFavorites() {
-
-        try {
-
-            localStorage.setItem(
-                "musicFavorites",
-                JSON.stringify(favorites)
-            );
-
-        } catch (error) {
-
-            console.error(
-                "❌ Could not save favorites:",
-                error
-            );
-
+            return player &&
+                typeof player.getCurrentTrack === "function"
+                ? player.getCurrentTrack()
+                : null;
         }
 
-    }
+        function updateCurrentSongIndicator() {
+            const current = getCurrentTrack();
 
+            document.querySelectorAll("[data-song-id]").forEach(element => {
+                const isCurrent = current &&
+                    String(element.dataset.songId) === String(current.id);
 
-    /* =====================================================
-       FAVORITE CHECK
-    ===================================================== */
-
-    function isFavorite(song) {
-
-        if (!song) {
-
-            return false;
-
+                element.classList.toggle("is-current", Boolean(isCurrent));
+            });
         }
 
-
-        return favorites.some(
-            favorite =>
-                String(favorite.id) ===
-                String(song.id)
-        );
-
-    }
-
-
-    /* =====================================================
-       LOAD MUSIC LIBRARY
-    ===================================================== */
-
-    async function loadMusic() {
-
-        try {
-
-            const response =
-                await fetch(
-                    "music-library.json"
-                );
-
-
-            if (!response.ok) {
-
-                throw new Error(
-                    `Music library could not be loaded: ${response.status}`
-                );
-
+        function playSong(song, list, playlistName) {
+            if (!song || !song.file) {
+                console.error("❌ Song is missing its audio file:", song);
+                return;
             }
 
+            const player = window.DigiCafePlayer;
 
-            const data =
-                await response.json();
-
-
-            if (!Array.isArray(data)) {
-
-                throw new Error(
-                    "music-library.json must contain an array."
+            if (!player || typeof player.play !== "function") {
+                console.error(
+                    "❌ Global player is not ready. Check music-player.js."
                 );
-
+                return;
             }
 
-
-            musicLibrary =
-                data.map(song => ({
-
-                    ...song,
-
-                    category:
-                        typeof song.category === "string"
-
-                            ? song.category.trim()
-
-                            : "Music"
-
-                }));
-
-
-            console.log(
-                `🎶 Music Lounge loaded ${musicLibrary.length} songs`
+            player.play(
+                song,
+                Array.isArray(list) && list.length ? list : musicLibrary,
+                playlistName || "library"
             );
 
-
-            displayMusic(
-                musicLibrary
-            );
-
-            displayRecent();
-
-            renderFavorites();
-
-            displayCollections();
-
-
-        } catch (error) {
-
-            console.error(
-                "❌ Music library error:",
-                error
-            );
-
-
-            if (musicLibraryBox) {
-
-                musicLibraryBox.innerHTML = `
-
-                    <p class="page-error">
-                        ☕ DigiCafe couldn't load the music library.
-                    </p>
-
-                `;
-
-            }
-
+            updateCurrentSongIndicator();
         }
 
-    }
-
-
-    /* =====================================================
-       ACTIVE SONG LIST
-    ===================================================== */
-
-    function getActiveSongList() {
-
-        if (
-            activeCategory === "All"
-        ) {
-
-            return musicLibrary;
-
-        }
-
-
-        return musicLibrary.filter(
-            song =>
-
-                (
-                    song.category || ""
-                ).trim() ===
-                activeCategory
-
-        );
-
-    }
-
-
-    /* =====================================================
-       PLAY SONG
-       =====================================================
-
-       IMPORTANT:
-
-       There is NO audio element here.
-
-       The song is sent to the permanent
-       DigiCafe global music player.
-    ===================================================== */
-
-    function playSong(
-        song,
-        list = musicLibrary,
-        playlistName = "library"
-    ) {
-
-        if (!song) {
-
-            console.warn(
-                "⚠️ No song supplied."
-            );
-
-            return;
-
-        }
-
-
-        if (!song.file) {
-
-            console.error(
-                "❌ Song has no audio file:",
-                song
-            );
-
-            return;
-
-        }
-
-
-        if (
-            !window.DigiCafePlayer ||
-            typeof window.DigiCafePlayer.play !==
-                "function"
-        ) {
-
-            console.error(
-                "❌ DigiCafe global music player is not ready."
-            );
-
-            return;
-
-        }
-
-
-        console.log(
-            "▶ Playing:",
-            song.title
-        );
-
-
-        window.DigiCafePlayer.play(
-            song,
-            Array.isArray(list) && list.length
-                ? list
-                : musicLibrary,
-            playlistName || "library"
-        );
-
-
-        updateCurrentSongIndicator();
-
-    }
-
-
-    /* =====================================================
-       CREATE SONG CARD
-    ===================================================== */
-
-    function createSongCard(song) {
-
-        const card =
-            document.createElement("div");
-
-
-        card.className =
-            "song-card";
-
-
-        card.dataset.songId =
-            String(song.id);
-
-
-        const favorite =
-            isFavorite(song);
-
-
-        card.innerHTML = `
-
-            <h3>
-                ${song.title || "Untitled"}
-            </h3>
-
-            <p>
-                ${song.category || "Music"}
-            </p>
-
-            <div class="song-buttons">
-
-                <button
-                    class="play-song"
-                    type="button"
-                    title="Play song"
-                >
-                    ▶
-                </button>
-
-                <button
-                    class="add-favorite ${
-                        favorite
-                            ? "active-favorite"
-                            : ""
-                    }"
-                    type="button"
-                    title="${
-                        favorite
-                            ? "Remove from favorites"
-                            : "Add to favorites"
-                    }"
-                >
-                    ${
-                        favorite
-                            ? "♥"
-                            : "♡"
-                    }
-                </button>
-
-            </div>
-
-        `;
-
-
-        /* =================================================
-           PLAY BUTTON
-        ================================================= */
-
-        const playButton =
-            card.querySelector(
-                ".play-song"
-            );
-
-
-        if (playButton) {
-
-            playButton.addEventListener(
-                "click",
-                event => {
-
-                    event.stopPropagation();
-
-
-                    const list =
-                        getActiveSongList();
-
-
-                    playSong(
-                        song,
-                        list,
-                        activeCategory === "All"
-                            ? "library"
-                            : activeCategory
-                    );
-
-                }
-            );
-
-        }
-
-
-        /* =================================================
-           FAVORITE BUTTON
-        ================================================= */
-
-        const favoriteButton =
-            card.querySelector(
-                ".add-favorite"
-            );
-
-
-        if (favoriteButton) {
-
-            favoriteButton.addEventListener(
-                "click",
-                event => {
-
-                    event.stopPropagation();
-
-
-                    toggleFavorite(
-                        song
-                    );
-
-                }
-            );
-
-        }
-
-
-        return card;
-
-    }
-
-
-    /* =====================================================
-       DISPLAY MUSIC
-    ===================================================== */
-
-    function displayMusic(
-        songs
-    ) {
-
-        if (!musicLibraryBox) {
-
-            return;
-
-        }
-
-
-        musicLibraryBox.innerHTML =
-            "";
-
-
-        if (
-            !Array.isArray(songs) ||
-            songs.length === 0
-        ) {
-
-            musicLibraryBox.innerHTML = `
-
-                <p>
-                    No songs found.
-                </p>
-
-            `;
-
-            return;
-
-        }
-
-
-        songs.forEach(
-            song => {
-
-                musicLibraryBox.appendChild(
-                    createSongCard(
-                        song
-                    )
-                );
-
-            }
-        );
-
-
-        updateCurrentSongIndicator();
-
-    }
-
-
-    /* =====================================================
-       RECENT SONGS
-    ===================================================== */
-
-    function displayRecent() {
-
-        if (!recentSongs) {
-
-            return;
-
-        }
-
-
-        recentSongs.innerHTML =
-            "";
-
-
-        const recent =
-            [...musicLibrary]
-                .sort(
-                    (a, b) => {
-
-                        return (
-                            new Date(
-                                b.dateAdded || 0
-                            ) -
-                            new Date(
-                                a.dateAdded || 0
-                            )
-                        );
-
-                    }
-                )
-                .slice(
-                    0,
-                    6
-                );
-
-
-        if (!recent.length) {
-
-            recentSongs.innerHTML = `
-
-                <p>
-                    No recent songs.
-                </p>
-
-            `;
-
-            return;
-
-        }
-
-
-        recent.forEach(
-            song => {
-
-                recentSongs.appendChild(
-                    createSongCard(
-                        song
-                    )
-                );
-
-            }
-        );
-
-
-        updateCurrentSongIndicator();
-
-    }
-
-
-    /* =====================================================
-       CATEGORY FILTER
-    ===================================================== */
-
-    window.loadCategory =
-        function(category) {
-
-            activeCategory =
-                String(
-                    category || "All"
-                ).trim();
-
-
-            const songs =
-                getActiveSongList();
-
-
-            const categoryTitle =
-                document.getElementById(
-                    "categoryTitle"
-                );
-
-
-            if (categoryTitle) {
-
-                categoryTitle.textContent =
-                    activeCategory === "All"
-
-                        ? "All Music"
-
-                        : activeCategory;
-
-            }
-
-
-            displayMusic(
-                songs
-            );
-
-
-            console.log(
-                `🎧 Category: ${activeCategory}`
-            );
-
-        };
-
-
-    /* =====================================================
-       TOGGLE FAVORITE
-    ===================================================== */
-
-    function toggleFavorite(song) {
-
-        if (!song) {
-
-            return;
-
-        }
-
-
-        const index =
-            favorites.findIndex(
-                favorite =>
-                    String(favorite.id) ===
-                    String(song.id)
-            );
-
-
-        if (index === -1) {
-
-            favorites.push(
-                song
-            );
-
-            console.log(
-                "♥ Added to favorites:",
-                song.title
-            );
-
-        } else {
-
-            favorites.splice(
-                index,
-                1
-            );
-
-            console.log(
-                "♡ Removed from favorites:",
-                song.title
-            );
-
-        }
-
-
-        saveFavorites();
-
-
-        /*
-           Tell the global player to
-           update its favorite state too.
-        */
-
-        if (
-            window.DigiCafePlayer &&
-            typeof window.DigiCafePlayer.addFavorite ===
-                "function"
-        ) {
-
-            /*
-               The global player uses addFavorite()
-               as a toggle.
-            */
-
-            const playerFavorite =
-                typeof window.DigiCafePlayer.isFavorite ===
-                "function"
-
-                    ? window.DigiCafePlayer.isFavorite(
-                        song
-                    )
-
-                    : false;
-
-
-            /*
-               Only sync if our local state
-               and player state differ.
-            */
-
-            const localFavorite =
-                isFavorite(song);
-
+        function syncPlayerFavorite(song, shouldBeFavorite) {
+            const player = window.DigiCafePlayer;
 
             if (
-                playerFavorite !==
-                localFavorite
+                !player ||
+                typeof player.isFavorite !== "function" ||
+                typeof player.addFavorite !== "function"
             ) {
-
-                window.DigiCafePlayer.addFavorite(
-                    song
-                );
-
+                return;
             }
 
+            if (player.isFavorite(song) !== shouldBeFavorite) {
+                // In this player, addFavorite toggles the favorite state.
+                player.addFavorite(song);
+            }
         }
 
-
-        refreshDisplays();
-
-    }
-
-
-    /* =====================================================
-       RENDER FAVORITES
-    ===================================================== */
-
-    function renderFavorites() {
-
-        if (!favoriteList) {
-
-            return;
-
+        function refreshDisplays() {
+            displayMusic(getActiveSongs());
+            displayRecent();
+            renderFavorites();
+            displayCollections();
+            updateCurrentSongIndicator();
         }
 
+        function toggleFavorite(song) {
+            if (!song) return;
 
-        favoriteList.innerHTML =
-            "";
+            const existingIndex = favorites.findIndex(
+                item => String(item.id) === String(song.id)
+            );
 
+            if (existingIndex === -1) {
+                favorites.push(song);
+            } else {
+                favorites.splice(existingIndex, 1);
+            }
 
-        if (!favorites.length) {
-
-            favoriteList.innerHTML = `
-
-                <li>
-                    No favorite songs yet
-                </li>
-
-            `;
-
-            return;
-
+            saveFavorites();
+            syncPlayerFavorite(song, isFavorite(song));
+            refreshDisplays();
         }
 
+        function createElement(tag, className, text) {
+            const element = document.createElement(tag);
 
-        favorites.forEach(
-            song => {
+            if (className) element.className = className;
+            if (text !== undefined) element.textContent = text;
 
-                const li =
-                    document.createElement(
-                        "li"
-                    );
+            return element;
+        }
 
+        function createSongCard(song) {
+            const card = createElement("article", "song-card");
+            card.dataset.songId = String(song.id);
 
-                li.innerHTML = `
+            card.appendChild(
+                createElement("h3", "", song.title || "Untitled")
+            );
 
-                    <span
-                        class="favorite-song-title"
-                    >
-                        ${song.title || "Untitled"}
-                    </span>
+            card.appendChild(
+                createElement("p", "", song.category || "Music")
+            );
 
-                    <button
-                        type="button"
-                        title="Remove favorite"
-                        class="remove-favorite"
-                    >
-                        ✕
-                    </button>
+            const buttons = createElement("div", "song-buttons");
 
-                `;
+            const playButton = createElement("button", "play-song", "▶");
+            playButton.type = "button";
+            playButton.title = "Play song";
+            playButton.setAttribute("aria-label", "Play " + (song.title || "song"));
 
+            playButton.addEventListener("click", () => {
+                const list = getActiveSongs();
+                playSong(
+                    song,
+                    list,
+                    activeCategory === "All" ? "library" : activeCategory
+                );
+            });
 
-                /* =================================================
-                   PLAY FAVORITE
-                ================================================= */
+            const favoriteButton = createElement(
+                "button",
+                "add-favorite",
+                isFavorite(song) ? "♥" : "♡"
+            );
 
-                const title =
-                    li.querySelector(
-                        ".favorite-song-title"
-                    );
+            favoriteButton.type = "button";
+            favoriteButton.title = isFavorite(song)
+                ? "Remove from favorites"
+                : "Add to favorites";
 
+            favoriteButton.classList.toggle(
+                "active-favorite",
+                isFavorite(song)
+            );
 
-                if (title) {
+            favoriteButton.addEventListener("click", () => {
+                toggleFavorite(song);
+            });
 
-                    title.addEventListener(
-                        "click",
-                        () => {
+            buttons.append(playButton, favoriteButton);
+            card.appendChild(buttons);
 
-                            playSong(
-                                song,
-                                favorites,
-                                "favorites"
-                            );
+            return card;
+        }
 
-                        }
-                    );
+        function displayMusic(songs) {
+            libraryBox.replaceChildren();
 
-                }
+            if (!songs.length) {
+                libraryBox.appendChild(
+                    createElement("p", "", "No songs found in this category.")
+                );
+                return;
+            }
 
+            songs.forEach(song => {
+                libraryBox.appendChild(createSongCard(song));
+            });
 
-                /* =================================================
-                   REMOVE FAVORITE
-                ================================================= */
+            updateCurrentSongIndicator();
+        }
 
-                const removeButton =
-                    li.querySelector(
-                        ".remove-favorite"
-                    );
+        function displayRecent() {
+            if (!recentBox) return;
 
+            recentBox.replaceChildren();
 
-                if (removeButton) {
+            const recent = [...musicLibrary]
+                .sort((a, b) => {
+                    const dateA = Date.parse(a.dateAdded || "") || 0;
+                    const dateB = Date.parse(b.dateAdded || "") || 0;
+                    return dateB - dateA;
+                })
+                .slice(0, 6);
 
-                    removeButton.addEventListener(
-                        "click",
-                        () => {
+            if (!recent.length) {
+                recentBox.appendChild(
+                    createElement("p", "", "No recent songs.")
+                );
+                return;
+            }
 
-                            toggleFavorite(
-                                song
-                            );
+            recent.forEach(song => {
+                recentBox.appendChild(createSongCard(song));
+            });
+        }
 
-                        }
-                    );
+        function renderFavorites() {
+            if (!favoriteList) return;
 
-                }
+            favoriteList.replaceChildren();
 
-
+            if (!favorites.length) {
                 favoriteList.appendChild(
-                    li
+                    createElement("li", "", "No favorite songs yet")
+                );
+                return;
+            }
+
+            favorites.forEach(song => {
+                const item = createElement("li");
+                const title = createElement(
+                    "button",
+                    "favorite-song-title",
+                    song.title || "Untitled"
                 );
 
-            }
-        );
+                title.type = "button";
+                title.addEventListener("click", () => {
+                    playSong(song, favorites, "favorites");
+                });
 
-    }
+                const remove = createElement(
+                    "button",
+                    "remove-favorite",
+                    "✕"
+                );
 
+                remove.type = "button";
+                remove.title = "Remove favorite";
+                remove.setAttribute("aria-label", "Remove " + (song.title || "favorite"));
 
-    /* =====================================================
-       CLEAR FAVORITES
-    ===================================================== */
+                remove.addEventListener("click", () => {
+                    toggleFavorite(song);
+                });
 
-    if (clearFavoritesBtn) {
-
-        clearFavoritesBtn.onclick =
-            () => {
-
-                if (!favorites.length) {
-
-                    return;
-
-                }
-
-
-                favorites = [];
-
-
-                saveFavorites();
-
-
-                /*
-                   If the global player exposes
-                   the current track, refresh
-                   its favorite button.
-                */
-
-                if (
-                    window.DigiCafePlayer &&
-                    typeof window.DigiCafePlayer.getCurrentTrack ===
-                        "function"
-                ) {
-
-                    const current =
-                        window.DigiCafePlayer.getCurrentTrack();
-
-
-                    if (
-                        current &&
-                        typeof window.DigiCafePlayer.isFavorite ===
-                            "function"
-                    ) {
-
-                        /*
-                           The global player may still
-                           have the old favorite list
-                           internally.
-
-                           We simply refresh the
-                           Music Lounge UI here.
-                        */
-
-                        console.log(
-                            "♥ Favorites cleared."
-                        );
-
-                    }
-
-                }
-
-
-                refreshDisplays();
-
-            };
-
-    }
-
-
-    /* =====================================================
-       REFRESH DISPLAYS
-    ===================================================== */
-
-    function refreshDisplays() {
-
-        loadFavorites();
-
-
-        displayMusic(
-            getActiveSongList()
-        );
-
-
-        displayRecent();
-
-
-        renderFavorites();
-
-
-        displayCollections();
-
-
-        updateCurrentSongIndicator();
-
-    }
-
-
-    /* =====================================================
-       CURRENT SONG INDICATOR
-    ===================================================== */
-
-    function updateCurrentSongIndicator() {
-
-        let current = null;
-
-
-        if (
-            window.DigiCafePlayer &&
-            typeof window.DigiCafePlayer.getCurrentTrack ===
-                "function"
-        ) {
-
-            current =
-                window.DigiCafePlayer.getCurrentTrack();
-
+                item.append(title, remove);
+                favoriteList.appendChild(item);
+            });
         }
 
+        function displayCollections() {
+            if (!collectionsBox) return;
 
-        document
-            .querySelectorAll(
-                "[data-song-id]"
-            )
-            .forEach(
-                element => {
+            collectionsBox.replaceChildren();
 
-                    const isCurrent =
-                        current &&
-                        element.dataset.songId ===
-                        String(
-                            current.id
-                        );
-
-
-                    element.classList.toggle(
-                        "is-current",
-                        Boolean(
-                            isCurrent
-                        )
-                    );
-
-                }
-            );
-
-    }
-
-
-    /* =====================================================
-       MUSIC COLLECTIONS
-    ===================================================== */
-
-    function displayCollections() {
-
-        const container =
-            document.getElementById(
-                "musicCollections"
-            );
-
-
-        if (!container) {
-
-            return;
-
-        }
-
-
-        container.innerHTML =
-            "";
-
-
-        const categories =
-            [
+            const categories = [
                 ...new Set(
                     musicLibrary
-                        .map(
-                            song =>
-                                (
-                                    song.category ||
-                                    ""
-                                ).trim()
-                        )
+                        .map(song => song.category)
                         .filter(Boolean)
                 )
             ];
 
-
-        categories.forEach(
-            category => {
-
-                const section =
-                    document.createElement(
-                        "div"
-                    );
-
-
-                section.className =
-                    "collection";
-
-
-                const songs =
-                    musicLibrary.filter(
-                        song =>
-                            (
-                                song.category ||
-                                ""
-                            ).trim() ===
-                            category
-                    );
-
-
-                section.innerHTML = `
-
-                    <div
-                        class="collection-header"
-                    >
-
-                        <span>
-                            ${category}
-                        </span>
-
-                        <span>
-                            ▶
-                        </span>
-
-                    </div>
-
-
-                    <div
-                        class="collection-body"
-                    ></div>
-
-                `;
-
-
-                const body =
-                    section.querySelector(
-                        ".collection-body"
-                    );
-
-
-                /* =================================================
-                   COLLECTION SONGS
-                ================================================= */
-
-                songs.forEach(
-                    song => {
-
-                        const row =
-                            document.createElement(
-                                "div"
-                            );
-
-
-                        row.className =
-                            "song-row";
-
-
-                        row.dataset.songId =
-                            String(
-                                song.id
-                            );
-
-
-                        const favorite =
-                            isFavorite(
-                                song
-                            );
-
-
-                        row.innerHTML = `
-
-                            <div
-                                class="song-title"
-                            >
-                                ${
-                                    song.title ||
-                                    "Untitled"
-                                }
-                            </div>
-
-
-                            <div
-                                class="song-actions"
-                            >
-
-                                <button
-                                    class="play"
-                                    type="button"
-                                    title="Play song"
-                                >
-                                    ▶
-                                </button>
-
-
-                                <button
-                                    class="favorite ${
-                                        favorite
-                                            ? "active-favorite"
-                                            : ""
-                                    }"
-                                    type="button"
-                                    title="${
-                                        favorite
-                                            ? "Remove favorite"
-                                            : "Add favorite"
-                                    }"
-                                >
-                                    ${
-                                        favorite
-                                            ? "♥"
-                                            : "♡"
-                                    }
-                                </button>
-
-                            </div>
-
-                        `;
-
-
-                        /* =================================================
-                           PLAY
-                        ================================================= */
-
-                        const playButton =
-                            row.querySelector(
-                                ".play"
-                            );
-
-
-                        if (playButton) {
-
-                            playButton.addEventListener(
-                                "click",
-                                event => {
-
-                                    event.stopPropagation();
-
-
-                                    playSong(
-                                        song,
-                                        songs,
-                                        category
-                                    );
-
-                                }
-                            );
-
-                        }
-
-
-                        /* =================================================
-                           FAVORITE
-                        ================================================= */
-
-                        const favoriteButton =
-                            row.querySelector(
-                                ".favorite"
-                            );
-
-
-                        if (
-                            favoriteButton
-                        ) {
-
-                            favoriteButton.addEventListener(
-                                "click",
-                                event => {
-
-                                    event.stopPropagation();
-
-
-                                    toggleFavorite(
-                                        song
-                                    );
-
-                                }
-                            );
-
-                        }
-
-
-                        body.appendChild(
-                            row
-                        );
-
-                    }
+            categories.forEach(category => {
+                const songs = musicLibrary.filter(
+                    song => song.category === category
                 );
 
+                const section = createElement("section", "collection");
+                const header = createElement(
+                    "button",
+                    "collection-header",
+                    category + " (" + songs.length + " songs)"
+                );
 
-                /* =================================================
-                   OPEN / CLOSE COLLECTION
-                ================================================= */
+                header.type = "button";
+                header.setAttribute("aria-expanded", "false");
 
-                const header =
-                    section.querySelector(
-                        ".collection-header"
+                const body = createElement("div", "collection-body");
+                body.hidden = true;
+
+                header.addEventListener("click", () => {
+                    body.hidden = !body.hidden;
+                    section.classList.toggle("open", !body.hidden);
+                    header.setAttribute("aria-expanded", String(!body.hidden));
+                });
+
+                songs.forEach(song => {
+                    const row = createElement("div", "song-row");
+                    row.dataset.songId = String(song.id);
+
+                    row.appendChild(
+                        createElement("span", "song-title", song.title || "Untitled")
                     );
 
+                    const playButton = createElement("button", "play", "▶");
+                    playButton.type = "button";
+                    playButton.title = "Play song";
+                    playButton.addEventListener("click", () => {
+                        playSong(song, songs, category);
+                    });
 
-                if (header) {
-
-                    header.addEventListener(
-                        "click",
-                        () => {
-
-                            section.classList.toggle(
-                                "open"
-                            );
-
-                        }
+                    const favoriteButton = createElement(
+                        "button",
+                        "favorite",
+                        isFavorite(song) ? "♥" : "♡"
                     );
 
+                    favoriteButton.type = "button";
+                    favoriteButton.classList.toggle(
+                        "active-favorite",
+                        isFavorite(song)
+                    );
+
+                    favoriteButton.addEventListener("click", () => {
+                        toggleFavorite(song);
+                    });
+
+                    row.append(playButton, favoriteButton);
+                    body.appendChild(row);
+                });
+
+                section.append(header, body);
+                collectionsBox.appendChild(section);
+            });
+        }
+
+        window.loadCategory = function (category) {
+            activeCategory = String(category || "All").trim();
+
+            const title = document.getElementById("categoryTitle");
+
+            if (title) {
+                title.textContent = activeCategory === "All"
+                    ? "All Music"
+                    : activeCategory;
+            }
+
+            displayMusic(getActiveSongs());
+        };
+
+        if (clearFavoritesBtn) {
+            clearFavoritesBtn.addEventListener("click", () => {
+                if (!favorites.length) return;
+
+                const oldFavorites = [...favorites];
+                favorites = [];
+                saveFavorites();
+
+                oldFavorites.forEach(song => {
+                    syncPlayerFavorite(song, false);
+                });
+
+                refreshDisplays();
+            });
+        }
+
+        loadFavorites();
+
+        try {
+            // Resolve relative to music.html, including when its URL has a query string.
+            const libraryUrl = new URL("music-library.json", window.location.href);
+            const response = await fetch(libraryUrl);
+
+            if (!response.ok) {
+                throw new Error(
+                    "Could not load music-library.json: HTTP " + response.status
+                );
+            }
+
+            const data = await response.json();
+
+            if (!Array.isArray(data)) {
+                throw new Error("music-library.json must contain a JSON array.");
+            }
+
+            musicLibrary = data.map((song, index) => ({
+                ...song,
+                category: typeof song.category === "string"
+                    ? song.category.trim()
+                    : "Music",
+                // Keep IDs from the library; generate one only if missing.
+                id: song.id ?? ("song-" + index)
+            }));
+
+            const seenIds = new Set();
+
+            musicLibrary.forEach(song => {
+                const id = String(song.id);
+
+                if (seenIds.has(id)) {
+                    console.warn("⚠️ Duplicate song ID:", id, song.title);
                 }
 
+                seenIds.add(id);
+            });
 
-                container.appendChild(
-                    section
-                );
+            console.log(
+                "🎶 Music Lounge loaded " + musicLibrary.length + " songs."
+            );
 
-            }
-        );
+            refreshDisplays();
+            console.log("☕ Music Lounge ready.");
+        } catch (error) {
+            console.error("❌ Music library error:", error);
 
+            libraryBox.replaceChildren(
+                createElement(
+                    "p",
+                    "page-error",
+                    "DigiCafe couldn't load the music library. Check the JSON file path and browser console."
+                )
+            );
 
-        updateCurrentSongIndicator();
-
+            throw error;
+        }
     }
 
+    // Start the player first, then the Music Lounge.
+    async function startDigiCafeMusic() {
+        try {
+            if (
+                !window.DigiCafePlayer &&
+                typeof window.initMusicPlayer === "function"
+            ) {
+                await window.initMusicPlayer();
+            }
 
-    /* =====================================================
-       INITIALIZE
-    ===================================================== */
+            await window.initMusicLounge();
+        } catch (error) {
+            console.error("❌ DigiCafe Music startup failed:", error);
+        }
+    }
 
-    loadFavorites();
-
-
-    await loadMusic();
-
-
-    console.log(
-        "☕ Music Lounge ready."
-    );
-
-};
+    if (document.readyState === "loading") {
+        document.addEventListener(
+            "DOMContentLoaded",
+            startDigiCafeMusic,
+            { once: true }
+        );
+    } else {
+        startDigiCafeMusic();
+    }
+})();
