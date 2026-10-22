@@ -1372,22 +1372,6 @@ async function navigateTo(
         switch (page) {
 
 
-            /* =============================================
-               HOME
-            ============================================== */
-
-            case "home":
-
-                if (
-                    typeof window.initWelcome ===
-                    "function"
-                ) {
-
-                    window.initWelcome();
-
-                }
-
-                break;
 
 
             /* =============================================

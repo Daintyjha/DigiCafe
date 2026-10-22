@@ -356,33 +356,51 @@ console.log("🎵 DigiCafe Global Music Player Loaded");
         favoriteBtn.disabled = !hasFavorites;
     }
 
+    function notifyFavoritesChanged() {
+        window.dispatchEvent(
+            new CustomEvent("digicafe:favoriteschange", {
+                detail: {
+                    favorites: favorites.map(song => ({ ...song })),
+                    ids: favorites.map(song => getSongId(song))
+                }
+            })
+        );
+    }
+
     function toggleFavorite(song) {
         if (!song || !getSongId(song)) return false;
 
+        if (isFavorite(song)) {
+            removeFavorite(song);
+            return false;
+        }
+
+        return addFavorite(song);
+    }
+
+    function addFavorite(song) {
+        if (!song || !getSongId(song)) return false;
+
+        if (isFavorite(song)) return true;
+
         const songId = getSongId(song);
-        const existingIndex = favorites.findIndex(
-            favorite => getSongId(favorite) === songId
+
+        const librarySong = musicLibrary.find(
+            item => getSongId(item) === songId
         );
 
-        if (existingIndex >= 0) {
-            favorites.splice(existingIndex, 1);
-        } else {
-            const librarySong = musicLibrary.find(
-                item => getSongId(item) === songId
-            );
-
-            favorites.push(librarySong || song);
-        }
+        favorites.push(librarySong || song);
 
         saveFavorites();
         updateFavoriteButton();
         updateCurrentSongIndicator();
+        notifyFavoritesChanged();
 
-        return existingIndex < 0;
+        return true;
     }
 
     function removeFavorite(song) {
-        if (!song) return;
+        if (!song || !getSongId(song)) return;
 
         const songId = getSongId(song);
 
@@ -393,6 +411,7 @@ console.log("🎵 DigiCafe Global Music Player Loaded");
         saveFavorites();
         updateFavoriteButton();
         updateCurrentSongIndicator();
+        notifyFavoritesChanged();
     }
 
     function clearFavorites() {
@@ -401,6 +420,7 @@ console.log("🎵 DigiCafe Global Music Player Loaded");
         saveFavorites();
         updateFavoriteButton();
         updateCurrentSongIndicator();
+        notifyFavoritesChanged();
     }
 
 
@@ -916,9 +936,9 @@ console.log("🎵 DigiCafe Global Music Player Loaded");
             getFavorites: () => [...favorites],
 
             isFavorite: isFavorite,
-            addFavorite: toggleFavorite,
-            toggleFavorite: toggleFavorite,
-            removeFavorite: removeFavorite,
+           addFavorite: addFavorite,
+toggleFavorite: toggleFavorite,
+removeFavorite: removeFavorite,
             clearFavorites: clearFavorites,
 
             refreshIndicators: updateCurrentSongIndicator,
@@ -963,7 +983,7 @@ console.log("🎵 DigiCafe Global Music Player Loaded");
             restoreVolume();
 
             await loadMusic();
-
+notifyFavoritesChanged();
             attachEventListeners();
 
             updateShuffleButton();
@@ -992,22 +1012,57 @@ console.log("🎵 DigiCafe Global Music Player Loaded");
         }
     };
 
-
     /* =====================================================
-       INITIALIZATION PROMISE
+       INITIALIZATION PROMISE — RETRY IF PLAYER HTML ARRIVES LATE
     ===================================================== */
 
     window.DigiCafePlayerReady = new Promise(resolve => {
-        function startPlayer() {
-            window.initMusicPlayer()
-                .then(resolve)
-                .catch(error => {
-                    console.error(
-                        "❌ DigiCafe player initialization failed:",
-                        error
-                    );
-                    resolve(null);
-                });
+        let resolved = false;
+        let observer = null;
+
+        function finish(player) {
+            if (!player || resolved) return;
+
+            resolved = true;
+
+            if (observer) {
+                observer.disconnect();
+                observer = null;
+            }
+
+            resolve(player);
+        }
+
+        async function startPlayer() {
+            try {
+                const player = await window.initMusicPlayer();
+
+                if (player) {
+                    finish(player);
+                    return;
+                }
+
+                // The HTML may be inserted dynamically.
+                if (!observer && document.documentElement) {
+                    observer = new MutationObserver(() => {
+                        if (document.getElementById("audioPlayer")) {
+                            observer.disconnect();
+                            observer = null;
+                            startPlayer();
+                        }
+                    });
+
+                    observer.observe(document.documentElement, {
+                        childList: true,
+                        subtree: true
+                    });
+                }
+            } catch (error) {
+                console.error(
+                    "❌ DigiCafe player initialization failed:",
+                    error
+                );
+            }
         }
 
         if (document.readyState === "loading") {
@@ -1020,5 +1075,4 @@ console.log("🎵 DigiCafe Global Music Player Loaded");
             startPlayer();
         }
     });
-
 })();
