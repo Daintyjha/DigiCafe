@@ -7504,3 +7504,561 @@ and (
     }
 
 }
+
+/* =========================================================
+   DIGICAFE PLAYROOM — LAYOUT CORRECTION LAYER
+   Append to the end of playroom.css
+   Preserves existing classes, IDs, and game functionality
+========================================================= */
+
+/* ---------- Shared layout safety ---------- */
+
+.playroom,
+.playroom *,
+.game-room,
+.game-room * {
+    box-sizing: border-box;
+}
+
+.playroom {
+    width: 100%;
+    max-width: 1200px;
+    min-width: 0;
+    margin-inline: auto;
+}
+
+.game-lounge,
+.playroom-hero,
+.playroom-note,
+.playroom-games,
+.game-room,
+.game-room-content {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.playroom img,
+.game-room img,
+.game-room canvas,
+.game-room svg {
+    max-width: 100%;
+}
+
+.playroom button,
+.game-room button {
+    font: inherit;
+    touch-action: manipulation;
+}
+
+.playroom button:focus-visible,
+.game-room button:focus-visible {
+    outline: 3px solid var(--accent-color, #8a5a44);
+    outline-offset: 3px;
+}
+
+/* ---------- Lobby and game selection ---------- */
+
+.playroom-hero {
+    overflow: hidden;
+}
+
+.playroom-hero-content {
+    width: 100%;
+}
+
+.game-grid {
+    grid-template-columns:
+        repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    align-items: stretch;
+}
+
+.game-card {
+    min-width: 0;
+    height: 100%;
+}
+
+.game-card-content {
+    overflow-wrap: anywhere;
+}
+
+.game-card h3,
+.game-card p {
+    overflow-wrap: anywhere;
+}
+
+/* ---------- Shared game room header ---------- */
+
+.game-room {
+    width: 100%;
+    margin-inline: auto;
+}
+
+.game-room-header,
+.solitaire-header,
+.bingo-app-header,
+.cafe-slots-header,
+.chess-header,
+.dama-header {
+    min-width: 0;
+    max-width: 100%;
+    margin-bottom: 20px;
+}
+
+.game-room-header {
+    flex-wrap: wrap;
+}
+
+.game-room-header > *,
+.solitaire-header > *,
+.bingo-app-header > *,
+.cafe-slots-header > *,
+.chess-header > *,
+.dama-header > * {
+    min-width: 0;
+}
+
+.game-room-content,
+.solitaire-room,
+.bingo-room,
+.cafe-slots-room,
+.chess-room,
+.dama-room {
+    min-width: 0;
+}
+
+.game-back-button,
+.game-secondary-button,
+.game-button {
+    max-width: 100%;
+    white-space: normal;
+}
+
+/* Keep hidden rooms and hidden result panels hidden. */
+.playroom [hidden],
+.game-room [hidden] {
+    display: none !important;
+}
+
+/* ---------- Solitaire ---------- */
+
+.solitaire-room {
+    width: 100%;
+}
+
+.solitaire-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.solitaire-title {
+    min-width: 0;
+}
+
+.solitaire-stats,
+.solitaire-final-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.solitaire-stat,
+.solitaire-final-stats > div {
+    min-width: 85px;
+    padding: 10px 14px;
+    border: 1px solid var(--border-color, rgba(80,60,45,.15));
+    border-radius: 12px;
+    background: var(--card-bg, #f8f1e8);
+}
+
+.solitaire-stat span,
+.solitaire-final-stats span {
+    display: block;
+    font-size: .7rem;
+    letter-spacing: .06em;
+}
+
+.solitaire-stat strong,
+.solitaire-final-stats strong {
+    display: block;
+    font-variant-numeric: tabular-nums;
+}
+
+.solitaire-board {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin-inline: auto;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+.solitaire-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.solitaire-win-card {
+    width: min(100%, 480px);
+    margin-inline: auto;
+    padding: clamp(18px, 4vw, 32px);
+    border: 1px solid var(--border-color, rgba(80,60,45,.15));
+    border-radius: 20px;
+    background: var(--card-bg, #f8f1e8);
+    text-align: center;
+}
+
+/* ---------- Bingo ---------- */
+
+.bingo-app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.bingo-app-title {
+    min-width: 0;
+    flex: 1 1 200px;
+}
+
+.bingo-mini-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.bingo-mini-stat {
+    min-width: 72px;
+    padding: 9px 12px;
+    border: 1px solid var(--border-color, rgba(80,60,45,.15));
+    border-radius: 12px;
+    background: var(--card-bg, #f8f1e8);
+}
+
+.bingo-mini-stat span,
+.bingo-mini-stat strong {
+    display: block;
+}
+
+.bingo-app-layout {
+    display: grid;
+    grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+    align-items: start;
+    gap: 20px;
+}
+
+.bingo-sidebar {
+    min-width: 0;
+    max-width: 100%;
+}
+
+.bingo-mini-panel {
+    min-width: 0;
+    padding: 16px;
+    border: 1px solid var(--border-color, rgba(80,60,45,.15));
+    border-radius: 16px;
+    background: var(--card-bg, #f8f1e8);
+}
+
+.bingo-card-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.bingo-card-options button {
+    min-height: 40px;
+}
+
+/* ---------- Café Slots ---------- */
+
+.cafe-slots-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.cafe-slots-title {
+    flex: 1 1 220px;
+    min-width: 0;
+}
+
+.cafe-slots-game {
+    width: 100%;
+    max-width: 760px;
+    margin-inline: auto;
+}
+
+.cafe-slots-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.slots-stat {
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid var(--border-color, rgba(80,60,45,.15));
+    border-radius: 14px;
+    background: var(--card-bg, #f8f1e8);
+    text-align: center;
+}
+
+.slots-stat-label,
+.slots-stat strong {
+    display: block;
+    overflow-wrap: anywhere;
+}
+
+.cafe-slot-machine {
+    width: 100%;
+    max-width: 540px;
+    margin-inline: auto;
+}
+
+.slot-reels {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(6px, 2vw, 14px);
+}
+
+.slot-reel {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.slot-symbol {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    text-align: center;
+}
+
+.slots-result {
+    overflow-wrap: anywhere;
+}
+
+/* ---------- Chess and Dama ---------- */
+
+.chess-header,
+.dama-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.chess-header-content,
+.dama-header-content {
+    flex: 1 1 200px;
+    min-width: 0;
+}
+
+.chess-panel,
+.dama-panel {
+    width: 100%;
+    min-width: 0;
+}
+
+.chess-status,
+.dama-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.chess-game-area,
+.dama-game-area {
+    width: 100%;
+    min-width: 0;
+}
+
+#chessBoard,
+#damaBoard {
+    width: min(100%, 600px);
+    max-width: 100%;
+    margin-inline: auto;
+    aspect-ratio: 1;
+    overflow: hidden;
+}
+
+#chessBoard > *,
+#damaBoard > * {
+    min-width: 0;
+    min-height: 0;
+}
+
+.chess-controls,
+.dama-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.chess-history,
+.chess-result,
+.dama-result {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+
+/* ---------- Tablet ---------- */
+
+@media (max-width: 900px) {
+    .bingo-app-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .bingo-sidebar {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+        gap: 12px;
+    }
+}
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 700px) {
+    .playroom {
+        padding: 24px 12px 56px;
+    }
+
+    .playroom-hero {
+        padding: clamp(28px, 8vw, 46px) 16px;
+    }
+
+    .playroom-note {
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .game-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .game-card {
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .game-room-header,
+    .solitaire-header,
+    .bingo-app-header,
+    .cafe-slots-header,
+    .chess-header,
+    .dama-header {
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .game-room-header .game-secondary-button,
+    .solitaire-header .game-secondary-button,
+    .cafe-slots-header .game-secondary-button,
+    .chess-header .game-secondary-button,
+    .dama-header .game-secondary-button {
+        width: auto;
+        max-width: 100%;
+    }
+
+    .solitaire-stats {
+        width: 100%;
+    }
+
+    .solitaire-controls > button,
+    .chess-controls > button,
+    .dama-controls > button {
+        flex: 1 1 120px;
+    }
+
+    .cafe-slots-stats {
+        gap: 8px;
+    }
+
+    .slots-stat {
+        padding: 10px 6px;
+    }
+
+    #chessBoard,
+    #damaBoard {
+        width: min(100%, 480px);
+    }
+}
+
+/* ---------- Very narrow phones ---------- */
+
+@media (max-width: 420px) {
+    .playroom {
+        padding-inline: 9px;
+    }
+
+    .game-card {
+        grid-template-columns: 44px minmax(0, 1fr);
+        gap: 10px;
+        padding: 13px;
+    }
+
+    .game-card-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 1.35rem;
+    }
+
+    .game-card-arrow {
+        display: none;
+    }
+
+    .game-card h3 {
+        font-size: 1rem;
+    }
+
+    .game-card p {
+        font-size: .84rem;
+    }
+
+    .bingo-mini-stats {
+        width: 100%;
+    }
+
+    .bingo-mini-stat {
+        flex: 1 1 65px;
+        min-width: 0;
+        padding: 8px 5px;
+        text-align: center;
+    }
+
+    .cafe-slots-stats {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .solitaire-stat {
+        flex: 1 1 75px;
+        min-width: 0;
+    }
+}
+
+/* Respect reduced-motion settings */
+@media (prefers-reduced-motion: reduce) {
+    .playroom *,
+    .game-room * {
+        scroll-behavior: auto;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+}
